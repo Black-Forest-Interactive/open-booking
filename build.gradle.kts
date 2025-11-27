@@ -1,11 +1,18 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
-    id("org.jetbrains.kotlin.kapt") version "1.7.21"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.7.21"
-    id("org.sonarqube") version "3.5.0.2730"
-    id("com.google.cloud.tools.jib") version "3.3.1" apply (false)
-    id("io.micronaut.application") version "3.6.5" apply (false)
-    jacoco
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.allopen") version "2.2.21"
+    kotlin("plugin.jpa") version "2.2.21"
+    kotlin("plugin.serialization") version "2.2.21"
+    id("com.google.devtools.ksp") version "2.3.2"
+    id("org.sonarqube") version "7.0.1.6134"
+    id("net.researchgate.release") version "3.1.0"
+    id("com.google.cloud.tools.jib") version "3.4.5"
+    id("io.micronaut.application") version "4.6.1"
+    id("io.micronaut.test-resources") version "4.6.1"
+    id("io.micronaut.aot") version "4.6.1"
+    id("maven-publish")
+    id("jacoco")
 }
 
 repositories {
@@ -15,8 +22,8 @@ repositories {
 subprojects {
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.kapt")
     apply(plugin = "io.micronaut.application")
+    apply(plugin = "com.google.devtools.ksp")
     apply(plugin = "org.gradle.jacoco")
 
     repositories {
@@ -24,87 +31,94 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
-        implementation("ch.qos.logback:logback-classic:1.4.5")
+        implementation("ch.qos.logback:logback-classic:1.5.20")
+        runtimeOnly("org.yaml:snakeyaml")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-        testImplementation("io.mockk:mockk:1.13.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.1")
+        testImplementation("io.mockk:mockk:1.14.6")
 
-        // https
+        // jackson
+        ksp("io.micronaut.serde:micronaut-serde-processor")
         implementation("io.micronaut:micronaut-jackson-databind")
-        implementation("io.micronaut:micronaut-http-client")
+//    implementation("io.micronaut.serde:micronaut-serde-jackson")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+        // http
+        ksp("io.micronaut:micronaut-http-validation")
+        compileOnly("io.micronaut:micronaut-http-client")
 
         // validation
-        kapt("io.micronaut:micronaut-http-validation")
-        implementation("io.micronaut:micronaut-validation")
+        implementation("jakarta.validation:jakarta.validation-api")
+        ksp("io.micronaut.validation:micronaut-validation-processor")
+        implementation("io.micronaut.validation:micronaut-validation")
 
         // openapi
-        kapt("io.micronaut.openapi:micronaut-openapi")
+        ksp("io.micronaut.openapi:micronaut-openapi")
+        compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
         implementation("io.swagger.core.v3:swagger-annotations")
 
         // security
-        kapt("io.micronaut.security:micronaut-security-annotations")
+        ksp("io.micronaut.security:micronaut-security-annotations")
         implementation("io.micronaut.security:micronaut-security")
         implementation("io.micronaut.security:micronaut-security-jwt")
         implementation("io.micronaut.security:micronaut-security-oauth2")
 
+
         // kotlin
         implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
         implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-        implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.21")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21")
 
         // caching
-        implementation("io.micronaut.cache:micronaut-cache-caffeine")
+        implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+
+        // coroutines
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
         // reactor
         implementation("io.micronaut.reactor:micronaut-reactor")
         implementation("io.micronaut.reactor:micronaut-reactor-http-client")
 
-        // coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.4")
-
         // data
-        kapt("io.micronaut.data:micronaut-data-processor")
+        ksp("io.micronaut.data:micronaut-data-processor")
         implementation("io.micronaut.data:micronaut-data-jdbc")
         implementation("io.micronaut.flyway:micronaut-flyway")
+        runtimeOnly("org.flywaydb:flyway-database-postgresql")
         implementation("io.micronaut.sql:micronaut-jdbc-hikari")
-        implementation("jakarta.annotation:jakarta.annotation-api")
-        implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+        runtimeOnly("org.postgresql:postgresql")
 
     }
 
     java {
-        sourceCompatibility = JavaVersion.toVersion("18")
+        sourceCompatibility = JavaVersion.VERSION_21
     }
 
     tasks {
         compileKotlin {
-            kotlinOptions {
-                jvmTarget = "18"
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_21)
             }
         }
-        compileTestKotlin {
-            kotlinOptions {
-                jvmTarget = "18"
-            }
-        }
-    }
 
-    sonar {
-        properties {
-            property("sonar.sources", "src/main")
+        compileTestKotlin {
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_21)
+            }
         }
     }
 
 
     tasks.test {
         useJUnitPlatform()
+        jvmArgs = listOf(
+            "-XX:+UnlockExperimentalVMOptions",
+            "-XX:+UseParallelGC"
+        )
         finalizedBy(tasks.jacocoTestReport)
     }
     tasks.jacocoTestReport {
@@ -115,8 +129,19 @@ subprojects {
         }
     }
     jacoco {
-        toolVersion = "0.8.8"
+        toolVersion = "0.8.13"
     }
+
+    sonar {
+        properties {
+            property("sonar.projectKey", "Black-Forest-Interactive_open-booking")
+            property("sonar.organization", "black-forest-interactive")
+        }
+    }
+
+
+
+
 }
 
 tasks.test {
@@ -131,19 +156,5 @@ tasks.jacocoTestReport {
     }
 }
 
-
-jacoco {
-    toolVersion = "0.8.8"
-}
-
-sonar {
-    properties {
-        property("sonar.projectKey", "Black-Forrest-Development_open-booking-system")
-        property("sonar.organization", "black-forrest-development")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.core.codeCoveragePlugin", "jacoco")
-    }
-}
 
 
