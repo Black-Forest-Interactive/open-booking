@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.8.10"
     id("org.sonarqube") version "4.0.0.2929"
-    id("com.google.cloud.tools.jib") version "3.3.1" apply (false)
+    id("com.google.cloud.tools.jib") version "3.5.1" apply (false)
     id("io.micronaut.application") version "3.7.4" apply (false)
     jacoco
 }
@@ -24,11 +24,11 @@ subprojects {
     }
 
     dependencies {
-        implementation("ch.qos.logback:logback-classic:1.4.5")
+        implementation("ch.qos.logback:logback-classic:1.5.21")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-        testImplementation("io.mockk:mockk:1.13.3")
+        testImplementation("io.mockk:mockk:1.14.6")
 
         // https
         implementation("io.micronaut:micronaut-jackson-databind")
@@ -64,9 +64,9 @@ subprojects {
         implementation("io.micronaut.reactor:micronaut-reactor-http-client")
 
         // coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.4")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
         // data
         kapt("io.micronaut.data:micronaut-data-processor")
@@ -74,7 +74,7 @@ subprojects {
         implementation("io.micronaut.flyway:micronaut-flyway")
         implementation("io.micronaut.sql:micronaut-jdbc-hikari")
         implementation("jakarta.annotation:jakarta.annotation-api")
-        implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+        implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
         // redis
 //        implementation("io.micronaut.redis:micronaut-redis-lettuce")
     }
