@@ -5,3 +5,12 @@ datasources:
 
 app:
   token: "test"
+  base-url: "http://localhost"
+
+mail:
+  reply-to-address: "test@example.com"
+  from-address: "test@example.com"
+  default-admin-address: "test@example.com"
+  username: "username"
+  server: "server"
+  password: "password"

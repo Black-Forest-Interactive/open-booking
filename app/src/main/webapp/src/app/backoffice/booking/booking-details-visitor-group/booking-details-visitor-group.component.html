@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-header class="d-flex flex-column">
+    <mat-card-title class="d-flex flex-row align-items-center">
+      <div class="col-3"><h4>{{'REQUEST.Table.VisitorGroup' | translate}}</h4></div>
+      <div class="flex-fill"></div>
+      <div>
+        <button mat-icon-button (click)="editMode = true">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content class="d-flex flex-column gap-3">
+    <ng-container *ngIf="changing; else notChanging">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </ng-container>
+    <ng-template #notChanging>
+      <ng-container *ngIf="editMode; else showVisitorGroupInfo">
+        <app-visitor-group-change [data]="data.visitorGroup" (changeEvent)="handleGroupChange($event)"></app-visitor-group-change>
+      </ng-container>
+      <ng-template #showVisitorGroupInfo>
+        <app-visitor-group-info [data]="data.visitorGroup"></app-visitor-group-info>
+      </ng-template>
+    </ng-template>
+
+  </mat-card-content>
+
+</mat-card>

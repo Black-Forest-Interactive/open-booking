@@ -1,0 +1,17 @@
+<div class="container d-flex flex-column gap-3 align-content-center align-items-center justify-content-center h-25">
+  <ng-container [ngSwitch]="status">
+    <div class="alert alert-success col-8" role="alert" *ngSwitchCase="'confirmed'">
+      <h4 class="alert-heading">{{'VISITOR_GROUP.MailConfirmation.Success.Title' | translate}}</h4>
+      <p>{{'VISITOR_GROUP.MailConfirmation.Success.Message' | translate}}</p>
+    </div>
+
+    <div class="alert alert-danger col-8" role="alert" *ngSwitchCase="'failed'">
+      <h4 class="alert-heading">{{'VISITOR_GROUP.MailConfirmation.Failed.Title' | translate}}</h4>
+      <p>{{'VISITOR_GROUP.MailConfirmation.Failed.Message' | translate}}</p>
+    </div>
+
+    <div *ngSwitchDefault>
+      <mat-progress-spinner mode="indeterminate" *ngIf="reloading"></mat-progress-spinner>
+    </div>
+  </ng-container>
+</div>

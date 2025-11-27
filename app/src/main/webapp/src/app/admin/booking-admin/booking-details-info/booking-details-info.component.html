@@ -1,0 +1,7 @@
+<div class="fxLayoutColumn fxLayoutAlignStretchCenter fxFlexGap" style="padding-top:10px;">
+  <mat-form-field appearance="outline" class="fxFlex">
+    <mat-label>{{'BOOKING.Status.Title' | translate}}</mat-label>
+    <input matInput type="text" [value]="'BOOKING.Status.' + data.booking.status | translate" [readonly]="true">
+  </mat-form-field>
+</div>
+<app-visitor-group-info [data]="data.visitorGroup"></app-visitor-group-info>

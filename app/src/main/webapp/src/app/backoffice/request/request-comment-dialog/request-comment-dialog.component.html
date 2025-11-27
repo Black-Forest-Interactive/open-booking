@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{'REQUEST.Dialog.Comment.Title' | translate}}</h2>
+<mat-dialog-content>
+  <div class="alert alert-secondary" role="alert">
+    <div class="d-flex flex-column align-content-stretch gap-3">
+      <div class="flex-fill">{{data.comment}}</div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{'ACTION.Ok' | translate}}</button>
+</mat-dialog-actions>

@@ -1,0 +1,16 @@
+.day-entry {
+  flex: 1 1 calc(25% - 1rem);
+}
+
+.day-entry-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 800px) {
+  .day-entry-container {
+    flex-direction: column;
+  }
+}
+

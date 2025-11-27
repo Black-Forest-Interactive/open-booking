@@ -1,0 +1,14 @@
+<mat-card class="offer-card">
+  <mat-card-header class="offer-card-header">
+    {{entry.offer.start | date:'short'}}
+  </mat-card-header>
+  <mat-card-content class="offer-card-content">
+    {{'OFFER.Info.SpaceAvailable' |translate:param}}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button (click)="select()" class="flex-grow-1" *ngIf="spaceAvailable > 0">
+      <mat-icon>add_task</mat-icon>
+      {{'OFFER.Action.Select' | translate}}
+    </button>
+  </mat-card-actions>
+</mat-card>

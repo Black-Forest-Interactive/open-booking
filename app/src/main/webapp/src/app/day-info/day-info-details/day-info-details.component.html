@@ -1,0 +1,12 @@
+<mat-progress-bar mode="indeterminate" *ngIf="dayReloading"></mat-progress-bar>
+<mat-toolbar>
+  <button mat-icon-button (click)="back()">
+    <mat-icon>arrow_back_ios</mat-icon>
+  </button>
+  <div>{{data.date | date:'fullDate'}} {{data.start | date:'shortTime' }} - {{data.end | date:'shortTime'}}</div>
+</mat-toolbar>
+<div class="container fxLayoutColumn fxLayoutAlignStretchCenter" *ngIf="data">
+  <div echarts [options]="spaceChartOption" class="demo-chart" (chartClick)="onChartClick.bind(this)($event)"></div>
+  <app-day-info-details-offer-list [data]="data"></app-day-info-details-offer-list>
+</div>
+

@@ -1,0 +1,5 @@
+<div class="d-flex flex-row flex-wrap gap-3">
+  <ng-container *ngFor="let entry of data.offer">
+    <app-day-info-details-list-entry [entry]="entry" class="fxFlex"  *ngIf="entry.offer.active"></app-day-info-details-list-entry>
+  </ng-container>
+</div>

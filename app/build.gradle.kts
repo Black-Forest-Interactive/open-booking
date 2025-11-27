@@ -50,10 +50,23 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:testcontainers")
+    // velocity
+    implementation("org.apache.velocity:velocity-engine-core:2.3")
+    implementation("org.apache.velocity.tools:velocity-tools-generic:3.1")
+    // FOP
+    implementation("org.apache.xmlgraphics:fop:2.8")
+    // POI
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
+    implementation("builders.dsl:spreadsheet-builder-poi:3.0.1")
+    // mail
+    implementation("org.simplejavamail:simple-java-mail:7.9.1")
+    implementation("org.simplejavamail:batch-module:7.9.1")
+    implementation("org.simplejavamail:authenticated-socks-module:7.9.1")
 }
 
 application {
-    mainClass.set("de.sambalmueslie.openevent.core.CoreApplication")
+    mainClass.set("de.sambalmueslie.openbooking.BookingApplication")
 }
 
 jib {
