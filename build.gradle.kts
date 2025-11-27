@@ -26,8 +26,8 @@ subprojects {
     dependencies {
         implementation("ch.qos.logback:logback-classic:1.5.21")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.1")
         testImplementation("io.mockk:mockk:1.14.6")
 
         // https
