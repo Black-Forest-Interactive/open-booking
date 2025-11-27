@@ -1,0 +1,28 @@
+<div class="d-flex flex-row  align-content-stretch align-items-center justify-content-start">
+  <div class="description-column">
+    <div>{{data.title}}</div>
+    <div>{{data.contact}}</div>
+  </div>
+  <div class="status-column d-flex flex-row gap-3 align-items-center" *ngIf="showDetails">
+    <div class="fxFlex">
+      <app-visitor-group-status [status]="data.status"></app-visitor-group-status>
+    </div>
+    <div class="fxFlex">
+      <ng-container *ngIf="!confirming; else mailConfirming">
+        <button mat-icon-button *ngIf="data.status != 'CONFIRMED'" (click)="confirm()" color="accent">
+          <mat-icon>mark_email_read</mat-icon>
+        </button>
+      </ng-container>
+      <ng-template #mailConfirming>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </ng-template>
+    </div>
+  </div>
+  <div class="action-column">
+    <div>
+      <button mat-icon-button (click)="showDetailsDialog()" color="primary">
+        <mat-icon>info_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

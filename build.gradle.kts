@@ -1,10 +1,10 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
-    id("org.jetbrains.kotlin.kapt") version "1.7.21"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.7.21"
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.kapt") version "1.8.10"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.8.10"
+    id("org.sonarqube") version "4.0.0.2929"
     id("com.google.cloud.tools.jib") version "3.3.1" apply (false)
-    id("io.micronaut.application") version "3.6.5" apply (false)
+    id("io.micronaut.application") version "3.7.4" apply (false)
     jacoco
 }
 
@@ -24,13 +24,11 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
         implementation("ch.qos.logback:logback-classic:1.4.5")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-        testImplementation("io.mockk:mockk:1.13.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+        testImplementation("io.mockk:mockk:1.13.3")
 
         // https
         implementation("io.micronaut:micronaut-jackson-databind")
@@ -53,9 +51,10 @@ subprojects {
         // kotlin
         implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
         implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-        implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
+        implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
         // caching
         implementation("io.micronaut.cache:micronaut-cache-caffeine")
@@ -76,7 +75,8 @@ subprojects {
         implementation("io.micronaut.sql:micronaut-jdbc-hikari")
         implementation("jakarta.annotation:jakarta.annotation-api")
         implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-
+        // redis
+//        implementation("io.micronaut.redis:micronaut-redis-lettuce")
     }
 
     java {
@@ -138,7 +138,7 @@ jacoco {
 
 sonar {
     properties {
-        property("sonar.projectKey", "Black-Forrest-Development_open-booking-system")
+        property("sonar.projectKey", "Black-Forrest-Development_open-booking")
         property("sonar.organization", "black-forrest-development")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")

@@ -1,0 +1,51 @@
+<mat-progress-bar mode="indeterminate" *ngIf="reloading"></mat-progress-bar>
+<div class="d-flex flex-column p-0 container-fluid">
+  <div class="d-flex flex-row gap-3 align-items-start px-2 pt-2 pb-0">
+    <mat-form-field class="flex-fill pb-0" appearance="outline">
+      <mat-label>{{'AUDIT.Action.Search' | translate}}</mat-label>
+      <input matInput (keyup)="keyUp.emit(input.value)" placeholder="" #input [disabled]="reloading">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="data">
+    <caption>Audit Log Entries</caption>
+    <ng-container matColumnDef="timestamp">
+      <th mat-header-cell *matHeaderCellDef>{{'AUDIT.Field.Timestamp.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let entry">{{entry.timestamp | date:'medium'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <th mat-header-cell *matHeaderCellDef>{{'AUDIT.Field.User.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let entry">{{entry.user}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="level">
+      <th mat-header-cell *matHeaderCellDef>{{'AUDIT.Field.Level.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let entry">{{entry.level}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef>{{'AUDIT.Field.Message.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let entry">{{entry.message}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="source">
+      <th mat-header-cell *matHeaderCellDef>{{'AUDIT.Field.Source.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let entry">{{entry.source}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="./details/{{row.id}}"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageNumber"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons [disabled]="reloading"
+  (page)="handlePageChange($event)"
+>
+</mat-paginator>

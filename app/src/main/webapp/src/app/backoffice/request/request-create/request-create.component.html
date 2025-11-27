@@ -1,0 +1,134 @@
+<mat-progress-bar mode="indeterminate" *ngIf="reloading || (infoService.reloading | async)"></mat-progress-bar>
+<div class="d-flex flex-column p-0 container">
+  <div class="d-flex flex-row px-2 pt-2 pb-0">
+    <mat-card class="flex-fill">
+      <mat-stepper linear="true" #stepper>
+        <mat-step [stepControl]="offerSelectForm">
+          <form [formGroup]="offerSelectForm">
+            <ng-template matStepLabel>{{'REQUEST.Create.OfferSelect' | translate}}</ng-template>
+            <div class="d-flex flex-column gap-3">
+              <mat-form-field class="pt-2">
+                <mat-label>Day Selection</mat-label>
+                <mat-select [(value)]="selectedDay">
+                  <mat-option *ngFor="let day of this.infoService.data" [value]="day">
+                    {{day.start | date:'mediumDate'}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="selectedDay" class="d-flex flex-row flex-wrap">
+                <mat-chip-listbox formControlName="offer">
+                  <ng-container *ngFor="let info of selectedDay.offer">
+                    <div class="select-offer-chip">
+                      <mat-chip-option [value]="info.offer" color="accent">
+                        <div class="d-flex flex-row flex-fill gap-3">
+                          <div>{{info.offer.start | date:'short'}}</div>
+                          <div class="align-content-end">{{getSpaceAvailable(info)}} Plätze frei</div>
+                        </div>
+                      </mat-chip-option>
+                    </div>
+                  </ng-container>
+                </mat-chip-listbox>
+              </div>
+            </div>
+            <mat-divider class="mt-3"></mat-divider>
+            <div>
+              <button mat-flat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="visitorForm">
+          <form [formGroup]="visitorForm">
+            <ng-template matStepLabel>{{'REQUEST.Create.VisitorGroup' | translate}}</ng-template>
+            <div class="d-flex flex-column gap-2 pt-2">
+              <mat-form-field class="fxFlex" *ngIf="selectedOffer" appearance="fill">
+                <mat-label>{{'REQUEST.Form.SelectedDate.Label' | translate}}</mat-label>
+                <input matInput type="text" [value]="selectedOffer.start | date:'medium'" [readonly]="true">
+              </mat-form-field>
+
+              <mat-form-field class="fxFlex">
+                <mat-label>{{'REQUEST.Form.Title.Label' | translate}}</mat-label>
+                <input matInput type="text" formControlName="title">
+                <mat-hint class="hint" align="start">{{'REQUEST.Form.Title.Hint' | translate}}</mat-hint>
+              </mat-form-field>
+              <div class="form-group gap-3">
+                <mat-form-field class="column50">
+                  <mat-label>{{'REQUEST.Form.Size.Label' | translate}}</mat-label>
+                  <input matInput type="number" formControlName="size">
+                  <mat-hint class="hint" align="start">{{'REQUEST.Form.Size.Hint' | translate}}</mat-hint>
+                  <mat-error *ngIf="size?.hasError('min')">
+                    {{'REQUEST.Form.Size.Error.Min' | translate}}
+                  </mat-error>
+                  <mat-error *ngIf="size?.hasError('max')">
+                    {{'REQUEST.Form.Size.Error.Max' | translate}}
+                  </mat-error>
+                </mat-form-field>
+                <div class="column50 d-flex flex-column">
+                  <mat-slide-toggle formControlName="group">
+                    {{'REQUEST.Form.School.Label' | translate}}
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="ignoreSizeCheck">
+                    {{'REQUEST.Form.IgnoreSize.Label' | translate}}
+                  </mat-slide-toggle>
+                </div>
+              </div>
+              <div class="form-group gap-3">
+                <mat-form-field class="column50">
+                  <mat-label>{{'REQUEST.Form.MinAge.Label' | translate}}</mat-label>
+                  <input matInput type="number" formControlName="minAge">
+                  <mat-hint class="hint" align="start">{{'REQUEST.Form.MinAge.Hint' | translate}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="column50">
+                  <mat-label>{{'REQUEST.Form.MaxAge.Label' | translate}}</mat-label>
+                  <input matInput type="number" formControlName="maxAge">
+                  <mat-hint class="hint" align="start">{{'REQUEST.Form.MaxAge.Hint' | translate}}</mat-hint>
+                </mat-form-field>
+              </div>
+              <mat-form-field class="fxFlex">
+                <mat-label>{{'REQUEST.Form.Contact.Label' | translate}}</mat-label>
+                <input matInput type="text" formControlName="contact">
+                <mat-hint class="hint" align="start">{{'REQUEST.Form.Contact.Hint' | translate}}</mat-hint>
+              </mat-form-field>
+              <mat-form-field class="fxFlex">
+                <mat-label>{{'REQUEST.Form.Street.Label' | translate}}</mat-label>
+                <input matInput type="text" formControlName="street">
+              </mat-form-field>
+
+              <div class="form-group gap-3">
+                <mat-form-field class="fxFlexNoGrow">
+                  <mat-label>{{'REQUEST.Form.Zip.Label' | translate}}</mat-label>
+                  <input matInput type="text" formControlName="zip">
+                </mat-form-field>
+                <mat-form-field class="fxFlex">
+                  <mat-label>{{'REQUEST.Form.City.Label' | translate}}</mat-label>
+                  <input matInput type="text" formControlName="city">
+                </mat-form-field>
+              </div>
+
+              <div class="form-group gap-3">
+                <mat-form-field class="fxFlex">
+                  <mat-label>{{'REQUEST.Form.Phone.Label' | translate}}</mat-label>
+                  <input matInput type="text" formControlName="phone">
+                </mat-form-field>
+                <mat-form-field class="fxFlex">
+                  <mat-label>{{'REQUEST.Form.Mail.Label' | translate}}</mat-label>
+                  <input matInput type="email" formControlName="mail" email>
+                </mat-form-field>
+              </div>
+
+              <mat-form-field class="fxFlex">
+                <mat-label>{{'REQUEST.Form.Comment.Label' | translate}}</mat-label>
+                <textarea matInput formControlName="comment"></textarea>
+                <mat-hint class="hint" align="start">{{'REQUEST.Form.Comment.Hint' | translate}}</mat-hint>
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-flat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="submit()">Submit</button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-stepper>
+    </mat-card>
+  </div>
+</div>

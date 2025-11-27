@@ -1,0 +1,58 @@
+<mat-progress-bar mode="indeterminate" *ngIf="reloading"></mat-progress-bar>
+<div class="d-flex flex-column p-0 container-fluid">
+  <div class="d-flex flex-row gap-3 align-items-start px-2 pt-2 pb-0">
+    <mat-form-field class="flex-fill pb-0" appearance="outline">
+      <mat-label>{{'BOOKING.Action.Search' | translate}}</mat-label>
+      <input matInput (keyup)="keyUp.emit(input.value)" placeholder="" #input [disabled]="reloading">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="data">
+    <caption>Search Result</caption>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>{{'REQUEST.Form.Title.Label' | translate}}</th>
+      <td mat-cell *matCellDef="let details">{{details.visitorGroup.title}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact">
+      <th mat-header-cell *matHeaderCellDef>{{'REQUEST.Form.Contact.Label' | translate}}</th>
+      <td mat-cell *matCellDef="let details">{{details.visitorGroup.contact}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="size">
+      <th mat-header-cell *matHeaderCellDef>{{'REQUEST.Form.Size.Label' | translate}}</th>
+      <td mat-cell *matCellDef="let details">{{details.visitorGroup.size}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef>{{'OFFER.Form.Start' | translate}}</th>
+      <td mat-cell *matCellDef="let details">{{details.offer.start | date:'medium'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>{{'BOOKING.Status.Title' | translate}}</th>
+      <td mat-cell *matCellDef="let details"><mat-chip>{{'BOOKING.Status.' + details.booking.status | translate}}</mat-chip></td>
+    </ng-container>
+
+    <ng-container matColumnDef="cmd">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let details">
+        <button mat-icon-button routerLink="../booking/details/{{details.booking.id}}"><mat-icon>more_horiz</mat-icon></button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageNumber"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons [disabled]="reloading"
+  (page)="handlePageChange($event)"
+>
+</mat-paginator>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- example for a simple fo file. At the beginning the page layout is set.
+  Below fo:root there is always
+- a single fo:layout-master-set which defines one or more page layouts
+- an optional fo:declarations
+- and a sequence of one or more fo:page-sequences containing the text and formatting instructions
+-->
+
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="Helvetica">
+    <fo:layout-master-set>
+        <fo:simple-page-master master-name="A4" margin-top="1.5cm" margin-bottom="1.5cm" margin-left="1.5cm" margin-right="1.5cm" page-height="297mm" page-width="210mm">
+            <fo:region-body region-name="page-body" margin-top="1.0cm" margin-bottom="1.0cm"/>
+            <fo:region-before region-name="page-header" extent="0.5cm"/>
+            <fo:region-after region-name="page-footer" extent="0.5cm"/>
+        </fo:simple-page-master>
+    </fo:layout-master-set>
+
+    <fo:declarations>
+        <x:xmpmeta xmlns:x="adobe:ns:meta/">
+            <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    <dc:title>Daily report ${timestamp}</dc:title>
+                    <dc:creator>Open Booking</dc:creator>
+                    <dc:description></dc:description>
+                </rdf:Description>
+                <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+                    <xmp:CreatorTool>Open Booking</xmp:CreatorTool>
+                </rdf:Description>
+            </rdf:RDF>
+        </x:xmpmeta>
+    </fo:declarations>
+
+    <fo:page-sequence master-reference="A4">
+        <!-- HEADER-->
+        <fo:static-content flow-name="page-header">
+            <fo:block border-bottom="thin solid #777777" font-size="60%" text-align-last="justify">
+                <fo:inline font-size="12pt">${timestamp}</fo:inline>
+                <fo:leader/>
+            </fo:block>
+        </fo:static-content>
+
+        <!-- FOOTER-->
+        <fo:static-content flow-name="page-footer">
+            <fo:block text-align="center" font-size="60%">Page
+                <fo:page-number/>
+            </fo:block>
+        </fo:static-content>
+        <!-- BODY -->
+        <fo:flow flow-name="page-body" font-size="9pt">
+            #foreach($entry in $offer)
+                <fo:table space-before="3mm">
+                    <fo:table-body>
+                        <fo:table-row background-color="#F5F5F5" border="thin solid #CCCCCC">
+                            <fo:table-cell padding="4px">
+                                <fo:block text-align="left" font-size="12pt">$dateTool.formatTime($entry.offer.start) -  ${dateTool.formatTime($entry.offer.finish)}</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding="4px">
+                                <fo:block text-align="left" font-size="12pt">Plätze ${entry.offer.maxPersons}</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+
+                <fo:table border="thin solid #CCCCCC">
+                    <fo:table-header background-color="#F5F5F5">
+                        <fo:table-row font-weight="bold">
+                            <fo:table-cell padding="4px" number-columns-spanned="2">
+                                <fo:block>Nr</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding="4px" number-columns-spanned="3">
+                                <fo:block>Titel</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding="4px" number-columns-spanned="3">
+                                <fo:block>Kontakt</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding="4px" number-columns-spanned="3">
+                                <fo:block>Personen</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding="4px" number-columns-spanned="3">
+                                <fo:block>Status</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-header>
+                    <fo:table-body>
+                        #if($entry.bookings.empty)
+                            <fo:table-row height="0.7cm" border="thin solid #CCCCCC">
+                                <fo:table-cell padding="2px" number-columns-spanned="2">
+                                    <fo:block text-align="left"></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left"></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left"></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left"></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left"></fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        #end
+                        #foreach($booking in $entry.bookings)
+                            <fo:table-row height="0.7cm" border="thin solid #CCCCCC">
+                                <fo:table-cell padding="2px" number-columns-spanned="2">
+                                    <fo:block text-align="left">$foreach.count</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left">${booking.visitorGroup.title}</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left">${booking.visitorGroup.contact}</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left">${booking.visitorGroup.size}</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell padding="2px" number-columns-spanned="3">
+                                    <fo:block text-align="left">${booking.booking.status}</fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        #end
+                    </fo:table-body>
+                </fo:table>
+            #end
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>

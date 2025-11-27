@@ -1,0 +1,51 @@
+<mat-progress-bar mode="indeterminate" *ngIf="reloading"></mat-progress-bar>
+<mat-toolbar>
+  <div class="container d-flex flex-row align-items-baseline">
+    <div class="pe-5">
+      <button mat-mini-fab (click)="back()" color="primary">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <h3 *ngIf="data">{{data.message}}</h3>
+  </div>
+</mat-toolbar>
+<div class="container d-flex flex-column gap-3">
+  <mat-card *ngIf="data">
+    <mat-card-content class="d-flex flex-column gap-3">
+      <div class="d-flex flex-row gap-3">
+        <div class="col-1">{{'AUDIT.Field.Timestamp.Title' | translate}}</div>
+        <div>{{data.timestamp | date:'medium'}}</div>
+      </div>
+
+      <div class="d-flex flex-row gap-3">
+        <div class="col-1">{{'AUDIT.Field.User.Title' | translate}}</div>
+        <div>{{data.user}}</div>
+      </div>
+
+      <div class="d-flex flex-row gap-3">
+        <div class="col-1">{{'AUDIT.Field.Level.Title' | translate}}</div>
+        <div>{{data.level}}</div>
+      </div>
+
+      <div class="d-flex flex-row gap-3">
+        <div class="col-1">{{'AUDIT.Field.Message.Title' | translate}}</div>
+        <div>{{data.message}}</div>
+      </div>
+
+      <div class="d-flex flex-row gap-3">
+        <div class="col-1">{{'AUDIT.Field.Source.Title' | translate}}</div>
+        <div>{{data.source}}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-expansion-panel *ngIf="data">
+    <mat-expansion-panel-header>{{'AUDIT.Field.Source.Title' | translate}}</mat-expansion-panel-header>
+    <div class="d-flex flex-column">
+      <mat-form-field class="flex-grow-1">
+        <textarea matInput [value]="content" rows="20"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-expansion-panel>
+</div>
+

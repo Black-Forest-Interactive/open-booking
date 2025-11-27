@@ -3,7 +3,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>false</withJansi>
         <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -13,9 +13,13 @@
 
     <logger name="io.micronaut.context.condition" level="INFO"/>
     <logger name="io.micronaut.runtime" level="INFO"/>
+    <logger name="io.micronaut.http" level="INFO"/>
     <logger name="io.micronaut.security" level="INFO"/>
     <logger name="org.flywaydb" level="INFO"/>
     <logger name="io.micronaut.core.io.service" level="INFO"/>
     <logger name="de.sambalmueslie" level="INFO"/>
-    <logger name="io.netty.handler" level="INFO"/>
+    <logger name="de.sambalmueslie.openbooking.common" level="DEBUG"/>
+    <logger name="de.sambalmueslie.openbooking.IndexController" level="INFO"/>
+    <logger name="de.sambalmueslie.openbooking.backend.mail.external.MailSender" level="DEBUG"/>
+    <logger name="de.sambalmueslie.openbooking.frontend.user.logic" level="DEBUG"/>
 </configuration>
