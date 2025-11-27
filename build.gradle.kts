@@ -74,7 +74,7 @@ subprojects {
         implementation("io.micronaut.flyway:micronaut-flyway")
         implementation("io.micronaut.sql:micronaut-jdbc-hikari")
         implementation("jakarta.annotation:jakarta.annotation-api")
-        implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+        implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
         // redis
 //        implementation("io.micronaut.redis:micronaut-redis-lettuce")
     }
