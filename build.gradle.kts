@@ -64,9 +64,9 @@ subprojects {
         implementation("io.micronaut.reactor:micronaut-reactor-http-client")
 
         // coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.4")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
         // data
         kapt("io.micronaut.data:micronaut-data-processor")
