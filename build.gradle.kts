@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
-    id("org.jetbrains.kotlin.kapt") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "2.2.21"
+    id("org.jetbrains.kotlin.kapt") version "2.2.21"
     id("org.jetbrains.kotlin.plugin.allopen") version "2.2.21"
     id("org.sonarqube") version "4.0.0.2929"
     id("com.google.cloud.tools.jib") version "3.5.1" apply (false)
@@ -51,8 +51,8 @@ subprojects {
         // kotlin
         implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
         implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-        implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
+        implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.21")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
