@@ -1,18 +1,20 @@
 package de.sambalmueslie.openbooking.backend.request
 
-import de.sambalmueslie.openbooking.backend.booking.BookingService
-import de.sambalmueslie.openbooking.backend.booking.api.BookingInfo
-import de.sambalmueslie.openbooking.backend.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.backend.group.VisitorGroupService
-import de.sambalmueslie.openbooking.backend.group.api.Address
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroup
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroupChangeRequest
-import de.sambalmueslie.openbooking.backend.mail.external.MailClient
-import de.sambalmueslie.openbooking.backend.offer.OfferService
-import de.sambalmueslie.openbooking.backend.offer.api.OfferChangeRequest
-import de.sambalmueslie.openbooking.backend.request.api.BookingConfirmationContent
-import de.sambalmueslie.openbooking.backend.request.api.BookingRequestChangeRequest
-import de.sambalmueslie.openbooking.backend.request.api.BookingRequestStatus
+import de.sambalmueslie.openbooking.core.booking.BookingService
+import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.group.VisitorGroupService
+import de.sambalmueslie.openbooking.core.group.api.Address
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
+import de.sambalmueslie.openbooking.core.mail.external.MailClient
+import de.sambalmueslie.openbooking.core.offer.OfferService
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
+import de.sambalmueslie.openbooking.core.request.BookingRequestChangeService
+import de.sambalmueslie.openbooking.core.request.BookingRequestService
+import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
+import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeRequest
+import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.mockk
@@ -98,8 +100,7 @@ class BookingRequestChangeServiceTest {
 
         val booking = info.bookings.first()
         assertEquals(
-            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp),
-            booking
+            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp), booking
         )
 
     }
@@ -146,8 +147,7 @@ class BookingRequestChangeServiceTest {
 
         val booking = info.bookings.first()
         assertEquals(
-            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp),
-            booking
+            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp), booking
         )
 
     }
@@ -194,8 +194,7 @@ class BookingRequestChangeServiceTest {
 
         val booking = info.bookings.first()
         assertEquals(
-            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp),
-            booking
+            BookingInfo(booking.id, offer, offer.maxPersons - visitorChangeRequest.size, visitorChangeRequest.size, BookingStatus.CONFIRMED, booking.timestamp), booking
         )
     }
 

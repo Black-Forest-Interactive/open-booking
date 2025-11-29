@@ -1,9 +1,9 @@
 package de.sambalmueslie.openbooking.staff
 
-import de.sambalmueslie.openbooking.backend.staff.StaffService
-import de.sambalmueslie.openbooking.backend.staff.api.StaffMember
-import de.sambalmueslie.openbooking.backend.staff.api.StaffMemberChangeRequest
 import de.sambalmueslie.openbooking.common.BaseServiceTest
+import de.sambalmueslie.openbooking.core.staff.StaffService
+import de.sambalmueslie.openbooking.core.staff.api.StaffMember
+import de.sambalmueslie.openbooking.core.staff.api.StaffMemberChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 @MicronautTest
-internal class StaffServiceTest : BaseServiceTest(){
+internal class StaffServiceTest : BaseServiceTest() {
 
     @Inject
     lateinit var service: StaffService

@@ -1,11 +1,11 @@
 package de.sambalmueslie.openbooking.group
 
-import de.sambalmueslie.openbooking.backend.group.VisitorGroupService
-import de.sambalmueslie.openbooking.backend.group.api.Address
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroup
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroupChangeRequest
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.common.BaseServiceTest
+import de.sambalmueslie.openbooking.core.group.VisitorGroupService
+import de.sambalmueslie.openbooking.core.group.api.Address
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import io.micronaut.data.model.Pageable
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -19,7 +19,6 @@ internal class VisitorGroupServiceTest : BaseServiceTest() {
 
     @Inject
     lateinit var service: VisitorGroupService
-
 
 
     @Test
