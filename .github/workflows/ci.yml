@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: .
+        working-directory: ./backend
 
     steps:
       - name: Checkout code
@@ -46,14 +46,14 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: test-results
-          path: build/test-results/test/
+          path: backend/build/test-results/test/
 
       - name: Upload coverage reports
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: coverage-reports
-          path: build/reports/jacoco/test/
+          path: backend/build/reports/jacoco/test/
 
   sonar:
     name: SonarCloud Analysis
