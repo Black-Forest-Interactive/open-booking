@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.frontend.user.api
 
-import de.sambalmueslie.openbooking.backend.info.api.DayInfoOffer
+import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
 import java.time.LocalDate
 
 data class OfferInfoSelectResultEntry(

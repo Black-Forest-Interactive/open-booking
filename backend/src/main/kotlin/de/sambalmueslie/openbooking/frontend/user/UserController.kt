@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.frontend.user
 
 
-import de.sambalmueslie.openbooking.backend.info.api.DateRangeSelectionRequest
+import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.frontend.user.api.CreateBookingRequest
 import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectRequest
 import de.sambalmueslie.openbooking.frontend.user.api.TextResponse

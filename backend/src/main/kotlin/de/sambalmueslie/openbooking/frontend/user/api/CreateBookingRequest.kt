@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.frontend.user.api
 
-import de.sambalmueslie.openbooking.backend.group.api.VisitorGroupChangeRequest
+import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 
 data class CreateBookingRequest(
     val visitorGroupChangeRequest: VisitorGroupChangeRequest,

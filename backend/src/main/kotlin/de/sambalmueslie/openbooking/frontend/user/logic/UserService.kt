@@ -2,18 +2,18 @@ package de.sambalmueslie.openbooking.frontend.user.logic
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import de.sambalmueslie.openbooking.backend.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.backend.info.InfoService
-import de.sambalmueslie.openbooking.backend.info.api.DateRangeSelectionRequest
-import de.sambalmueslie.openbooking.backend.info.api.DayInfo
-import de.sambalmueslie.openbooking.backend.info.api.DayInfoOffer
-import de.sambalmueslie.openbooking.backend.offer.OfferService
-import de.sambalmueslie.openbooking.backend.request.BookingRequestService
-import de.sambalmueslie.openbooking.backend.request.api.BookingRequest
-import de.sambalmueslie.openbooking.backend.request.api.BookingRequestChangeRequest
-import de.sambalmueslie.openbooking.backend.response.api.ResolvedResponse
-import de.sambalmueslie.openbooking.backend.settings.SettingsService
-import de.sambalmueslie.openbooking.backend.settings.api.SettingsAPI
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.info.InfoService
+import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
+import de.sambalmueslie.openbooking.core.info.api.DayInfo
+import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
+import de.sambalmueslie.openbooking.core.offer.OfferService
+import de.sambalmueslie.openbooking.core.request.BookingRequestService
+import de.sambalmueslie.openbooking.core.request.api.BookingRequest
+import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeRequest
+import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
+import de.sambalmueslie.openbooking.core.settings.SettingsService
+import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.frontend.user.api.CreateBookingRequest

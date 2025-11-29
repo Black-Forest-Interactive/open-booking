@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.frontend.admin
 
 
-import de.sambalmueslie.openbooking.backend.offer.OfferService
-import de.sambalmueslie.openbooking.backend.offer.api.OfferChangeRequest
+import de.sambalmueslie.openbooking.core.offer.OfferService
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.frontend.admin.api.OfferSetupRequest
 import jakarta.inject.Singleton
