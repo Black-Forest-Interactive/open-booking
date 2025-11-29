@@ -1,17 +1,14 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import * as moment from "moment";
+import {DateTime} from 'luxon';
 
 @Pipe({
   name: 'timestamp'
 })
 export class TimestampPipe implements PipeTransform {
-  constructor() {
-    moment.locale("de");
-  }
 
   transform(value: string, ...args: unknown[]): string {
-    const timestamp = moment(value);
-    return timestamp.format('LT');
+    const timestamp = DateTime.fromISO(value)
+    return timestamp.setLocale("de").toLocaleString(DateTime.TIME_SIMPLE)
   }
 
 }

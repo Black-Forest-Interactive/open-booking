@@ -1,26 +1,26 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "@open-booking/shared"
 import {Observable} from "rxjs";
-import {DateRangeSelectionRequest, DayInfo} from "./dashboard.api";
+import {DashboardEntry, DateRangeSelectionRequest} from "./dashboard.api";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DayInfoService extends BaseService {
+export class DashboardService extends BaseService {
 
   constructor() {
     super('day/info')
   }
 
-  getDefaultDayInfo(): Observable<DayInfo[]> {
+  getDefaultDayInfo(): Observable<DashboardEntry[]> {
     return super.get('')
   }
 
-  selectDayInfo(request: DateRangeSelectionRequest): Observable<DayInfo[]> {
+  selectDayInfo(request: DateRangeSelectionRequest): Observable<DashboardEntry[]> {
     return super.post('', request)
   }
 
-  loadDayInfo(date: string): Observable<DayInfo> {
+  loadDayInfo(date: string): Observable<DashboardEntry> {
     return super.get('' + date)
   }
 }

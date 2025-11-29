@@ -1,13 +1,13 @@
 import {Offer} from '@open-booking/core'
 
-export interface DayInfo {
+export interface DashboardEntry {
   date: string,
   start: string,
   end: string,
   offer: DayInfoOffer[]
 }
 
-export const defaultDayInfo: DayInfo = {
+export const defaultDayInfo: DashboardEntry = {
   date: "",
   start: "",
   end: "",
