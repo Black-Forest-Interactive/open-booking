@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import {Component} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {CommonModule} from "@angular/common";
+import {MatCardModule} from "@angular/material/card";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
-  imports: [NxWelcome, RouterModule],
+  imports: [RouterModule, CommonModule, MatCardModule, MatButtonModule, MatIconModule],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',

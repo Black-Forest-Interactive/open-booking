@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'theme';
+
+// Set the base font and body styles.
+html, body {
+  height: 100%;
+  // Apply Angular Material's system-level CSS variables for background/text color
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// The Tailwind directives MUST come AFTER Angular Material theming
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add custom global styles below this line */

@@ -1,0 +1,82 @@
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$green-palette,
+    typography: Roboto,
+    density: 0
+  ));
+
+  // Override with your exact colors using CSS custom properties
+  // Primary color overrides (#212121)
+  --mat-sys-primary: #212121;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #474747;
+  --mat-sys-on-primary-container: #e3e3e3;
+
+  // Tertiary/Secondary color overrides (#1b5e20)
+  --mat-sys-tertiary: #1b5e20;
+  --mat-sys-on-tertiary: #ffffff;
+  --mat-sys-tertiary-container: #3ec343;
+  --mat-sys-on-tertiary-container: #0a2f0f;
+
+  // Error color overrides (#ba1a1a)
+  --mat-sys-error: #ba1a1a;
+  --mat-sys-on-error: #ffffff;
+  --mat-sys-error-container: #ffdad6;
+  --mat-sys-on-error-container: #410002;
+}
+
+
+// Custom button color classes using button-overrides
+.primary {
+  @include mat.button-overrides((
+    filled-container-color: #212121,
+    filled-label-text-color: #ffffff,
+    tonal-container-color: #e3e3e3,
+    tonal-label-text-color: #212121,
+  ));
+}
+
+.secondary {
+  @include mat.button-overrides((
+    filled-container-color: #1b5e20,
+    filled-label-text-color: #ffffff,
+    tonal-container-color: #d4ffd0,
+    tonal-label-text-color: #1b5e20,
+  ));
+}
+
+.error {
+  @include mat.button-overrides((
+    filled-container-color: #ba1a1a,
+    filled-label-text-color: #ffffff,
+    tonal-container-color: #ffdad6,
+    tonal-label-text-color: #410002,
+  ));
+}
+
+// Optional: Dark theme variant
+.dark-theme {
+  color-scheme: dark;
+
+  // Dark theme color overrides
+  --mat-sys-primary: #c6c6c6;
+  --mat-sys-on-primary: #333333;
+  --mat-sys-primary-container: #474747;
+  --mat-sys-on-primary-container: #e3e3e3;
+
+  --mat-sys-tertiary: #9dfd9b;
+  --mat-sys-on-tertiary: #0a2f0f;
+  --mat-sys-tertiary-container: #257e2a;
+  --mat-sys-on-tertiary-container: #d4ffd0;
+
+  --mat-sys-error: #ffb4ab;
+  --mat-sys-on-error: #690005;
+  --mat-sys-error-container: #93000a;
+  --mat-sys-on-error-container: #ffdad6;
+}

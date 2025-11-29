@@ -1,2 +1,76 @@
-<app-nx-welcome></app-nx-welcome>
+<!-- Full-screen layout with Tailwind background -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+
+  <!-- Header: Uses Tailwind for fixed position, high shadow, and color -->
+  <header class="sticky top-0 z-10 p-4 bg-white shadow-lg flex justify-between items-center">
+    <h1 class="text-xl font-bold text-gray-900">
+      Portal Home
+    </h1>
+
+    <!-- Navigation: Uses flex and spacing utilities -->
+    <nav class="flex items-center space-x-2">
+
+      <!-- Material Icon Button with Tailwind hover effect -->
+      <button mat-icon-button class="hover:bg-blue-100 transition-colors">
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <!-- Material Button (Raised) with a custom Tailwind class for margin -->
+      <button mat-raised-button color="primary" class="ml-4">
+        Sign In
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content Area: Tailwind responsive padding and grid layout test -->
+  <main class="p-6 md:p-12">
+    <h2 class="text-4xl font-light text-gray-800 mb-6">Welcome to the Portal.</h2>
+
+    <!-- Grid Layout Test: Should show 2 columns on medium screens and up -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="p-6 rounded-xl bg-white shadow-md border-t-4 border-blue-500">
+        <h3 class="font-semibold text-lg text-blue-700">Material Check</h3>
+        <p class="text-gray-600 mt-2">If this button is blue and has a ripple effect when clicked, Material is working.</p>
+        <div class="flex gap-2 ">
+          <button matButton="filled" class="mt-2 primary">
+            <mat-icon>verified_user</mat-icon>
+            Primary
+          </button>
+          <button matButton="filled" class="mt-2 secondary">
+            <mat-icon>verified_user</mat-icon>
+            tertiary
+          </button>
+          <button matButton="filled" class="mt-2 error">
+            <mat-icon>verified_user</mat-icon>
+            error
+          </button>
+        </div>
+        <div class="flex gap-2 ">
+          <button matButton="tonal" class="mt-2 primary">
+            <mat-icon>verified_user</mat-icon>
+            Primary
+          </button>
+          <button matButton="tonal" class="mt-2 secondary">
+            <mat-icon>verified_user</mat-icon>
+            tertiary
+          </button>
+          <button matButton="tonal" class="mt-2 error">
+            <mat-icon>verified_user</mat-icon>
+            error
+          </button>
+        </div>
+
+      </div>
+
+      <div class="p-6 rounded-xl bg-white shadow-md border-t-4 border-green-500">
+        <h3 class="font-semibold text-lg text-green-700">Tailwind Check</h3>
+        <p class="text-gray-600 mt-2">If this text is green and the boxes are side-by-side on desktop, Tailwind is working correctly.</p>
+        <div class="text-sm font-mono mt-4 text-green-500 bg-green-50 p-2 rounded">
+          class="md:grid-cols-2" is active
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
 <router-outlet></router-outlet>
