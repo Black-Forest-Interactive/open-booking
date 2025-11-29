@@ -5,7 +5,7 @@ plugins {
     kotlin("plugin.jpa") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
     id("com.google.devtools.ksp") version "2.3.2"
-    id("org.sonarqube") version "7.0.1.6134"
+    id("org.sonarqube") version "7.1.0.6387"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.4.5"
     id("io.micronaut.application") version "4.6.1"
