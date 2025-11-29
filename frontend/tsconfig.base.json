@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@temp-init/core": ["libs/core/src/index.ts"],
+      "@temp-init/shared": ["libs/shared/src/index.ts"],
+      "@temp-init/admin": ["libs/admin/src/index.ts"],
+      "@temp-init/portal": ["libs/portal/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
