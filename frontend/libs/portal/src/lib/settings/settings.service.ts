@@ -9,7 +9,7 @@ import {TextResponse, UrlResponse} from "@open-booking/core";
 export class SettingsService extends BaseService {
 
   constructor() {
-    super('setting')
+    super('portal/settings')
   }
 
   getHelpUrl(): Observable<UrlResponse> {

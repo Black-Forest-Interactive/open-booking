@@ -9,7 +9,7 @@ import {DashboardEntry, DateRangeSelectionRequest} from "./dashboard.api";
 export class DashboardService extends BaseService {
 
   constructor() {
-    super('day/info')
+    super('portal/dashboard')
   }
 
   getDefaultDayInfo(): Observable<DashboardEntry[]> {

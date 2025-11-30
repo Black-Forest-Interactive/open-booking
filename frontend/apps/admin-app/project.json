@@ -8,11 +8,15 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/admin-app",
         "browser": "apps/admin-app/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/admin-app/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -21,7 +25,9 @@
             "input": "apps/admin-app/public"
           }
         ],
-        "styles": ["apps/admin-app/src/styles.scss"]
+        "styles": [
+          "apps/admin-app/src/styles.scss"
+        ]
       },
       "configurations": {
         "production": {
@@ -58,7 +64,10 @@
           "buildTarget": "admin-app:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "proxy.conf.json"
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
@@ -71,7 +80,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/admin-app/jest.config.ts",
         "tsConfig": "apps/admin-app/tsconfig.spec.json"

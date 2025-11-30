@@ -13,10 +13,12 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({eventCoalescing: true}),
     provideLuxonDateAdapter(),
@@ -28,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
-        prefix: '/assets/i18n/',
+        prefix: '/i18n/',
         suffix: '.json'
       }),
       fallbackLang: 'en',
