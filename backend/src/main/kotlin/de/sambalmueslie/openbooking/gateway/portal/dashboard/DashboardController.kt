@@ -11,11 +11,8 @@ import java.time.LocalDate
 @Secured(SecurityRule.IS_ANONYMOUS)
 class DashboardController(private val service: DashboardService) {
 
-    @Get()
-    fun getDefaultDayInfo() = service.getDefaultDayInfo()
-
     @Post()
-    fun selectDayInfo(@Body request: DashboardEntrySearchRequest) = service.selectDayInfo(request)
+    fun search(@Body request: DashboardEntrySearchRequest) = service.search(request)
 
     @Get("/{date}")
     fun getDayInfo(@PathVariable date: LocalDate) = service.getDayInfo(date)

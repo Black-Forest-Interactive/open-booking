@@ -1,0 +1,7 @@
+<div class="d-flex flex-row flex-wrap gap-3">
+  @for (offer of data().offer; track offer.offer.id) {
+    @if (offer.offer.active) {
+      <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>
+    }
+  }
+</div>

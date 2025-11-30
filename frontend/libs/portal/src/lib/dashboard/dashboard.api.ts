@@ -4,10 +4,26 @@ export interface DashboardEntry {
   date: string,
   start: string,
   end: string,
+  offer: DashboardEntryOffer[]
+}
+
+export interface DashboardEntryOffer {
+  start: string,
+  spaceAvailable: number,
+  spaceConfirmed: number,
+  spaceUnconfirmed: number,
+  spaceDeactivated: number
+}
+
+
+export interface DayInfo {
+  date: string,
+  start: string,
+  end: string,
   offer: DayInfoOffer[]
 }
 
-export const defaultDayInfo: DashboardEntry = {
+export const defaultDayInfo: DayInfo = {
   date: "",
   start: "",
   end: "",

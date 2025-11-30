@@ -18,30 +18,36 @@ import {DayInfoDetailsListComponent} from './day-info-details-list/day-info-deta
 import {DayInfoDetailsListEntryComponent} from './day-info-details-list-entry/day-info-details-list-entry.component';
 import {CreateBookingRequestComponent} from './create-booking-request/create-booking-request.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {CreateBookingConfirmationDialogComponent} from './create-booking-confirmation-dialog/create-booking-confirmation-dialog.component';
+import {
+  CreateBookingConfirmationDialogComponent
+} from './create-booking-confirmation-dialog/create-booking-confirmation-dialog.component';
 import {ConfirmMailComponent} from './confirm-mail/confirm-mail.component';
-import { CreateBookingFailedDialogComponent } from './create-booking-failed-dialog/create-booking-failed-dialog.component';
+import {
+  CreateBookingFailedDialogComponent
+} from './create-booking-failed-dialog/create-booking-failed-dialog.component';
 
 
 @NgModule({
-    declarations: [
-        HomeBoardComponent,
-        HomeToolbarComponent,
-        HomeDetailsBoardComponent,
-        DayInfoDashboardComponent,
-        DayInfoDashboardEntryComponent,
-        DayInfoDetailsComponent,
-        DayInfoDetailsChartComponent,
-        DayInfoDetailsListComponent,
-        DayInfoDetailsListEntryComponent,
-        CreateBookingRequestComponent,
-        CreateBookingConfirmationDialogComponent,
-        ConfirmMailComponent,
-        CreateBookingFailedDialogComponent
-    ],
-    exports: [
-        HomeToolbarComponent
-    ],
+  declarations: [
+    HomeBoardComponent,
+    HomeToolbarComponent,
+    HomeDetailsBoardComponent,
+    DayInfoDashboardComponent,
+    DayInfoDashboardEntryComponent,
+    DayInfoDetailsComponent,
+    DayInfoDetailsChartComponent,
+    DayInfoDetailsListComponent,
+    DayInfoDetailsListEntryComponent,
+    CreateBookingRequestComponent,
+    CreateBookingConfirmationDialogComponent,
+    ConfirmMailComponent,
+    CreateBookingFailedDialogComponent
+  ],
+  exports: [
+    HomeToolbarComponent,
+    DayInfoDetailsListComponent,
+    DayInfoDetailsChartComponent
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -53,4 +59,5 @@ import { CreateBookingFailedDialogComponent } from './create-booking-failed-dial
     ReactiveFormsModule,
   ]
 })
-export class HomeModule { }
+export class HomeModule {
+}

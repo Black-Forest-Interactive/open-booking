@@ -1,5 +1,5 @@
 import {Component, computed, input} from '@angular/core';
-import {DashboardEntry, DayInfoOffer} from "@open-booking/portal";
+import {DashboardEntry} from "@open-booking/portal";
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
@@ -95,42 +95,16 @@ export class DashboardContentEntryComponent {
   private createChartMerge(info: DashboardEntry): EChartsOption {
     return {
       xAxis: {
-        data: info.offer.map(i => i.offer.start.substring(11, 16))
+        data: info.offer.map(i => i.start.substring(11, 16))
       },
       series: [
-        {
-          data: info.offer.map(i => this.getSpaceConfirmed(i))
-        }, {
-          data: info.offer.map(i => this.getSpaceUnconfirmed(i))
-        }, {
-          data: info.offer.map(i => (!i.offer.active) ? i.offer.maxPersons : 0)
-        },
-        {
-          data: info.offer.map(i => this.getSpaceAvailable(i))
-        }
+        {data: info.offer.map(i => i.spaceConfirmed)},
+        {data: info.offer.map(i => i.spaceUnconfirmed)},
+        {data: info.offer.map(i => i.spaceDeactivated)},
+        {data: info.offer.map(i => i.spaceAvailable)}
       ]
     }
   }
 
-  private getSpaceAvailable(info: DayInfoOffer): number {
-    let result = (info.offer.active) ? info.offer.maxPersons - info.space.CONFIRMED - info.space.UNCONFIRMED : 0
-    if (result < 0) return 0
-    if (result > info.offer.maxPersons) return info.offer.maxPersons
-    return result
-  }
-
-  private getSpaceConfirmed(info: DayInfoOffer): number {
-    let result = (info.offer.active) ? info.space.CONFIRMED : 0
-    if (result < 0) return 0
-    if (result > info.offer.maxPersons) return info.offer.maxPersons
-    return result
-  }
-
-  private getSpaceUnconfirmed(info: DayInfoOffer): number {
-    let result = (info.offer.active) ? info.space.UNCONFIRMED : 0
-    if (result < 0) return 0
-    if (result > info.offer.maxPersons) return info.offer.maxPersons
-    return result
-  }
 
 }
