@@ -1,4 +1,4 @@
-<div class="day-entry-container gap-3 container">
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   @for (data of content(); track data.date) {
     <app-dashboard-content-entry [data]="data"></app-dashboard-content-entry>
   }

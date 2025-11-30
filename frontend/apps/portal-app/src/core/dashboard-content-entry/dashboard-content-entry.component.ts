@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {DashboardEntry} from "@open-booking/portal";
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
@@ -9,6 +9,7 @@ import {RouterLink} from "@angular/router";
 import {CommonModule, DatePipe} from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {EChartsOption} from "echarts";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-dashboard-content-entry',
@@ -28,68 +29,67 @@ import {EChartsOption} from "echarts";
 })
 export class DashboardContentEntryComponent {
 
-  labelDeactivated = ""
-  labelConfirmed = ""
-  labelUnconfirmed = ""
-  labelAvailable = ""
+  private translate = inject(TranslateService)
+
+  labelDeactivated = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Deactivated'))
+  labelConfirmed = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Confirmed'))
+  labelUnconfirmed = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Unconfirmed'))
+  labelAvailable = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Available'))
 
   data = input.required<DashboardEntry>()
+  chartMerge = computed(() => this.createChartMerge(this.data()))
 
-  chartOption: EChartsOption = {
+  chartOption = computed<EChartsOption>(() => ({
     tooltip: {
       trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
+      axisPointer: {type: 'shadow'}
     },
     animation: false,
-    legend: {
-      data: [
-        this.labelDeactivated,
-        this.labelConfirmed,
-        this.labelUnconfirmed,
-        this.labelAvailable
-      ],
-      bottom: 10,
-      left: 'center',
+    grid: {
+      containLabel: true,
+      top: '10%',
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: true
     },
     yAxis: {
       type: 'value'
     },
-    series: [{
-      name: this.labelConfirmed,
-      type: 'bar',
-      stack: 'total',
-      emphasis: {focus: 'series'},
-      color: "#ee6666",
-    }, {
-      name: this.labelUnconfirmed,
-      type: 'bar',
-      stack: 'total',
-      emphasis: {focus: 'series'},
-      color: "#fac858",
-    }, {
-      name: this.labelDeactivated,
-      type: 'bar',
-      stack: 'total',
-      emphasis: {focus: 'series'},
-      color: "lightgrey",
-    }, {
-      name: this.labelAvailable,
-      type: 'bar',
-      stack: 'total',
-      emphasis: {focus: 'series'},
-      color: "#91cc75",
-    }]
-  }
-  chartMerge = computed(() => this.createChartMerge(this.data()))
-
-  constructor(private translate: TranslateService) {
-    this.translate.get('DAY_INFO.Chart.Space.Series.Deactivated').subscribe(v => this.labelDeactivated = v)
-    this.translate.get('DAY_INFO.Chart.Space.Series.Confirmed').subscribe(v => this.labelConfirmed = v)
-    this.translate.get('DAY_INFO.Chart.Space.Series.Unconfirmed').subscribe(v => this.labelUnconfirmed = v)
-    this.translate.get('DAY_INFO.Chart.Space.Series.Available').subscribe(v => this.labelAvailable = v)
-  }
+    series: [
+      {
+        name: this.labelConfirmed(),
+        type: 'bar',
+        stack: 'total',
+        emphasis: {focus: 'series'},
+        color: "#ee6666",
+      },
+      {
+        name: this.labelUnconfirmed(),
+        type: 'bar',
+        stack: 'total',
+        emphasis: {focus: 'series'},
+        color: "#fac858",
+      },
+      {
+        name: this.labelDeactivated(),
+        type: 'bar',
+        stack: 'total',
+        emphasis: {focus: 'series'},
+        color: "lightgrey",
+      },
+      {
+        name: this.labelAvailable(),
+        type: 'bar',
+        stack: 'total',
+        emphasis: {focus: 'series'},
+        color: "#91cc75",
+      }
+    ]
+  }));
 
 
   private createChartMerge(info: DashboardEntry): EChartsOption {

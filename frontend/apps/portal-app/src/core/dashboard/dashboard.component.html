@@ -1,3 +1,9 @@
 <app-dashboard-toolbar></app-dashboard-toolbar>
 <app-loading-bar [reloading]="reloading()"></app-loading-bar>
-<app-dashboard-content [content]="entries()"></app-dashboard-content>
+<div class="container mx-auto max-w-8xl p-6">
+
+  <h2 class="text-3xl font-semibold mb-8 text-gray-800 dark:text-gray-100">
+    📅 Dashboard Overview
+  </h2>
+  <app-dashboard-content [content]="entries()"></app-dashboard-content>
+</div>

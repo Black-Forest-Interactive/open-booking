@@ -15,7 +15,10 @@ import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideEChartsConfig} from "./echarts.config";
+import {registerLocaleData} from '@angular/common';
+import de from '@angular/common/locales/de';
 
+registerLocaleData(de)
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,7 +37,7 @@ export const appConfig: ApplicationConfig = {
         prefix: '/i18n/',
         suffix: '.json'
       }),
-      fallbackLang: 'en',
+      fallbackLang: 'de',
       lang: 'en'
     }),
     provideEChartsConfig(),
