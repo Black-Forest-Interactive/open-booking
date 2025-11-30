@@ -14,6 +14,7 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {provideEChartsConfig} from "./echarts.config";
 
 
 export const appConfig: ApplicationConfig = {
@@ -36,6 +37,7 @@ export const appConfig: ApplicationConfig = {
       fallbackLang: 'en',
       lang: 'en'
     }),
+    provideEChartsConfig(),
     provideRouter(appRoutes),
   ],
 };

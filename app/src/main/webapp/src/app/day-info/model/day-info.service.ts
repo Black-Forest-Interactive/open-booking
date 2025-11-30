@@ -54,7 +54,7 @@ export class DayInfoService extends BaseService {
     this.selectDayInfo(new DateRangeSelectionRequest(start.toISOString(), end.toISOString())).subscribe(d => this.handleData(d))
   }
 
-  loadRangeDayInfoString(from:string, to: string) {
+  loadRangeDayInfoString(from: string, to: string) {
     if (this.reloading.value) return
     this.reloading.next(true)
     this.selectDayInfo(new DateRangeSelectionRequest(from, to)).subscribe(d => this.handleData(d))
@@ -191,5 +191,6 @@ export class DayInfoService extends BaseService {
       ]
     }
   }
+
 
 }
