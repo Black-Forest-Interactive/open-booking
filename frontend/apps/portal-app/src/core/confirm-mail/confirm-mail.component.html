@@ -1,1 +1,35 @@
-<p>confirm-mail works!</p>
+<div class="flex flex-col gap-6 items-center justify-center h-screen p-4">
+
+  @if (status() === 'confirmed') {
+    <div
+      class="w-full max-w-lg p-4 rounded-lg border-l-4 border-green-500 bg-green-100 text-green-800 shadow-md"
+      role="alert"
+    >
+      <h4 class="text-xl font-bold mb-2">
+        {{ 'VISITOR_GROUP.MailConfirmation.Success.Title' | translate }}
+      </h4>
+      <p>
+        {{ 'VISITOR_GROUP.MailConfirmation.Success.Message' | translate }}
+      </p>
+    </div>
+  } @else if (status() === 'failed') {
+    <div
+      class="w-full max-w-lg p-4 rounded-lg border-l-4 border-red-500 bg-red-100 text-red-800 shadow-md"
+      role="alert"
+    >
+      <h4 class="text-xl font-bold mb-2">
+        {{ 'VISITOR_GROUP.MailConfirmation.Failed.Title' | translate }}
+      </h4>
+      <p>
+        {{ 'VISITOR_GROUP.MailConfirmation.Failed.Message' | translate }}
+      </p>
+    </div>
+  } @else {
+    <div>
+      @if (reloading()) {
+        <mat-progress-spinner mode="indeterminate" [diameter]="50" [color]="'primary'"/>
+      }
+    </div>
+  }
+
+</div>

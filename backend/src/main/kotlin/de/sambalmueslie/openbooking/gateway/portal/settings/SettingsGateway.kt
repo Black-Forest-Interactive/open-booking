@@ -5,9 +5,15 @@ import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
 import de.sambalmueslie.openbooking.frontend.user.api.TextResponse
 import de.sambalmueslie.openbooking.frontend.user.api.UrlResponse
 import jakarta.inject.Singleton
+import org.slf4j.LoggerFactory
 
 @Singleton
-class SettingsService(private val settingsService: SettingsService) {
+class SettingsGateway(private val settingsService: SettingsService) {
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(SettingsService::class.java)
+    }
+
     fun getTitle(): TextResponse {
         return TextResponse(getValue(SettingsAPI.SETTINGS_TEXT_TITLE))
     }

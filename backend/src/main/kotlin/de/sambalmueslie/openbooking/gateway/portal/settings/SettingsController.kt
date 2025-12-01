@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Controller("/api/portal/settings")
 @Tag(name = "Settings API")
 @Secured(SecurityRule.IS_ANONYMOUS)
-class SettingsController(private val service: SettingsService) {
+class SettingsController(private val service: SettingsGateway) {
 
     @Get("help")
     fun getHelpUrl() = service.getHelpUrl()

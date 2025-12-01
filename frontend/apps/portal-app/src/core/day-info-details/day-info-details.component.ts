@@ -29,10 +29,10 @@ import {DayInfoDetailsChartComponent} from "../day-info-details-chart/day-info-d
 })
 export class DayInfoDetailsComponent {
   private route = inject(ActivatedRoute)
-  private dateSignal = toSignal(this.route.paramMap.pipe(map(params => params.get('date'))))
+  private date = toSignal(this.route.paramMap.pipe(map(params => params.get('date'))))
 
   private dayInfoResource = resource({
-    params: this.dateSignal,
+    params: this.date,
     loader: (param) => {
       return toPromise(this.service.loadDayInfo(param.params ?? ''), param.abortSignal)
     }
