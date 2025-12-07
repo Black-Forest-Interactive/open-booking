@@ -80,3 +80,45 @@ html {
   --mat-sys-error-container: #93000a;
   --mat-sys-on-error-container: #ffdad6;
 }
+
+
+// Material Design Token CSS Classes
+.mat-primary {
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
+}
+
+.mat-primary-container {
+  background-color: var(--mat-sys-primary-container) !important;
+  color: var(--mat-sys-on-primary-container) !important;
+}
+
+.mat-tertiary {
+  background-color: var(--mat-sys-tertiary) !important;
+  color: var(--mat-sys-on-tertiary) !important;
+}
+
+.mat-tertiary-container {
+  background-color: var(--mat-sys-tertiary-container) !important;
+  color: var(--mat-sys-on-tertiary-container) !important;
+}
+
+.mat-error {
+  background-color: var(--mat-sys-error) !important;
+  color: var(--mat-sys-on-error) !important;
+}
+
+// Text color classes
+.text-primary {
+  color: var(--mat-sys-primary) !important;
+}
+
+.text-on-primary {
+  color: var(--mat-sys-on-primary) !important;
+}
+
+// Icon button colors in toolbars
+.mat-primary button[matIconButton],
+.mat-primary button[matButton] {
+  color: var(--mat-sys-on-primary) !important;
+}

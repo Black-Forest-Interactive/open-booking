@@ -467,9 +467,6 @@
         "Title": "Total Visitor Statistics",
         "TotalRemaining": "Remaining space"
       }
-    },
-    "Title": "📅 Dashboard Overview",
-    "NoData": "No Data Available",
-    "ComeBackLater": "Please check back later for updates."
+    }
   }
 }

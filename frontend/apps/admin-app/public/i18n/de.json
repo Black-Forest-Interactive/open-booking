@@ -467,9 +467,6 @@
         "Title": "Buchungsstatistik Gesamt",
         "TotalRemaining": "Verbleibende Plätze"
       }
-    },
-    "Title": "📅 Dashboard-Übersicht",
-    "NoData": "Keine Daten verfügbar",
-    "ComeBackLater": "Bitte schauen Sie später noch einmal vorbei."
+    }
   }
 }
