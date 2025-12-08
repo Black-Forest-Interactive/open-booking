@@ -3,13 +3,16 @@ package de.sambalmueslie.openbooking.core.settings
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.settings.api.Setting
 import de.sambalmueslie.openbooking.core.settings.api.SettingChangeRequest
+import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
 import de.sambalmueslie.openbooking.core.settings.db.SettingData
 import de.sambalmueslie.openbooking.core.settings.db.SettingsRepository
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.frontend.user.api.TextResponse
+import de.sambalmueslie.openbooking.frontend.user.api.UrlResponse
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -55,7 +58,7 @@ class SettingsService(
     }
 
     fun setValue(id: Long, value: Any): Setting? {
-        val result =  patchData(id) { it.setValue(value) } ?: return null
+        val result = patchData(id) { it.setValue(value) } ?: return null
         keyCache.invalidate(result.key)
         return result
     }
@@ -65,4 +68,19 @@ class SettingsService(
     }
 
 
+    fun getTitle(): TextResponse {
+        return TextResponse(getValue(SettingsAPI.SETTINGS_TEXT_TITLE))
+    }
+
+    fun getHelpUrl(): UrlResponse {
+        return UrlResponse(getValue(SettingsAPI.SETTINGS_URL_HELP))
+    }
+
+    fun getTermsAndConditionsUrl(): UrlResponse {
+        return UrlResponse(getValue(SettingsAPI.SETTINGS_URL_TERMS_AND_CONDITIONS))
+    }
+
+    private fun getValue(key: String): String {
+        return findByKey(key)?.value as? String ?: ""
+    }
 }

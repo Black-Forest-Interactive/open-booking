@@ -4,9 +4,9 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {AdminToolbarComponent} from "../core/admin-toolbar/admin-toolbar.component";
-import {AdminContentComponent} from "../core/admin-content/admin-content.component";
-import {AdminFooterComponent} from "../core/admin-footer/admin-footer.component";
+import {AdminToolbarComponent} from "./admin-toolbar/admin-toolbar.component";
+import {AdminContentComponent} from "./admin-content/admin-content.component";
+import {AdminFooterComponent} from "./admin-footer/admin-footer.component";
 
 
 @Component({
