@@ -1,3 +1,7 @@
+export * from './lib/auth/auth.guard'
+export * from './lib/auth/auth.service'
+export * from './lib/auth/principal'
+
 export * from './lib/loading-bar/loading-bar.component'
 export * from './lib/logging/logging.api'
 export * from './lib/logging/logging.service'

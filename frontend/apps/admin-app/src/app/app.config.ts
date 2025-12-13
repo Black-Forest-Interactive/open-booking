@@ -9,12 +9,15 @@ import {appRoutes} from './app.routes';
 import {provideLuxonDateAdapter} from "@angular/material-luxon-adapter";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
-import {provideHttpClient} from "@angular/common/http";
+import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {provideToastConfig} from "./hot-toast.config";
 import {provideEChartsConfig} from "./echarts.config";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {provideKeycloakAngular} from "./keycloak.config";
+import {provideQuill} from "./quill.config";
+import {includeBearerTokenInterceptor} from "keycloak-angular";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,8 +29,11 @@ export const appConfig: ApplicationConfig = {
     {provide: LOCALE_ID, useValue: 'de-DE'},
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     provideToastConfig(),
+    provideKeycloakAngular(),
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([
+      includeBearerTokenInterceptor
+    ])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: '/i18n/',
@@ -37,6 +43,7 @@ export const appConfig: ApplicationConfig = {
       lang: 'en'
     }),
     provideEChartsConfig(),
+    provideQuill(),
     provideRouter(appRoutes),
   ],
 };

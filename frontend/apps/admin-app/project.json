@@ -48,7 +48,26 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-app/src/environments/environment.ts",
+              "with": "apps/admin-app/src/environments/environment.development.ts"
+            }
+          ]
+        },
+        "local": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-app/src/environments/environment.ts",
+              "with": "apps/admin-app/src/environments/environment.local.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -62,6 +81,9 @@
         },
         "development": {
           "buildTarget": "admin-app:build:development"
+        },
+        "local": {
+          "buildTarget": "admin-app:build:local"
         }
       },
       "defaultConfiguration": "development",

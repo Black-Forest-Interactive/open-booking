@@ -468,5 +468,13 @@
         "TotalRemaining": "Verbleibende Plätze"
       }
     }
+  },
+  "FORBIDDEN": {
+    "TITLE": "Zugriff verweigert",
+    "DESCRIPTION": "Entschuldigung, Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Bitte kontaktieren Sie Ihren Administrator, wenn Sie glauben, dass dies ein Fehler ist.",
+    "GO_BACK": "Zurück",
+    "HOME_PAGE": "Startseite",
+    "NEED_HELP": "Benötigen Sie Hilfe?",
+    "CONTACT_SUPPORT": "Support kontaktieren"
   }
 }

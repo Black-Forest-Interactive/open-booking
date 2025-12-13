@@ -1,0 +1,39 @@
+<div class="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+    <div class="flex justify-center mb-6">
+      <div class="bg-red-100 rounded-full p-6">
+        <mat-icon class="text-red-600 !w-16 !h-16 !text-6xl">shield</mat-icon>
+      </div>
+    </div>
+
+    <h1 class="text-6xl font-bold text-gray-800 mb-2">403</h1>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">
+      {{ 'FORBIDDEN.TITLE' | translate }}
+    </h2>
+
+    <p class="text-gray-600 mb-8">
+      {{ 'FORBIDDEN.DESCRIPTION' | translate }}
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <button mat-raised-button color="warn" (click)="goBack()" class="!px-6 !py-3">
+        <mat-icon>arrow_back</mat-icon>
+        {{ 'FORBIDDEN.GO_BACK' | translate }}
+      </button>
+
+      <button mat-raised-button (click)="goHome()" class="!px-6 !py-3">
+        <mat-icon>home</mat-icon>
+        {{ 'FORBIDDEN.HOME_PAGE' | translate }}
+      </button>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <p class="text-sm text-gray-500">
+        {{ 'FORBIDDEN.NEED_HELP' | translate }}
+        <a href="#" class="text-red-600 hover:text-red-700 font-medium">
+          {{ 'FORBIDDEN.CONTACT_SUPPORT' | translate }}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

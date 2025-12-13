@@ -468,5 +468,13 @@
         "TotalRemaining": "Remaining space"
       }
     }
+  },
+  "FORBIDDEN": {
+    "TITLE": "Access Forbidden",
+    "DESCRIPTION": "Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is an error.",
+    "GO_BACK": "Go Back",
+    "HOME_PAGE": "Home Page",
+    "NEED_HELP": "Need help?",
+    "CONTACT_SUPPORT": "Contact Support"
   }
 }

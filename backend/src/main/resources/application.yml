@@ -31,11 +31,10 @@ micronaut:
         enabled: false
     token:
       jwt:
-        enabled: true
         signatures:
           jwks:
-            auth0:
-              url: ""
+            keycloak:
+              url: "http://localhost:8180/realms/open-booking/protocol/openid-connect/certs"
     intercept-url-map:
       - pattern: /swagger/**
         access:
