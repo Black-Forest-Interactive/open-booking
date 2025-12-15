@@ -7,6 +7,7 @@ import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AppService} from "../app.service";
 import {SettingsService} from "@open-booking/admin";
+import {ThemeToggleButtonComponent} from "@open-booking/shared";
 
 @Component({
   selector: 'app-admin-toolbar',
@@ -19,7 +20,8 @@ import {SettingsService} from "@open-booking/admin";
     MatToolbar,
     RouterLink,
     TranslatePipe,
-    MatMenuTrigger
+    MatMenuTrigger,
+    ThemeToggleButtonComponent
   ],
   templateUrl: './admin-toolbar.component.html',
   styleUrl: './admin-toolbar.component.scss',

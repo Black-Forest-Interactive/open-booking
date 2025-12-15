@@ -18,6 +18,11 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {provideKeycloakAngular} from "./keycloak.config";
 import {provideQuill} from "./quill.config";
 import {includeBearerTokenInterceptor} from "keycloak-angular";
+import {registerLocaleData} from "@angular/common";
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+
+registerLocaleData(localeDe, 'de-DE', localeDeExtra)
 
 export const appConfig: ApplicationConfig = {
   providers: [

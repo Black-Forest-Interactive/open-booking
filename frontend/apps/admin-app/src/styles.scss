@@ -17,3 +17,10 @@ html, body {
 @tailwind utilities;
 
 /* You can add custom global styles below this line */
+/* Material 3 date-range separator fix */
+.mat-mdc-form-field .mat-date-range-input-separator {
+  display: inline-flex;
+  align-items: center;
+  line-height: normal;
+  font-size: inherit;
+}
