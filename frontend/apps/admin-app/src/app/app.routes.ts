@@ -1,4 +1,4 @@
-import {Route} from '@angular/router';
+import {Route, Router} from '@angular/router';
 import {canActivateAuthRole} from "@open-booking/shared";
 import {
   PERMISSION_AUDIT_ADMIN,
@@ -92,3 +92,7 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./forbidden/forbidden.component').then(m => m.ForbiddenComponent)
   }
 ];
+
+export function navigateToOffer(router: Router) {
+  router.navigate(['offer']).then()
+}

@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
 import {Offer, OfferChangeRequest, OfferFilterRequest, OfferRangeRequest, OfferSeriesRequest} from "@open-booking/core";
+import {DateTime} from "luxon";
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,20 @@ export class OfferService extends BaseService {
 
   filter(request: OfferFilterRequest, page: number, size: number): Observable<Page<Offer>> {
     return this.postPaged('filter', request, page, size)
+  }
+
+
+  createDateTime(timeStr: string, date: any): DateTime | null {
+    let luxonDate = DateTime.fromJSDate(date)
+    let time = timeStr.split(":")
+    if (time.length == 2 && luxonDate.isValid) {
+      luxonDate = luxonDate.set({
+        hour: parseInt(time[0]),
+        minute: parseInt(time[1])
+      })
+      return luxonDate
+    }
+    return null
   }
 
 }
