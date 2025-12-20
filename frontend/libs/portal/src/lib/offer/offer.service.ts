@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "@open-booking/shared";
 import {Observable} from "rxjs";
-import {DayInfoOffer} from "../dashboard/dashboard.api";
+import {DayInfoOffer} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'

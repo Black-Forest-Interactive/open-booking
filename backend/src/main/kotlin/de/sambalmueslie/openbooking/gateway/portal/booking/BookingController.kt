@@ -15,7 +15,7 @@ class BookingController(private val service: BookingGateway) {
     fun create(@Body request: CreateBookingRequest) = service.create(request)
 
     @Get("/request/{requestId}/received/message")
-    fun getRequestReceivedMessage(@PathVariable requestId: Long, @QueryValue(defaultValue = "en") lang: String) =
+    fun getRequestReceivedMessage(requestId: Long, @QueryValue(defaultValue = "en") lang: String) =
         service.getRequestReceivedMessage(requestId, lang)
 
 

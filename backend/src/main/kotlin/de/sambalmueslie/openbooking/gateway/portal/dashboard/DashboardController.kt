@@ -1,6 +1,9 @@
 package de.sambalmueslie.openbooking.gateway.portal.dashboard
 
-import io.micronaut.http.annotation.*
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -15,6 +18,6 @@ class DashboardController(private val service: DashboardService) {
     fun search(@Body request: DashboardEntrySearchRequest) = service.search(request)
 
     @Get("/{date}")
-    fun getDayInfo(@PathVariable date: LocalDate) = service.getDayInfo(date)
+    fun getDayInfo(date: LocalDate) = service.getDayInfo(date)
 
 }

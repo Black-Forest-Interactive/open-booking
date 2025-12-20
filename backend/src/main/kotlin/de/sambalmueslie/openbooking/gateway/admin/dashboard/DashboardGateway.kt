@@ -7,7 +7,9 @@ import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton
 
 @Singleton
-class DashboardGateway(private val service: DashboardService) {
+class DashboardGateway(
+    private val service: DashboardService,
+) {
 
     fun getDailyVisitorStats(auth: Authentication) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) { service.getDailyVisitorStats() }
 }

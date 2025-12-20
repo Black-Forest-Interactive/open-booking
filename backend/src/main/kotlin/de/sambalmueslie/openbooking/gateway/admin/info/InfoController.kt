@@ -1,6 +1,5 @@
 package de.sambalmueslie.openbooking.gateway.admin.info
 
-import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -17,6 +16,6 @@ class InfoController(private val gateway: InfoGateway) {
     fun getDayInfo(auth: Authentication, date: LocalDate) = gateway.getDayInfo(auth, date)
 
     @Post("/day")
-    fun getDayInfoRange(auth: Authentication, @Body request: DateRangeSelectionRequest) = gateway.getDayInfoRange(auth, request)
+    fun getDayInfoRange(auth: Authentication, @Body request: DayInfoRangeRequest) = gateway.getDayInfoRange(auth, request)
 
 }

@@ -55,8 +55,3 @@ export interface BookingInfo {
   status: string,
   timestamp: string
 }
-
-export interface DayInfoBooking {
-  size: number,
-  status: string,
-}
