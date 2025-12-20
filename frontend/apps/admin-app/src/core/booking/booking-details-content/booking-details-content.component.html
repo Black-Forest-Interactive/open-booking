@@ -1,30 +1,36 @@
-<!--<mat-card>-->
-<!--  <mat-card-header>-->
-<!--    <h4>{{ 'REQUEST.Table.Bookings' | translate }}</h4>-->
-<!--  </mat-card-header>-->
-<!--  <mat-card-content class="d-flex flex-column gap-3">-->
-<!--    <mat-list>-->
-<!--      <mat-divider></mat-divider>-->
-<!--      <mat-list-item *ngFor="let booking of data.bookings">-->
-<!--        <mat-icon matListItemIcon>bookmark</mat-icon>-->
-<!--        <div class="d-flex flex-row gap-2 align-items-center">-->
-<!--          <div class="col-3">{{ booking.offer.start | date:'medium' }}</div>-->
-<!--          <div class="col-3">-->
-<!--            <mat-chip>{{ 'BOOKING.Status.' + booking.status | translate }}</mat-chip>-->
-<!--          </div>-->
-<!--          <div>{{ data.visitorGroup.size }} / {{ booking.spaceAvailable }}</div>-->
-<!--          <div class="flex-fill"></div>-->
-<!--          <div>-->
-<!--            <button mat-icon-button color="accent" (click)="confirm(booking)" *ngIf="booking.status != 'CONFIRMED'">-->
-<!--              <mat-icon>thumb_up</mat-icon>-->
-<!--            </button>-->
-<!--            <button mat-icon-button color="warn" (click)="denial(booking)" *ngIf="booking.status != 'DENIED'">-->
-<!--              <mat-icon>thumb_down</mat-icon>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </mat-list-item>-->
-<!--      <mat-divider></mat-divider>-->
-<!--    </mat-list>-->
-<!--  </mat-card-content>-->
-<!--</mat-card>-->
+<mat-card>
+  <div class="p-4 pb-0">
+    <h4 class="text-lg font-medium">{{ 'REQUEST.Table.Bookings' | translate }}</h4>
+  </div>
+  <div class="flex flex-col gap-3 p-4 pt-0">
+    <mat-list>
+      <mat-divider></mat-divider>
+      @for (booking of data().bookings; track booking.id) {
+        <mat-list-item>
+          <mat-icon matListItemIcon>bookmark</mat-icon>
+          <div class="flex items-center gap-2 flex-1">
+            <div class="w-48">{{ booking.offer.start | date:'medium' }}</div>
+            <div class="w-32">
+              <mat-chip>{{ 'BOOKING.Status.' + booking.status | translate }}</mat-chip>
+            </div>
+            <div>{{ data().visitorGroup.size }} / {{ booking.spaceAvailable }}</div>
+            <div class="flex-1"></div>
+            <div class="flex gap-1">
+              @if (booking.status != 'CONFIRMED') {
+                <button matIconButton color="accent" (click)="confirm(booking)">
+                  <mat-icon>thumb_up</mat-icon>
+                </button>
+              }
+              @if (booking.status != 'DENIED') {
+                <button matIconButton color="warn" (click)="denial(booking)">
+                  <mat-icon>thumb_down</mat-icon>
+                </button>
+              }
+            </div>
+          </div>
+        </mat-list-item>
+      }
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
+</mat-card>

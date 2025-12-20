@@ -1,4 +1,4 @@
-import {Routes} from "@angular/router";
+import {Router, Routes} from "@angular/router";
 
 export const routes: Routes = [
   {
@@ -22,3 +22,7 @@ export const routes: Routes = [
     loadComponent: () => import('./booking-change/booking-change.component').then(m => m.BookingChangeComponent)
   },
 ];
+
+export function navigateToBookingDetails(router: Router, id: number) {
+  router.navigate(['booking', 'details', id]).then()
+}

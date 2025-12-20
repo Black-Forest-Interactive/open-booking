@@ -7,7 +7,8 @@ import {
   BookingRequestChangeRequest,
   BookingRequestFilterRequest,
   BookingRequestInfo,
-  ResolvedResponse
+  ResolvedResponse,
+  VisitorGroupChangeRequest
 } from "@open-booking/core";
 
 @Injectable({
@@ -66,5 +67,14 @@ export class RequestService extends BaseService {
 
   getInfoByBookingId(bookingId: number): Observable<BookingRequestInfo> {
     return this.get('info/by/booking/' + bookingId)
+  }
+
+
+  updateVisitorGroup(id: number, request: VisitorGroupChangeRequest): Observable<GenericRequestResult> {
+    return this.put(id + '/visitor', request)
+  }
+
+  setComment(id: number, comment: string): Observable<BookingRequest> {
+    return this.patch(id + '/comment', {value: comment})
   }
 }

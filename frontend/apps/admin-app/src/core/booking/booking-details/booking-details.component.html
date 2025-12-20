@@ -1,24 +1,23 @@
-<!--<mat-progress-bar mode="indeterminate" *ngIf="reloading"></mat-progress-bar>-->
-<!--<div class="d-flex flex-column p-0 container-fluid">-->
-<!--  <div class="d-flex flex-row gap-3 align-items-center mat-elevation-z2 py-2">-->
-<!--    <button mat-icon-button (click)="back()">-->
-<!--      <mat-icon>arrow_back_ios</mat-icon>-->
-<!--    </button>-->
-<!--    &lt;!&ndash;    <button mat-stroked-button>&ndash;&gt;-->
-<!--    &lt;!&ndash;      <mat-icon>playlist_add</mat-icon>&ndash;&gt;-->
-<!--    &lt;!&ndash;      {{'REQUEST.Action.ChangeOffer' | translate}}</button>&ndash;&gt;-->
-<!--  </div>-->
-
-<!--  <div class="d-flex flex-row container-fluid p-2 gap-3 align-content-stretch">-->
-<!--    <div class="d-flex flex-column gap-3 align-content-stretch col-5">-->
-<!--      <app-booking-details-visitor-group [data]="data" (requestReload)="reload()"></app-booking-details-visitor-group>-->
-<!--    </div>-->
-<!--    <div class="d-flex flex-column gap-3 align-content-stretch flex-fill">-->
-<!--      <app-booking-details-header [data]="data"></app-booking-details-header>-->
-<!--      <app-booking-details-bookings [data]="data" (change)="reload()"></app-booking-details-bookings>-->
-<!--      <app-booking-details-comment [data]="data" (change)="reload()"></app-booking-details-comment>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--</div>-->
-
+<app-loading-bar [reloading]="reloading()"/>
+<div class="flex flex-col">
+  <div class="flex items-center gap-3 py-2 mat-elevation-z2">
+    <button matIconButton (click)="back()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <!--    <button matButton="outlined">-->
+    <!--      <mat-icon>playlist_add</mat-icon>-->
+    <!--      {{'REQUEST.Action.ChangeOffer' | translate}}</button>-->
+  </div>
+  <div class="flex gap-3 p-2">
+    @if (data()) {
+      <div class="flex flex-col gap-3 w-5/12">
+        <app-booking-details-visitor-group [data]="data()!!" (requestReload)="reload()"/>
+      </div>
+      <div class="flex flex-col gap-3 flex-1">
+        <app-booking-details-header [data]="data()!!"/>
+        <app-booking-details-content [data]="data()!!" (change)="reload()"/>
+        <app-booking-details-comment [data]="data()!!" (change)="reload()"/>
+      </div>
+    }
+  </div>
+</div>

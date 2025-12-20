@@ -96,3 +96,7 @@ export const appRoutes: Route[] = [
 export function navigateToOffer(router: Router) {
   router.navigate(['offer']).then()
 }
+
+export function navigateToBooking(router: Router) {
+  router.navigate(['booking']).then()
+}

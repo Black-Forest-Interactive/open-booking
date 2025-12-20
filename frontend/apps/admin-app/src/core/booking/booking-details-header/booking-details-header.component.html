@@ -1,8 +1,6 @@
-<!--<mat-card>-->
-<!--  <mat-card-content class="d-flex flex-column gap-3">-->
-<!--    <div class="d-flex flex-row gap-3">-->
-<!--      <div class="col-2"><b>{{ 'REQUEST.Table.Timestamp' | translate }}</b></div>-->
-<!--      <div>{{ data.timestamp + 'Z' | date:'medium' }}</div>-->
-<!--    </div>-->
-<!--  </mat-card-content>-->
-<!--</mat-card>-->
+<mat-card class="flex flex-col gap-3 p-4">
+  <div class="flex gap-3">
+    <div class="w-32 font-bold">{{ 'REQUEST.Table.Timestamp' | translate }}</div>
+    <div>{{ data().timestamp + 'Z' | date:'medium' }}</div>
+  </div>
+</mat-card>

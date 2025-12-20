@@ -1,30 +1,20 @@
-<!--<mat-card>-->
-<!--  <mat-card-header class="d-flex flex-column">-->
-<!--    <mat-card-title class="d-flex flex-row align-items-center">-->
-<!--      <div class="col-3"><h4>{{ 'REQUEST.Table.VisitorGroup' | translate }}</h4></div>-->
-<!--      <div class="flex-fill"></div>-->
-<!--      <div>-->
-<!--        <button mat-icon-button (click)="editMode = true">-->
-<!--          <mat-icon>edit</mat-icon>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </mat-card-title>-->
-
-<!--  </mat-card-header>-->
-<!--  <mat-card-content class="d-flex flex-column gap-3">-->
-<!--    <ng-container *ngIf="changing; else notChanging">-->
-<!--      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>-->
-<!--    </ng-container>-->
-<!--    <ng-template #notChanging>-->
-<!--      <ng-container *ngIf="editMode; else showVisitorGroupInfo">-->
-<!--        <app-visitor-group-change [data]="data.visitorGroup"-->
-<!--                                  (changeEvent)="handleGroupChange($event)"></app-visitor-group-change>-->
-<!--      </ng-container>-->
-<!--      <ng-template #showVisitorGroupInfo>-->
-<!--        <app-visitor-group-info [data]="data.visitorGroup"></app-visitor-group-info>-->
-<!--      </ng-template>-->
-<!--    </ng-template>-->
-
-<!--  </mat-card-content>-->
-
-<!--</mat-card>-->
+<mat-card>
+  <div class="flex flex-col p-4 pb-0">
+    <div class="flex items-center">
+      <h4 class="text-lg font-medium w-48">{{ 'REQUEST.Table.VisitorGroup' | translate }}</h4>
+      <div class="flex-1"></div>
+      <button matIconButton (click)="editMode.set(true)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-col gap-3 p-4 pt-0">
+    @if (changing()) {
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    } @else if (editMode()) {
+      <app-group-change [data]="data().visitorGroup" (changeEvent)="handleGroupChange($event)"/>
+    } @else {
+      <app-group-info [data]="data().visitorGroup"/>
+    }
+  </div>
+</mat-card>
