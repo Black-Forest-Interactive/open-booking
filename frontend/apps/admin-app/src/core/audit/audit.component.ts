@@ -50,8 +50,6 @@ export class AuditComponent {
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.auditLogResource.isLoading
 
-  keyUp = signal('')
-
   constructor(private service: AuditService) {
   }
 

@@ -1,13 +1,11 @@
 import {Component, Input} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Setting, SettingChangeRequest} from "../model/settings-api";
 import {Location} from "@angular/common";
 import {HotToastService} from "@ngneat/hot-toast";
 import {TranslateService} from "@ngx-translate/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SettingService} from "../model/setting.service";
-import * as moment from "moment";
-import {Moment} from "moment";
 
 @Component({
   selector: 'app-setting-change',
@@ -33,7 +31,7 @@ export class SettingChangeComponent {
     private fb: FormBuilder,
     private location: Location,
     private service: SettingService,
-    private toastService: HotToastService,
+    private toast: HotToastService,
     private translationService: TranslateService,
     private router: Router,
     private route: ActivatedRoute
@@ -118,7 +116,7 @@ export class SettingChangeComponent {
 
   private showFormInvalidError() {
     this.translationService.get("SETTING.Message.FormInvalid").subscribe(
-      msg => this.toastService.error(msg)
+      msg => this.toast.error(msg)
     )
   }
 
@@ -134,12 +132,12 @@ export class SettingChangeComponent {
   private handleCreateResult(result: Setting) {
     if (result == null) {
       this.translationService.get("SETTING.Message.CreateFailure").subscribe(
-        msg => this.toastService.error(msg)
+        msg => this.toast.error(msg)
       )
     } else {
       this.translationService.get("SETTING.Message.CreateSuccess").subscribe(
         msg => {
-          this.toastService.success(msg)
+          this.toast.success(msg)
           this.router.navigate(["/backoffice/settings"]).then()
         }
       )

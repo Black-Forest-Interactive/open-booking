@@ -105,6 +105,10 @@ export function navigateToRequest(router: Router) {
   router.navigate(['request']).then()
 }
 
+export function navigateToSettings(router: Router) {
+  router.navigate(['settings']).then()
+}
+
 export function navigateToMail(router: Router) {
   router.navigate(['mail']).then()
 }

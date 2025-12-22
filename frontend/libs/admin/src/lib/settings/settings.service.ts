@@ -9,7 +9,7 @@ import {Setting, SettingChangeRequest, TextResponse, UrlResponse} from "@open-bo
 export class SettingsService extends BaseService {
 
   constructor() {
-    super('portal/settings')
+    super('admin/settings')
   }
 
   getHelpUrl(): Observable<UrlResponse> {

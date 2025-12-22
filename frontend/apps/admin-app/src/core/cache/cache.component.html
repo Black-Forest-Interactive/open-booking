@@ -1,1 +1,19 @@
-<p>cache works!</p>
+<app-loading-bar [reloading]="reloading()"/>
+<div class="flex gap-2 flex-auto h-full">
+  <mat-card class="flex-auto basis-24">
+    <div class="flex flex-col py-2">
+      @for (i of entries(); track i) {
+        <div class="flex justify-between items-center px-2 py-1">
+          <div>{{ i.name }}</div>
+          <button (click)="reset(i)" [disabled]="reloading()" matMiniFab color="primary">
+            <mat-icon>layers_clear</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      }
+    </div>
+  </mat-card>
+  <mat-card class="flex-auto p-2">
+    <div [merge]="values()" [options]="chart" echarts></div>
+  </mat-card>
+</div>

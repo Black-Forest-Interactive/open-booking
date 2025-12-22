@@ -1,4 +1,4 @@
-import {Component, effect, inject, model, resource} from '@angular/core';
+import {Component, effect, inject, model, resource, signal} from '@angular/core';
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {Offer, OfferChangeRequest} from "@open-booking/core";
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -35,14 +35,6 @@ import {navigateToOffer} from "../../../app/app.routes";
 })
 export class OfferChangeComponent {
   private route = inject(ActivatedRoute)
-
-  title: string = "OFFER.CHANGE.Create"
-  reloading: boolean = false
-  form: FormGroup
-
-  data = model<Offer | null>(null)
-
-
   id = toSignal(this.route.paramMap.pipe(map(param => +(param.get('id') ?? ''))))
 
   private offerResource = resource({
@@ -50,11 +42,17 @@ export class OfferChangeComponent {
     loader: param => toPromise(this.service.getOffer(param.params), param.abortSignal)
   })
 
+  data = model<Offer | null>(null)
+  title = signal('OFFER.CHANGE.Create')
+  reloading = signal(false)
+
+  form: FormGroup
+
 
   constructor(
     private fb: FormBuilder,
     private service: OfferService,
-    private toastService: HotToastService,
+    private toast: HotToastService,
     private translationService: TranslateService,
     private router: Router
   ) {
@@ -74,10 +72,10 @@ export class OfferChangeComponent {
 
   private handleDataEdit(data: Offer) {
     this.data.set(data)
-    this.initValues(data);
-    this.translationService.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
-    this.validateForm();
-    this.reloading = false;
+    this.initValues(data)
+    this.translationService.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title.set(text))
+    this.validateForm()
+    this.reloading.set(false)
   }
 
   private initValues(data: Offer) {
@@ -111,7 +109,7 @@ export class OfferChangeComponent {
       return
     }
 
-    this.reloading = true
+    this.reloading.set(true)
     let data = this.data()
     if (data) {
       this.update(data)
@@ -122,7 +120,7 @@ export class OfferChangeComponent {
 
   private showFormInvalidError() {
     this.translationService.get("OFFER.Message.FormInvalid").subscribe(
-      msg => this.toastService.error(msg)
+      msg => this.toast.error(msg)
     )
   }
 
@@ -150,7 +148,7 @@ export class OfferChangeComponent {
     if (!request) {
       this.showFormInvalidError()
     } else {
-      this.service.createOffer(request).subscribe((result) => this.handleCreateResult(result))
+      this.service.createOffer(request).subscribe((result) => this.handleChangeResult(result))
     }
   }
 
@@ -159,19 +157,19 @@ export class OfferChangeComponent {
     if (!request) {
       this.showFormInvalidError()
     } else {
-      this.service.updateOffer(offer.id, request).subscribe((result) => this.handleCreateResult(result))
+      this.service.updateOffer(offer.id, request).subscribe((result) => this.handleChangeResult(result))
     }
   }
 
-  private handleCreateResult(result: Offer) {
+  private handleChangeResult(result: Offer) {
     if (result == null) {
       this.translationService.get("OFFER.Message.CreateFailure").subscribe(
-        msg => this.toastService.error(msg)
+        msg => this.toast.error(msg)
       )
     } else {
       this.translationService.get("OFFER.Message.CreateSuccess").subscribe(
         msg => {
-          this.toastService.success(msg)
+          this.toast.success(msg)
           navigateToOffer(this.router)
         }
       )
