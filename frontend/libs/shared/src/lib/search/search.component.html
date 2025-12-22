@@ -1,0 +1,5 @@
+<mat-form-field class="flex-1" appearance="outline">
+  <mat-label>{{ label() | translate }}</mat-label>
+  <input matInput (keyup)="handleKeyUp(input.value)" placeholder="" #input [disabled]="disabled()">
+  <mat-icon matSuffix>{{ icon() }}</mat-icon>
+</mat-form-field>

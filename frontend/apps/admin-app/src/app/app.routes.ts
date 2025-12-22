@@ -100,3 +100,15 @@ export function navigateToOffer(router: Router) {
 export function navigateToBooking(router: Router) {
   router.navigate(['booking']).then()
 }
+
+export function navigateToRequest(router: Router) {
+  router.navigate(['request']).then()
+}
+
+export function navigateToMail(router: Router) {
+  router.navigate(['mail']).then()
+}
+
+export function navigateToGroup(router: Router) {
+  router.navigate(['group']).then()
+}

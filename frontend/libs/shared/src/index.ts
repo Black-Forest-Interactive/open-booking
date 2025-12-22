@@ -6,6 +6,8 @@ export * from './lib/loading-bar/loading-bar.component'
 export * from './lib/logging/logging.api'
 export * from './lib/logging/logging.service'
 
+export * from './lib/search/search.component'
+
 export * from './lib/theme-toggle-button/theme-toggle-button.component'
 
 export * from './lib/base-service'
