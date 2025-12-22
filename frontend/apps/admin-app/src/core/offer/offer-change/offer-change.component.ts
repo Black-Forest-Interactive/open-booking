@@ -15,7 +15,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
-import {navigateToOffer} from "../../../app/app.routes";
+import {navigateToOffer} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-offer-change',

@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MailService} from "@open-booking/admin";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
-import {navigateToMail} from "../../../app/app.routes";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
@@ -14,6 +13,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {HotToastService} from "@ngxpert/hot-toast";
+import {navigateToMail} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-mail-history',

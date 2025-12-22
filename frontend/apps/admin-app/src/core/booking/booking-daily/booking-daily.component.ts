@@ -4,11 +4,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {navigateToBooking} from "../../../app/app.routes";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {DatePipe} from "@angular/common";
 import {BookingDailyEntryComponent} from "../booking-daily-entry/booking-daily-entry.component";
+import {navigateToBooking} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-booking-daily',

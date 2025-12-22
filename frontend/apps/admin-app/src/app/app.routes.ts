@@ -1,4 +1,4 @@
-import {Route, Router} from '@angular/router';
+import {Route} from '@angular/router';
 import {canActivateAuthRole} from "@open-booking/shared";
 import {
   PERMISSION_AUDIT_ADMIN,
@@ -93,26 +93,4 @@ export const appRoutes: Route[] = [
   }
 ];
 
-export function navigateToOffer(router: Router) {
-  router.navigate(['offer']).then()
-}
 
-export function navigateToBooking(router: Router) {
-  router.navigate(['booking']).then()
-}
-
-export function navigateToRequest(router: Router) {
-  router.navigate(['request']).then()
-}
-
-export function navigateToSettings(router: Router) {
-  router.navigate(['settings']).then()
-}
-
-export function navigateToMail(router: Router) {
-  router.navigate(['mail']).then()
-}
-
-export function navigateToGroup(router: Router) {
-  router.navigate(['group']).then()
-}

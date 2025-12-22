@@ -4,6 +4,6 @@ export const provideQuill = () =>
   provideQuillConfig({
     modules: {
       syntax: false,
-      toolbar: false,
+      toolbar: true,
     }
   })

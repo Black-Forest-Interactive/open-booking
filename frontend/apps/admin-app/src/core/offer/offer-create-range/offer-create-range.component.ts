@@ -9,7 +9,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {DateTime, Duration} from "luxon";
 import {OfferRangeRequest} from "@open-booking/core";
 import {GenericRequestResult, LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {navigateToOffer} from "../../../app/app.routes";
+import {navigateToOffer} from "../../../app/app.navigation";
 import {Router} from "@angular/router";
 import {OfferService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";

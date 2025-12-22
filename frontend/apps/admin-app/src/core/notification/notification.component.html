@@ -1,1 +1,64 @@
-<p>notification works!</p>
+<app-loading-bar [reloading]="reloading()"/>
+
+<div class="flex flex-col">
+  <div class="flex items-start gap-3 px-2 pt-2">
+    <lib-search label="NOTIFICATION.Action.Search" (search)="search($event)"/>
+  </div>
+  <div>
+    <button mat-fab extended class="mt-1" routerLink="./create">
+      <mat-icon>add_circle</mat-icon>
+      {{ 'NOTIFICATION.Action.Create' | translate }}
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="entries()">
+    <caption>Notification Template Entries</caption>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>{{ 'NOTIFICATION.Field.Id.Title' | translate }}</th>
+      <td mat-cell *matCellDef="let response">{{ response.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lang">
+      <th mat-header-cell *matHeaderCellDef>{{ 'NOTIFICATION.Field.Lang.Title' | translate }}</th>
+      <td mat-cell *matCellDef="let response">{{ 'LANG.' + response.lang | translate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>{{ 'NOTIFICATION.Field.Type.Title' | translate }}</th>
+      <td mat-cell *matCellDef="let response">{{ 'NOTIFICATION.Field.Type.' + response.type | translate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="subject">
+      <th mat-header-cell *matHeaderCellDef>{{ 'NOTIFICATION.Field.Subject.Title' | translate }}</th>
+      <td mat-cell *matCellDef="let response">{{ response.subject }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cmd">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let response" class="cmd-cell">
+        <button mat-icon-button routerLink="./edit/{{response.id}}">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="delete(response)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="./details/{{response.id}}">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageNumber"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons [disabled]="reloading"
+  (page)="handlePageChange($event)"
+>
+</mat-paginator>

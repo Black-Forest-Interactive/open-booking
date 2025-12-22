@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {map} from "rxjs";
 import {RequestService} from "@open-booking/admin";
-import {navigateToBooking} from "../../../app/app.routes";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -13,6 +12,7 @@ import {
 import {BookingDetailsHeaderComponent} from "../booking-details-header/booking-details-header.component";
 import {BookingDetailsCommentComponent} from "../booking-details-comment/booking-details-comment.component";
 import {BookingDetailsContentComponent} from "../booking-details-content/booking-details-content.component";
+import {navigateToBooking} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-booking-details',

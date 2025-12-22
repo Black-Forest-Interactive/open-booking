@@ -14,7 +14,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
-import {navigateToSettings} from "../../../app/app.routes";
+import {navigateToSettings} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-settings-change',

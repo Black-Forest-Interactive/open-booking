@@ -7,13 +7,13 @@ import {OfferService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
-import {navigateToOffer} from "../../../app/app.routes";
 import {of} from "rxjs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {navigateToOffer} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-offer-create-series',
