@@ -4,20 +4,20 @@
     <div class="text-sm text-gray-600">{{ data().start | date:'shortTime' }} - {{ data().end | date:'shortTime' }}</div>
   </div>
   <div class="flex flex-col gap-3 p-4">
-    <button matButton="outlined" routerLink="./day/{{data().date}}">
+    <button matButton="filled" routerLink="./day/{{data().date}}">
       <mat-icon>bookmarks</mat-icon>
       {{ 'OFFER.Action.ShowBookings' | translate }}
     </button>
-    <button matButton="outlined" routerLink="/request/create">
+    <button matButton="filled" routerLink="/request/create">
       <mat-icon>add</mat-icon>
       {{ 'BOOKING.Action.Create' | translate }}
     </button>
     <div class="flex gap-2">
-      <button matButton="outlined" (click)="exportPdf()" class="flex-1">
+      <button matButton="filled" (click)="exportPdf()" class="flex-1">
         <mat-icon>picture_as_pdf</mat-icon>
         {{ 'OFFER.Action.Export_PDF' | translate }}
       </button>
-      <button matButton="outlined" (click)="exportExcel()" class="flex-1">
+      <button matButton="filled" (click)="exportExcel()" class="flex-1">
         <mat-icon>file_copy</mat-icon>
         {{ 'OFFER.Action.Export_Excel' | translate }}
       </button>

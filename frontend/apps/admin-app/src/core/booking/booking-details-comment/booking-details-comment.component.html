@@ -16,11 +16,11 @@
           <textarea matInput [value]="comment()" #commentInput></textarea>
         </mat-form-field>
         <div class="flex gap-3">
-          <button matButton="outlined" color="warn" (click)="cancel()">
+          <button matButton="filled" color="warn" (click)="cancel()">
             <mat-icon>cancel</mat-icon>
             {{ 'ACTIONS.Cancel' | translate }}
           </button>
-          <button matButton="outlined" color="primary" (click)="save(commentInput.value)">
+          <button matButton="filled" color="primary" (click)="save(commentInput.value)">
             <mat-icon>save</mat-icon>
             {{ 'ACTIONS.Save' | translate }}
           </button>

@@ -1,24 +1,24 @@
 <form [formGroup]="fg">
-  <div class="d-flex flex-row align-content-stretch align-items-center justify-content-start">
-    <div class="flex-fill d-flex flex-column align-content-stretch align-items-stretch justify-content-start gap-3">
+  <div class="flex items-center">
+    <div class="flex flex-col gap-3 flex-1">
       <mat-radio-group formControlName="booking">
         @for (booking of data().bookings; track booking.id) {
-          <div class="flex-fill d-flex flex-row align-content-stretch align-items-center justify-content-start gap-3">
-            <div class="booking-list-entry-date">
-              <mat-radio-button [value]="booking.id">{{ booking.offer.start | date:'medium' }}</mat-radio-button>
-            </div>
-            <div class="booking-list-entry-size">
+          <div class="flex items-center gap-3">
+            <mat-radio-button [value]="booking.id">
+              {{ booking.offer.start | date:'medium' }}
+            </mat-radio-button>
+            <div>
               {{ data().visitorGroup.size }} / {{ booking.spaceAvailable }}
             </div>
           </div>
         }
       </mat-radio-group>
     </div>
-    <div class="actions">
-      <button mat-icon-button color="accent" [disabled]="fg.invalid" (click)="confirm()">
+    <div class="flex flex-col">
+      <button matIconButton color="accent" [disabled]="fg.invalid" (click)="confirm()">
         <mat-icon>thumb_up</mat-icon>
       </button>
-      <button mat-icon-button color="warn" (click)="denial()">
+      <button matIconButton color="warn" (click)="denial()">
         <mat-icon>thumb_down</mat-icon>
       </button>
     </div>
