@@ -50,6 +50,6 @@ export class RequestVisitorGroupEntryComponent {
   }
 
   showDetailsDialog() {
-    this.dialog.open(GroupInfoDialogComponent, {data: this.data});
+    this.dialog.open(GroupInfoDialogComponent, {data: this.data()});
   }
 }

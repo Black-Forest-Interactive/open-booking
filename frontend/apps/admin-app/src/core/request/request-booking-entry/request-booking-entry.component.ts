@@ -1,4 +1,4 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, computed, input, output, signal} from '@angular/core';
 import {BookingConfirmationContent, BookingRequestInfo} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RequestService} from "@open-booking/admin";
@@ -30,6 +30,8 @@ export class RequestBookingEntryComponent {
 
   data = input.required<BookingRequestInfo>()
   change = output<boolean>()
+
+  bookings = computed(() => this.data().bookings ?? [])
 
   fg: FormGroup
 

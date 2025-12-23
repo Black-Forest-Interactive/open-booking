@@ -6,10 +6,16 @@ export interface VisitorGroup {
   minAge: number,
   maxAge: number,
   contact: string,
-  address: Address,
+  address: VisitorGroupAddress,
   phone: string,
   email: string,
   status: string
+}
+
+export interface VisitorGroupAddress {
+  street: string,
+  city: string,
+  zip: string,
 }
 
 export class VisitorGroupChangeRequest {

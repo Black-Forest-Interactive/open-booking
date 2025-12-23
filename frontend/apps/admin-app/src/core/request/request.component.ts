@@ -1,4 +1,4 @@
-import {Component, computed, resource, signal} from '@angular/core';
+import {Component, computed, resource, Signal, signal} from '@angular/core';
 import {RequestService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
@@ -78,7 +78,7 @@ export class RequestComponent {
   })
 
   private page = computed(() => this.requestResource.value())
-  elements = computed(() => this.page()?.content ?? [])
+  elements: Signal<BookingRequestInfo[]> = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.requestResource.isLoading
 

@@ -2,7 +2,7 @@
   <div class="flex items-center">
     <div class="flex flex-col gap-3 flex-1">
       <mat-radio-group formControlName="booking">
-        @for (booking of data().bookings; track booking.id) {
+        @for (booking of bookings(); track booking.id) {
           <div class="flex items-center gap-3">
             <mat-radio-button [value]="booking.id">
               {{ booking.offer.start | date:'medium' }}

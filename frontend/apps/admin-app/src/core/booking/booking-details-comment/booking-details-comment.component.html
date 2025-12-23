@@ -11,7 +11,7 @@
         <mat-progress-bar></mat-progress-bar>
       }
       @case ('edit') {
-        <mat-form-field class="flex-1">
+        <mat-form-field appearance="fill" class="flex-1">
           <mat-label>Leave a comment</mat-label>
           <textarea matInput [value]="comment()" #commentInput></textarea>
         </mat-form-field>
