@@ -86,8 +86,6 @@ export class OfferComponent {
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.offerResource.isLoading
 
-  keyUp = signal('')
-
 
   constructor(
     private service: OfferService,

@@ -1,0 +1,29 @@
+<div class="d-flex flex-row  align-content-stretch align-items-center justify-content-start">
+  <div class="description-column">
+    <div>{{ title() }}</div>
+    <div>{{ contact() }}</div>
+  </div>
+  @if (showDetails()) {
+    <div class="status-column d-flex flex-row gap-3 align-items-center">
+      <div class="fxFlex">
+        <app-group-status [status]="status()"/>
+      </div>
+      <div class="fxFlex">
+        @if (confirming()) {
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        } @else if (status() !== 'CONFIRMED') {
+          <button mat-icon-button (click)="confirm()" color="accent">
+            <mat-icon>mark_email_read</mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+  }
+  <div class="action-column">
+    <div>
+      <button mat-icon-button (click)="showDetailsDialog()" color="primary">
+        <mat-icon>info_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
