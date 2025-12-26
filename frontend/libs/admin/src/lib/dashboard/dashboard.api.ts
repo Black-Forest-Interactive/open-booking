@@ -45,3 +45,12 @@ export interface Booking {
   emailDelivered: boolean;
   createdAt: string; // LocalDateTime
 }
+
+export class DailyOffersFilterRequest {
+  constructor(
+    public guide: string,
+    public status: string,
+    public showName: string
+  ) {
+  }
+}

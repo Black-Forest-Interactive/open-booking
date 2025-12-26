@@ -1,6 +1,6 @@
-import {Component, computed, input, output, resource} from '@angular/core';
-import {DashboardService, DaySummary} from "@open-booking/admin";
-import {LoadingBarComponent, toPromise} from "@open-booking/shared";
+import {Component, input, output} from '@angular/core';
+import {Booking, ShowOffer} from "@open-booking/admin";
+import {LoadingBarComponent} from "@open-booking/shared";
 import {DashboardContentEntryComponent} from "../dashboard-content-entry/dashboard-content-entry.component";
 import {MatIcon} from "@angular/material/icon";
 
@@ -16,20 +16,15 @@ import {MatIcon} from "@angular/material/icon";
 })
 export class DashboardContentComponent {
 
-  selectedDay = input<DaySummary>()
+  // Input
+  reloading = input.required<boolean>()
+  content = input.required<ShowOffer[]>()
 
-  private dailyOffersResource = resource({
-    params: this.selectedDay,
-    loader: (param) => toPromise(this.service.getDailyOffers(param.params.date), param.abortSignal)
-  })
-
-  offers = computed(() => this.dailyOffersResource.value()?.offers ?? [])
-  reloading = computed(() => this.dailyOffersResource.isLoading())
-
+  // Output
   clearFilter = output<boolean>()
+  confirmBooking = output<Booking>()
 
-  constructor(private service: DashboardService) {
-
+  protected handleConfirmBooking(booking: Booking) {
+    this.confirmBooking.emit(booking)
   }
-
 }

@@ -1,5 +1,20 @@
-<div class="w-full max-w-7xl mx-auto p-4 bg-gray-50 min-h-screen">
-  <app-dashboard-summary #summary></app-dashboard-summary>
-  <app-dashboard-filter></app-dashboard-filter>
-  <app-dashboard-content [selectedDay]="summary.selectedDay()"></app-dashboard-content>
+<div class="w-full p-4 bg-gray-50 min-h-screen">
+  <app-dashboard-summary
+    [reloading]="summaryReloading()"
+    [weekSummary]="summary()"
+    [selectedWeek]="selectedWeek()"
+    [selectedDay]="selectedDay()"
+    (selectionDayChanged)="handleDaySelection($event)"
+    (selectionWeekChanged)="handleWeekSelection($event)"
+  />
+  <app-dashboard-filter
+    [availableGuides]="availableGuides()"
+    (filterChange)="handleFilterChanged($event)"
+  />
+  <app-dashboard-content
+    [reloading]="contentReloading()"
+    [content]="content()"
+    (clearFilter)="clearFilter()"
+    (confirmBooking)="handleBookingConfirmation($event)"
+  />
 </div>

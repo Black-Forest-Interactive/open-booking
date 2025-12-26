@@ -52,6 +52,12 @@ data class Booking(
     val createdAt: LocalDateTime
 )
 
+data class DailyOffersFilterRequest(
+    val guide: String,
+    val status: String,
+    val showName: String,
+)
+
 // Extension functions
 fun ShowOffer.getConfirmedSeats(): Int =
     bookings.filter { it.confirmed }.sumOf { it.guests }
@@ -175,3 +181,5 @@ fun generateRandomBookings(day: Int, showIdx: Int, names: List<String>, bookingD
         )
     }
 }
+
+

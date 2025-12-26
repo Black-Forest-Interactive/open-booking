@@ -1,10 +1,15 @@
 <app-loading-bar [reloading]="reloading()"/>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-  @for (offer of offers(); track offer.id) {
-    <app-dashboard-content-entry [data]="offer" class="bg-white rounded-lg shadow-sm overflow-hidden"/>
+  @for (offer of content(); track offer.id) {
+    <app-dashboard-content-entry
+      [data]="offer"
+      (confirmBooking)="handleConfirmBooking($event)"
+      class="bg-white rounded-lg shadow-sm overflow-hidden border-l-8"
+      [style.border-color]="offer.color"
+    />
   }
 </div>
-@if (offers().length <= 0) {
+@if (content().length <= 0) {
   <div class="bg-white rounded-lg shadow-sm p-8 text-center">
     <mat-icon>filter_alt</mat-icon>
     <p class="text-gray-500">No shows match the current filters</p>

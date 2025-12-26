@@ -1,10 +1,10 @@
-import {Component, computed, effect, output, resource, signal} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {DatePipe, NgClass} from "@angular/common";
-import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {DashboardService, DaySummary, WeekSummary} from "@open-booking/admin";
+import {LoadingBarComponent} from "@open-booking/shared";
+import {DaySummary, WeekSummary} from "@open-booking/admin";
 
 @Component({
   selector: 'app-dashboard-summary',
@@ -21,39 +21,23 @@ import {DashboardService, DaySummary, WeekSummary} from "@open-booking/admin";
 })
 export class DashboardSummaryComponent {
 
-  private weekSummaryResource = resource({
-    loader: (param) => toPromise(this.service.getSummary(), param.abortSignal)
-  })
-
-  weekSummary = computed(() => this.weekSummaryResource.value() ?? [])
-  reloading = computed(() => this.weekSummaryResource.isLoading())
-
-
-  selectedWeek = signal<WeekSummary | undefined>(undefined)
+  // Input
+  reloading = input.required<boolean>()
+  weekSummary = input.required<WeekSummary[]>()
+  selectedWeek = input.required<WeekSummary | undefined>()
   daySummary = computed(() => this.selectedWeek()?.days ?? [])
-  selectedDay = signal<DaySummary | undefined>(undefined)
+  selectedDay = input.required<DaySummary | undefined>()
 
-
+  // Output
   selectionWeekChanged = output<WeekSummary>()
   selectionDayChanged = output<DaySummary>()
 
-  constructor(private service: DashboardService) {
-    effect(() => {
-      let week = this.weekSummary()[0]
-      this.handleWeekSelection(week)
-    })
-  }
 
   protected handleDaySelection(day: DaySummary) {
-    this.selectedDay.set(day)
     this.selectionDayChanged.emit(day)
   }
 
   protected handleWeekSelection(week: WeekSummary) {
-    this.selectedWeek.set(week)
     this.selectionWeekChanged.emit(week)
-
-    let day = week?.days[0]
-    this.handleDaySelection(day)
   }
 }

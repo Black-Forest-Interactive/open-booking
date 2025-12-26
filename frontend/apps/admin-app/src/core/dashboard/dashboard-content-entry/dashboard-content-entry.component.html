@@ -1,5 +1,5 @@
-<div class="p-4 border-l-8" [style.border-color]="data().color">
-  <div class="flex justify-between items-start mb-2">
+<div>
+  <div class="flex justify-between items-start p-4 ">
     <div class="flex-1">
       <!-- Header row -->
       <div class="flex items-center gap-2 mb-1">
@@ -40,30 +40,47 @@
   </div>
 
   <!-- Guide selector -->
-  <div class="flex items-center gap-2 text-sm cursor-pointer" (click)="selectGuide()">
+  <div class="flex items-center gap-2 text-sm cursor-pointer px-4" (click)="selectGuide()">
     <span>Guide:</span>
     <span>{{ data().guide }}</span>
   </div>
 
-</div>
-
-<div class="bg-gray-50 px-4 py-2 border-b">
-  <div class="flex gap-4 text-xs">
-    <div class="flex items-center gap-1">
-      <mat-icon inline>group</mat-icon>
-      <span class="text-gray-600">Total:</span>
-      <span class="font-semibold text-gray-800">{{ data().totalSeats }}</span>
-    </div>
-    <div class="flex items-center gap-1">
-      <mat-icon class="text-green-600" inline>check_circle</mat-icon>
-      <span class="text-gray-600">Confirmed:</span>
-      <span class="font-semibold text-green-700">{{ confirmedSeats() }}</span>
-    </div>
-    @if (pendingSeats()) {
+  <div class="h-full">
+    <div class="flex gap-4 text-xs px-4 py-3 bg-gray-100 border-b ">
       <div class="flex items-center gap-1">
-        <mat-icon class="text-amber-600" inline>pending</mat-icon>
-        <span class="text-gray-600">Pending:</span>
-        <span class="font-semibold text-amber-700">{{ pendingSeats() }}</span>
+        <mat-icon inline>group</mat-icon>
+        <span class="text-gray-600">Total:</span>
+        <span class="font-semibold text-gray-800">{{ data().totalSeats }}</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <mat-icon class="text-green-600" inline>check_circle</mat-icon>
+        <span class="text-gray-600">Confirmed:</span>
+        <span class="font-semibold text-green-700">{{ confirmedSeats() }}</span>
+      </div>
+      @if (pendingSeats()) {
+        <div class="flex items-center gap-1">
+          <mat-icon class="text-amber-600" inline>pending</mat-icon>
+          <span class="text-gray-600">Pending:</span>
+          <span class="font-semibold text-amber-700">{{ pendingSeats() }}</span>
+        </div>
+      }
+    </div>
+    @if (!collapsed()) {
+
+      <!-- Bookings List -->
+      <div class="p-3 max-h-96 overflow-y-auto bg-gray-50 ">
+        @if (data().bookings.length === 0) {
+          <p class="text-gray-500 text-center py-3 text-sm">No bookings yet</p>
+        } @else {
+          <div class="flex flex-col gap-1">
+            @for (booking of data().bookings; track booking.id) {
+              <app-dashboard-content-entry-booking
+                [booking]="booking"
+                (confirmBooking)="handleConfirmBooking($event)"
+              />
+            }
+          </div>
+        }
       </div>
     }
   </div>

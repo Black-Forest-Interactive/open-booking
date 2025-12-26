@@ -1,10 +1,13 @@
-import {Component, computed, input, signal} from '@angular/core';
+import {Component, computed, input, output, signal} from '@angular/core';
 import {Booking, ShowOffer} from "@open-booking/admin";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {HotToastService} from "@ngxpert/hot-toast";
+import {
+  DashboardContentEntryBookingComponent
+} from "../dashboard-content-entry-booking/dashboard-content-entry-booking.component";
 
 @Component({
   selector: 'app-dashboard-content-entry',
@@ -12,7 +15,8 @@ import {HotToastService} from "@ngxpert/hot-toast";
     MatIcon,
     MatIconButton,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    DashboardContentEntryBookingComponent
   ],
   templateUrl: './dashboard-content-entry.component.html',
   styleUrl: './dashboard-content-entry.component.scss',
@@ -27,6 +31,8 @@ export class DashboardContentEntryComponent {
   pendingSeats = computed(() => this.getPendingSeats(this.data().bookings))
 
   collapsed = signal<boolean>(false)
+
+  confirmBooking = output<Booking>()
 
   private getBookedSeats(bookings: Booking[], confirmedOnly = false): number {
     return bookings
@@ -64,5 +70,9 @@ export class DashboardContentEntryComponent {
 
   protected selectGuide() {
     this.toast.error("Select guide is not implemented yet")
+  }
+
+  protected handleConfirmBooking(booking: Booking) {
+    this.confirmBooking.emit(booking)
   }
 }
