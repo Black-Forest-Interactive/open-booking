@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>
+  {{ "Response.Dialog.Delete.Title" | translate:data }}
+</h1>
+<div mat-dialog-content>
+  <p>{{ "Response.Dialog.Delete.Question" | translate:data }}</p>
+</div>
+<div mat-dialog-actions>
+  <button matButton="filled" color="primary" (click)="onYesClick()">
+    <mat-icon>check</mat-icon>
+    {{ "ACTION.Yes" | translate }}
+  </button>
+  <button matButton="filled" color="warn" (click)="onNoClick()">
+    <mat-icon>cancel</mat-icon>
+    {{ "ACTION.No" | translate }}
+  </button>
+</div>

@@ -1,4 +1,28 @@
-<mat-progress-bar mode="indeterminate" *ngIf="this.dayInfoService.reloading | async"></mat-progress-bar>
+<mat<mat-progress-bar mode="indeterminate" *ngIf="reloading"></mat-progress-bar>
+<div class="d-flex flex-column p-0 container-fluid">
+  <div class="d-flex flex-row gap-3 align-items-center mat-elevation-z2 py-2">
+    <button mat-icon-button (click)="back()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <!--    <button mat-stroked-button>-->
+    <!--      <mat-icon>playlist_add</mat-icon>-->
+    <!--      {{'REQUEST.Action.ChangeOffer' | translate}}</button>-->
+  </div>
+
+  <div class="d-flex flex-row container-fluid p-2 gap-3 align-content-stretch">
+    <div class="d-flex flex-column gap-3 align-content-stretch col-5">
+      <app-booking-details-visitor-group [data]="data" (requestReload)="reload()"></app-booking-details-visitor-group>
+    </div>
+    <div class="d-flex flex-column gap-3 align-content-stretch flex-fill">
+      <app-booking-details-header [data]="data"></app-booking-details-header>
+      <app-booking-details-bookings [data]="data" (change)="reload()"></app-booking-details-bookings>
+      <app-booking-details-comment [data]="data" (change)="reload()"></app-booking-details-comment>
+    </div>
+  </div>
+
+</div>
+
+-progress-bar mode="indeterminate" *ngIf="this.dayInfoService.reloading | async"></mat-progress-bar>
 <div class="d-flex flex-column p-2 container-fluid gap-3">
   <div class="d-flex flex-row gap-3 align-items-start px-2 pt-2 pb-0">
 

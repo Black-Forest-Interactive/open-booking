@@ -1,0 +1,48 @@
+<app-loading-bar [reloading]="reloading()"/>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-xl mx-auto mt-12 flex flex-col gap-4">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'NOTIFICATION.Field.Lang.Title' | translate }}</mat-label>
+    <mat-select formControlName="lang" required>
+      @for (lang of languages; track lang) {
+        <mat-option [value]="lang">
+          {{ 'LANG.' + lang | translate }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-hint>{{ 'NOTIFICATION.Field.Lang.Hint' | translate }}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'NOTIFICATION.Field.Type.Title' | translate }}</mat-label>
+    <mat-select formControlName="type" required>
+      @for (type of types; track type) {
+        <mat-option [value]="type">
+          {{ 'NOTIFICATION.Field.Type.' + type | translate }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-hint>{{ 'NOTIFICATION.Field.Type.Hint' | translate }}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'NOTIFICATION.Field.Subject.Title' | translate }}</mat-label>
+    <input matInput type="text" formControlName="subject" required>
+  </mat-form-field>
+
+
+  <quill-editor formControlName="content" placeholder="Enter Text" class="pb-3"></quill-editor>
+
+  <!-- Action Buttons -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <button mat-raised-button color="primary" type="submit" class="w-full">
+      <mat-icon>save</mat-icon>
+      {{ "ACTION.Save" | translate }}
+    </button>
+
+    <button mat-stroked-button color="warn" type="button" (click)="cancel()" class="w-full">
+      <mat-icon>cancel</mat-icon>
+      {{ 'ACTION.Cancel' | translate }}
+    </button>
+  </div>
+</form>
+

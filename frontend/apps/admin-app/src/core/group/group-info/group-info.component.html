@@ -1,0 +1,59 @@
+<div class="flex flex-col gap-3 pt-2.5">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'REQUEST.Form.Title.Label' | translate }}</mat-label>
+    <input matInput type="text" [value]="title()" [readonly]="true">
+  </mat-form-field>
+
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>{{ 'REQUEST.Form.Size.Label' | translate }}</mat-label>
+      <input matInput type="number" [value]="size()" [readonly]="true">
+    </mat-form-field>
+    <mat-checkbox [checked]="isGroup()" disabled class="self-center">
+      {{ 'REQUEST.Form.School.Label' | translate }}
+    </mat-checkbox>
+  </div>
+
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>{{ 'REQUEST.Form.MinAge.Label' | translate }}</mat-label>
+      <input matInput type="number" [value]="minAge()" [readonly]="true">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>{{ 'REQUEST.Form.MaxAge.Label' | translate }}</mat-label>
+      <input matInput type="number" [value]="maxAge()" [readonly]="true">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'REQUEST.Form.Contact.Label' | translate }}</mat-label>
+    <input matInput type="text" [value]="contact()" [readonly]="true">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'REQUEST.Form.Street.Label' | translate }}</mat-label>
+    <input matInput type="text" [value]="street()" [readonly]="true">
+  </mat-form-field>
+
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="w-32">
+      <mat-label>{{ 'REQUEST.Form.Zip.Label' | translate }}</mat-label>
+      <input matInput type="text" [value]="zip()" [readonly]="true">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>{{ 'REQUEST.Form.City.Label' | translate }}</mat-label>
+      <input matInput type="text" [value]="city()" [readonly]="true">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'REQUEST.Form.Phone.Label' | translate }}</mat-label>
+    <input matInput type="text" [value]="phone()" [readonly]="true">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'REQUEST.Form.Mail.Label' | translate }}</mat-label>
+    <input matInput type="text" [value]="email()" [readonly]="true">
+  </mat-form-field>
+</div>
+

@@ -1,0 +1,61 @@
+<!-- app-dashboard-filter.component.html -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-2">
+      <mat-icon class="text-gray-600">filter_alt</mat-icon>
+      <h3 class="font-semibold text-gray-800">Filters</h3>
+      @if (hasActiveFilters()) {
+        <button
+          (click)="clearAllFilters()"
+          class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+          type="button">
+          <mat-icon class="!w-3 !h-3 !text-xs">close</mat-icon>
+          Clear all
+        </button>
+      }
+    </div>
+    <button
+      (click)="toggleFilters()"
+      class="text-sm text-gray-600 hover:text-gray-800"
+      type="button">
+      {{ showFilters() ? 'Hide' : 'Show' }}
+    </button>
+  </div>
+
+  @if (showFilters()) {
+    <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <!-- Guide Filter -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Guide</mat-label>
+        <mat-select formControlName="guide">
+          <mat-option value="">All Guides</mat-option>
+          @for (guide of availableGuides(); track guide) {
+            <mat-option [value]="guide">{{ guide }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Status Filter -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="pending">Has Pending</mat-option>
+          <mat-option value="confirmed">Has Confirmed</mat-option>
+          <mat-option value="no-bookings">No Bookings</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Show Name Search -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Show Name</mat-label>
+        <input matInput formControlName="showName" placeholder="Search shows...">
+        @if (filterForm.get('showName')?.value) {
+          <button matSuffix matIconButton (click)="clearShowName()" type="button">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </form>
+  }
+</div>

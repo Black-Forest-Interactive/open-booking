@@ -1,0 +1,26 @@
+<form [formGroup]="fg">
+  <div class="flex items-center">
+    <div class="flex flex-col gap-3 flex-1">
+      <mat-radio-group formControlName="booking">
+        @for (booking of bookings(); track booking.id) {
+          <div class="flex items-center gap-3">
+            <mat-radio-button [value]="booking.id">
+              {{ booking.offer.start | date:'medium' }}
+            </mat-radio-button>
+            <div>
+              {{ data().visitorGroup.size }} / {{ booking.spaceAvailable }}
+            </div>
+          </div>
+        }
+      </mat-radio-group>
+    </div>
+    <div class="flex flex-col">
+      <button matIconButton color="accent" [disabled]="fg.invalid" (click)="confirm()">
+        <mat-icon>thumb_up</mat-icon>
+      </button>
+      <button matIconButton color="warn" (click)="denial()">
+        <mat-icon>thumb_down</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

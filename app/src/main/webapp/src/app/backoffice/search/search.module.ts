@@ -12,6 +12,9 @@ import {ReactiveFormsModule} from "@angular/forms";
   declarations: [
     SearchBoardComponent
   ],
+  exports: [
+    SearchBoardComponent
+  ],
   imports: [
     CommonModule,
     SearchRoutingModule,
@@ -20,4 +23,5 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule,
   ]
 })
-export class SearchModule { }
+export class SearchModule {
+}

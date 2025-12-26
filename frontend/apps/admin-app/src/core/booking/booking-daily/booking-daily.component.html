@@ -1,0 +1,18 @@
+<app-loading-bar [reloading]="reloading()"/>
+<div class="flex flex-col">
+  <div class="flex items-baseline gap-3 px-2 pt-2">
+    <button matIconButton (click)="back()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <h2 class="text-2xl">{{ date() | date:'fullDate' }}</h2>
+  </div>
+  <div class="mat-elevation-z4">
+    @for (o of offer(); track o.id) {
+      <div class="flex items-center gap-3 p-3">
+        <mat-icon>event_available</mat-icon>
+        <div class="min-w-32">{{ o.start | date:'shortTime' }} - {{ o.finish | date:'shortTime' }}</div>
+        <app-booking-daily-entry [offer]="o" class="flex-1"></app-booking-daily-entry>
+      </div>
+    }
+  </div>
+</div>

@@ -22,11 +22,11 @@ export class ResponseChangeComponent {
 
   data: Response | null = null
   languages: string[] = []
-  htmlText ="<p>Testing</p>"
+  htmlText = "<p>Testing</p>"
 
   types: string[] = RESPONSE_TYPES
   form: FormGroup = this.fb.group({
-      lang: [this.translationService.currentLang, Validators.required],
+      lang: [this.translate.currentLang, Validators.required],
       type: [this.types[0], Validators.required],
       title: ['', Validators.required],
       content: ['', Validators.required]
@@ -39,14 +39,14 @@ export class ResponseChangeComponent {
     private location: Location,
     private service: ResponseService,
     private toastService: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
-    this.languages = this.translationService.langs
+    this.languages = this.translate.langs
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadData(+id, (e) => this.handleDataEdit(e))
@@ -63,13 +63,13 @@ export class ResponseChangeComponent {
 
   private handleDataCreate() {
     this.data = null;
-    this.translationService.get("RESPONSE.CHANGE.Create").subscribe(text => this.title = text);
+    this.translate.get("RESPONSE.CHANGE.Create").subscribe(text => this.title = text);
   }
 
   private handleDataEdit(data: Response) {
     this.data = data;
     this.initValues(data);
-    this.translationService.get("RESPONSE.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
+    this.translate.get("RESPONSE.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
     this.validateForm();
     this.reloading = false;
   }
@@ -119,7 +119,7 @@ export class ResponseChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("RESPONSE.Message.FormInvalid").subscribe(
+    this.translate.get("RESPONSE.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -135,11 +135,11 @@ export class ResponseChangeComponent {
 
   private handleCreateResult(result: Response) {
     if (result == null) {
-      this.translationService.get("RESPONSE.Message.CreateFailure").subscribe(
+      this.translate.get("RESPONSE.Message.CreateFailure").subscribe(
         msg => this.toastService.error(msg)
       )
     } else {
-      this.translationService.get("RESPONSE.Message.CreateSuccess").subscribe(
+      this.translate.get("RESPONSE.Message.CreateSuccess").subscribe(
         msg => {
           this.toastService.success(msg)
           this.router.navigate(["/backoffice/response"]).then()

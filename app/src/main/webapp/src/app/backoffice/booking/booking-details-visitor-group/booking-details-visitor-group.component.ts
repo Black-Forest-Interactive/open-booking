@@ -19,7 +19,7 @@ export class BookingDetailsVisitorGroupComponent {
 
   changing: boolean = false
 
-  constructor(private service: BookingRequestService, private toastService: HotToastService, private translationService: TranslateService) {
+  constructor(private service: BookingRequestService, private toastService: HotToastService, private translate: TranslateService) {
   }
 
   handleGroupChange(request: VisitorGroupChangeRequest | undefined) {
@@ -37,7 +37,7 @@ export class BookingDetailsVisitorGroupComponent {
   }
 
   private handleResult(result: GenericRequestResult) {
-    let message = this.translationService.instant(result.msg)
+    let message = this.translate.instant(result.msg)
     if (result.success) {
       this.toastService.success(message)
     } else {

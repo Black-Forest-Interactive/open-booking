@@ -1,0 +1,6 @@
+<mat-card class="flex flex-col gap-3 p-4">
+  <div class="flex gap-3">
+    <div class="w-32 font-bold">{{ 'REQUEST.Table.Timestamp' | translate }}</div>
+    <div>{{ data().timestamp + 'Z' | date:'medium' }}</div>
+  </div>
+</mat-card>

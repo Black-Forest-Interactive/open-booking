@@ -1,0 +1,475 @@
+{
+  "ACTION": {
+    "Back": "Zurück",
+    "Cancel": "Abbrechen",
+    "Close": "Schließen",
+    "Delete": "Löschen",
+    "Details": "Details",
+    "Edit": "Bearbeiten",
+    "Next": "Weiter",
+    "No": "Nein",
+    "Ok": "OK",
+    "Save": "Speichern",
+    "Submit": "Absenden",
+    "Yes": "Ja"
+  },
+  "ADMIN": {
+    "MENU": {
+      "Booking": "Buchungsverwaltung",
+      "BookingRequest": "Anfrageverwaltung",
+      "Dashboard": "Übersicht",
+      "Offer": "Angebotsverwaltung",
+      "SearchBooking": "Buchung suchen",
+      "Texts": "Textverwaltung"
+    }
+  },
+  "APP": {
+    "Title": "Open Booking",
+    "Welcome": "Willkommen"
+  },
+  "AUDIT": {
+    "Action": {
+      "Search": "Search for audit"
+    },
+    "Field": {
+      "Level": {
+        "Title": "Level"
+      },
+      "Message": {
+        "Title": "Message"
+      },
+      "Source": {
+        "Title": "Source"
+      },
+      "Timestamp": {
+        "Title": "Timestamp"
+      },
+      "User": {
+        "Title": "User"
+      }
+    }
+  },
+  "BACKOFFICE": {
+    "MENU": {
+      "AuditLog": "Audit Log",
+      "Booking": "Buchungsverwaltung",
+      "BookingRequest": "Anfrageverwaltung",
+      "Cache": "Cache-Verwaltung",
+      "Dashboard": "Übersicht",
+      "Mail": "Mail-Status",
+      "Notification": "Benachrichtigungsverwaltung",
+      "Offer": "Angebotsverwaltung",
+      "Response": "Response Mgt",
+      "SearchBooking": "Buchung suchen",
+      "Settings": "Einstellungen"
+    }
+  },
+  "BOOKING": {
+    "Action": {
+      "Create": "Buchung erstellen",
+      "Search": "Buchung suchen"
+    },
+    "Create": {
+      "Action": {
+        "Reset": "Zurücksetzen",
+        "Submit": "Anfrage senden"
+      },
+      "Step": {
+        "Finalize": {
+          "Header": "Abschluss"
+        },
+        "Offer": {
+          "Header": "Termine"
+        },
+        "VisitorGroup": {
+          "City": "Stadt",
+          "Contact": "Name",
+          "Header": "Gruppenbezeichnung",
+          "Mail": "E-Mail",
+          "MaxAge": "Ältester Teilnehmer",
+          "MinAge": "Jüngster Teilnehmer",
+          "Phone": "Telefon",
+          "Size": "Gruppengröße",
+          "Street": "Straße",
+          "Title": "Bezeichung",
+          "Zip": "PLZ"
+        }
+      },
+      "Title": "Eine neue Buchung erstellen"
+    },
+    "Details": {
+      "Title": "Buchungsdetails"
+    },
+    "Dialog": {
+      "InfoTitle": "Buchungsinfo"
+    },
+    "Entry": {
+      "Empty": "Leider keine gültigen Werte gefunden.",
+      "Select": "Tag auswählen"
+    },
+    "Status": {
+      "CONFIRMED": "Bestätigt",
+      "Title": "Buchungsstatus",
+      "UNCONFIRMED": "Unbestätigt",
+      "DENIED": "Abgelehnt",
+      "UNKNOWN": "Unbekannt"
+    }
+  },
+  "CACHE": {
+    "Action": {
+      "Reset": "Zurücksetzen"
+    },
+    "Field": {
+      "Evict": "Evict count/weight",
+      "Hit": "Hit/Miss",
+      "Load": "Load success/failed",
+      "Name": "Cache Name"
+    }
+  },
+  "DAY_INFO": {
+    "Chart": {
+      "Space": {
+        "Series": {
+          "Available": "Verfügbare Plätze",
+          "Confirmed": "Bestätigte Buchung",
+          "Deactivated": "Keine Buchung möglich",
+          "Unconfirmed": "Unbestätigte Buchung"
+        },
+        "Title": "Belegung der jeweiligen Führungen"
+      }
+    },
+    "SelectRange": {
+      "EndDate": "End-Datum",
+      "StartDate": "Start-Datum",
+      "Title": "Datumsbereichsauswahl"
+    }
+  },
+  "ERROR": {
+    "NoDaySelectedForBooking": "Sie müssen mindestens einen Tag auswählen, um eine Buchung zu starten",
+    "NoSpaceLeftForBooking": "Leider ist diese Führung bereits ausgebucht",
+    "OfferIsDeactivated": "Die Führung wurde deaktivert und kann daher nicht gebucht werden"
+  },
+  "LANG": {
+    "English": "English",
+    "German": "Deutsch",
+    "Title": "Sprache",
+    "de": "Deutsch",
+    "en": "English"
+  },
+  "MAIL": {
+    "Action": {
+      "Search": "Suchaufgabe",
+      "SearchHistory": "Such-Historie"
+    },
+    "Status": {
+      "FAILED": "Fehlgeschlagen",
+      "FINISHED": "Abgeschlossen",
+      "QUEUED": "In der Warteschlange",
+      "RETRY": "Warten auf erneuten Versuch"
+    },
+    "Table": {
+      "Id": "ID",
+      "Message": "Nachricht",
+      "Status": "Status",
+      "Timestamp": "Zeitstempel",
+      "Title": "Titel"
+    }
+  },
+  "MENU": {
+    "Admin": "Verwaltung",
+    "Backoffice": "Backoffice",
+    "Help": "Hilfe",
+    "Home": "Startseite",
+    "Language": "Sprache",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Title": "Menü"
+  },
+  "NOTIFICATION": {
+    "Action": {
+      "Create": "Create Notification Template",
+      "Search": "Searches Notification Template"
+    },
+    "Dialog": {
+      "Delete": {
+        "Question": "Do you really want to delete the notification template?",
+        "Title": "Delete notification template {{type}}"
+      }
+    },
+    "Field": {
+      "Content": {
+        "Hint": "",
+        "Title": "Content"
+      },
+      "Id": {
+        "Hint": "",
+        "Title": "Id"
+      },
+      "Lang": {
+        "Hint": "",
+        "Title": "Language"
+      },
+      "Subject": {
+        "Hint": "",
+        "Title": "Subject"
+      },
+      "Type": {
+        "BOOKING_REQUEST_CONFIRMED_CONTACT": "Booking Confirmed message for Contact",
+        "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
+        "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
+        "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
+        "Hint": "",
+        "Title": "Type"
+      }
+    },
+    "Message": {
+      "CreateFailure": "Creation of the notification template failed",
+      "CreateSuccess": "The notification template was created successfully",
+      "DeleteSuccess": "The notification template {{type}} was deleted successfully",
+      "FormInvalid": "Something went wrong with the form"
+    }
+  },
+  "OFFER": {
+    "Action": {
+      "CreateRange": "Auswahl erstellen",
+      "CreateSeries": "Serie erstellen",
+      "CreateSingle": "Termin erstellen",
+      "Details": "Details",
+      "Export_Excel": "Excel",
+      "Export_PDF": "PDF",
+      "Print": "Drucken",
+      "Search": "Termin suchen",
+      "Select": "Termin auswählen",
+      "ShowBookings": "Buchungen",
+      "Filter": "Filtern"
+    },
+    "Field": {
+      "Active": "Aktiv",
+      "Date": "Datum",
+      "Finish": "Ende",
+      "FinishTime": "Endzeit",
+      "Id": "ID",
+      "MaxPersons": "Maximale Personzahl",
+      "Start": "Start",
+      "StartTime": "Begin"
+    },
+    "Form": {
+      "Active": "Aktiv",
+      "End": "Ende",
+      "Id": "ID",
+      "MaxPersons": "Maximale Personzahl",
+      "Start": "Beginn"
+    },
+    "Info": {
+      "SpaceAvailable": "Es sind noch {{value}} Plätze frei"
+    },
+    "Operation": {
+      "Create": "Termin erstellen",
+      "Edit": "Termin ändern"
+    },
+    "Series": {
+      "Date": "Datum",
+      "Duration": "Dauer",
+      "Interval": "Intervall",
+      "MaxPersons": "Maximale Personzahl",
+      "MaxTime": "",
+      "MinTime": "",
+      "Quantity": "Anzahl",
+      "Time": "Zeit"
+    }
+  },
+  "REQUEST": {
+    "Action": {
+      "Confirm": "Buchung bestätigen",
+      "Deny": "Buchung ablehnen",
+      "MailConfirm": "Mailadresse bestätigen",
+      "RequestConfirm": "Angebot bestätigen",
+      "RequestDenial": "Angebot ablehnen",
+      "Search": "Suchtext",
+      "Submit": "Anfrage absenden"
+    },
+    "Dialog": {
+      "Comment": {
+        "Title": "Kommentar"
+      },
+      "Confirm": {
+        "Form": {
+          "Content": "Inhalt",
+          "Silent": "Keine Mail versenden",
+          "Subject": "Subject"
+        },
+        "Info": {
+          "Comment": "Kommentar",
+          "Size": "Gruppengröße",
+          "Space": "Verfügbare Plätze",
+          "Start": "Beginn"
+        },
+        "Title": "Buchungsanfrage bestätigen"
+      },
+      "Failed": {
+        "Message": "Es tut uns leid, aber es ist bei der Anfrage leider etwas schief gegangen. Bitte erneut probieren oder einen anderen Termin auswählen.",
+        "Title": "Fehler beim Verarbeiten der Terminanfrage"
+      }
+    },
+    "Form": {
+      "City": {
+        "Label": "Stadt"
+      },
+      "Comment": {
+        "Hint": "Wichtige Informationen, die für uns hilfreich sind.",
+        "Label": "Anmerkungen"
+      },
+      "Contact": {
+        "Hint": "Name der Kontaktperson",
+        "Label": "Name"
+      },
+      "Mail": {
+        "Label": "E-Mail Addresse"
+      },
+      "MaxAge": {
+        "Hint": "Das Alter des ältesten Teilnehmers",
+        "Label": "Ältester Teilnehmer"
+      },
+      "MinAge": {
+        "Hint": "Das Alter des jüngsten Teilnehmers",
+        "Label": "Jüngster Teilnehmer"
+      },
+      "Phone": {
+        "Label": "Telefon"
+      },
+      "School": {
+        "Label": "Schulklasse oder Kindergarten-Gruppe"
+      },
+      "SelectedDate": {
+        "Label": "Ausgewählter Termin"
+      },
+      "Size": {
+        "Error": {
+          "Max": "Die maximale Anzahl von freien Plätzen ist leider überschritten.",
+          "Min": "Es muss mindestens eine Person angemeldet werden."
+        },
+        "Hint": "Anzahl Personen, die angemeldet werden sollen",
+        "Label": "Gruppengröße"
+      },
+      "IgnoreSize": {
+        "Label": "Gruppengröße nicht prüfen"
+      },
+      "SpaceAvailable": "Places available",
+      "Street": {
+        "Label": "Straße"
+      },
+      "TermsAndConditions": {
+        "Label": "Ich habe die Hinweise zur Terminreservierung gelesen und akzeptiere sie.",
+        "Show": "Hinweise anzeigen"
+      },
+      "Title": {
+        "Hint": "Bezeichnung für die Gruppe",
+        "Label": "Bezeichung"
+      },
+      "Zip": {
+        "Label": "PLZ"
+      }
+    },
+    "Status": {
+      "CONFIRMED": "Unbestätigt",
+      "Title": "Status",
+      "UNCONFIRMED": "Bestätigt",
+      "UNKNOWN": "Unbekannt"
+    },
+    "Table": {
+      "Bookings": "Buchungen",
+      "Timestamp": "Zeitstempel",
+      "VisitorGroup": "Gruppenbezeichnung"
+    },
+    "Title": "Buchungsanfrage"
+  },
+  "RESPONSE": {
+    "Action": {
+      "Create": "Antwort erstellen",
+      "Search": "Antwort suchen"
+    },
+    "Dialog": {
+      "Delete": {
+        "Question": "Wollen Sie diese Antwort worklich löschen?",
+        "Title": "Anfrage {{type}} löschen"
+      }
+    },
+    "Field": {
+      "Content": {
+        "Hint": "",
+        "Title": "Inhalt"
+      },
+      "Id": {
+        "Hint": "",
+        "Title": "ID"
+      },
+      "Lang": {
+        "Hint": "",
+        "Title": "Sprache"
+      },
+      "Title": {
+        "Hint": "",
+        "Title": "Titel"
+      },
+      "Type": {
+        "BOOKING_CONFIRMED": "Buchungsanfrage bestätigt (EMail)",
+        "BOOKING_DENIED": "Buchungsanfrage abgelehnt (EMail)",
+        "BOOKING_REQUEST_RECEIVED": "Buchungsanfrage erhalten (Dialog)",
+        "Hint": "",
+        "Title": "Typ"
+      }
+    },
+    "Message": {
+      "CreateFailure": "Erstellung der Antwort fehlgeschlagen",
+      "CreateSuccess": "Antwort erfolgreich erstellt",
+      "DeleteSuccess": "Die Anfrage {{type}} wurde erfolgreich gelöscht",
+      "FormInvalid": "Leider hat etwas nicht richtig funktioniert"
+    }
+  },
+  "SETTING": {
+    "Field": {
+      "Id": "ID",
+      "Type": "Typ",
+      "Value": "Wert"
+    }
+  },
+  "VISITOR_GROUP": {
+    "MailConfirmation": {
+      "Failed": {
+        "Message": "Ihre E-Mail-Adresse wurde nicht bestätigt. Bitte kontaktieren Sie uns.",
+        "Title": "Leider hat etwas nicht funktionert!"
+      },
+      "Success": {
+        "Message": "Ihre Anfrage wurde erfolgreich bestätigt.",
+        "Title": "Vielen Dank!"
+      },
+      "Title": "Bestätigung"
+    },
+    "Message": {
+      "ConfirmEmailFailed": "Bestätigung fehlgeschlagen",
+      "ConfirmEmailSucceed": "Bestätigung erfolgreich"
+    },
+    "Title": "Gruppenbezeichnung",
+    "Status": {
+      "Title": "Status",
+      "CONFIRMED": "Mail bestätigt",
+      "UNCONFIRMED": "Mail unbestätigt"
+    }
+  },
+  "DASHBOARD": {
+    "Stats": {
+      "DailyVisitor": {
+        "Title": "Buchungsstatistik auf Tagesbasis",
+        "yAxis": "Plätze",
+        "TotalSpace": "Angebotene Plätze"
+      },
+      "TotalVisitor": {
+        "Title": "Buchungsstatistik Gesamt",
+        "TotalRemaining": "Verbleibende Plätze"
+      }
+    },
+    "Title": "📅 Dashboard-Übersicht",
+    "NoData": "Keine Daten verfügbar",
+    "ComeBackLater": "Bitte schauen Sie später noch einmal vorbei."
+  }
+}

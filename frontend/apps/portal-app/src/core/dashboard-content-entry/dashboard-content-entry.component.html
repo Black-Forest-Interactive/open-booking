@@ -1,0 +1,22 @@
+<mat-card routerLink="./details/{{data().date}}" class="hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+  <div class="flex flex-col gap-4">
+    <div class="px-4 pt-4 flex flex-col gap-1 items-center">
+      <div class="text-xl font-semibold">{{ data().date | date:'fullDate' }}</div>
+      <div class="flex flex-row items-center gap-4">
+        <mat-icon inline>schedule</mat-icon>
+        <span class="text-xl text-gray-600">{{ data().start | date:'shortTime' }}
+          - {{ data().end | date:'shortTime' }}</span>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="px-4">
+      <div echarts [options]="chartOption()" [merge]="chartMerge()" class="h-[150px]"></div>
+    </div>
+    <div class="p-4">
+      <a mat-flat-button color="primary" routerLink="./details/{{data().date}}" class="w-full">
+        <mat-icon>play_lesson</mat-icon>
+        <span class="ml-2">{{ 'BOOKING.Action.Create' | translate }}</span>
+      </a>
+    </div>
+  </div>
+</mat-card>

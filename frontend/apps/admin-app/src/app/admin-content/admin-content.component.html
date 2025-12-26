@@ -1,0 +1,115 @@
+<mat-sidenav-container class="h-full w-full">
+
+  <!-- Side Navigation -->
+  <mat-sidenav #drawer
+               [attr.role]="service.isHandset() ? 'dialog' : 'navigation'"
+               [mode]="service.isHandset() ? 'over' : 'side'"
+               [opened]="!service.isHandset()"
+               class="w-64 !bg-gray-200 mb-1.5">
+    <div class="py-4 px-4 border-b border-gray-200 dark:border-gray-700">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+        {{ 'BACKOFFICE.MENU.Title' | translate }}
+      </h3>
+    </div>
+    <mat-divider></mat-divider>
+    <nav class="p-4">
+      <div class="space-y-1">
+
+        <nav class="flex flex-col gap-2">
+          <a routerLink="./dashboard"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>dashboard</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Dashboard' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a routerLink="./offer"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>local_offer</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Offer' | translate }}</span>
+          </a>
+
+          <a routerLink="./booking"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>bookmarks</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Booking' | translate }}</span>
+          </a>
+
+          <a routerLink="./request"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>thumb_up_alt</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.BookingRequest' | translate }}</span>
+          </a>
+
+          <a routerLink="./search"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>search</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.SearchBooking' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a routerLink="./notification"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>notifications</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Notification' | translate }}</span>
+          </a>
+
+          <a routerLink="./response"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>chat_bubble</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Response' | translate }}</span>
+          </a>
+
+          <a routerLink="./audit"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>history</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.AuditLog' | translate }}</span>
+          </a>
+
+          <a routerLink="./cache"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>watch_later</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Cache' | translate }}</span>
+          </a>
+
+          <a routerLink="./settings"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>settings</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Settings' | translate }}</span>
+          </a>
+
+          <a routerLink="./mail"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>mail</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Mail' | translate }}</span>
+          </a>
+
+          <a routerLink="./staff"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>follow_the_signs</mat-icon>
+            <span class="text-sm font-medium">{{ 'BACKOFFICE.MENU.Staff' | translate }}</span>
+          </a>
+        </nav>
+
+      </div>
+    </nav>
+  </mat-sidenav>
+
+  <!-- Scrollable Content -->
+  <mat-sidenav-content class="overflow-y-auto">
+    <div class="container px-4 mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>{{ 'REQUEST.Dialog.Comment.Title' | translate }}</h2>
+<mat-dialog-content>
+  <p>{{ data.comment }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton="filled" [mat-dialog-close]="true">
+    {{ 'ACTION.Ok' | translate }}
+  </button>
+</mat-dialog-actions>

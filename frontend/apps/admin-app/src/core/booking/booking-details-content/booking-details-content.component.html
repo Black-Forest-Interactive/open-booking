@@ -1,0 +1,36 @@
+<mat-card>
+  <div class="p-4 pb-0">
+    <h4 class="text-lg font-medium">{{ 'REQUEST.Table.Bookings' | translate }}</h4>
+  </div>
+  <div class="flex flex-col gap-3 p-4 pt-0">
+    <mat-list>
+      <mat-divider></mat-divider>
+      @for (booking of data().bookings; track booking.id) {
+        <mat-list-item>
+          <mat-icon matListItemIcon>bookmark</mat-icon>
+          <div class="flex items-center gap-2 flex-1">
+            <div class="w-48">{{ booking.offer.start | date:'medium' }}</div>
+            <div class="w-32">
+              <mat-chip>{{ 'BOOKING.Status.' + booking.status | translate }}</mat-chip>
+            </div>
+            <div>{{ data().visitorGroup.size }} / {{ booking.spaceAvailable }}</div>
+            <div class="flex-1"></div>
+            <div class="flex gap-1">
+              @if (booking.status != 'CONFIRMED') {
+                <button matIconButton color="accent" (click)="confirm(booking)">
+                  <mat-icon>thumb_up</mat-icon>
+                </button>
+              }
+              @if (booking.status != 'DENIED') {
+                <button matIconButton color="warn" (click)="denial(booking)">
+                  <mat-icon>thumb_down</mat-icon>
+                </button>
+              }
+            </div>
+          </div>
+        </mat-list-item>
+      }
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
+</mat-card>

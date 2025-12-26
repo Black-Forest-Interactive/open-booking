@@ -31,7 +31,7 @@ export class OfferCreateSeriesComponent {
   constructor(private fb: FormBuilder,
               public service: OfferService,
               private toastService: HotToastService,
-              private translationService: TranslateService,
+              private translate: TranslateService,
               private location: Location
   ) {
   }
@@ -55,7 +55,7 @@ export class OfferCreateSeriesComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("OFFER.Message.FormInvalid").subscribe(
+    this.translate.get("OFFER.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -91,7 +91,7 @@ export class OfferCreateSeriesComponent {
 
     if (result == null || !result.success) {
       let message = (result == null) ? "OFFER.Message.SeriesCreationFailed" : result.msg
-      this.translationService.get(message).subscribe(
+      this.translate.get(message).subscribe(
         msg => {
           this.toastService.error(msg)
           this.location.back()

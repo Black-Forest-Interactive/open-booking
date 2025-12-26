@@ -13,10 +13,11 @@ import {BookingDailyBoardOfferComponent} from './booking-daily-board-offer/booki
 import {BookingBoardEntryComponent} from './booking-board-entry/booking-board-entry.component';
 import {VisitorGroupModule} from "../visitor-group/visitor-group.module";
 import {BookingDetailsHeaderComponent} from './booking-details-header/booking-details-header.component';
-import {BookingDetailsVisitorGroupComponent} from './booking-details-visitor-group/booking-details-visitor-group.component';
+import {
+  BookingDetailsVisitorGroupComponent
+} from './booking-details-visitor-group/booking-details-visitor-group.component';
 import {BookingDetailsBookingsComponent} from './booking-details-bookings/booking-details-bookings.component';
-import {QuillModule} from "ngx-quill";
-import { BookingDetailsCommentComponent } from './booking-details-comment/booking-details-comment.component';
+import {BookingDetailsCommentComponent} from './booking-details-comment/booking-details-comment.component';
 
 
 @NgModule({
@@ -31,6 +32,9 @@ import { BookingDetailsCommentComponent } from './booking-details-comment/bookin
     BookingDetailsVisitorGroupComponent,
     BookingDetailsBookingsComponent,
     BookingDetailsCommentComponent
+  ],
+  exports: [
+    BookingDetailsVisitorGroupComponent
   ],
   imports: [
     CommonModule,

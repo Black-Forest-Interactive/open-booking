@@ -1,0 +1,480 @@
+{
+  "ACTION": {
+    "Back": "Back",
+    "Cancel": "Cancel",
+    "Close": "Close",
+    "Delete": "Delete",
+    "Details": "Details",
+    "Edit": "Edit",
+    "Next": "Next",
+    "No": "No",
+    "Ok": "OK",
+    "Save": "Save",
+    "Submit": "Submit",
+    "Yes": "Yes"
+  },
+  "ADMIN": {
+    "MENU": {
+      "Booking": "Booking Mgt",
+      "BookingRequest": "Booking Request Mgt",
+      "Dashboard": "Dashboard",
+      "Offer": "Offer Mgt",
+      "SearchBooking": "Search Booking",
+      "Texts": "Text Mgt"
+    }
+  },
+  "APP": {
+    "Title": "Open Booking",
+    "Welcome": "Welcome"
+  },
+  "AUDIT": {
+    "Action": {
+      "Search": "Search for audit"
+    },
+    "Field": {
+      "Level": {
+        "Title": "Level"
+      },
+      "Message": {
+        "Title": "Message"
+      },
+      "Source": {
+        "Title": "Source"
+      },
+      "Timestamp": {
+        "Title": "Timestamp"
+      },
+      "User": {
+        "Title": "User"
+      }
+    }
+  },
+  "BACKOFFICE": {
+    "MENU": {
+      "AuditLog": "Audit Log",
+      "Booking": "Booking Mgt",
+      "BookingRequest": "Booking Request Mgt",
+      "Cache": "Cache Mgt",
+      "Dashboard": "Dashboard",
+      "Mail": "Mail Status",
+      "Notification": "Notification Mgt",
+      "Offer": "Offer Mgt",
+      "Response": "Response Mgt",
+      "SearchBooking": "Search Booking",
+      "Settings": "Settings"
+    }
+  },
+  "BOOKING": {
+    "Action": {
+      "Create": "Create Booking",
+      "Search": "Search Booking"
+    },
+    "Create": {
+      "Action": {
+        "Reset": "Reset Form",
+        "Submit": "Submit request"
+      },
+      "Step": {
+        "Finalize": {
+          "Header": "Finalize"
+        },
+        "Offer": {
+          "Header": "Offer"
+        },
+        "VisitorGroup": {
+          "City": "City",
+          "Contact": "Contact",
+          "Header": "Visitor Group",
+          "Mail": "Email",
+          "MaxAge": "Maximum Age",
+          "MinAge": "Minimum Age",
+          "Phone": "Phone",
+          "Size": "Size of group",
+          "Street": "Street",
+          "Title": "Group title",
+          "Zip": "Zip Code"
+        }
+      },
+      "Title": "Create a new booking"
+    },
+    "Details": {
+      "Title": "Booking Details"
+    },
+    "Dialog": {
+      "InfoTitle": "Booking Info"
+    },
+    "Entry": {
+      "Empty": "No values found",
+      "Select": "Select Day"
+    },
+    "Status": {
+      "CONFIRMED": "Confirmed",
+      "Title": "Booking Status",
+      "UNCONFIRMED": "Unconfirmed",
+      "DENIED": "Denied",
+      "UNKNOWN": "Unknown"
+    }
+  },
+  "CACHE": {
+    "Action": {
+      "Reset": "Reset"
+    },
+    "Field": {
+      "Evict": "Evict count/weight",
+      "Hit": "Hit/Miss",
+      "Load": "Load success/failed",
+      "Name": "Cache Name"
+    }
+  },
+  "DAY_INFO": {
+    "Chart": {
+      "Space": {
+        "Series": {
+          "Available": "Available Space",
+          "Confirmed": "Confirmed Space",
+          "Deactivated": "Canceled",
+          "Unconfirmed": "Unconfirmed Space"
+        },
+        "Title": "Space Chart"
+      }
+    },
+    "SelectRange": {
+      "EndDate": "End Date",
+      "StartDate": "Start Date",
+      "Title": "Date Range Filter"
+    }
+  },
+  "ERROR": {
+    "NoDaySelectedForBooking": "You must select at least one day to start the booking",
+    "NoSpaceLeftForBooking": "There is no space left for booking",
+    "OfferIsDeactivated": "Offer is deactivated and therefore no booking possible"
+  },
+  "LANG": {
+    "English": "English",
+    "German": "Deutsch",
+    "Title": "Language",
+    "de": "Deutsch",
+    "en": "English"
+  },
+  "MAIL": {
+    "Action": {
+      "Search": "Search Job",
+      "SearchHistory": "Search History"
+    },
+    "Status": {
+      "FAILED": "Failed",
+      "FINISHED": "Finished",
+      "QUEUED": "Queued",
+      "RETRY": "Retrying"
+    },
+    "Table": {
+      "Id": "Id",
+      "Message": "Message",
+      "Status": "Status",
+      "Timestamp": "Timestamp",
+      "Title": "Title"
+    }
+  },
+  "MENU": {
+    "Admin": "Admin",
+    "Backoffice": "Backoffice",
+    "Help": "Help",
+    "Home": "Home",
+    "Language": "Language",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Title": "Menu"
+  },
+  "NOTIFICATION": {
+    "Action": {
+      "Create": "Create Notification Template",
+      "Search": "Searches Notification Template"
+    },
+    "Dialog": {
+      "Delete": {
+        "Question": "Do you really want to delete the notification template?",
+        "Title": "Delete notification template {{type}}"
+      }
+    },
+    "Field": {
+      "Content": {
+        "Hint": "",
+        "Title": "Content"
+      },
+      "Id": {
+        "Hint": "",
+        "Title": "Id"
+      },
+      "Lang": {
+        "Hint": "",
+        "Title": "Language"
+      },
+      "Subject": {
+        "Hint": "",
+        "Title": "Subject"
+      },
+      "Type": {
+        "BOOKING_REQUEST_CONFIRMED_CONTACT": "Booking Confirmed message for Contact",
+        "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
+        "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
+        "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
+        "Hint": "",
+        "Title": "Type"
+      }
+    },
+    "Message": {
+      "CreateFailure": "Creation of the notification template failed",
+      "CreateSuccess": "The notification template was created successfully",
+      "DeleteSuccess": "The notification template {{type}} was deleted successfully",
+      "FormInvalid": "Something went wrong with the form"
+    }
+  },
+  "OFFER": {
+    "Action": {
+      "CreateRange": "Create (Range)",
+      "CreateSeries": "Create (Series)",
+      "CreateSingle": "Create (Single)",
+      "Details": "Details",
+      "Export_Excel": "Excel",
+      "Export_PDF": "PDF",
+      "Print": "Print",
+      "Search": "Search offer",
+      "Select": "Select Offer",
+      "ShowBookings": "Bookings",
+      "Filter": "Filter"
+    },
+    "Field": {
+      "Active": "Active",
+      "Date": "Date",
+      "Finish": "Finish",
+      "FinishTime": "Finish Time",
+      "Id": "Id",
+      "MaxPersons": "Max Persons",
+      "Start": "Start",
+      "StartTime": "Start Time"
+    },
+    "Form": {
+      "Active": "Active",
+      "End": "End",
+      "Id": "Id",
+      "MaxPersons": "Max. Persons",
+      "Start": "Start"
+    },
+    "Info": {
+      "SpaceAvailable": "There are {{value}} places available"
+    },
+    "Operation": {
+      "Create": "Create Offer",
+      "Edit": "Edit Offer"
+    },
+    "Series": {
+      "Date": "Date",
+      "Duration": "Duration",
+      "Interval": "Interval",
+      "MaxPersons": "max Persons",
+      "MaxTime": "Max Time",
+      "MinTime": "Min Time",
+      "Quantity": "Quantity",
+      "Time": "Time"
+    }
+  },
+  "REQUEST": {
+    "Action": {
+      "Confirm": "Confirm booking",
+      "Deny": "Deny booking",
+      "MailConfirm": "Confirm Mail",
+      "RequestConfirm": "Confirm Offer",
+      "RequestDenial": "Denial Offer",
+      "Search": "Search Request",
+      "Submit": "Submit request"
+    },
+    "Dialog": {
+      "Comment": {
+        "Title": "Comment Dialog"
+      },
+      "Confirm": {
+        "Form": {
+          "Content": "Content",
+          "Silent": "Send no email",
+          "Subject": "Subject"
+        },
+        "Info": {
+          "Comment": "Comment",
+          "Size": "Group Size",
+          "Space": "Available space",
+          "Start": "Start Time"
+        },
+        "Title": "Confirm Booking Request"
+      },
+      "Failed": {
+        "Message": "We are sorry, but something went wrong with your request. Please try again or choose a different date.",
+        "Title": "Booking Request Failed"
+      }
+    },
+    "Form": {
+      "City": {
+        "Label": "City"
+      },
+      "Comment": {
+        "Hint": "Add some additional information that is important to consider",
+        "Label": "Comment"
+      },
+      "Contact": {
+        "Hint": "The contact name",
+        "Label": "Contact"
+      },
+      "Mail": {
+        "Label": "Mail"
+      },
+      "MaxAge": {
+        "Hint": "The age of the oldest person in the group",
+        "Label": "Maximum Age"
+      },
+      "MinAge": {
+        "Hint": "The age of the youngest person in the group",
+        "Label": "Minimum Age"
+      },
+      "Phone": {
+        "Label": "Phone"
+      },
+      "School": {
+        "Label": "School-class or kindergarten group"
+      },
+      "SelectedDate": {
+        "Label": "Selected Date"
+      },
+      "Size": {
+        "Error": {
+          "Max": "The maximum amount of people was reached",
+          "Min": "The amount of people must be more than zero"
+        },
+        "Hint": "The amount of people within the group",
+        "Label": "Group Size"
+      },
+      "IgnoreSize": {
+        "Label": "Do not validate group size"
+      },
+      "SpaceAvailable": "Places available",
+      "Street": {
+        "Label": "Street"
+      },
+      "TermsAndConditions": {
+        "Label": "I read the terms and conditions and accept these.",
+        "Show": "Show terms and conditions"
+      },
+      "Title": {
+        "Hint": "Some title for the Group",
+        "Label": "Title"
+      },
+      "Zip": {
+        "Label": "Zip Code"
+      }
+    },
+    "Status": {
+      "CONFIRMED": "Confirmed",
+      "Title": "Status",
+      "UNCONFIRMED": "Unconfirmed",
+      "UNKNOWN": "Unknown"
+    },
+    "Table": {
+      "Bookings": "Bookings",
+      "Timestamp": "Timestamp",
+      "VisitorGroup": "Visitor Group"
+    },
+    "Title": "Booking Request"
+  },
+  "RESPONSE": {
+    "Action": {
+      "Create": "Create Response",
+      "Search": "Searches Response"
+    },
+    "Dialog": {
+      "Delete": {
+        "Question": "Do you really want to delete the response?",
+        "Title": "Delete response {{type}}"
+      }
+    },
+    "Field": {
+      "Content": {
+        "Hint": "",
+        "Title": "Content"
+      },
+      "Id": {
+        "Hint": "",
+        "Title": "Id"
+      },
+      "Lang": {
+        "Hint": "",
+        "Title": "Language"
+      },
+      "Title": {
+        "Hint": "",
+        "Title": "Title"
+      },
+      "Type": {
+        "BOOKING_CONFIRMED": "Booking Request Confirmed (EMail)",
+        "BOOKING_DENIED": "Booking Request Denied (EMail)",
+        "BOOKING_REQUEST_RECEIVED": "Booking Request Received (Dialog)",
+        "Hint": "",
+        "Title": "Type"
+      }
+    },
+    "Message": {
+      "CreateFailure": "Creation of the response failed",
+      "CreateSuccess": "The response was created successfully",
+      "DeleteSuccess": "The response {{type}} was deleted successfully",
+      "FormInvalid": "Something went wrong with the form"
+    }
+  },
+  "SETTING": {
+    "Field": {
+      "Id": "Id",
+      "Type": "Type",
+      "Value": "Value"
+    }
+  },
+  "VISITOR_GROUP": {
+    "MailConfirmation": {
+      "Failed": {
+        "Message": "Your Email was not confirmed, please contact support",
+        "Title": "Something went terribly wrong!"
+      },
+      "Success": {
+        "Message": "Your Email was confirmed successfully",
+        "Title": "Well done!"
+      },
+      "Title": "Confirmation of Email"
+    },
+    "Message": {
+      "ConfirmEmailFailed": "Confirmation of the email failed",
+      "ConfirmEmailSucceed": "Confirmation of the email was done successfully"
+    },
+    "Title": "Visitor Group",
+    "Status": {
+      "Title": "Status",
+      "CONFIRMED": "Confirmed",
+      "UNCONFIRMED": "Unconfirmed"
+    }
+  },
+  "DASHBOARD": {
+    "Stats": {
+      "DailyVisitor": {
+        "Title": "Daily Visitor Statistics",
+        "yAxis": "Space",
+        "TotalSpace": "Available space"
+      },
+      "TotalVisitor": {
+        "Title": "Total Visitor Statistics",
+        "TotalRemaining": "Remaining space"
+      }
+    }
+  },
+  "FORBIDDEN": {
+    "TITLE": "Access Forbidden",
+    "DESCRIPTION": "Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is an error.",
+    "GO_BACK": "Go Back",
+    "HOME_PAGE": "Home Page",
+    "NEED_HELP": "Need help?",
+    "CONTACT_SUPPORT": "Contact Support"
+  }
+}
