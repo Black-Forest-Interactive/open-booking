@@ -1,0 +1,48 @@
+<app-loading-bar [reloading]="reloading()"/>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-xl mx-auto mt-12 flex flex-col gap-4">
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'RESPONSE.Field.Lang.Title' | translate }}</mat-label>
+    <mat-select formControlName="lang" required>
+      @for (lang of languages; track lang) {
+        <mat-option [value]="lang">
+          {{ 'LANG.' + lang | translate }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-hint>{{ 'RESPONSE.Field.Lang.Hint' | translate }}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'RESPONSE.Field.Type.Title' | translate }}</mat-label>
+    <mat-select formControlName="type" required>
+      @for (type of types; track type) {
+        <mat-option [value]="type">
+          {{ 'RESPONSE.Field.Type.' + type | translate }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-hint>{{ 'RESPONSE.Field.Type.Hint' | translate }}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'RESPONSE.Field.Title.Title' | translate }}</mat-label>
+    <input matInput type="text" formControlName="title" required>
+  </mat-form-field>
+
+  <quill-editor formControlName="content" placeholder="Enter Text" class="pb-3"></quill-editor>
+
+  <div class="flex gap-3">
+    <button matButton="elevated" color="primary" type="submit" class="flex-1">
+      <mat-icon>save</mat-icon>
+      {{ 'ACTION.Save' | translate }}
+    </button>
+
+    <button matButton="outlined" color="warn" type="button" (click)="cancel()" class="flex-1">
+      <mat-icon>cancel</mat-icon>
+      {{ 'ACTION.Cancel' | translate }}
+    </button>
+  </div>
+
+</form>
