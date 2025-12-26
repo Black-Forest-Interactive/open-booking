@@ -47,7 +47,7 @@ export class StaffChangeComponent {
     private fb: FormBuilder,
     private service: StaffService,
     private toast: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -59,15 +59,15 @@ export class StaffChangeComponent {
       }
     )
     effect(() => {
-      const offer = this.staffResource.value()
-      if (offer) this.handleDataEdit(offer)
+      const value = this.staffResource.value()
+      if (value) this.handleDataEdit(value)
     })
   }
 
   private handleDataEdit(data: StaffMember) {
     this.data.set(data)
     this.initValues(data)
-    this.translationService.get("STAFF.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
+    this.translate.get("STAFF.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
     this.validateForm()
   }
 
@@ -97,7 +97,7 @@ export class StaffChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("STAFF.Message.FormInvalid").subscribe(
+    this.translate.get("STAFF.Message.FormInvalid").subscribe(
       msg => this.toast.error(msg)
     )
   }
@@ -126,11 +126,11 @@ export class StaffChangeComponent {
 
   private handleChangeResult(result: StaffMember) {
     if (result == null) {
-      this.translationService.get("STAFF.Message.CreateFailure").subscribe(
+      this.translate.get("STAFF.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)
       )
     } else {
-      this.translationService.get("STAFF.Message.CreateSuccess").subscribe(
+      this.translate.get("STAFF.Message.CreateSuccess").subscribe(
         msg => {
           this.toast.success(msg)
           navigateToStaff(this.router)

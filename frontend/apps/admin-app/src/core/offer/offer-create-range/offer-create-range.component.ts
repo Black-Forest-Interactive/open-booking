@@ -51,7 +51,7 @@ export class OfferCreateRangeComponent {
     private fb: FormBuilder,
     public service: OfferService,
     private toastService: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.date = this.fb.group({
@@ -97,7 +97,7 @@ export class OfferCreateRangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("OFFER.Message.FormInvalid").subscribe(
+    this.translate.get("OFFER.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -131,7 +131,7 @@ export class OfferCreateRangeComponent {
   private handleResult(result: GenericRequestResult) {
     if (result == null || !result.success) {
       const message = (result == null) ? "OFFER.Message.RangeCreationFailed" : result.msg
-      this.translationService.get(message).subscribe(
+      this.translate.get(message).subscribe(
         msg => {
           this.toastService.error(msg)
           navigateToOffer(this.router)

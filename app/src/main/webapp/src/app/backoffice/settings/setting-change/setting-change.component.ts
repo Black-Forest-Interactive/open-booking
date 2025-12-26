@@ -32,7 +32,7 @@ export class SettingChangeComponent {
     private location: Location,
     private service: SettingService,
     private toast: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -56,13 +56,13 @@ export class SettingChangeComponent {
 
   private handleDataCreate() {
     this.data = null;
-    this.translationService.get("SETTING.CHANGE.Create").subscribe(text => this.title = text);
+    this.translate.get("SETTING.CHANGE.Create").subscribe(text => this.title = text);
   }
 
   private handleDataEdit(data: Setting) {
     this.data = data;
     this.initValues(data);
-    this.translationService.get("SETTING.CHANGE.Update", {setting: data.id}).subscribe(text => this.title = text);
+    this.translate.get("SETTING.CHANGE.Update", {setting: data.id}).subscribe(text => this.title = text);
     this.validateForm()
     this.form.controls['key'].disable()
     this.form.controls['type'].disable()
@@ -115,7 +115,7 @@ export class SettingChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("SETTING.Message.FormInvalid").subscribe(
+    this.translate.get("SETTING.Message.FormInvalid").subscribe(
       msg => this.toast.error(msg)
     )
   }
@@ -131,11 +131,11 @@ export class SettingChangeComponent {
 
   private handleCreateResult(result: Setting) {
     if (result == null) {
-      this.translationService.get("SETTING.Message.CreateFailure").subscribe(
+      this.translate.get("SETTING.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)
       )
     } else {
-      this.translationService.get("SETTING.Message.CreateSuccess").subscribe(
+      this.translate.get("SETTING.Message.CreateSuccess").subscribe(
         msg => {
           this.toast.success(msg)
           this.router.navigate(["/backoffice/settings"]).then()

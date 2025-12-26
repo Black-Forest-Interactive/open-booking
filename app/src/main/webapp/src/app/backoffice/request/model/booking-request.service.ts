@@ -4,7 +4,13 @@ import {HttpClient} from "@angular/common/http";
 import {LoggingService} from "../../../shared/logging/logging.service";
 import {BehaviorSubject, EMPTY, map, Observable, switchMap, tap} from "rxjs";
 import {Page} from "../../../shared/page/page";
-import {BookingConfirmationContent, BookingRequest, BookingRequestChangeRequest, BookingRequestFilterRequest, BookingRequestInfo} from "./booking-request-api";
+import {
+  BookingConfirmationContent,
+  BookingRequest,
+  BookingRequestChangeRequest,
+  BookingRequestFilterRequest,
+  BookingRequestInfo
+} from "./booking-request-api";
 import {GenericRequestResult} from "../../../shared/shared-api";
 import {ResolvedResponse} from "../../response/model/response-api";
 import {RequestProcessDialogComponent} from "../request-process-dialog/request-process-dialog.component";
@@ -20,7 +26,7 @@ import {RequestChangeResultComponent} from "../request-change-result/request-cha
 })
 export class BookingRequestService extends BaseService {
 
-  constructor(http: HttpClient, logging: LoggingService, private dialog: MatDialog, private translationService: TranslateService, private toastService: HotToastService,) {
+  constructor(http: HttpClient, logging: LoggingService, private dialog: MatDialog, private translate: TranslateService, private toastService: HotToastService,) {
     super(http, 'backend/request', logging)
     this.retryCount = 1
   }
@@ -123,7 +129,7 @@ export class BookingRequestService extends BaseService {
     if (result.success) {
       this.toastService.success(RequestChangeResultComponent, {data: {result: result, data: data}})
     } else {
-      let message = this.translationService.instant(result.msg)
+      let message = this.translate.instant(result.msg)
       this.toastService.error(message)
     }
   }

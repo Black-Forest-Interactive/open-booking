@@ -37,7 +37,7 @@ export class OfferChangeComponent {
     private location: Location,
     private service: OfferService,
     private toastService: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -62,13 +62,13 @@ export class OfferChangeComponent {
 
   private handleDataCreate() {
     this.data = null;
-    this.translationService.get("OFFER.CHANGE.Create").subscribe(text => this.title = text);
+    this.translate.get("OFFER.CHANGE.Create").subscribe(text => this.title = text);
   }
 
   private handleDataEdit(data: Offer) {
     this.data = data;
     this.initValues(data);
-    this.translationService.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
+    this.translate.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
     this.validateForm();
     this.reloading = false;
   }
@@ -145,7 +145,7 @@ export class OfferChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("OFFER.Message.FormInvalid").subscribe(
+    this.translate.get("OFFER.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -161,11 +161,11 @@ export class OfferChangeComponent {
 
   private handleCreateResult(result: Offer) {
     if (result == null) {
-      this.translationService.get("OFFER.Message.CreateFailure").subscribe(
+      this.translate.get("OFFER.Message.CreateFailure").subscribe(
         msg => this.toastService.error(msg)
       )
     } else {
-      this.translationService.get("OFFER.Message.CreateSuccess").subscribe(
+      this.translate.get("OFFER.Message.CreateSuccess").subscribe(
         msg => {
           this.toastService.success(msg)
           this.router.navigate(["/backoffice/offer"]).then()

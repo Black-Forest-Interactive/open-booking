@@ -48,7 +48,7 @@ export class OfferCreateSeriesComponent {
     private fb: FormBuilder,
     public service: OfferService,
     private toastService: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -91,7 +91,7 @@ export class OfferCreateSeriesComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("OFFER.Message.FormInvalid").subscribe(
+    this.translate.get("OFFER.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -124,7 +124,7 @@ export class OfferCreateSeriesComponent {
   private handleResult(result: GenericRequestResult) {
     if (result == null || !result.success) {
       const message = (result == null) ? "OFFER.Message.SeriesCreationFailed" : result.msg
-      this.translationService.get(message).subscribe(
+      this.translate.get(message).subscribe(
         msg => {
           this.toastService.error(msg)
           navigateToOffer(this.router)

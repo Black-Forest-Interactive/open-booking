@@ -53,7 +53,7 @@ export class OfferChangeComponent {
     private fb: FormBuilder,
     private service: OfferService,
     private toast: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -73,7 +73,7 @@ export class OfferChangeComponent {
   private handleDataEdit(data: Offer) {
     this.data.set(data)
     this.initValues(data)
-    this.translationService.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title.set(text))
+    this.translate.get("OFFER.CHANGE.Update", {offer: data.id}).subscribe(text => this.title.set(text))
     this.validateForm()
     this.reloading.set(false)
   }
@@ -119,7 +119,7 @@ export class OfferChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("OFFER.Message.FormInvalid").subscribe(
+    this.translate.get("OFFER.Message.FormInvalid").subscribe(
       msg => this.toast.error(msg)
     )
   }
@@ -163,11 +163,11 @@ export class OfferChangeComponent {
 
   private handleChangeResult(result: Offer) {
     if (result == null) {
-      this.translationService.get("OFFER.Message.CreateFailure").subscribe(
+      this.translate.get("OFFER.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)
       )
     } else {
-      this.translationService.get("OFFER.Message.CreateSuccess").subscribe(
+      this.translate.get("OFFER.Message.CreateSuccess").subscribe(
         msg => {
           this.toast.success(msg)
           navigateToOffer(this.router)

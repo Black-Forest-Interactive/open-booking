@@ -55,12 +55,12 @@ export class NotificationChangeComponent {
     private fb: FormBuilder,
     private service: NotificationService,
     private toast: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
-    this.languages = this.translationService.getLangs()
+    this.languages = this.translate.getLangs()
     this.form = this.fb.group({
-        lang: [this.translationService.getCurrentLang(), Validators.required],
+        lang: [this.translate.getCurrentLang(), Validators.required],
         type: [this.types[0], Validators.required],
         subject: ['', Validators.required],
         content: ['', Validators.required]
@@ -76,7 +76,7 @@ export class NotificationChangeComponent {
   private handleDataEdit(data: NotificationTemplate) {
     this.data.set(data)
     this.initValues(data)
-    this.translationService.get("NOTIFICATION.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
+    this.translate.get("NOTIFICATION.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
     this.validateForm()
   }
 
@@ -109,7 +109,7 @@ export class NotificationChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("NOTIFICATION.Message.FormInvalid").subscribe(
+    this.translate.get("NOTIFICATION.Message.FormInvalid").subscribe(
       msg => this.toast.error(msg)
     )
   }
@@ -138,11 +138,11 @@ export class NotificationChangeComponent {
 
   private handleChangeResult(result: NotificationTemplate) {
     if (result == null) {
-      this.translationService.get("NOTIFICATION.Message.CreateFailure").subscribe(
+      this.translate.get("NOTIFICATION.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)
       )
     } else {
-      this.translationService.get("NOTIFICATION.Message.CreateSuccess").subscribe(
+      this.translate.get("NOTIFICATION.Message.CreateSuccess").subscribe(
         msg => {
           this.toast.success(msg)
           navigateToNotification(this.router)

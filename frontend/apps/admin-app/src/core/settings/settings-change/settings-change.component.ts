@@ -52,7 +52,7 @@ export class SettingsChangeComponent {
     private fb: FormBuilder,
     private service: SettingsService,
     private toast: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -70,7 +70,7 @@ export class SettingsChangeComponent {
   private handleDataEdit(data: Setting) {
     this.data.set(data)
     this.initValues(data)
-    this.translationService.get("SETTING.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
+    this.translate.get("SETTING.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
     this.validateForm()
   }
 
@@ -101,7 +101,7 @@ export class SettingsChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("SETTING.Message.FormInvalid").subscribe(
+    this.translate.get("SETTING.Message.FormInvalid").subscribe(
       msg => this.toast.error(msg)
     )
   }
@@ -132,11 +132,11 @@ export class SettingsChangeComponent {
 
   private handleChangeResult(result: Setting) {
     if (result == null) {
-      this.translationService.get("SETTING.Message.CreateFailure").subscribe(
+      this.translate.get("SETTING.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)
       )
     } else {
-      this.translationService.get("SETTING.Message.CreateSuccess").subscribe(
+      this.translate.get("SETTING.Message.CreateSuccess").subscribe(
         msg => {
           this.toast.success(msg)
           navigateToSettings(this.router)

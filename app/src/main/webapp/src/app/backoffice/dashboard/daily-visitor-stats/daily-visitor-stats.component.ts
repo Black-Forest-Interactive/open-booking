@@ -18,7 +18,7 @@ export class DailyVisitorStatsComponent {
   dailyChartOption: EChartsOption = {}
   totalChartOption: EChartsOption = {}
 
-  constructor(private service: DashboardService, private dayInfoService: DayInfoService, private translationService: TranslateService) {
+  constructor(private service: DashboardService, private dayInfoService: DayInfoService, private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class DailyVisitorStatsComponent {
 
     this.totalChartOption = {
       title: {
-        text: this.translationService.instant('DASHBOARD.Stats.TotalVisitor.Title'),
+        text: this.translate.instant('DASHBOARD.Stats.TotalVisitor.Title'),
       },
       toolbox: {
         feature: {
@@ -86,7 +86,7 @@ export class DailyVisitorStatsComponent {
           data: [
             {value: totalConfirmed, name: this.dayInfoService.labelConfirmed},
             {value: totalUnconfirmed, name: this.dayInfoService.labelUnconfirmed},
-            {value: totalRemaining, name: this.translationService.instant('DASHBOARD.Stats.TotalVisitor.TotalRemaining')},
+            {value: totalRemaining, name: this.translate.instant('DASHBOARD.Stats.TotalVisitor.TotalRemaining')},
           ]
         }
       ]
@@ -95,7 +95,7 @@ export class DailyVisitorStatsComponent {
 
     this.dailyChartOption = {
       title: {
-        text: this.translationService.instant('DASHBOARD.Stats.DailyVisitor.Title'),
+        text: this.translate.instant('DASHBOARD.Stats.DailyVisitor.Title'),
       },
       tooltip: {
         trigger: 'axis',
@@ -125,7 +125,7 @@ export class DailyVisitorStatsComponent {
       yAxis: [
         {
           type: 'value',
-          name: this.translationService.instant('DASHBOARD.Stats.DailyVisitor.yAxis'),
+          name: this.translate.instant('DASHBOARD.Stats.DailyVisitor.yAxis'),
           position: 'left',
           alignTicks: true,
           axisLine: {
@@ -138,7 +138,7 @@ export class DailyVisitorStatsComponent {
       ],
       series: [
         {
-          name: this.translationService.instant('DASHBOARD.Stats.DailyVisitor.TotalSpace'),
+          name: this.translate.instant('DASHBOARD.Stats.DailyVisitor.TotalSpace'),
           type: 'line',
           data: d.map(i => i.totalSpace),
 

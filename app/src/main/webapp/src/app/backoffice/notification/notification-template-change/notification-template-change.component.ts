@@ -4,7 +4,11 @@ import {Location} from "@angular/common";
 import {HotToastService} from "@ngneat/hot-toast";
 import {TranslateService} from "@ngx-translate/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NOTIFICATION_TEMPLATE_TYPES, NotificationTemplate, NotificationTemplateChangeRequest} from "../model/notification-template-api";
+import {
+  NOTIFICATION_TEMPLATE_TYPES,
+  NotificationTemplate,
+  NotificationTemplateChangeRequest
+} from "../model/notification-template-api";
 import {NotificationTemplateService} from "../model/notification-template.service";
 
 @Component({
@@ -22,7 +26,7 @@ export class NotificationTemplateChangeComponent {
 
   types: string[] = NOTIFICATION_TEMPLATE_TYPES
   form: FormGroup = this.fb.group({
-      lang: [this.translationService.currentLang, Validators.required],
+      lang: [this.translate.currentLang, Validators.required],
       type: [this.types[0], Validators.required],
       subject: ['', Validators.required],
       content: ['', Validators.required]
@@ -35,14 +39,14 @@ export class NotificationTemplateChangeComponent {
     private location: Location,
     private service: NotificationTemplateService,
     private toastService: HotToastService,
-    private translationService: TranslateService,
+    private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
-    this.languages = this.translationService.langs
+    this.languages = this.translate.langs
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadData(+id, (e) => this.handleDataEdit(e))
@@ -59,13 +63,13 @@ export class NotificationTemplateChangeComponent {
 
   private handleDataCreate() {
     this.data = null;
-    this.translationService.get("NOTIFICATION.CHANGE.Create").subscribe(text => this.title = text);
+    this.translate.get("NOTIFICATION.CHANGE.Create").subscribe(text => this.title = text);
   }
 
   private handleDataEdit(data: NotificationTemplate) {
     this.data = data;
     this.initValues(data);
-    this.translationService.get("NOTIFICATION.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
+    this.translate.get("NOTIFICATION.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text);
     this.validateForm();
     this.reloading = false;
   }
@@ -115,7 +119,7 @@ export class NotificationTemplateChangeComponent {
   }
 
   private showFormInvalidError() {
-    this.translationService.get("NOTIFICATION.Message.FormInvalid").subscribe(
+    this.translate.get("NOTIFICATION.Message.FormInvalid").subscribe(
       msg => this.toastService.error(msg)
     )
   }
@@ -131,11 +135,11 @@ export class NotificationTemplateChangeComponent {
 
   private handleCreateResult(result: NotificationTemplate) {
     if (result == null) {
-      this.translationService.get("NOTIFICATION.Message.CreateFailure").subscribe(
+      this.translate.get("NOTIFICATION.Message.CreateFailure").subscribe(
         msg => this.toastService.error(msg)
       )
     } else {
-      this.translationService.get("NOTIFICATION.Message.CreateSuccess").subscribe(
+      this.translate.get("NOTIFICATION.Message.CreateSuccess").subscribe(
         msg => {
           this.toastService.success(msg)
           this.router.navigate(["/backoffice/notification"]).then()
