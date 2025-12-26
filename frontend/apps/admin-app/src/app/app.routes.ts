@@ -11,7 +11,8 @@ import {
   PERMISSION_OFFER_ADMIN,
   PERMISSION_REQUEST_ADMIN,
   PERMISSION_RESPONSE_ADMIN,
-  PERMISSION_SETTINGS_ADMIN
+  PERMISSION_SETTINGS_ADMIN,
+  PERMISSION_STAFF_ADMIN
 } from "@open-booking/admin";
 
 export const appRoutes: Route[] = [
@@ -86,6 +87,12 @@ export const appRoutes: Route[] = [
     loadChildren: () => import('../core/group/group.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],
     data: {roles: [PERMISSION_GROUP_ADMIN]}
+  },
+  {
+    path: 'staff',
+    loadChildren: () => import('../core/staff/staff.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_STAFF_ADMIN]}
   },
   {
     path: 'forbidden',

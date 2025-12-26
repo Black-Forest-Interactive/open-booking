@@ -47,3 +47,7 @@ export function navigateToMail(router: Router) {
 export function navigateToGroup(router: Router) {
   router.navigate(['group']).then()
 }
+
+export function navigateToStaff(router: Router) {
+  router.navigate(['staff']).then()
+}

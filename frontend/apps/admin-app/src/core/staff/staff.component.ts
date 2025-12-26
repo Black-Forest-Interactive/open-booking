@@ -1,37 +1,35 @@
 import {Component, computed, resource, signal} from '@angular/core';
-import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
-import {SettingsService} from "@open-booking/admin";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
-import {CommonModule} from "@angular/common";
-import {TranslatePipe} from "@ngx-translate/core";
-import {MatTableModule} from "@angular/material/table";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatIconModule} from "@angular/material/icon";
-import {MatInputModule} from "@angular/material/input";
-import {RouterLink} from "@angular/router";
+import {StaffService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {MatIconButton} from "@angular/material/button";
+import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatCardModule} from "@angular/material/card";
 
 @Component({
-  selector: 'app-settings',
+  selector: 'app-staff',
   imports: [
-    CommonModule,
-    TranslatePipe,
     MatTableModule,
     MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
-    LoadingBarComponent,
+    MatButtonModule,
+    MatToolbarModule,
+    MatCardModule,
     RouterLink,
-    SearchComponent,
-    MatIconButton
+    TranslatePipe,
+    LoadingBarComponent,
+    SearchComponent
   ],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
+  templateUrl: './staff.component.html',
+  styleUrl: './staff.component.scss',
 })
-export class SettingsComponent {
-  displayedColumns: string[] = ['id', 'value', 'type', 'cmd']
+export class StaffComponent {
+  displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'mobile', 'cmd']
   pageNumber = signal(0)
   pageSize = signal(25)
 
@@ -43,7 +41,7 @@ export class SettingsComponent {
   private settingsResource = resource({
     params: this.settingsCriteria,
     loader: (param) => {
-      return toPromise(this.service.getAllSetting(param.params.page, param.params.size), param.abortSignal)
+      return toPromise(this.service.getAllStaffMember(param.params.page, param.params.size), param.abortSignal)
     }
   })
 
@@ -52,7 +50,7 @@ export class SettingsComponent {
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.settingsResource.isLoading
 
-  constructor(private service: SettingsService, private toast: HotToastService) {
+  constructor(private service: StaffService, private toast: HotToastService) {
   }
 
   search(query: string) {
