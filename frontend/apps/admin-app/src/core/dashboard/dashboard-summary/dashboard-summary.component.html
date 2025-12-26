@@ -1,0 +1,48 @@
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+  <div class="flex items-center mb-3">
+    <app-loading-bar [reloading]="reloading()"/>
+    <div class="flex items-center gap-3 basis-96">
+      <mat-icon class="h-12">calendar_today</mat-icon>
+      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-full">
+        <mat-label>Select Week</mat-label>
+        <mat-select [(value)]="selectedWeek" (selectionChange)="handleWeekSelection($event.value)">
+          @for (week of weekSummary(); track week) {
+            <mat-option [value]="week">
+              Week {{ week.weekNumber }} : {{ week.startDate | date:'shortDate' }}
+              - {{ week.endDate | date:'shortDate' }}
+              {{ week.pendingCount > 0 ? '(' + week.pendingCount + ' pending)' : '' }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-7 gap-2">
+    @for (day of daySummary(); track day.date) {
+      <div class="relative p-3 rounded-lg border-2 transition-all cursor-pointer"
+           [ngClass]="(selectedDay() === day) ? 'border-blue-600 bg-blue-50' : 'border-gray-200 bg-white hover:border-gray-300'"
+           (click)="handleDaySelection(day)"
+      >
+        <div class="text-center">
+          <div class="text-xs font-medium text-gray-500 mb-1">
+            {{ day.date | date:'EEEE' }}
+          </div>
+          <div class="text-2xl font-bold text-gray-500 mb-1"
+               [ngClass]="(selectedDay() === day) ? 'text-blue-600' : 'text-gray-800'">
+            {{ day.date | date:'dd' }}
+          </div>
+          <div class="text-xs font-medium text-gray-500 mb-1">
+            {{ day.date | date:'MMMM' }}
+          </div>
+          @if (day.pendingCount > 0) {
+            <div
+              class="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+              {{ day.pendingCount }}
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

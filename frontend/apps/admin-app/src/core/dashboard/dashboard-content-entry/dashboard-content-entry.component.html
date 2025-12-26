@@ -1,0 +1,70 @@
+<div class="p-4 border-l-8" [style.border-color]="data().color">
+  <div class="flex justify-between items-start mb-2">
+    <div class="flex-1">
+      <!-- Header row -->
+      <div class="flex items-center gap-2 mb-1">
+        <h3 class="text-lg font-bold">
+          {{ data().showName }}
+        </h3>
+
+        <!-- Edit color -->
+        <button matIconButton (click)="toggleEditingColor()">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <!-- Collapse toggle -->
+        <button matIconButton class="ml-auto"
+                (click)="toggleShowCollapse()">
+          <mat-icon>
+            {{ collapsed() ? 'expand_more' : 'expand_less' }}
+          </mat-icon>
+        </button>
+      </div>
+
+      <!-- Time slot -->
+      <div class="flex items-center gap-2 text-sm">
+        <mat-icon inline>schedule</mat-icon>
+        <span>{{ data().timeSlot }}</span>
+      </div>
+    </div>
+
+    <!-- Availability -->
+    <div class="text-right">
+      <div class="text-xl font-bold">
+        {{ availableSeats() }}
+      </div>
+      <div class="text-xs">
+        available
+      </div>
+    </div>
+  </div>
+
+  <!-- Guide selector -->
+  <div class="flex items-center gap-2 text-sm cursor-pointer" (click)="selectGuide()">
+    <span>Guide:</span>
+    <span>{{ data().guide }}</span>
+  </div>
+
+</div>
+
+<div class="bg-gray-50 px-4 py-2 border-b">
+  <div class="flex gap-4 text-xs">
+    <div class="flex items-center gap-1">
+      <mat-icon inline>group</mat-icon>
+      <span class="text-gray-600">Total:</span>
+      <span class="font-semibold text-gray-800">{{ data().totalSeats }}</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <mat-icon class="text-green-600" inline>check_circle</mat-icon>
+      <span class="text-gray-600">Confirmed:</span>
+      <span class="font-semibold text-green-700">{{ confirmedSeats() }}</span>
+    </div>
+    @if (pendingSeats()) {
+      <div class="flex items-center gap-1">
+        <mat-icon class="text-amber-600" inline>pending</mat-icon>
+        <span class="text-gray-600">Pending:</span>
+        <span class="font-semibold text-amber-700">{{ pendingSeats() }}</span>
+      </div>
+    }
+  </div>
+</div>
