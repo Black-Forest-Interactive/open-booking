@@ -11,10 +11,10 @@
 
       <div class="flex-1">
         <div class="font-medium text-gray-800 text-sm">
-          {{ booking().customerName }}
+          {{ booking().visitorGroup.title }}
         </div>
         <div class="text-xs text-gray-600">
-          {{ booking().guests }} {{ booking().guests === 1 ? 'guest' : 'guests' }}
+          {{ booking().visitorGroup.size }} {{ booking().visitorGroup.size === 1 ? 'guest' : 'guests' }}
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
         <mat-icon class="text-gray-500" inline>mail</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Email</div>
-          <div class="text-gray-800">{{ booking().email }}</div>
+          <div class="text-gray-800">{{ booking().visitorGroup.email }}</div>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
         <mat-icon class="text-gray-500" inline>phone</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Phone</div>
-          <div class="text-gray-800">{{ booking().phone }}</div>
+          <div class="text-gray-800">{{ booking().visitorGroup.phone }}</div>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
         <mat-icon class="text-gray-500" inline>location_on</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Address</div>
-          <div class="text-gray-800">{{ booking().address }}</div>
+          <div class="text-gray-800">{{ booking().visitorGroup.address | address }}</div>
         </div>
       </div>
 

@@ -2,9 +2,10 @@ import {Component, computed, effect, resource, signal} from '@angular/core';
 import {DashboardSummaryComponent} from "./dashboard-summary/dashboard-summary.component";
 import {DashboardFilterComponent} from "./dashboard-filter/dashboard-filter.component";
 import {DashboardContentComponent} from "./dashboard-content/dashboard-content.component";
-import {Booking, DailyOffersFilterRequest, DashboardService, DaySummary, WeekSummary} from "@open-booking/admin";
+import {DailyOffersFilterRequest, DashboardService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {toPromise} from "@open-booking/shared";
+import {BookingEntry, DaySummary, WeekSummary} from "@open-booking/core";
 
 @Component({
   selector: 'app-dashboard',
@@ -37,11 +38,11 @@ export class DashboardComponent {
 
   private contentResource = resource({
     params: this.contentCriteria,
-    loader: (param) => toPromise(this.service.getDailyOffers(param.params.date, param.params.filter), param.abortSignal)
+    loader: (param) => toPromise(this.service.getOfferEntries(param.params.date, param.params.filter), param.abortSignal)
   })
 
   contentReloading = computed(() => this.contentResource.isLoading())
-  content = computed(() => this.contentResource.value()?.offers ?? [])
+  content = computed(() => this.contentResource.value() ?? [])
 
 
   // DUMMY DATA
@@ -82,7 +83,7 @@ export class DashboardComponent {
 
   }
 
-  protected handleBookingConfirmation(booking: Booking) {
+  protected handleBookingConfirmation(booking: BookingEntry) {
 
   }
 }

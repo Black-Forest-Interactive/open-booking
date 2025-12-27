@@ -3,9 +3,7 @@
     <div class="flex-1">
       <!-- Header row -->
       <div class="flex items-center gap-2 mb-1">
-        <h3 class="text-lg font-bold">
-          {{ data().showName }}
-        </h3>
+        <h3 class="text-lg font-bold"> {{ data().start | date:'shortTime' }} Tour </h3>
 
         <!-- Edit color -->
         <button matIconButton (click)="toggleEditingColor()">
@@ -24,7 +22,7 @@
       <!-- Time slot -->
       <div class="flex items-center gap-2 text-sm">
         <mat-icon inline>schedule</mat-icon>
-        <span>{{ data().timeSlot }}</span>
+        <span>{{ data().start | date:'shortTime' }} - {{ data().finish | date:'shortTime' }}</span>
       </div>
     </div>
 
