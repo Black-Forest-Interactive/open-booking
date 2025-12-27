@@ -11,7 +11,6 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.server.types.files.StreamedFile
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.jvm.optionals.getOrNull
 
@@ -20,7 +19,7 @@ import kotlin.jvm.optionals.getOrNull
 class IndexController(private val res: ResourceResolver) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(IndexController::class.java)
+        private val logger = LoggerFactory.getLogger(IndexController::class.java)
     }
 
     @Get(value = "/{path:[^\\.]*}", produces = [MediaType.TEXT_HTML])

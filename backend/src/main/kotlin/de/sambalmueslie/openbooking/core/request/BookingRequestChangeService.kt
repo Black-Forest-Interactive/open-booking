@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.core.request
 
 
+import de.sambalmueslie.openbooking.common.GenericRequestResult
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
@@ -12,10 +14,7 @@ import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
-import de.sambalmueslie.openbooking.common.GenericRequestResult
-import de.sambalmueslie.openbooking.common.findByIdOrNull
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -28,7 +27,7 @@ class BookingRequestChangeService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestChangeService::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestChangeService::class.java)
     }
 
     fun updateVisitorGroup(id: Long, request: VisitorGroupChangeRequest): GenericRequestResult {

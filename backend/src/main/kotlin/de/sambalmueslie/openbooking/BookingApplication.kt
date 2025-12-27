@@ -9,13 +9,12 @@ import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
 import io.micronaut.runtime.Micronaut
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class BookingApplication {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingApplication::class.java)
+        private val logger = LoggerFactory.getLogger(BookingApplication::class.java)
 
         @JvmStatic
         fun main(args: Array<String>) {

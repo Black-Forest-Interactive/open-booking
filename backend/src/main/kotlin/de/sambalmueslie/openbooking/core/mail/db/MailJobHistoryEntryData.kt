@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.mail.db
 
-import de.sambalmueslie.openbooking.core.mail.api.MailJobHistoryEntry
 import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.core.mail.api.MailJobHistoryEntry
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

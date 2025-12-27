@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import io.micronaut.http.server.types.files.SystemFile
 import jakarta.inject.Singleton
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.time.LocalDate
@@ -16,7 +15,7 @@ import java.time.LocalDate
 class ExcelExporter : Exporter {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ExcelExporter::class.java)
+        private val logger = LoggerFactory.getLogger(ExcelExporter::class.java)
         private const val HEADER_EXCEL_FILE_SUFIX = ".xlsx"
         private const val HEADER_EXCEL_FILE_PREFIX = "books"
     }

@@ -9,7 +9,6 @@ import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
@@ -19,7 +18,7 @@ class BookingRequestFilterService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestFilterService::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestFilterService::class.java)
     }
 
     fun filterInfoUnconfirmed(filter: BookingRequestFilterRequest, pageable: Pageable): Page<BookingRequestData> {

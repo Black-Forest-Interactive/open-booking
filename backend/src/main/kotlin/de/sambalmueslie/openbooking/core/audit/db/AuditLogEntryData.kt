@@ -1,10 +1,10 @@
 package de.sambalmueslie.openbooking.core.audit.db
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntry
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogLevel
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.core.staff.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.staff.api.StaffMember
 import de.sambalmueslie.openbooking.core.staff.api.StaffMemberChangeRequest
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

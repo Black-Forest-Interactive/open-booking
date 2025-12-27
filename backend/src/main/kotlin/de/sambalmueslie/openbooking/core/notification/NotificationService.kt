@@ -5,7 +5,6 @@ import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
 import de.sambalmueslie.openbooking.core.notification.processor.NotificationEventProcessor
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.system.measureTimeMillis
 
@@ -16,7 +15,7 @@ class NotificationService(
 
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(NotificationService::class.java)
+        private val logger = LoggerFactory.getLogger(NotificationService::class.java)
     }
 
     private val eventQueue = mutableListOf<NotificationEvent>()

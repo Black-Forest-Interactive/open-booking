@@ -1,16 +1,15 @@
 package de.sambalmueslie.openbooking.core.mail
 
 
+import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.mail.api.*
 import de.sambalmueslie.openbooking.core.mail.db.*
 import de.sambalmueslie.openbooking.core.mail.external.MailClient
-import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.common.findByIdOrNull
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.system.measureTimeMillis
 
@@ -24,7 +23,7 @@ class MailService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(MailService::class.java)
+        private val logger = LoggerFactory.getLogger(MailService::class.java)
         private const val MAX_RETRIES = 2
         private const val MAX_QUEUE_SIZE = 1000
     }
@@ -70,7 +69,7 @@ class MailService(
                     retry(job)
                 }
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             logger.error("Error while processing job ${job.jobId}", e)
             val data = jobRepository.findByIdOrNull(job.jobId) ?: return
             jobRepository.update(data.updateStatus(MailJobStatus.FAILED, timeProvider.now()))

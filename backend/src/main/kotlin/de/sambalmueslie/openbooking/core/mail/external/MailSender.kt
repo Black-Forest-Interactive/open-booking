@@ -1,18 +1,17 @@
 package de.sambalmueslie.openbooking.core.mail.external
 
 
+import de.sambalmueslie.openbooking.config.MailConfig
 import de.sambalmueslie.openbooking.core.mail.api.Mail
 import de.sambalmueslie.openbooking.core.mail.api.MailParticipant
 import de.sambalmueslie.openbooking.core.settings.SettingsService
 import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
-import de.sambalmueslie.openbooking.config.MailConfig
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import jakarta.inject.Singleton
 import org.simplejavamail.MailException
 import org.simplejavamail.email.EmailBuilder
 import org.simplejavamail.mailer.MailerBuilder
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -23,7 +22,7 @@ class MailSender(
 ) : MailClient {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(MailSender::class.java)
+        private val logger = LoggerFactory.getLogger(MailSender::class.java)
     }
 
     private val mailer = MailerBuilder
@@ -51,6 +50,7 @@ class MailSender(
         }
         return true
     }
+
     private fun getReplyToAddress(): String {
         val settings = settingsService.findByKey(SettingsAPI.SETTINGS_MAIL_REPLY_TO_ADDRESS)
 

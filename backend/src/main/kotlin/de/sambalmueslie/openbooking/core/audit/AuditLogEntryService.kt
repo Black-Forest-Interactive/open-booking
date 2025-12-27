@@ -2,17 +2,16 @@ package de.sambalmueslie.openbooking.core.audit
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntry
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.core.audit.db.AuditLogEntryData
 import de.sambalmueslie.openbooking.core.audit.db.AuditLogEntryRepository
 import de.sambalmueslie.openbooking.core.cache.CacheService
-import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -23,7 +22,7 @@ class AuditLogEntryService(
 ) : GenericCrudService<Long, AuditLogEntry, AuditLogEntryChangeRequest, AuditLogEntryData>(repository, cacheService, AuditLogEntry::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(AuditLogEntryService::class.java)
+        private val logger = LoggerFactory.getLogger(AuditLogEntryService::class.java)
     }
 
     override fun createData(request: AuditLogEntryChangeRequest): AuditLogEntryData {

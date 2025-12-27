@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.core.request
 
 
+import de.sambalmueslie.openbooking.common.*
+import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
@@ -16,13 +18,10 @@ import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelation
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
-import de.sambalmueslie.openbooking.common.*
-import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -46,7 +45,7 @@ class BookingRequestService(
 ) : GenericCrudService<Long, BookingRequest, BookingRequestChangeRequest, BookingRequestData>(repository, cacheService, BookingRequest::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestService::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestService::class.java)
         const val MSG_CONFIRM_EMAIL_FAILED = "VISITOR_GROUP.Message.ConfirmEmailFailed"
         const val MSG_CONFIRM_EMAIL_SUCCEED = "VISITOR_GROUP.Message.ConfirmEmailSucceed"
         const val MSG_CONFIRM_REQUEST_FAILED = "REQUEST.MESSAGE.CONFIRM.FAILED"

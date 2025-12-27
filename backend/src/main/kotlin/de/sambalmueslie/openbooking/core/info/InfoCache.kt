@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.info
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
+import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
@@ -12,9 +13,7 @@ import de.sambalmueslie.openbooking.core.info.api.DayInfoBooking
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
@@ -27,7 +26,7 @@ class InfoCache(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(InfoCache::class.java)
+        private val logger = LoggerFactory.getLogger(InfoCache::class.java)
     }
 
 

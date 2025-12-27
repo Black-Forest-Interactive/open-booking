@@ -1,13 +1,13 @@
 package de.sambalmueslie.openbooking.core.audit.handler
 
 
+import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.core.audit.api.AuditLogLevel
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
-import de.sambalmueslie.openbooking.common.TimeProvider
 import io.micronaut.context.annotation.Context
 
 @Context

@@ -7,14 +7,13 @@ export interface WeekSummary {
   weekNumber: number;
   startDate: string; // LocalDate
   endDate: string;   // LocalDate
-  pendingCount: number;
+  unconfirmedCount: number;
   days: DaySummary[];
 }
 
 export interface DaySummary {
   date: string; // LocalDate
-  dayOfWeek: string;
-  pendingCount: number;
+  unconfirmedCount: number;
 }
 
 export interface DailyOffers {

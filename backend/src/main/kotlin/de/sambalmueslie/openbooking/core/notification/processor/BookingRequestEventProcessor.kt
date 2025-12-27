@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.notification.processor
 
 
+import de.sambalmueslie.openbooking.config.MailConfig
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.mail.MailService
 import de.sambalmueslie.openbooking.core.mail.api.Mail
@@ -16,9 +17,7 @@ import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
 import de.sambalmueslie.openbooking.core.settings.SettingsService
 import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
-import de.sambalmueslie.openbooking.config.MailConfig
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -31,7 +30,7 @@ class BookingRequestEventProcessor(
 ) : NotificationEventProcessor {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestEventProcessor::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestEventProcessor::class.java)
     }
 
     override fun process(event: NotificationEvent) {

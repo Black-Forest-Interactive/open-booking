@@ -1,10 +1,10 @@
 package de.sambalmueslie.openbooking.core.booking.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

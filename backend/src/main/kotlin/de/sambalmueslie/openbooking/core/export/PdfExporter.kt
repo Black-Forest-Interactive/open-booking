@@ -10,7 +10,6 @@ import org.apache.fop.apps.FopFactory
 import org.apache.fop.apps.MimeConstants
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.tools.ToolManager
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -26,7 +25,7 @@ import kotlin.jvm.optionals.getOrNull
 class PdfExporter(private val loader: ClassPathResourceLoader) : Exporter {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(PdfExporter::class.java)
+        private val logger = LoggerFactory.getLogger(PdfExporter::class.java)
     }
 
     private val fopFactory: FopFactory = FopFactory.newInstance(loader.getResource("classpath:fop/fop.xconf").getOrNull()?.toURI())

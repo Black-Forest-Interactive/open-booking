@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.core.response
 
 
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.core.response.api.Response
@@ -9,11 +11,8 @@ import de.sambalmueslie.openbooking.core.response.api.ResponseType
 import de.sambalmueslie.openbooking.core.response.db.ResponseData
 import de.sambalmueslie.openbooking.core.response.db.ResponseRepository
 import de.sambalmueslie.openbooking.core.response.resolve.ResponseResolver
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -25,7 +24,7 @@ class ResponseService(
 ) : GenericCrudService<Long, Response, ResponseChangeRequest, ResponseData>(repository, cacheService, Response::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ResponseService::class.java)
+        private val logger = LoggerFactory.getLogger(ResponseService::class.java)
     }
 
     override fun createData(request: ResponseChangeRequest): ResponseData {

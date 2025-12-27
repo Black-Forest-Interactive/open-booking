@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.booking
 
 
+import de.sambalmueslie.openbooking.common.*
 import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
@@ -9,12 +10,10 @@ import de.sambalmueslie.openbooking.core.group.VisitorGroupService
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.common.*
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -27,7 +26,7 @@ class BookingService(
 ) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingData>(repository, cacheService, Booking::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingService::class.java)
+        private val logger = LoggerFactory.getLogger(BookingService::class.java)
     }
 
     init {
@@ -86,7 +85,7 @@ class BookingService(
         return repository.findByOfferId(offer.id).map { it.convert() }
     }
 
-    fun getBookingsByOfferId(offerIds: Set<Long>): List<Booking>{
+    fun getBookingsByOfferId(offerIds: Set<Long>): List<Booking> {
         return repository.findByOfferIdIn(offerIds).map { it.convert() }
     }
 
@@ -129,7 +128,7 @@ class BookingService(
         notifyUpdated(result)
     }
 
-    fun update(bookingId: Long, visitorGroup: VisitorGroup, status: BookingStatus){
+    fun update(bookingId: Long, visitorGroup: VisitorGroup, status: BookingStatus) {
         val data = repository.findByIdOrNull(bookingId) ?: return
         val result = repository.update(data.update(visitorGroup, status, timeProvider.now())).convert()
         notifyUpdated(result)

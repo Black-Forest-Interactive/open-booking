@@ -9,7 +9,6 @@ import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateTy
 import jakarta.inject.Singleton
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.tools.ToolManager
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.StringWriter
 
@@ -20,7 +19,7 @@ class NotificationTemplateEvaluator(
 
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(NotificationTemplateEvaluator::class.java)
+        private val logger = LoggerFactory.getLogger(NotificationTemplateEvaluator::class.java)
     }
 
     private val ve = VelocityEngine()

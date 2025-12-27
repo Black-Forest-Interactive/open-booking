@@ -1,16 +1,15 @@
 package de.sambalmueslie.openbooking.core.staff
 
 
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.staff.api.StaffMember
 import de.sambalmueslie.openbooking.core.staff.api.StaffMemberChangeRequest
 import de.sambalmueslie.openbooking.core.staff.db.StaffMemberData
 import de.sambalmueslie.openbooking.core.staff.db.StaffMemberRepository
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -22,7 +21,7 @@ class StaffService(
 
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(StaffService::class.java)
+        private val logger = LoggerFactory.getLogger(StaffService::class.java)
     }
 
     override fun createData(request: StaffMemberChangeRequest): StaffMemberData {
