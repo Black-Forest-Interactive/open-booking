@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.20")
+    implementation("ch.qos.logback:logback-classic:1.5.23")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:4.15.0")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:4.16.0")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -92,7 +92,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.7.9")
+    implementation("com.jillesvangurp:search-client:2.8.3")
     // jsoup
     implementation("org.jsoup:jsoup:1.21.2")
 
@@ -106,16 +106,16 @@ dependencies {
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.0")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.0.3")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.0.6")
 
     // qrcode
-    implementation("com.google.zxing:core:3.5.3")
-    implementation("com.google.zxing:javase:3.5.3")
+    implementation("com.google.zxing:core:3.5.4")
+    implementation("com.google.zxing:javase:3.5.4")
 
     // POI
-    implementation("org.apache.poi:poi:5.4.1")
-    implementation("org.apache.poi:poi-ooxml:5.4.1")
-    implementation("builders.dsl:spreadsheet-builder-poi:3.0.1")
+    implementation("org.apache.poi:poi:5.5.1")
+    implementation("org.apache.poi:poi-ooxml:5.5.1")
+    implementation("builders.dsl:spreadsheet-builder-poi:3.1.1.1")
 
     // mail
     implementation("org.simplejavamail:simple-java-mail:8.12.6")
@@ -127,7 +127,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:testcontainers")
-    testImplementation("org.opensearch:opensearch-testcontainers:4.0.0")
+    testImplementation("org.opensearch:opensearch-testcontainers:4.1.0")
     testImplementation("io.micronaut.test:micronaut-test-rest-assured")
     testImplementation("io.fusionauth:fusionauth-jwt:5.3.3")
     testImplementation("io.mockk:mockk:1.14.7")
