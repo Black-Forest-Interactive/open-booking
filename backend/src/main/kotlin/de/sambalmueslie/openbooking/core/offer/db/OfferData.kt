@@ -7,7 +7,6 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "Offer")
 @Table(name = "offer")
 data class OfferData(

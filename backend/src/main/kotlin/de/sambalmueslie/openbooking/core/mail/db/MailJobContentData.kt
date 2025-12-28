@@ -10,7 +10,6 @@ import de.sambalmueslie.openbooking.core.mail.api.MailJobContent
 import de.sambalmueslie.openbooking.core.mail.api.MailParticipant
 import jakarta.persistence.*
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "MailJobContent")
 @Table(name = "mail_job_content")
 data class MailJobContentData(

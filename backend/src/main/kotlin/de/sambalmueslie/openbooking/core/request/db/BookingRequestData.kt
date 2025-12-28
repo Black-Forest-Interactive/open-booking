@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "BookingRequest")
 @Table(name = "booking_request")
 data class BookingRequestData(

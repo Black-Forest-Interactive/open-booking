@@ -7,7 +7,6 @@ import de.sambalmueslie.openbooking.core.response.api.ResponseType
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "Response")
 @Table(name = "response")
 data class ResponseData(

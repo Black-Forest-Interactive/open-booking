@@ -8,7 +8,6 @@ import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateTy
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "NotificationTemplate")
 @Table(name = "notification_template")
 data class NotificationTemplateData(

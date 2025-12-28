@@ -8,7 +8,6 @@ import de.sambalmueslie.openbooking.core.audit.api.AuditLogLevel
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "AuditLogEntry")
 @Table(name = "audit_log_entry")
 data class AuditLogEntryData(

@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.core.role.api.TourRoleChangeRequest
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "TourRole")
 @Table(name = "tour_role")
 data class TourRoleData(

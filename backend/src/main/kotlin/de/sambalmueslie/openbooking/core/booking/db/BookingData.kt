@@ -8,7 +8,6 @@ import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "Booking")
 @Table(name = "booking")
 data class BookingData(

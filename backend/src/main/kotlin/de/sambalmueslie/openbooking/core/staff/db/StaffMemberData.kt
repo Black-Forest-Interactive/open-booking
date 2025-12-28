@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.core.staff.api.StaffMemberChangeRequest
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "StaffMember")
 @Table(name = "staff_member")
 data class StaffMemberData(
