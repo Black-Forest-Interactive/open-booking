@@ -1,4 +1,4 @@
-<mat-toolbar class="h-16 sm:h-20 px-3 sm:px-6 mat-primary">
+<mat-toolbar class="h-16 sm:h-20 px-3 sm:px-6" color="primary">
   <div class="flex w-full items-center gap-2 sm:gap-4">
 
     @if (service.isHandset()) {
@@ -19,6 +19,8 @@
     </h3>
 
     <div class="flex-1"></div>
+
+    <app-booking-toolbar-entry></app-booking-toolbar-entry>
 
     @if (service.isHandset()) {
       <button matIconButton [matMenuTriggerFor]="langmenu" aria-label="Change language" class="flex-shrink-0">
@@ -42,6 +44,7 @@
       </button>
     }
 
+    <lib-theme-toggle-button/>
   </div>
 </mat-toolbar>
 

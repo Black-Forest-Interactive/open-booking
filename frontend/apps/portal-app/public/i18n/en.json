@@ -11,58 +11,13 @@
     "Ok": "OK",
     "Save": "Save",
     "Submit": "Submit",
-    "Yes": "Yes"
-  },
-  "ADMIN": {
-    "MENU": {
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Dashboard": "Dashboard",
-      "Offer": "Offer Mgt",
-      "SearchBooking": "Search Booking",
-      "Texts": "Text Mgt"
-    }
+    "Yes": "Yes",
+    "Select": "Select",
+    "Continue": "Continue"
   },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Welcome"
-  },
-  "AUDIT": {
-    "Action": {
-      "Search": "Search for audit"
-    },
-    "Field": {
-      "Level": {
-        "Title": "Level"
-      },
-      "Message": {
-        "Title": "Message"
-      },
-      "Source": {
-        "Title": "Source"
-      },
-      "Timestamp": {
-        "Title": "Timestamp"
-      },
-      "User": {
-        "Title": "User"
-      }
-    }
-  },
-  "BACKOFFICE": {
-    "MENU": {
-      "AuditLog": "Audit Log",
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Cache": "Cache Mgt",
-      "Dashboard": "Dashboard",
-      "Mail": "Mail Status",
-      "Notification": "Notification Mgt",
-      "Offer": "Offer Mgt",
-      "Response": "Response Mgt",
-      "SearchBooking": "Search Booking",
-      "Settings": "Settings"
-    }
   },
   "BOOKING": {
     "Action": {
@@ -115,17 +70,6 @@
       "UNKNOWN": "Unknown"
     }
   },
-  "CACHE": {
-    "Action": {
-      "Reset": "Reset"
-    },
-    "Field": {
-      "Evict": "Evict count/weight",
-      "Hit": "Hit/Miss",
-      "Load": "Load success/failed",
-      "Name": "Cache Name"
-    }
-  },
   "DAY_INFO": {
     "Chart": {
       "Space": {
@@ -156,25 +100,6 @@
     "de": "Deutsch",
     "en": "English"
   },
-  "MAIL": {
-    "Action": {
-      "Search": "Search Job",
-      "SearchHistory": "Search History"
-    },
-    "Status": {
-      "FAILED": "Failed",
-      "FINISHED": "Finished",
-      "QUEUED": "Queued",
-      "RETRY": "Retrying"
-    },
-    "Table": {
-      "Id": "Id",
-      "Message": "Message",
-      "Status": "Status",
-      "Timestamp": "Timestamp",
-      "Title": "Title"
-    }
-  },
   "MENU": {
     "Admin": "Admin",
     "Backoffice": "Backoffice",
@@ -183,51 +108,8 @@
     "Language": "Language",
     "Login": "Login",
     "Logout": "Logout",
-    "Title": "Menu"
-  },
-  "NOTIFICATION": {
-    "Action": {
-      "Create": "Create Notification Template",
-      "Search": "Searches Notification Template"
-    },
-    "Dialog": {
-      "Delete": {
-        "Question": "Do you really want to delete the notification template?",
-        "Title": "Delete notification template {{type}}"
-      }
-    },
-    "Field": {
-      "Content": {
-        "Hint": "",
-        "Title": "Content"
-      },
-      "Id": {
-        "Hint": "",
-        "Title": "Id"
-      },
-      "Lang": {
-        "Hint": "",
-        "Title": "Language"
-      },
-      "Subject": {
-        "Hint": "",
-        "Title": "Subject"
-      },
-      "Type": {
-        "BOOKING_REQUEST_CONFIRMED_CONTACT": "Booking Confirmed message for Contact",
-        "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
-        "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
-        "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
-        "Hint": "",
-        "Title": "Type"
-      }
-    },
-    "Message": {
-      "CreateFailure": "Creation of the notification template failed",
-      "CreateSuccess": "The notification template was created successfully",
-      "DeleteSuccess": "The notification template {{type}} was deleted successfully",
-      "FormInvalid": "Something went wrong with the form"
-    }
+    "Title": "Menu",
+    "Cart": "Cart"
   },
   "OFFER": {
     "Action": {
@@ -261,7 +143,8 @@
       "Start": "Start"
     },
     "Info": {
-      "SpaceAvailable": "There are {{value}} places available"
+      "SpaceAvailable": "{{value}} spaces available",
+      "NoOffersAvailable": "No offers available"
     },
     "Operation": {
       "Create": "Create Offer",
@@ -276,6 +159,10 @@
       "MinTime": "Min Time",
       "Quantity": "Quantity",
       "Time": "Time"
+    },
+    "Summary": {
+      "Selected": "{{count}} selected",
+      "MaxGroupSize": "Max group size: {{size}}"
     }
   },
   "REQUEST": {
@@ -426,13 +313,6 @@
       "FormInvalid": "Something went wrong with the form"
     }
   },
-  "SETTING": {
-    "Field": {
-      "Id": "Id",
-      "Type": "Type",
-      "Value": "Value"
-    }
-  },
   "VISITOR_GROUP": {
     "MailConfirmation": {
       "Failed": {
@@ -471,5 +351,17 @@
     "Title": "📅 Dashboard Overview",
     "NoData": "No Data Available",
     "ComeBackLater": "Please check back later for updates."
+  },
+  "CART": {
+    "Title": "Cart",
+    "Subtitle": "First selection = preferred, others = alternatives",
+    "Empty": "Cart is empty",
+    "Preferred": "Preferred",
+    "Fallback": "Alternative",
+    "Spaces": "spaces",
+    "MaxGroupSize": "Max. group size",
+    "Action": {
+      "Checkout": "Proceed to Booking"
+    }
   }
 }

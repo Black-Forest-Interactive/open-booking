@@ -1,7 +1,7 @@
 import {Component, computed, inject, resource} from '@angular/core';
 import {DashboardService} from "@open-booking/portal";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {map} from "rxjs";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -9,9 +9,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {DatePipe} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {AppService} from "../../app/app.service";
-import {DayInfoDetailsListComponent} from "../day-info-details-list/day-info-details-list.component";
-import {DayInfoDetailsChartComponent} from "../day-info-details-chart/day-info-details-chart.component";
+import {DayInfoDetailsListComponent} from "./day-info-details-list/day-info-details-list.component";
 import {defaultDayInfo} from "@open-booking/core";
+import {MatCard} from "@angular/material/card";
+import {navigateToDashboard} from "../../app/app.navigation";
 
 @Component({
   selector: 'app-day-info-details',
@@ -21,9 +22,10 @@ import {defaultDayInfo} from "@open-booking/core";
     MatButtonModule,
     MatIconModule,
     DatePipe,
-    RouterLink,
     DayInfoDetailsListComponent,
-    DayInfoDetailsChartComponent,
+    MatCard,
+
+
   ],
   templateUrl: './day-info-details.component.html',
   styleUrl: './day-info-details.component.scss',
@@ -42,8 +44,11 @@ export class DayInfoDetailsComponent {
   data = computed(() => this.dayInfoResource.value() ?? defaultDayInfo)
   reloading = this.dayInfoResource.isLoading
 
-  constructor(private service: DashboardService, protected app: AppService) {
+  constructor(private service: DashboardService, protected app: AppService, private router: Router) {
 
   }
 
+  protected back() {
+    navigateToDashboard(this.router)
+  }
 }
