@@ -1,37 +1,10 @@
-<!-- Wrapper with fixed height and scroll -->
 <div class="flex flex-col h-full">
 
   <!-- Scrollable List -->
   <div class="flex-1 overflow-y-auto pb-24">
     <div class="flex flex-col gap-2">
       @for (offer of offers(); track offer.offer.id) {
-        <mat-card
-          appearance="outlined"
-          class="cursor-pointer hover:shadow-md transition-shadow"
-          [class.!border-2]="isSelected(offer)"
-          [class.!border-[var(--mat-app-primary)]]="isSelected(offer)"
-          (click)="handleSelection(offer)">
-          <div class="flex items-center gap-3 p-3">
-
-            <!-- Selection Icon -->
-            <mat-icon [class.text-[var(--mat-app-primary)]]="isSelected(offer)">
-              {{ isSelected(offer) ? 'check_circle' : 'radio_button_unchecked' }}
-            </mat-icon>
-
-            <!-- Time -->
-            <div class="font-medium min-w-[60px]">
-              {{ offer.offer.start | date:'shortTime' }}
-            </div>
-
-            <!-- Content -->
-            <div class="flex-1 min-w-0 text-sm">
-              {{ 'OFFER.Info.SpaceAvailable' | translate:translationParam(offer) }}
-            </div>
-
-            <!-- Chevron -->
-            <mat-icon>add_circle</mat-icon>
-          </div>
-        </mat-card>
+        <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>
       }
 
       @if (offers().length === 0) {
@@ -45,15 +18,14 @@
 
   <!-- Fixed Selection Summary at Bottom -->
   @if (selectedCount() > 0) {
-    <div
-      class="fixed bottom-14 left-0 right-0 p-4 bg-[var(--mat-app-surface)] border-t border-[var(--mat-app-outline-variant)] shadow-lg z-50">
+    <div class="fixed bottom-14 left-0 right-0 p-4 bg-white border-t shadow-lg z-50">
       <div class="container mx-auto">
-        <div class="flex flex-col gap-2 p-4 rounded-lg bg-[var(--mat-app-primary)] text-[var(--mat-app-on-primary)]">
+        <div class="flex flex-col gap-2 p-4 rounded-lg bg-blue-600 text-white">
           <div class="flex items-center justify-between">
             <div>
               <div class="font-medium">{{ 'OFFER.Summary.Selected' | translate:{count: selectedCount()} }}</div>
-              <div class="text-sm opacity-90 flex items-center gap-2 mt-1">
-                <mat-icon>group</mat-icon>
+              <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
+                <mat-icon class="!text-base !w-4 !h-4">group</mat-icon>
                 <span>{{ 'OFFER.Summary.MaxGroupSize' | translate:{size: maxGroupSize()} }}</span>
               </div>
             </div>
@@ -61,7 +33,7 @@
               mat-flat-button
               color="accent"
               (click)="proceedToBooking()">
-              {{ 'ACTION.Continue' | translate }}
+              {{ 'OFFER.Action.ProceedToCheckout' | translate }}
             </button>
           </div>
         </div>

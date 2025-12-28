@@ -46,7 +46,8 @@ import {
   exports: [
     HomeToolbarComponent,
     DayInfoDetailsListComponent,
-    DayInfoDetailsChartComponent
+    DayInfoDetailsChartComponent,
+    DayInfoDetailsListEntryComponent
   ],
   imports: [
     CommonModule,

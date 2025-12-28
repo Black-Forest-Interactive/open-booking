@@ -1,0 +1,77 @@
+<mat-card
+  appearance="outlined"
+  class="!p-3 cursor-pointer hover:shadow-md transition-shadow"
+  [class.!border-2]="isPreferred()"
+  [class.!border-amber-500]="isPreferred()"
+  (click)="setPreferred()">
+  <div class="flex items-start gap-3">
+
+    <!-- Priority Indicator -->
+    <div class="flex-shrink-0 pt-1">
+      @if (isPreferred()) {
+        <mat-icon class="text-amber-500">star</mat-icon>
+      } @else {
+        <mat-icon class="opacity-30">star_outline</mat-icon>
+      }
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 min-w-0">
+      <div class="flex items-start justify-between gap-2">
+        <div class="flex-1">
+          <div class="font-medium">{{ data().offer.start | date:'fullDate' }}</div>
+          <div class="text-sm opacity-70 mt-1">
+            {{ data().offer.start | date:'shortTime' }} - {{ data().offer.finish | date:'shortTime' }}
+          </div>
+          @if (isPreferred()) {
+            <div class="text-xs text-amber-600 mt-1">
+              {{ 'CART.PreferredLabel' | translate }}
+            </div>
+          }
+        </div>
+
+        <!-- Delete Button -->
+        <button
+          matButton="outlined"
+          color="warn"
+          (click)="removeFromCart(); $event.stopPropagation()"
+          class="!text-xs !py-1 !px-2 !min-w-0">
+          {{ 'CART.Action.Remove' | translate }}
+        </button>
+      </div>
+
+      <!-- Availability Info -->
+      <div class="flex flex-col gap-1 mt-2 text-sm">
+        <div class="flex items-center gap-1 text-green-700">
+          <mat-icon inline>event_available</mat-icon>
+          <span>{{ availableSpace() }} {{ 'CART.SpacesAvailable' | translate }}</span>
+        </div>
+
+        @if (unconfirmedSpace()) {
+          <div class="flex items-center gap-1 opacity-70">
+            <mat-icon inline>schedule</mat-icon>
+            <span>{{ unconfirmedSpace() }} {{ 'CART.Pending' | translate }}</span>
+          </div>
+        }
+
+        @if (confirmedSpace() > 0) {
+          <div class="flex items-center gap-1 opacity-70">
+            <mat-icon inline>check_circle</mat-icon>
+            <span>{{ confirmedSpace() }} {{ 'CART.Confirmed' | translate }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Warning if low availability -->
+      @if (availableSpace() <= 3 && availableSpace() > 0) {
+        <div class="text-xs px-2 py-1 rounded bg-orange-100 text-orange-700 mt-2 inline-block">
+          {{ 'CART.LimitedSpaces' | translate }}
+        </div>
+      } @else if (availableSpace() === 0) {
+        <div class="text-xs px-2 py-1 rounded bg-red-100 text-red-700 mt-2 inline-block">
+          {{ 'CART.NoLongerAvailable' | translate }}
+        </div>
+      }
+    </div>
+  </div>
+</mat-card>

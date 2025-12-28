@@ -143,7 +143,10 @@
       "Start": "Start"
     },
     "Info": {
-      "SpaceAvailable": "{{value}} spaces available",
+      "SpacesAvailable": "spaces available",
+      "Pending": "pending",
+      "Full": "Full",
+      "LimitedSpaces": "Limited spaces",
       "NoOffersAvailable": "No offers available"
     },
     "Operation": {
@@ -356,11 +359,21 @@
     "Title": "Cart",
     "Subtitle": "First selection = preferred, others = alternatives",
     "Empty": "Cart is empty",
-    "Preferred": "Preferred",
-    "Fallback": "Alternative",
-    "Spaces": "spaces",
-    "MaxGroupSize": "Max. group size",
+    "PreferredLabel": "Preferred choice",
+    "SpacesAvailable": "spaces available",
+    "Pending": "pending",
+    "Confirmed": "confirmed",
+    "LimitedSpaces": "Limited spaces",
+    "NoLongerAvailable": "No longer available",
+    "Summary": {
+      "MaxGroupSize": "Max. group size"
+    },
+    "Warning": {
+      "SomeItemsUnavailable": "Some offers are no longer available"
+    },
     "Action": {
+      "Close": "Close",
+      "Remove": "Remove",
       "Checkout": "Proceed to Booking"
     }
   }

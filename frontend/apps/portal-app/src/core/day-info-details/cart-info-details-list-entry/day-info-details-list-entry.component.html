@@ -1,0 +1,53 @@
+<mat-card
+  appearance="outlined"
+  class="cursor-pointer hover:shadow-md transition-shadow"
+  [class.!border-2]="isSelected()"
+  [class.!border-blue-500]="isSelected()"
+  [class.opacity-50]="!hasAvailableSpace()"
+  [class.cursor-not-allowed]="!hasAvailableSpace()"
+  (click)="handleSelection()">
+  <div class="flex items-center gap-3 p-3">
+
+    <!-- Selection Icon -->
+    <mat-icon [class.text-blue-500]="isSelected()">
+      {{ isSelected() ? 'check_circle' : 'radio_button_unchecked' }}
+    </mat-icon>
+
+    <!-- Time -->
+    <div class="font-medium min-w-[60px]">
+      {{ data().offer.start | date:'shortTime' }}
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 min-w-0">
+      <div class="text-sm">
+        {{ availableSpace() }} {{ 'OFFER.Info.SpacesAvailable' | translate }}
+      </div>
+
+      <!-- Status breakdown (optional, for more detail) -->
+      @if (hasUnconfirmedBookings()) {
+        <div class="text-xs opacity-70 mt-1">
+          {{ unconfirmedSpace() }} {{ 'OFFER.Info.Pending' | translate }}
+        </div>
+      }
+    </div>
+
+    <!-- Availability indicator -->
+    @if (!hasAvailableSpace()) {
+      <div class="text-xs px-2 py-1 rounded bg-red-100 text-red-700">
+        {{ 'OFFER.Info.Full' | translate }}
+      </div>
+    } @else if (availableSpace() <= 3) {
+      <div class="text-xs px-2 py-1 rounded bg-orange-100 text-orange-700">
+        {{ 'OFFER.Info.LimitedSpaces' | translate }}
+      </div>
+    }
+
+    <!-- Chevron -->
+    @if (isSelected()) {
+      <mat-icon>remove_circle</mat-icon>
+    } @else {
+      <mat-icon>add_circle</mat-icon>
+    }
+  </div>
+</mat-card>

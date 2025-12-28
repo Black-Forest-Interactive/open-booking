@@ -1,0 +1,23 @@
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+import {DayInfoDetailsListEntryComponent} from './day-info-details-list-entry.component';
+
+describe('CartInfoDetailsListEntryComponent', () => {
+  let component: DayInfoDetailsListEntryComponent;
+  let fixture: ComponentFixture<DayInfoDetailsListEntryComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [DayInfoDetailsListEntryComponent]
+    })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(DayInfoDetailsListEntryComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

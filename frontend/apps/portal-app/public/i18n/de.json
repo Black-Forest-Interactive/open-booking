@@ -143,7 +143,10 @@
       "Start": "Beginn"
     },
     "Info": {
-      "SpaceAvailable": "{{value}} Plätze verfügbar",
+      "SpacesAvailable": "Plätze verfügbar",
+      "Pending": "ausstehend",
+      "Full": "Ausgebucht",
+      "LimitedSpaces": "Wenige Plätze",
       "NoOffersAvailable": "Keine Angebote verfügbar"
     },
     "Operation": {
@@ -356,11 +359,21 @@
     "Title": "Warenkorb",
     "Subtitle": "Erste Auswahl = bevorzugt, weitere = Alternativen",
     "Empty": "Warenkorb ist leer",
-    "Preferred": "Bevorzugt",
-    "Fallback": "Alternative",
-    "Spaces": "Plätze",
-    "MaxGroupSize": "Max. Gruppengröße",
+    "PreferredLabel": "Bevorzugte Auswahl",
+    "SpacesAvailable": "Plätze verfügbar",
+    "Pending": "ausstehend",
+    "Confirmed": "bestätigt",
+    "LimitedSpaces": "Wenige Plätze",
+    "NoLongerAvailable": "Nicht mehr verfügbar",
+    "Summary": {
+      "MaxGroupSize": "Max. Gruppengröße"
+    },
+    "Warning": {
+      "SomeItemsUnavailable": "Einige Angebote sind nicht mehr verfügbar"
+    },
     "Action": {
+      "Close": "Schließen",
+      "Remove": "Entfernen",
       "Checkout": "Zur Buchung"
     }
   }
