@@ -6,8 +6,14 @@ import {MatDialog} from "@angular/material/dialog";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {map} from "rxjs";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {BookingService, DayInfoHelper, OfferService, SettingsService} from "@open-booking/portal";
-import {Address, BookingRequest, CreateBookingRequest, VisitorGroupChangeRequest} from "@open-booking/core";
+import {BookingService, OfferService, SettingsService} from "@open-booking/portal";
+import {
+  Address,
+  BookingRequest,
+  CreateBookingRequest,
+  DayInfoHelper,
+  VisitorGroupChangeRequest
+} from "@open-booking/core";
 import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";

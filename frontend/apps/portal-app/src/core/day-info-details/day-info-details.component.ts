@@ -1,5 +1,5 @@
 import {Component, computed, inject, resource} from '@angular/core';
-import {DashboardService, defaultDayInfo} from "@open-booking/portal";
+import {DashboardService} from "@open-booking/portal";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -11,6 +11,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {AppService} from "../../app/app.service";
 import {DayInfoDetailsListComponent} from "../day-info-details-list/day-info-details-list.component";
 import {DayInfoDetailsChartComponent} from "../day-info-details-chart/day-info-details-chart.component";
+import {defaultDayInfo} from "@open-booking/core";
 
 @Component({
   selector: 'app-day-info-details',

@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {DayInfo} from "@open-booking/portal";
+import {DayInfo} from "@open-booking/core";
 
 @Component({
   selector: 'app-day-info-details-chart',

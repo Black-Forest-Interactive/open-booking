@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {DayInfo} from "@open-booking/portal";
+import {DayInfo} from "@open-booking/core";
 import {DayInfoDetailsListEntryComponent} from "../day-info-details-list-entry/day-info-details-list-entry.component";
 
 @Component({
