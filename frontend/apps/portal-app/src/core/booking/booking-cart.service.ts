@@ -1,10 +1,10 @@
 import {computed, Injectable, signal} from "@angular/core";
-import {DayInfoHelper, DayInfoOffer, Offer} from "@open-booking/core";
+import {DayInfoHelper, DayInfoOffer} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
 })
-export class WorkflowService {
+export class BookingCartService {
 
   entries = signal<DayInfoOffer[]>([])
   preferredEntry = signal<DayInfoOffer | undefined>(undefined)
@@ -44,10 +44,8 @@ export class WorkflowService {
     return Math.min(...availableSizes)
   }
 
-}
-
-export interface CartEntry {
-  offer: Offer,
-  maxGroupSize: number,
-  preferred: boolean
+  clear() {
+    this.entries.set([])
+    this.preferredEntry.set(undefined)
+  }
 }

@@ -3,9 +3,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
-import {WorkflowService} from "../workflow.service";
+import {BookingCartService} from "./booking-cart.service";
 import {DayInfoOffer} from "@open-booking/core";
 import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
+import {Router} from "@angular/router";
+import {navigateToBookingCheckout} from "../../app/app.navigation";
 
 @Component({
   selector: 'app-booking',
@@ -22,7 +24,7 @@ import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
 export class BookingComponent {
 
 
-  constructor(protected readonly service: WorkflowService) {
+  constructor(protected readonly service: BookingCartService, private router: Router) {
 
   }
 
@@ -42,7 +44,9 @@ export class BookingComponent {
 
 
   protected proceedToCheckout() {
-
+    if (this.service.entries().length > 0) {
+      navigateToBookingCheckout(this.router)
+    }
   }
 
 }

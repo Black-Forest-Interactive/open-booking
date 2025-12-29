@@ -15,7 +15,7 @@ export class BookingService extends BaseService {
   }
 
   createBooking(request: CreateBookingRequest): Observable<BookingRequest> {
-    return super.post('booking', request)
+    return super.post('', request)
   }
 
   getRequestReceivedMessage(requestId: number): Observable<ResolvedResponse> {

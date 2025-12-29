@@ -3,7 +3,7 @@ import {AppService} from "../../../app/app.service";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatBadgeModule} from "@angular/material/badge";
-import {WorkflowService} from "../../workflow.service";
+import {BookingCartService} from "../booking-cart.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Router} from "@angular/router";
 import {navigateToBooking} from "../../../app/app.navigation";
@@ -23,7 +23,7 @@ export class BookingToolbarEntryComponent {
 
   cartCount = computed(() => this.service.entries().length)
 
-  constructor(protected readonly appService: AppService, private service: WorkflowService, private router: Router) {
+  constructor(protected readonly appService: AppService, private service: BookingCartService, private router: Router) {
   }
 
   protected openCart() {

@@ -5,7 +5,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
-import {WorkflowService} from "../../workflow.service";
+import {BookingCartService} from "../booking-cart.service";
 
 @Component({
   selector: 'app-booking-entry',
@@ -28,7 +28,7 @@ export class BookingEntryComponent {
   availableSpace = computed(() => this.data().offer.maxPersons - this.confirmedSpace() - this.unconfirmedSpace())
   isPreferred = computed(() => this.service.preferredEntry()?.offer?.id === this.data().offer.id)
 
-  constructor(private service: WorkflowService) {
+  constructor(private service: BookingCartService) {
   }
 
   protected setPreferred() {

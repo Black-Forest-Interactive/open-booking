@@ -5,7 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {WorkflowService} from "../../workflow.service";
+import {BookingCartService} from "../../booking/booking-cart.service";
 import {Router} from "@angular/router";
 import {navigateToBooking} from "../../../app/app.navigation";
 import {DayInfoDetailsListEntryComponent} from "../cart-info-details-list-entry/day-info-details-list-entry.component";
@@ -30,7 +30,7 @@ export class DayInfoDetailsListComponent {
   selectedCount = computed(() => this.service.entries().length)
   maxGroupSize = computed(() => this.service.maxGroupSize())
 
-  constructor(private service: WorkflowService, private router: Router) {
+  constructor(private service: BookingCartService, private router: Router) {
   }
 
   protected proceedToBooking() {
