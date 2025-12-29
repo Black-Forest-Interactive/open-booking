@@ -1,30 +1,14 @@
-import {Component, computed, effect, Signal, signal} from '@angular/core';
-import {
-  Address,
-  BookingRequest,
-  CreateBookingRequest,
-  DayInfoOffer,
-  VisitorGroupChangeRequest
-} from "@open-booking/core";
+import {Component, computed, effect, input, output} from '@angular/core';
+import {Address, CreateBookingRequest, DayInfoOffer, VisitorGroupChangeRequest} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {BookingService, SettingsService} from "@open-booking/portal";
-import {MatDialog} from "@angular/material/dialog";
-import {Router} from "@angular/router";
-import {
-  CreateBookingConfirmationDialogComponent
-} from "../../create-booking-confirmation-dialog/create-booking-confirmation-dialog.component";
-import {
-  CreateBookingFailedDialogComponent
-} from "../../create-booking-failed-dialog/create-booking-failed-dialog.component";
+import {SettingsService} from "@open-booking/portal";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatButtonModule} from "@angular/material/button";
-import {BookingCartService} from "../booking-cart.service";
 import {MatCard} from "@angular/material/card";
-import {navigateToDashboard} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-booking-checkout',
@@ -43,24 +27,23 @@ import {navigateToDashboard} from "../../../app/app.navigation";
 })
 export class BookingCheckoutComponent {
 
-  private readonly spaceAvailable: Signal<number>
-  private readonly preferredEntry: Signal<DayInfoOffer | undefined>
+  spaceAvailable = input.required<number>()
+  entries = input.required<DayInfoOffer[]>()
+  preferredEntry = input.required<DayInfoOffer>()
+
 
   spacePlaceholder = computed(() => (this.spaceAvailable() > 0) ? "1 - " + this.spaceAvailable() : "")
   groupBookingPossible = computed(() => this.spaceAvailable() >= (this.preferredEntry()?.offer?.maxPersons ?? 0))
   groupBookingSelected = false
 
-  processing = signal(false)
+  request = output<CreateBookingRequest>()
+
 
   form: FormGroup
 
   constructor(
     private fb: FormBuilder,
-    private service: BookingCartService,
-    private bookingService: BookingService,
     private settingsService: SettingsService,
-    private router: Router,
-    private dialog: MatDialog
   ) {
     this.form = this.fb.group({
       title: ['', Validators.required],
@@ -88,8 +71,6 @@ export class BookingCheckoutComponent {
         }
       }
     )
-    this.spaceAvailable = this.service.maxGroupSize
-    this.preferredEntry = this.service.preferredEntry
   }
 
   get size() {
@@ -114,7 +95,7 @@ export class BookingCheckoutComponent {
       value.mail!!
     )
 
-    let offerIds: number[] = this.service.entries().map(e => e.offer.id)
+    let offerIds: number[] = this.entries().map(e => e.offer.id)
 
     let request = new CreateBookingRequest(
       visitorGroupRequest,
@@ -122,27 +103,9 @@ export class BookingCheckoutComponent {
       value.comment!!,
       value.termsAndConditions!!
     )
-    this.processing.set(true)
-    this.bookingService.createBooking(request).subscribe({
-      next: v => this.handleResult(v),
-      error: err => this.handleError(err),
-      complete: () => this.processing.set(false)
-    })
+    this.request.emit(request)
   }
 
-  private handleResult(d: BookingRequest) {
-
-    let dialogRef = this.dialog.open(CreateBookingConfirmationDialogComponent, {data: d})
-    dialogRef.afterClosed().subscribe(() => {
-      this.service.clear()
-      navigateToDashboard(this.router)
-    })
-  }
-
-  private handleError(err: any) {
-    let dialogRef = this.dialog.open(CreateBookingFailedDialogComponent, {data: err})
-    dialogRef.afterClosed().subscribe(() => navigateToDashboard(this.router))
-  }
 
   protected showTermsAndConditions() {
     let newTab = window.open()

@@ -1,23 +1,23 @@
 import {Component, computed, inject, resource, signal} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {TranslatePipe} from "@ngx-translate/core";
-import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {BookingRequest} from "@open-booking/core";
 import {BookingService} from "@open-booking/portal";
+import {BookingRequest} from "@open-booking/core";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
+import {TranslatePipe} from "@ngx-translate/core";
 import {MatButtonModule} from "@angular/material/button";
 
 @Component({
-  selector: 'app-create-booking-confirmation-dialog',
+  selector: 'app-booking-success-dialog',
   imports: [
     LoadingBarComponent,
     TranslatePipe,
     MatDialogModule,
     MatButtonModule
   ],
-  templateUrl: './create-booking-confirmation-dialog.component.html',
-  styleUrls: ['./create-booking-confirmation-dialog.component.scss']
+  templateUrl: './booking-success-dialog.component.html',
+  styleUrl: './booking-success-dialog.component.scss',
 })
-export class CreateBookingConfirmationDialogComponent {
+export class BookingSuccessDialogComponent {
 
   data = inject<BookingRequest>(MAT_DIALOG_DATA)
   requestId = signal(-1)
@@ -37,10 +37,9 @@ export class CreateBookingConfirmationDialogComponent {
   reloading = this.messageResource.isLoading
 
   constructor(
-    public dialogRef: MatDialogRef<CreateBookingConfirmationDialogComponent>,
+    public dialogRef: MatDialogRef<BookingSuccessDialogComponent>,
     private service: BookingService
   ) {
     this.requestId.set(this.data.id)
   }
-
 }

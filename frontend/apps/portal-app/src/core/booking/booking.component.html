@@ -1,52 +1,31 @@
 <div class="container mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-
   <mat-card>
-    <!-- Cart Header -->
-    <div class="p-4 border-b">
-      <h2 class="text-xl font-semibold">{{ 'CART.Title' | translate }}</h2>
-    </div>
-
-    <!-- Cart Content -->
-    <div class="flex-1 overflow-y-auto p-4">
-      @if (service.entries().length === 0) {
-        <div class="text-center py-12">
-          <mat-icon class="!text-6xl opacity-20">shopping_cart</mat-icon>
-          <p class="mt-4 text-sm opacity-70">{{ 'CART.Empty' | translate }}</p>
-        </div>
-      } @else {
-        <div class="flex flex-col gap-2">
-          @for (item of service.entries(); track item.offer.id) {
-            <app-booking-entry [data]="item"></app-booking-entry>
-          }
-        </div>
+    @switch (service.mode()) {
+      @case ('offer') {
+        <app-booking-offer
+          [entries]="service.entries()"
+          [maxGroupSize]="service.maxGroupSize()"
+          (checkout)="this.service.proceedToCheckout()"
+        ></app-booking-offer>
       }
-    </div>
-
-    <!-- Cart Footer -->
-    @if (service.entries().length > 0) {
-      <div class="p-4 border-t">
-        <div class="mb-3 text-sm">
-          <div class="flex items-center justify-between mb-1">
-            <span class="opacity-70">{{ 'CART.Summary.MaxGroupSize' | translate }}:</span>
-            <span class="font-medium">{{ service.maxGroupSize() }}</span>
-          </div>
-          @if (hasUnavailableItems()) {
-            <div class="text-xs text-red-600 mt-2">
-              {{ 'CART.Warning.SomeItemsUnavailable' | translate }}
-            </div>
-          }
-        </div>
-
-        <button
-          mat-flat-button
-          color="primary"
-          class="w-full"
-          [disabled]="hasUnavailableItems()"
-          (click)="proceedToCheckout()">
-          {{ 'CART.Action.Checkout' | translate }}
-          <mat-icon class="!ml-2">arrow_forward</mat-icon>
-        </button>
-      </div>
+      @case ('checkout') {
+        <app-booking-checkout
+          [entries]="service.entries()"
+          [preferredEntry]="service.preferredEntry()!!"
+          [spaceAvailable]="service.maxGroupSize()"
+          (request)="this.service.proceedToSummary($event)"
+        />
+      }
+      @case ('summary') {
+        <app-booking-summary
+          [entries]="service.entries()"
+          [preferredEntry]="service.preferredEntry()!!"
+          [spaceAvailable]="service.maxGroupSize()"
+          [request]="service.request()!!"
+          (edit)="this.service.proceedToCheckout()"
+          (confirm)="handleConfirm($event)"
+        />
+      }
     }
   </mat-card>
 </div>

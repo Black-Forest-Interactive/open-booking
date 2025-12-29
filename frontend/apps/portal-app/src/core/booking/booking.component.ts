@@ -1,13 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
-import {TranslatePipe} from "@ngx-translate/core";
 import {BookingCartService} from "./booking-cart.service";
-import {DayInfoOffer} from "@open-booking/core";
-import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
+import {BookingRequest, CreateBookingRequest, DayInfoOffer} from "@open-booking/core";
 import {Router} from "@angular/router";
-import {navigateToBookingCheckout} from "../../app/app.navigation";
+import {BookingOfferComponent} from "./booking-offer/booking-offer.component";
+import {BookingCheckoutComponent} from "./booking-checkout/booking-checkout.component";
+import {BookingSummaryComponent} from "./booking-summary/booking-summary.component";
+import {BookingService} from "@open-booking/portal";
+import {navigateToDashboard} from "../../app/app.navigation";
+import {BookingFailedDialogComponent} from "./booking-failed-dialog/booking-failed-dialog.component";
+import {BookingSuccessDialogComponent} from "./booking-success-dialog/booking-success-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-booking',
@@ -15,16 +20,23 @@ import {navigateToBookingCheckout} from "../../app/app.navigation";
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    TranslatePipe,
-    BookingEntryComponent
+    BookingOfferComponent,
+    BookingCheckoutComponent,
+    BookingSummaryComponent
   ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })
 export class BookingComponent {
 
+  processing = signal(false)
 
-  constructor(protected readonly service: BookingCartService, private router: Router) {
+  constructor(
+    protected readonly service: BookingCartService,
+    private bookingService: BookingService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {
 
   }
 
@@ -42,11 +54,25 @@ export class BookingComponent {
     )
   }
 
-
-  protected proceedToCheckout() {
-    if (this.service.entries().length > 0) {
-      navigateToBookingCheckout(this.router)
-    }
+  handleConfirm(request: CreateBookingRequest) {
+    this.processing.set(true)
+    this.bookingService.createBooking(request).subscribe({
+      next: v => this.handleResult(v),
+      error: err => this.handleError(err),
+      complete: () => this.processing.set(false)
+    })
   }
 
+  private handleResult(d: BookingRequest) {
+    let dialogRef = this.dialog.open(BookingSuccessDialogComponent, {data: d})
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.clear()
+      navigateToDashboard(this.router)
+    })
+  }
+
+  private handleError(err: any) {
+    let dialogRef = this.dialog.open(BookingFailedDialogComponent, {data: err})
+    dialogRef.afterClosed().subscribe(() => navigateToDashboard(this.router))
+  }
 }

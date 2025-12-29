@@ -1,5 +1,5 @@
 import {computed, Injectable, signal} from "@angular/core";
-import {DayInfoHelper, DayInfoOffer} from "@open-booking/core";
+import {CreateBookingRequest, DayInfoHelper, DayInfoOffer} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,9 @@ export class BookingCartService {
   preferredEntry = signal<DayInfoOffer | undefined>(undefined)
   maxGroupSize = computed(() => this.calcMaxGroupSize(this.entries()))
 
+  mode = signal<'offer' | 'checkout' | 'summary'>('offer')
+
+  request = signal<CreateBookingRequest | undefined>(undefined)
 
   offerAdd(offer: DayInfoOffer) {
     this.entries.update(entries =>
@@ -29,6 +32,7 @@ export class BookingCartService {
     if (this.preferredEntry() === offer) {
       this.preferredEntry.set(this.entries()[0])
     }
+    this.updateMode()
   }
 
   setPreferred(offer: DayInfoOffer) {
@@ -47,5 +51,29 @@ export class BookingCartService {
   clear() {
     this.entries.set([])
     this.preferredEntry.set(undefined)
+  }
+
+  proceedToCheckout() {
+    if (this.entries().length > 0) {
+      this.mode.set('checkout')
+    } else {
+      this.mode.set('offer')
+    }
+  }
+
+  proceedToSummary(request: CreateBookingRequest) {
+    this.request.set(request)
+    this.mode.set('summary')
+  }
+
+  private updateMode() {
+    const size = this.entries().length
+    if (size == 0) {
+      this.mode.set('offer')
+    } else if (size == 1) {
+      this.mode.set('checkout')
+    } else {
+      this.mode.set('offer')
+    }
   }
 }
