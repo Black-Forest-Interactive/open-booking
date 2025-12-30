@@ -8,4 +8,5 @@ import io.micronaut.data.repository.PageableRepository
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
 interface GuideRepository : PageableRepository<GuideData, Long> {
+    fun findByIdIn(ids: Set<Long>): List<GuideData>
 }

@@ -5,13 +5,13 @@ import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorData
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

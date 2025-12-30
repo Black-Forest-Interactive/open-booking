@@ -13,6 +13,7 @@ import java.time.LocalDate
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 interface BookingRequestRepository : PageableRepository<BookingRequestData, Long> {
 
     @Query(

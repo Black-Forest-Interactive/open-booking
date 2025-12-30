@@ -3,7 +3,6 @@ package de.sambalmueslie.openbooking.backend.request
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.mail.external.MailClient
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.core.request.BookingRequestChangeService
@@ -43,10 +42,10 @@ class BookingRequestChangeServiceTest {
     @Inject
     lateinit var offerService: OfferService
 
-    val mailClient = mockk<MailClient>()
+    val mailClient = mockk<de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient>()
 
-    @MockBean(MailClient::class)
-    fun mailClient(): MailClient {
+    @MockBean(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient::class)
+    fun mailClient(): de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient {
         return mailClient
     }
 

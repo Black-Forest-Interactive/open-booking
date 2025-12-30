@@ -8,6 +8,7 @@ import jakarta.persistence.Table
 @Suppress("JpaMissingIdInspection")
 @Entity(name = "BookingRequestRelation")
 @Table(name = "booking_request_booking")
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 data class BookingRequestRelation(
     @Column val bookingId: Long,
     @Column val bookingRequestId: Long

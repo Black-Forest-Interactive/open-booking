@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 
 @Entity(name = "BookingRequest")
 @Table(name = "booking_request")
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 data class BookingRequestData(
     @Id @GeneratedValue var id: Long,
     @Column var key: String,

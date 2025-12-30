@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.settings
 
 import de.sambalmueslie.openbooking.common.PatchRequest
-import de.sambalmueslie.openbooking.core.settings.api.SettingChangeRequest
+import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication

@@ -122,6 +122,9 @@ dependencies {
     implementation("org.simplejavamail:batch-module:8.12.6")
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
+    // opensearch
+    implementation("com.jillesvangurp:search-client:2.6.7")
+
     // test
     testImplementation("io.micronaut:micronaut-http-client")
     testImplementation("org.testcontainers:junit-jupiter")

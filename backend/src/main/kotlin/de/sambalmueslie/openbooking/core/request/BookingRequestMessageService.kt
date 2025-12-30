@@ -10,6 +10,7 @@ import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestMessageService(
     private val responseService: ResponseService,
     private val repository: BookingRequestRepository,

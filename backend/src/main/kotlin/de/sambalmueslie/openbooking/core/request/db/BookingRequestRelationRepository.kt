@@ -7,6 +7,7 @@ import io.micronaut.data.repository.GenericRepository
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 interface BookingRequestRelationRepository : GenericRepository<BookingRequestRelation, Long> {
     fun save(data: BookingRequestRelation): BookingRequestRelation
     fun saveAll(data: List<BookingRequestRelation>): List<BookingRequestRelation>

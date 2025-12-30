@@ -7,7 +7,6 @@ import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.api.*
@@ -19,6 +18,7 @@ import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -27,6 +27,7 @@ import java.util.*
 
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestService(
     private val bookingService: BookingService,
     private val visitorService: VisitorService,

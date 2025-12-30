@@ -18,6 +18,7 @@ import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestChangeService(
     private val bookingService: BookingService,
     private val visitorService: VisitorService,

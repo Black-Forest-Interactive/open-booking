@@ -4,12 +4,12 @@ package de.sambalmueslie.openbooking.core.offer
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.offer.api.*
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
 import de.sambalmueslie.openbooking.core.offer.db.Queries
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.jpa.criteria.PredicateSpecification

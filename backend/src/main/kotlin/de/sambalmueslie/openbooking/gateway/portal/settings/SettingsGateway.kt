@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.portal.settings
 
-import de.sambalmueslie.openbooking.core.settings.SettingsService
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

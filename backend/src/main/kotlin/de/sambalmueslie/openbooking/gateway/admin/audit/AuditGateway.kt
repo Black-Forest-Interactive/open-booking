@@ -1,9 +1,9 @@
 package de.sambalmueslie.openbooking.gateway.admin.audit
 
 import de.sambalmueslie.openbooking.common.checkPermission
-import de.sambalmueslie.openbooking.core.audit.AuditLogEntryService
-import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_AUDIT_ADMIN
+import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
+import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton

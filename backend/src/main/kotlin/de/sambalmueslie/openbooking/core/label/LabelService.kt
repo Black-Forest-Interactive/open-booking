@@ -2,12 +2,12 @@ package de.sambalmueslie.openbooking.core.label
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.label.api.Label
 import de.sambalmueslie.openbooking.core.label.api.LabelChangeRequest
 import de.sambalmueslie.openbooking.core.label.db.LabelData
 import de.sambalmueslie.openbooking.core.label.db.LabelRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

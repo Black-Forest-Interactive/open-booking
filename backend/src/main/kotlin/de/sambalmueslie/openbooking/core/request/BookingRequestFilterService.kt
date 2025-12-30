@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestFilterService(
     private val repository: BookingRequestRepository,
 ) {

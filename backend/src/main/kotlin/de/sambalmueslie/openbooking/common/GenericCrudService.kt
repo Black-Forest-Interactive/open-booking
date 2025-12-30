@@ -3,7 +3,7 @@ package de.sambalmueslie.openbooking.common
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
-import de.sambalmueslie.openbooking.core.cache.CacheService
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.PageableRepository

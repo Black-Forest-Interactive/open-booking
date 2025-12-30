@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
@@ -18,6 +17,7 @@ import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationRepository
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.util.*
