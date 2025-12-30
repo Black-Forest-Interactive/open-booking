@@ -52,6 +52,7 @@ export class BookingProcessService {
   clear() {
     this.entries.set([])
     this.preferredEntry.set(undefined)
+    this.request.set(undefined)
   }
 
   proceedToOffer() {
