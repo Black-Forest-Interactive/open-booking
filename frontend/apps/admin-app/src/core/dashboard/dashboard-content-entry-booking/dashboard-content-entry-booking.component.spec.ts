@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardContentEntryBookingComponent } from './dashboard-content-entry-booking.component';
+import {DashboardContentEntryBookingComponent} from './dashboard-content-entry-booking.component';
 
 describe('DashboardContentEntryBookingComponent', () => {
   let component: DashboardContentEntryBookingComponent;
@@ -10,7 +10,7 @@ describe('DashboardContentEntryBookingComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardContentEntryBookingComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DashboardContentEntryBookingComponent);
     component = fixture.componentInstance;

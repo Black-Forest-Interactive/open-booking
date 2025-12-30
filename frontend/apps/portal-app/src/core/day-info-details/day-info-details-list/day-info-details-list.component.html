@@ -1,0 +1,43 @@
+<div class="flex flex-col h-full">
+
+  <!-- Scrollable List -->
+  <div class="flex-1 overflow-y-auto pb-24">
+    <div class="flex flex-col gap-2">
+      @for (offer of offers(); track offer.offer.id) {
+        <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>
+      }
+
+      @if (offers().length === 0) {
+        <div class="text-center py-12">
+          <mat-icon class="!text-5xl !w-12 !h-12 opacity-30">event_busy</mat-icon>
+          <p class="mt-2">{{ 'OFFER.Info.NoOffersAvailable' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Fixed Selection Summary at Bottom -->
+  @if (selectedCount() > 0) {
+    <div class="fixed bottom-14 left-0 right-0 p-4 bg-white border-t shadow-lg z-50">
+      <div class="container mx-auto">
+        <div class="flex flex-col gap-2 p-4 rounded-lg bg-blue-600 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-medium">{{ 'OFFER.Summary.Selected' | translate:{count: selectedCount()} }}</div>
+              <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
+                <mat-icon class="!text-base !w-4 !h-4">group</mat-icon>
+                <span>{{ 'OFFER.Summary.MaxGroupSize' | translate:{size: maxGroupSize()} }}</span>
+              </div>
+            </div>
+            <button
+              mat-flat-button
+              color="accent"
+              (click)="proceedToBooking()">
+              {{ 'OFFER.Action.ProceedToCheckout' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

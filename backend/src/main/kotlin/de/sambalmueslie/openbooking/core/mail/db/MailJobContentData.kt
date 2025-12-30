@@ -4,13 +4,12 @@ package de.sambalmueslie.openbooking.core.mail.db
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.mail.api.Mail
 import de.sambalmueslie.openbooking.core.mail.api.MailJobContent
 import de.sambalmueslie.openbooking.core.mail.api.MailParticipant
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "MailJobContent")
 @Table(name = "mail_job_content")
 data class MailJobContentData(
@@ -57,6 +56,7 @@ data class MailJobContentData(
 
     @Transient
     private var from: MailParticipant? = null
+
     @Transient
     fun getFromObj(): MailParticipant {
         if (from == null) {
@@ -67,6 +67,7 @@ data class MailJobContentData(
 
     @Transient
     private var to: List<MailParticipant>? = null
+
     @Transient
     fun getToObj(): List<MailParticipant> {
         if (to == null) {
@@ -77,6 +78,7 @@ data class MailJobContentData(
 
     @Transient
     private var bcc: List<MailParticipant>? = null
+
     @Transient
     fun getBccObj(): List<MailParticipant> {
         if (bcc == null) {

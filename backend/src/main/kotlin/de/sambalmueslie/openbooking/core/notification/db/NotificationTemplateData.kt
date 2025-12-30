@@ -1,14 +1,13 @@
 package de.sambalmueslie.openbooking.core.notification.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.notification.api.ContentType
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateChangeRequest
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateType
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "NotificationTemplate")
 @Table(name = "notification_template")
 data class NotificationTemplateData(

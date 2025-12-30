@@ -1,12 +1,11 @@
 package de.sambalmueslie.openbooking.core.mail.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.mail.api.MailJob
 import de.sambalmueslie.openbooking.core.mail.api.MailJobStatus
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "MailJob")
 @Table(name = "mail_job")
 data class MailJobData(

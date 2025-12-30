@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
 
-@Suppress("JpaObjectClassSignatureInspection", "JpaMissingIdInspection")
+@Suppress("JpaMissingIdInspection")
 @Entity(name = "BookingRequestRelation")
 @Table(name = "booking_request_booking")
 data class BookingRequestRelation(

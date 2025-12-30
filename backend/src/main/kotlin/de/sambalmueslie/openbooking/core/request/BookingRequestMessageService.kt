@@ -1,13 +1,12 @@
 package de.sambalmueslie.openbooking.core.request
 
 
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
 import de.sambalmueslie.openbooking.core.response.ResponseService
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.core.response.api.ResponseType
-import de.sambalmueslie.openbooking.common.findByIdOrNull
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -18,7 +17,7 @@ class BookingRequestMessageService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestMessageService::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestMessageService::class.java)
     }
 
     fun getRequestReceivedMessage(id: Long, lang: String = "de"): ResolvedResponse? {

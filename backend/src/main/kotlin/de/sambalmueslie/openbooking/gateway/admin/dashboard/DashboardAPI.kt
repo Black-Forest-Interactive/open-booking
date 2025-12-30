@@ -1,5 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.dashboard
 
+import de.sambalmueslie.openbooking.core.dashboard.api.DaySummary
+import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -9,19 +11,6 @@ data class CalendarResponse(
     val dailyOffers: List<DailyOffers>
 )
 
-data class WeekSummary(
-    val weekNumber: Int,
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-    val pendingCount: Int,
-    val days: List<DaySummary>
-)
-
-data class DaySummary(
-    val date: LocalDate,
-    val dayOfWeek: String,
-    val pendingCount: Int
-)
 
 data class DailyOffers(
     val date: LocalDate,
@@ -119,15 +108,14 @@ fun generateSampleCalendarData(): CalendarResponse {
 
         dailyOffers.add(DailyOffers(currentDate, dayOffers))
 
-        val pendingCount = dayOffers.sumOf { offer ->
+        val unconfirmedCount = dayOffers.sumOf { offer ->
             offer.bookings.count { !it.confirmed }
         }
 
         allDays.add(
             DaySummary(
                 date = currentDate,
-                dayOfWeek = currentDate.dayOfWeek.toString().take(3),
-                pendingCount = pendingCount
+                unconfirmedCount = unconfirmedCount
             )
         )
     }
@@ -141,7 +129,7 @@ fun generateSampleCalendarData(): CalendarResponse {
             weekNumber = weekIndex + 1,
             startDate = weekDays.first().date,
             endDate = weekDays.last().date,
-            pendingCount = weekDays.sumOf { it.pendingCount },
+            unconfirmedCount = weekDays.sumOf { it.unconfirmedCount },
             days = weekDays
         )
     }

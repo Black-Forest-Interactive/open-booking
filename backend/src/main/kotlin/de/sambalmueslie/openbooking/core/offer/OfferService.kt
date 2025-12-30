@@ -1,20 +1,19 @@
 package de.sambalmueslie.openbooking.core.offer
 
 
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.GenericRequestResult
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.offer.api.*
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
 import de.sambalmueslie.openbooking.core.offer.db.Queries
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.GenericRequestResult
-import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.jpa.criteria.PredicateSpecification
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -30,7 +29,7 @@ class OfferService(
 
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(OfferService::class.java)
+        private val logger = LoggerFactory.getLogger(OfferService::class.java)
         private const val MSG_OFFER_SERIES_FAIL = "REQUEST.OFFER.SERIES.FAIL"
         private const val MSG_OFFER_SERIES_SUCCESS = "REQUEST.OFFER.SERIES.SUCCESS"
         private const val MSG_OFFER_RANGE_FAIL = "REQUEST.OFFER.RANGE.FAIL"
@@ -144,7 +143,7 @@ class OfferService(
         val to: LocalDate? = request.to
         val active: Boolean? = request.active
 
-        if(from != null && to != null && active == null){
+        if (from != null && to != null && active == null) {
             return repository.findAllByStartGreaterThanEqualsAndFinishLessThanOrderByStart(from.atStartOfDay(), to.atStartOfDay().plusDays(1), pageable).map { it.convert() }
         }
 
@@ -153,7 +152,7 @@ class OfferService(
         if (from != null) predicates.add(Queries.from(from))
         if (to != null) predicates.add(Queries.to(to))
 
-        if(predicates.isEmpty()) return repository.findAllOrderByStart(pageable).map { it.convert() }
+        if (predicates.isEmpty()) return repository.findAllOrderByStart(pageable).map { it.convert() }
 
         val spec: PredicateSpecification<OfferData> = PredicateSpecification.where(
             predicates.reduce { acc, spec -> acc.and(spec) }

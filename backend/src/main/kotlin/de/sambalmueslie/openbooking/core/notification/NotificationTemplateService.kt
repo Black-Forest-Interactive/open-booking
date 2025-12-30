@@ -1,17 +1,16 @@
 package de.sambalmueslie.openbooking.core.notification
 
 
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateChangeRequest
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateType
 import de.sambalmueslie.openbooking.core.notification.db.NotificationTemplateData
 import de.sambalmueslie.openbooking.core.notification.db.NotificationTemplateRepository
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -22,7 +21,7 @@ class NotificationTemplateService(
 ) : GenericCrudService<Long, NotificationTemplate, NotificationTemplateChangeRequest, NotificationTemplateData>(repository, cacheService, NotificationTemplate::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(NotificationTemplateService::class.java)
+        private val logger = LoggerFactory.getLogger(NotificationTemplateService::class.java)
     }
 
     override fun createData(request: NotificationTemplateChangeRequest): NotificationTemplateData {

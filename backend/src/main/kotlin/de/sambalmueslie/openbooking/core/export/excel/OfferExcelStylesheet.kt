@@ -7,14 +7,13 @@ import builders.dsl.spreadsheet.api.FontStyle
 import builders.dsl.spreadsheet.api.Keywords
 import builders.dsl.spreadsheet.builder.api.CanDefineStyle
 import builders.dsl.spreadsheet.builder.api.Stylesheet
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
 class OfferExcelStylesheet : Stylesheet {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(OfferExcelStylesheet::class.java)
+        private val logger = LoggerFactory.getLogger(OfferExcelStylesheet::class.java)
         const val STYLE_HEADER = "header"
         const val STYLE_OFFER_HEADER_ROW = "offer_header_row"
         const val STYLE_OFFER_HEADER_ROW_FIRST = "offer_header_row_first"

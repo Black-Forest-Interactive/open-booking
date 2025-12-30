@@ -1,12 +1,11 @@
 package de.sambalmueslie.openbooking.core.mail
 
 
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.mail.api.MailJobContent
 import de.sambalmueslie.openbooking.core.mail.db.MailJobHistoryEntryData
 import de.sambalmueslie.openbooking.core.mail.db.MailJobHistoryRepository
 import de.sambalmueslie.openbooking.core.mail.external.MailClient
-import de.sambalmueslie.openbooking.common.TimeProvider
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 internal class MailSendJob(
@@ -17,7 +16,7 @@ internal class MailSendJob(
     private var retryCounter: Int = 0
 ) {
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(MailSendJob::class.java)
+        private val logger = LoggerFactory.getLogger(MailSendJob::class.java)
     }
 
     init {

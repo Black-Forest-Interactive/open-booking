@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.notification.handler
 
 
+import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.core.notification.NotificationService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEventType
@@ -8,9 +9,7 @@ import de.sambalmueslie.openbooking.core.request.BookingRequestService
 import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeListener
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import io.micronaut.context.annotation.Context
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Context
@@ -20,7 +19,7 @@ class BookingRequestChangeHandler(
 ) : BusinessObjectChangeListener<Long, BookingRequest>, BookingRequestChangeListener {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingRequestChangeHandler::class.java)
+        private val logger = LoggerFactory.getLogger(BookingRequestChangeHandler::class.java)
         const val TYPE_KEY = "type"
         const val TYPE_CONFIRMED = "confirmed"
         const val TYPE_DENIED = "denied"

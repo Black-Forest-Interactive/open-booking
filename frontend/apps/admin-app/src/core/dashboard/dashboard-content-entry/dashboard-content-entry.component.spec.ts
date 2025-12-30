@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardContentEntryComponent } from './dashboard-content-entry.component';
+import {DashboardContentEntryComponent} from './dashboard-content-entry.component';
 
 describe('DashboardContentEntryComponent', () => {
   let component: DashboardContentEntryComponent;
@@ -10,7 +10,7 @@ describe('DashboardContentEntryComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardContentEntryComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DashboardContentEntryComponent);
     component = fixture.componentInstance;

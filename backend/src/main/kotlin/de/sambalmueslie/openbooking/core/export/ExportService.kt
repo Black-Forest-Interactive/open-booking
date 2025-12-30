@@ -1,14 +1,13 @@
 package de.sambalmueslie.openbooking.core.export
 
 
+import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.export.excel.ExcelExporter
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.request.BookingRequestService
-import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import io.micronaut.http.server.types.files.SystemFile
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
@@ -21,7 +20,7 @@ class ExportService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ExportService::class.java)
+        private val logger = LoggerFactory.getLogger(ExportService::class.java)
     }
 
     fun createDailyReportPdf(date: LocalDate): SystemFile? {

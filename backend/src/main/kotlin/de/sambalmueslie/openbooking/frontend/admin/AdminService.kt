@@ -6,7 +6,6 @@ import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.frontend.admin.api.OfferSetupRequest
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -20,7 +19,7 @@ class AdminService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(AdminService::class.java)
+        private val logger = LoggerFactory.getLogger(AdminService::class.java)
     }
 
     fun setup(request: OfferSetupRequest) {

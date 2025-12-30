@@ -1,5 +1,4 @@
 import {Component, computed, input, output, signal} from '@angular/core';
-import {Booking, ShowOffer} from "@open-booking/admin";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -8,6 +7,8 @@ import {HotToastService} from "@ngxpert/hot-toast";
 import {
   DashboardContentEntryBookingComponent
 } from "../dashboard-content-entry-booking/dashboard-content-entry-booking.component";
+import {BookingEntry, OfferEntry} from "@open-booking/core";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard-content-entry',
@@ -16,44 +17,22 @@ import {
     MatIconButton,
     MatFormFieldModule,
     MatSelectModule,
-    DashboardContentEntryBookingComponent
+    DashboardContentEntryBookingComponent,
+    DatePipe
   ],
   templateUrl: './dashboard-content-entry.component.html',
   styleUrl: './dashboard-content-entry.component.scss',
 })
 export class DashboardContentEntryComponent {
-  data = input.required<ShowOffer>()
+  data = input.required<OfferEntry>()
 
-  confirmedOnly = signal<boolean>(false)
-  bookedSeats = computed(() => this.getBookedSeats(this.data().bookings, this.confirmedOnly()))
-  availableSeats = computed(() => this.getAvailableSeats(this.data().totalSeats, this.bookedSeats()))
-  confirmedSeats = computed(() => this.getConfirmedSeats(this.data().bookings))
-  pendingSeats = computed(() => this.getPendingSeats(this.data().bookings))
+  availableSeats = computed(() => this.data().totalSeats)
+  confirmedSeats = computed(() => this.data().confirmedSeats)
+  pendingSeats = computed(() => this.data().pendingSeats)
 
   collapsed = signal<boolean>(false)
 
-  confirmBooking = output<Booking>()
-
-  private getBookedSeats(bookings: Booking[], confirmedOnly = false): number {
-    return bookings
-      .filter(b => !confirmedOnly || b.confirmed)
-      .reduce((sum, b) => sum + b.guests, 0);
-  }
-
-  private getConfirmedSeats(bookings: Booking[]): number {
-    return bookings.filter(b => b.confirmed)
-      .reduce((sum, b) => sum + b.guests, 0)
-  }
-
-  private getPendingSeats(bookings: Booking[]): number {
-    return bookings.filter(b => !b.confirmed)
-      .reduce((sum, b) => sum + b.guests, 0)
-  }
-
-
-  private getAvailableSeats(totalSeats: number, confirmedSeats: number): number {
-    return totalSeats - confirmedSeats
-  }
+  confirmBooking = output<BookingEntry>()
 
   constructor(private toast: HotToastService) {
   }
@@ -72,7 +51,7 @@ export class DashboardContentEntryComponent {
     this.toast.error("Select guide is not implemented yet")
   }
 
-  protected handleConfirmBooking(booking: Booking) {
+  protected handleConfirmBooking(booking: BookingEntry) {
     this.confirmBooking.emit(booking)
   }
 }

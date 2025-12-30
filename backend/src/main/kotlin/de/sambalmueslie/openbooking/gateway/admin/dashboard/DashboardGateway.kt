@@ -14,17 +14,10 @@ class DashboardGateway(
 
     fun getDailyVisitorStats(auth: Authentication) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) { service.getDailyVisitorStats() }
 
+    fun getSummary(auth: Authentication) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) { service.getWeeksSummary() }
 
-    private val sampleData = generateSampleCalendarData()
+    fun getDailyOffers(auth: Authentication, day: LocalDate, request: DailyOffersFilterRequest?) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) { service.getDailyOffers(day, request) }
 
-    fun getSummary(auth: Authentication) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) {
-        sampleData.weeks
-    }
-
-    fun getDailyOffers(auth: Authentication, day: LocalDate, request: DailyOffersFilterRequest?) = auth.checkPermission(PERMISSION_DASHBOARD_ADMIN) {
-        val result = sampleData.dailyOffers.find { it.date == day } ?: sampleData.dailyOffers.first()
-        result.applyFilter(request)
-    }
 
     private fun DailyOffers.applyFilter(request: DailyOffersFilterRequest?): DailyOffers {
         if (request == null) return this

@@ -16,7 +16,6 @@ import de.sambalmueslie.openbooking.frontend.user.api.UrlResponse
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
@@ -36,7 +35,7 @@ class SettingsService(
     }
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(SettingsService::class.java)
+        private val logger = LoggerFactory.getLogger(SettingsService::class.java)
     }
 
     override fun getAll(pageable: Pageable): Page<Setting> {

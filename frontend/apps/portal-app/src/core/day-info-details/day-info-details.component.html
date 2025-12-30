@@ -1,28 +1,36 @@
 <app-loading-bar [reloading]="reloading()"></app-loading-bar>
-<mat-toolbar>
-  <div class="d-flex flex-row align-items-baseline gap-3">
-    <div>
-      <button mat-mini-fab routerLink="/" color="primary">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-    @if (app.isHandset()) {
-      <h4>{{ data().date | date:'mediumDate' }} {{ data().start | date:'shortTime' }}
-        - {{ data().end | date:'shortTime' }}</h4>
-    } @else {
-      <h3>{{ data().date | date:'fullDate' }} {{ data().start | date:'shortTime' }}
-        - {{ data().end | date:'shortTime' }}</h3>
-    }
-  </div>
-</mat-toolbar>
-<div class="container d-flex flex-column gap-3">
-  @if (app.isHandset()) {
-    <div class="fxFlex">
-      <app-day-info-details-chart [data]="data()"></app-day-info-details-chart>
-    </div>
-  }
-  <div class="fxFlex">
-    <app-day-info-details-list [data]="data()"></app-day-info-details-list>
-  </div>
-</div>
+<div class="container mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
 
+  <mat-card>
+    <mat-toolbar>
+      <div class="flex items-center justify-between w-full gap-4">
+        <!-- Left -->
+        <div class="flex-shrink-0">
+          <button matMiniFab color="primary" (click)="back()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+
+        <!-- Center -->
+        <div class="flex-1 text-center">
+          <div class="text-xl font-bold">
+            {{ data().date | date:'fullDate' }}
+          </div>
+          <div class="text-base fon-medium">
+            {{ data().start | date:'shortTime' }} - {{ data().end | date:'shortTime' }}
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="flex-shrink-0 w-14">
+          <!-- Placeholder to balance the layout, add content here if needed -->
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <div class="container mx-auto p-4 flex flex-col gap-3">
+      <app-day-info-details-list [data]="data()"></app-day-info-details-list>
+    </div>
+  </mat-card>
+
+</div>

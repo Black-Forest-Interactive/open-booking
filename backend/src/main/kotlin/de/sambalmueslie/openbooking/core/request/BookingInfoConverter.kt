@@ -10,7 +10,6 @@ import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import io.micronaut.data.model.Page
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -21,7 +20,7 @@ class BookingInfoConverter(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(BookingInfoConverter::class.java)
+        private val logger = LoggerFactory.getLogger(BookingInfoConverter::class.java)
     }
 
     fun page(provider: () -> Page<BookingRequestData>): Page<BookingRequestInfo> {
@@ -53,7 +52,7 @@ class BookingInfoConverter(
         val visitorGroupIds = data.map { it.visitorGroupId }.toSet()
         val visitorGroups = visitorGroupService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
 
-        return  data.mapNotNull { info(it, relations, bookings, visitorGroups) }
+        return data.mapNotNull { info(it, relations, bookings, visitorGroups) }
             .sortedBy { it.visitorGroup.status.order }
     }
 

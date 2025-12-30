@@ -1,22 +1,3 @@
-export interface CalendarResponse {
-  weeks: WeekSummary[];
-  dailyOffers: DailyOffers[];
-}
-
-export interface WeekSummary {
-  weekNumber: number;
-  startDate: string; // LocalDate
-  endDate: string;   // LocalDate
-  pendingCount: number;
-  days: DaySummary[];
-}
-
-export interface DaySummary {
-  date: string; // LocalDate
-  dayOfWeek: string;
-  pendingCount: number;
-}
-
 export interface DailyOffers {
   date: string; // LocalDate
   offers: ShowOffer[];

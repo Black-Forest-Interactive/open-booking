@@ -4,7 +4,6 @@ package de.sambalmueslie.openbooking.core.cache
 import com.github.benmanes.caffeine.cache.LoadingCache
 import de.sambalmueslie.openbooking.core.cache.api.CacheInfo
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
@@ -12,7 +11,7 @@ import kotlin.reflect.KClass
 class CacheService {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(CacheService::class.java)
+        private val logger = LoggerFactory.getLogger(CacheService::class.java)
     }
 
     private val caches = mutableMapOf<String, LoadingCache<*, *>>()

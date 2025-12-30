@@ -10,7 +10,7 @@
             <mat-option [value]="week">
               Week {{ week.weekNumber }} : {{ week.startDate | date:'shortDate' }}
               - {{ week.endDate | date:'shortDate' }}
-              {{ week.pendingCount > 0 ? '(' + week.pendingCount + ' pending)' : '' }}
+              {{ week.unconfirmedCount > 0 ? '(' + week.unconfirmedCount + ' pending)' : '' }}
             </mat-option>
           }
         </mat-select>
@@ -35,10 +35,10 @@
           <div class="text-xs font-medium text-gray-500 mb-1">
             {{ day.date | date:'MMMM' }}
           </div>
-          @if (day.pendingCount > 0) {
+          @if (day.unconfirmedCount > 0) {
             <div
               class="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-              {{ day.pendingCount }}
+              {{ day.unconfirmedCount }}
             </div>
           }
         </div>

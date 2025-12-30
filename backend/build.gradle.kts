@@ -143,7 +143,7 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
 }
 
 
@@ -179,13 +179,13 @@ tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative"
 tasks {
     compileKotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
     }
 
     compileTestKotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
     }
 }
@@ -220,7 +220,7 @@ sonar {
 
 
 jib {
-    from.image = "eclipse-temurin:21-jre-ubi9-minimal"
+    from.image = "eclipse-temurin:25-jre-ubi10-minimal"
     to {
         image = "open-event-backend"
         tags = setOf(version.toString(), "latest")
@@ -232,20 +232,23 @@ jib {
             "-server",
             "-XX:+UseContainerSupport",
             "-XX:MaxRAMPercentage=75.0",
-
-            // Java 21+ ZGC for better performance
             "-XX:+UseZGC",
-            "-XX:+UnlockExperimentalVMOptions",
-
+            "-XX:ZCollectionInterval=5",
+            "-XX:ZUncommitDelay=300",
             "-XX:+TieredCompilation",
+            "-XX:TieredStopAtLevel=1",  // Fast startup for microservices
+            "-XX:+UseStringDeduplication",
+            "-XX:+OptimizeStringConcat",
             "-Dmicronaut.runtime.environment=prod",
-            "-Dio.netty.allocator.maxOrder=3"
+            "-Dio.netty.allocator.maxOrder=3",
+            "-Dio.netty.leakDetection.level=disabled"  // Production setting
         )
 
         user = "1001"
 
         environment = mapOf(
-            "JAVA_TOOL_OPTIONS" to "-XX:+ExitOnOutOfMemoryError"
+            "JAVA_TOOL_OPTIONS" to "-XX:+ExitOnOutOfMemoryError",
+            "MALLOC_ARENA_MAX" to "2"  // Reduce memory fragmentation
         )
     }
 }

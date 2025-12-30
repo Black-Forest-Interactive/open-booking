@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardFilterComponent } from './dashboard-filter.component';
+import {DashboardFilterComponent} from './dashboard-filter.component';
 
 describe('DashboardFilterComponent', () => {
   let component: DashboardFilterComponent;
@@ -10,7 +10,7 @@ describe('DashboardFilterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardFilterComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DashboardFilterComponent);
     component = fixture.componentInstance;

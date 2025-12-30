@@ -4,7 +4,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {DatePipe, NgClass} from "@angular/common";
 import {LoadingBarComponent} from "@open-booking/shared";
-import {DaySummary, WeekSummary} from "@open-booking/admin";
+import {DaySummary, WeekSummary} from "@open-booking/core";
 
 @Component({
   selector: 'app-dashboard-summary',

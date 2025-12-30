@@ -1,16 +1,15 @@
 package de.sambalmueslie.openbooking.core.info
 
 
+import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -24,7 +23,7 @@ class InfoService(
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(InfoService::class.java)
+        private val logger = LoggerFactory.getLogger(InfoService::class.java)
     }
 
 

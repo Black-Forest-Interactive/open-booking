@@ -1,14 +1,13 @@
 package de.sambalmueslie.openbooking.core.group.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.group.api.Address
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "VisitorGroup")
 @Table(name = "visitor_group")
 data class VisitorGroupData(

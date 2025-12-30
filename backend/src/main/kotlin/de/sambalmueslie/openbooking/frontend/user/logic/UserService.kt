@@ -2,6 +2,7 @@ package de.sambalmueslie.openbooking.frontend.user.logic
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.info.InfoService
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
@@ -14,13 +15,11 @@ import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeRequest
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.core.settings.SettingsService
 import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
-import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.frontend.user.api.CreateBookingRequest
 import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectRequest
 import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectResultEntry
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
@@ -33,7 +32,7 @@ class UserService(
     private val mapper: ObjectMapper
 ) {
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(UserService::class.java)
+        private val logger = LoggerFactory.getLogger(UserService::class.java)
         private const val DEFAULT_DAY_INFO_AMOUNT = 99L
     }
 

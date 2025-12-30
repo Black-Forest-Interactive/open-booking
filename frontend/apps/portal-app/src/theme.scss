@@ -60,6 +60,7 @@ html {
   ));
 }
 
+
 // Optional: Dark theme variant
 .dark-theme {
   color-scheme: dark;
@@ -94,27 +95,18 @@ html {
 }
 
 // Material Design Token CSS Classes
-.mat-primary {
+.bg-primary {
   background-color: var(--mat-sys-primary) !important;
   color: var(--mat-sys-on-primary) !important;
 }
 
-.mat-primary-container {
-  background-color: var(--mat-sys-primary-container) !important;
-  color: var(--mat-sys-on-primary-container) !important;
-}
 
-.mat-tertiary {
+.bg-tertiary {
   background-color: var(--mat-sys-tertiary) !important;
   color: var(--mat-sys-on-tertiary) !important;
 }
 
-.mat-tertiary-container {
-  background-color: var(--mat-sys-tertiary-container) !important;
-  color: var(--mat-sys-on-tertiary-container) !important;
-}
-
-.mat-error {
+.bg-error {
   background-color: var(--mat-sys-error) !important;
   color: var(--mat-sys-on-error) !important;
 }

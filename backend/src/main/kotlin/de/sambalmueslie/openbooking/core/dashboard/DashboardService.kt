@@ -1,13 +1,15 @@
 package de.sambalmueslie.openbooking.core.dashboard
 
 
+import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DailyVisitorStats
+import de.sambalmueslie.openbooking.core.dashboard.api.OfferEntry
+import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
+import de.sambalmueslie.openbooking.gateway.admin.dashboard.DailyOffersFilterRequest
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -15,11 +17,13 @@ import java.time.temporal.ChronoUnit
 @Singleton
 class DashboardService(
     private val offerService: OfferService,
-    private val bookingService: BookingService
+    private val bookingService: BookingService,
+    private val weeksSummaryProvider: WeeksSummaryProvider,
+    private val offerEntryProvider: OfferEntryProvider
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(DashboardService::class.java)
+        private val logger = LoggerFactory.getLogger(DashboardService::class.java)
     }
 
     fun getDailyVisitorStats(): List<DailyVisitorStats> {
@@ -48,8 +52,26 @@ class DashboardService(
         val totalSpace = activeOffer.sumOf { it.maxPersons }
 
         val bookings = bookingService.getBookings(offer).groupBy { it.status }.mapValues { it.value.sumOf { b -> b.size } }.toMutableMap()
-        BookingStatus.values().forEach { status -> if (!bookings.containsKey(status)) bookings[status] = 0 }
+        BookingStatus.entries.forEach { status -> if (!bookings.containsKey(status)) bookings[status] = 0 }
 
         return DailyVisitorStats(date, offerAmount, activeOfferAmount, totalSpace, bookings)
     }
+
+
+    fun getWeeksSummary(): List<WeekSummary> {
+        val (duration, data) = measureTimeMillisWithReturn {
+            weeksSummaryProvider.getWeeksSummary()
+        }
+        logger.info("Weeks summary created within $duration ms.")
+        return data
+    }
+
+    fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferEntry> {
+        val (duration, data) = measureTimeMillisWithReturn {
+            offerEntryProvider.getDailyOffers(day, request)
+        }
+        logger.info("Daily offers created within $duration ms.")
+        return data
+    }
+
 }

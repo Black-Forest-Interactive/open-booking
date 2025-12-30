@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "@open-booking/shared";
 import {Observable} from "rxjs";
-import {DailyOffers, DailyOffersFilterRequest, WeekSummary} from "./dashboard.api";
+import {DailyOffersFilterRequest} from "./dashboard.api";
+import {OfferEntry, WeekSummary} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class DashboardService extends BaseService {
     return this.get('summary')
   }
 
-  getDailyOffers(day: string, request: DailyOffersFilterRequest): Observable<DailyOffers> {
+  getOfferEntries(day: string, request: DailyOffersFilterRequest): Observable<OfferEntry[]> {
     return this.post('offer/' + day, request)
   }
 

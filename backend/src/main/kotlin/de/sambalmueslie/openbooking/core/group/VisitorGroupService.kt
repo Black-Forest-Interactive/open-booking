@@ -1,6 +1,9 @@
 package de.sambalmueslie.openbooking.core.group
 
 
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
@@ -8,12 +11,8 @@ import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.group.db.VisitorGroupData
 import de.sambalmueslie.openbooking.core.group.db.VisitorGroupRepository
-import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import jakarta.inject.Singleton
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 @Singleton
@@ -24,7 +23,7 @@ class VisitorGroupService(
 ) : GenericCrudService<Long, VisitorGroup, VisitorGroupChangeRequest, VisitorGroupData>(repository, cacheService, VisitorGroup::class, logger) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(VisitorGroupService::class.java)
+        private val logger = LoggerFactory.getLogger(VisitorGroupService::class.java)
     }
 
     override fun createData(request: VisitorGroupChangeRequest): VisitorGroupData {

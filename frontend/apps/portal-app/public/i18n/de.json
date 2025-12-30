@@ -11,58 +11,13 @@
     "Ok": "OK",
     "Save": "Speichern",
     "Submit": "Absenden",
-    "Yes": "Ja"
-  },
-  "ADMIN": {
-    "MENU": {
-      "Booking": "Buchungsverwaltung",
-      "BookingRequest": "Anfrageverwaltung",
-      "Dashboard": "Übersicht",
-      "Offer": "Angebotsverwaltung",
-      "SearchBooking": "Buchung suchen",
-      "Texts": "Textverwaltung"
-    }
+    "Yes": "Ja",
+    "Select": "Auswählen",
+    "Continue": "Weiter"
   },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Willkommen"
-  },
-  "AUDIT": {
-    "Action": {
-      "Search": "Search for audit"
-    },
-    "Field": {
-      "Level": {
-        "Title": "Level"
-      },
-      "Message": {
-        "Title": "Message"
-      },
-      "Source": {
-        "Title": "Source"
-      },
-      "Timestamp": {
-        "Title": "Timestamp"
-      },
-      "User": {
-        "Title": "User"
-      }
-    }
-  },
-  "BACKOFFICE": {
-    "MENU": {
-      "AuditLog": "Audit Log",
-      "Booking": "Buchungsverwaltung",
-      "BookingRequest": "Anfrageverwaltung",
-      "Cache": "Cache-Verwaltung",
-      "Dashboard": "Übersicht",
-      "Mail": "Mail-Status",
-      "Notification": "Benachrichtigungsverwaltung",
-      "Offer": "Angebotsverwaltung",
-      "Response": "Response Mgt",
-      "SearchBooking": "Buchung suchen",
-      "Settings": "Einstellungen"
-    }
   },
   "BOOKING": {
     "Action": {
@@ -115,17 +70,6 @@
       "UNKNOWN": "Unbekannt"
     }
   },
-  "CACHE": {
-    "Action": {
-      "Reset": "Zurücksetzen"
-    },
-    "Field": {
-      "Evict": "Evict count/weight",
-      "Hit": "Hit/Miss",
-      "Load": "Load success/failed",
-      "Name": "Cache Name"
-    }
-  },
   "DAY_INFO": {
     "Chart": {
       "Space": {
@@ -156,25 +100,6 @@
     "de": "Deutsch",
     "en": "English"
   },
-  "MAIL": {
-    "Action": {
-      "Search": "Suchaufgabe",
-      "SearchHistory": "Such-Historie"
-    },
-    "Status": {
-      "FAILED": "Fehlgeschlagen",
-      "FINISHED": "Abgeschlossen",
-      "QUEUED": "In der Warteschlange",
-      "RETRY": "Warten auf erneuten Versuch"
-    },
-    "Table": {
-      "Id": "ID",
-      "Message": "Nachricht",
-      "Status": "Status",
-      "Timestamp": "Zeitstempel",
-      "Title": "Titel"
-    }
-  },
   "MENU": {
     "Admin": "Verwaltung",
     "Backoffice": "Backoffice",
@@ -183,51 +108,8 @@
     "Language": "Sprache",
     "Login": "Login",
     "Logout": "Logout",
-    "Title": "Menü"
-  },
-  "NOTIFICATION": {
-    "Action": {
-      "Create": "Create Notification Template",
-      "Search": "Searches Notification Template"
-    },
-    "Dialog": {
-      "Delete": {
-        "Question": "Do you really want to delete the notification template?",
-        "Title": "Delete notification template {{type}}"
-      }
-    },
-    "Field": {
-      "Content": {
-        "Hint": "",
-        "Title": "Content"
-      },
-      "Id": {
-        "Hint": "",
-        "Title": "Id"
-      },
-      "Lang": {
-        "Hint": "",
-        "Title": "Language"
-      },
-      "Subject": {
-        "Hint": "",
-        "Title": "Subject"
-      },
-      "Type": {
-        "BOOKING_REQUEST_CONFIRMED_CONTACT": "Booking Confirmed message for Contact",
-        "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
-        "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
-        "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
-        "Hint": "",
-        "Title": "Type"
-      }
-    },
-    "Message": {
-      "CreateFailure": "Creation of the notification template failed",
-      "CreateSuccess": "The notification template was created successfully",
-      "DeleteSuccess": "The notification template {{type}} was deleted successfully",
-      "FormInvalid": "Something went wrong with the form"
-    }
+    "Title": "Menü",
+    "Cart": "Warenkorb"
   },
   "OFFER": {
     "Action": {
@@ -241,7 +123,8 @@
       "Search": "Termin suchen",
       "Select": "Termin auswählen",
       "ShowBookings": "Buchungen",
-      "Filter": "Filtern"
+      "Filter": "Filtern",
+      "ProceedToCheckout": "Buchung abschliesen"
     },
     "Field": {
       "Active": "Aktiv",
@@ -261,7 +144,11 @@
       "Start": "Beginn"
     },
     "Info": {
-      "SpaceAvailable": "Es sind noch {{value}} Plätze frei"
+      "SpacesAvailable": "Plätze verfügbar",
+      "Pending": "ausstehend",
+      "Full": "Ausgebucht",
+      "LimitedSpaces": "Wenige Plätze",
+      "NoOffersAvailable": "Keine Angebote verfügbar"
     },
     "Operation": {
       "Create": "Termin erstellen",
@@ -276,6 +163,10 @@
       "MinTime": "",
       "Quantity": "Anzahl",
       "Time": "Zeit"
+    },
+    "Summary": {
+      "Selected": "{{count}} ausgewählt",
+      "MaxGroupSize": "Max. Gruppengröße: {{size}}"
     }
   },
   "REQUEST": {
@@ -426,13 +317,6 @@
       "FormInvalid": "Leider hat etwas nicht richtig funktioniert"
     }
   },
-  "SETTING": {
-    "Field": {
-      "Id": "ID",
-      "Type": "Typ",
-      "Value": "Wert"
-    }
-  },
   "VISITOR_GROUP": {
     "MailConfirmation": {
       "Failed": {
@@ -471,5 +355,55 @@
     "Title": "📅 Dashboard-Übersicht",
     "NoData": "Keine Daten verfügbar",
     "ComeBackLater": "Bitte schauen Sie später noch einmal vorbei."
+  },
+  "CART": {
+    "Title": "Warenkorb",
+    "CheckoutTitle": "Anmeldeformular",
+    "Subtitle": "Erste Auswahl = bevorzugt, weitere = Alternativen",
+    "Empty": "Warenkorb ist leer",
+    "PreferredLabel": "Bevorzugte Auswahl",
+    "SpacesAvailable": "Plätze verfügbar",
+    "Pending": "ausstehend",
+    "Confirmed": "bestätigt",
+    "LimitedSpaces": "Wenige Plätze",
+    "NoLongerAvailable": "Nicht mehr verfügbar",
+    "Summary": {
+      "MaxGroupSize": "Max. Gruppengröße"
+    },
+    "Warning": {
+      "SomeItemsUnavailable": "Einige Angebote sind nicht mehr verfügbar"
+    },
+    "Action": {
+      "Close": "Schließen",
+      "Remove": "Entfernen",
+      "Checkout": "Zur Buchung",
+      "AddMore": "Alternativtermin hinzufügen"
+    }
+  },
+  "SUMMARY": {
+    "Title": "Buchungszusammenfassung",
+    "Subtitle": "Bitte überprüfen Sie Ihre Buchungsdetails",
+    "TimeSlots": {
+      "Title": "Ausgewählte Zeitfenster",
+      "MaxPersons": "Max. {{count}} Personen"
+    },
+    "VisitorInfo": {
+      "Title": "Besucherinformationen",
+      "PersonCount": "{{count}} Person(en)",
+      "Type": "Art",
+      "GroupBooking": "Gruppenbuchung",
+      "IndividualBooking": "Einzelbuchung",
+      "AgeRange": "Altersbereich",
+      "Years": "Jahre",
+      "Address": "Adresse"
+    },
+    "Terms": {
+      "Accepted": "Allgemeine Geschäftsbedingungen akzeptiert",
+      "NotAccepted": "Allgemeine Geschäftsbedingungen nicht akzeptiert"
+    },
+    "Action": {
+      "Edit": "Bearbeiten",
+      "Confirm": "Buchung bestätigen"
+    }
   }
 }

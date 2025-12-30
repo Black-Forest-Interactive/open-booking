@@ -1,9 +1,9 @@
 package de.sambalmueslie.openbooking.core.settings.db
 
+import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.settings.api.Setting
 import de.sambalmueslie.openbooking.core.settings.api.SettingChangeRequest
 import de.sambalmueslie.openbooking.core.settings.api.ValueType
-import de.sambalmueslie.openbooking.common.DataObject
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
