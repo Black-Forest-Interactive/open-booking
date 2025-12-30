@@ -31,12 +31,13 @@ export class BookingCheckoutComponent {
   entries = input.required<DayInfoOffer[]>()
   preferredEntry = input.required<DayInfoOffer>()
 
-
   spacePlaceholder = computed(() => (this.spaceAvailable() > 0) ? "1 - " + this.spaceAvailable() : "")
   groupBookingPossible = computed(() => this.spaceAvailable() >= (this.preferredEntry()?.offer?.maxPersons ?? 0))
   groupBookingSelected = false
 
+  data = input<CreateBookingRequest | undefined>(undefined)
   request = output<CreateBookingRequest>()
+  back = output<boolean>()
 
 
   form: FormGroup
@@ -71,6 +72,27 @@ export class BookingCheckoutComponent {
         }
       }
     )
+    effect(() => {
+      let request = this.data()
+      if (request) {
+        let value = {
+          title: request.visitorGroupChangeRequest.title,
+          size: request.visitorGroupChangeRequest.size,
+          group: request.visitorGroupChangeRequest.isGroup,
+          minAge: request.visitorGroupChangeRequest.minAge,
+          maxAge: request.visitorGroupChangeRequest.maxAge,
+          contact: request.visitorGroupChangeRequest.contact,
+          street: request.visitorGroupChangeRequest.address.street,
+          zip: request.visitorGroupChangeRequest.address.zip,
+          city: request.visitorGroupChangeRequest.address.city,
+          phone: request.visitorGroupChangeRequest.phone,
+          mail: request.visitorGroupChangeRequest.email,
+          termsAndConditions: request.termsAndConditions,
+          comment: request.comment,
+        }
+        this.form.setValue(value)
+      }
+    });
   }
 
   get size() {
@@ -105,7 +127,7 @@ export class BookingCheckoutComponent {
     )
     this.request.emit(request)
   }
-
+  
 
   protected showTermsAndConditions() {
     let newTab = window.open()
@@ -125,5 +147,6 @@ export class BookingCheckoutComponent {
       this.form.controls['size'].enable()
     }
   }
+
 
 }

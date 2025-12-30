@@ -2,7 +2,7 @@ import {Component, computed, input} from '@angular/core';
 import {DayInfoOffer} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
-import {BookingCartService} from "../../booking/booking-cart.service";
+import {BookingProcessService} from "../../booking/booking-process.service";
 import {DatePipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 
@@ -27,7 +27,7 @@ export class DayInfoDetailsListEntryComponent {
   hasAvailableSpace = computed(() => this.availableSpace() > 0)
   hasUnconfirmedBookings = computed(() => this.unconfirmedSpace() > 0)
 
-  constructor(private service: BookingCartService) {
+  constructor(private service: BookingProcessService) {
   }
 
   protected handleSelection() {

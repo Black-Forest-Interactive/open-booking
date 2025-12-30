@@ -5,6 +5,8 @@ import {MatCardModule} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {BookingEntryComponent} from "../booking-entry/booking-entry.component";
 import {DayInfoOffer} from "@open-booking/core";
+import {navigateToDashboard} from "../../../app/app.navigation";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-booking-offer',
@@ -22,9 +24,11 @@ export class BookingOfferComponent {
 
   entries = input.required<DayInfoOffer[]>()
   maxGroupSize = input.required<number>()
-  
+
   checkout = output<boolean>()
 
+  constructor(private router: Router) {
+  }
 
   getAvailableSpaces(item: DayInfoOffer): number {
     const maxPersons = item.offer.maxPersons
@@ -43,5 +47,9 @@ export class BookingOfferComponent {
   protected proceedToCheckout() {
     this.checkout.emit(true)
 
+  }
+
+  protected addMoreItems() {
+    navigateToDashboard(this.router)
   }
 }

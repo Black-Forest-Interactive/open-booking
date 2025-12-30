@@ -4,7 +4,7 @@ import {CreateBookingRequest, DayInfoHelper, DayInfoOffer} from "@open-booking/c
 @Injectable({
   providedIn: 'root'
 })
-export class BookingCartService {
+export class BookingProcessService {
 
   entries = signal<DayInfoOffer[]>([])
   preferredEntry = signal<DayInfoOffer | undefined>(undefined)
@@ -22,6 +22,7 @@ export class BookingCartService {
     if (!this.preferredEntry()) {
       this.preferredEntry.set(offer)
     }
+    this.updateMode()
   }
 
   offerRemove(offer: DayInfoOffer) {
@@ -53,6 +54,10 @@ export class BookingCartService {
     this.preferredEntry.set(undefined)
   }
 
+  proceedToOffer() {
+    this.mode.set('offer')
+  }
+
   proceedToCheckout() {
     if (this.entries().length > 0) {
       this.mode.set('checkout')
@@ -67,13 +72,13 @@ export class BookingCartService {
   }
 
   private updateMode() {
-    const size = this.entries().length
-    if (size == 0) {
-      this.mode.set('offer')
-    } else if (size == 1) {
-      this.mode.set('checkout')
-    } else {
-      this.mode.set('offer')
-    }
+    // const size = this.entries().length
+    // if (size == 0) {
+    //   this.mode.set('offer')
+    // } else if (size == 1) {
+    //   this.mode.set('checkout')
+    // } else {
+    //   this.mode.set('offer')
+    // }
   }
 }

@@ -123,7 +123,8 @@
       "Search": "Termin suchen",
       "Select": "Termin auswählen",
       "ShowBookings": "Buchungen",
-      "Filter": "Filtern"
+      "Filter": "Filtern",
+      "ProceedToCheckout": "Buchung abschliesen"
     },
     "Field": {
       "Active": "Aktiv",
@@ -357,6 +358,7 @@
   },
   "CART": {
     "Title": "Warenkorb",
+    "CheckoutTitle": "Anmeldeformular",
     "Subtitle": "Erste Auswahl = bevorzugt, weitere = Alternativen",
     "Empty": "Warenkorb ist leer",
     "PreferredLabel": "Bevorzugte Auswahl",
@@ -374,7 +376,34 @@
     "Action": {
       "Close": "Schließen",
       "Remove": "Entfernen",
-      "Checkout": "Zur Buchung"
+      "Checkout": "Zur Buchung",
+      "AddMore": "Alternativtermin hinzufügen"
+    }
+  },
+  "SUMMARY": {
+    "Title": "Buchungszusammenfassung",
+    "Subtitle": "Bitte überprüfen Sie Ihre Buchungsdetails",
+    "TimeSlots": {
+      "Title": "Ausgewählte Zeitfenster",
+      "MaxPersons": "Max. {{count}} Personen"
+    },
+    "VisitorInfo": {
+      "Title": "Besucherinformationen",
+      "PersonCount": "{{count}} Person(en)",
+      "Type": "Art",
+      "GroupBooking": "Gruppenbuchung",
+      "IndividualBooking": "Einzelbuchung",
+      "AgeRange": "Altersbereich",
+      "Years": "Jahre",
+      "Address": "Adresse"
+    },
+    "Terms": {
+      "Accepted": "Allgemeine Geschäftsbedingungen akzeptiert",
+      "NotAccepted": "Allgemeine Geschäftsbedingungen nicht akzeptiert"
+    },
+    "Action": {
+      "Edit": "Bearbeiten",
+      "Confirm": "Buchung bestätigen"
     }
   }
 }

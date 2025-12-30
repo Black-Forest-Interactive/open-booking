@@ -123,7 +123,8 @@
       "Search": "Search offer",
       "Select": "Select Offer",
       "ShowBookings": "Bookings",
-      "Filter": "Filter"
+      "Filter": "Filter",
+      "ProceedToCheckout": "Checkout"
     },
     "Field": {
       "Active": "Active",
@@ -357,6 +358,7 @@
   },
   "CART": {
     "Title": "Cart",
+    "CheckoutTitle": "Visitor information",
     "Subtitle": "First selection = preferred, others = alternatives",
     "Empty": "Cart is empty",
     "PreferredLabel": "Preferred choice",
@@ -374,7 +376,34 @@
     "Action": {
       "Close": "Close",
       "Remove": "Remove",
-      "Checkout": "Proceed to Booking"
+      "Checkout": "Proceed to Booking",
+      "AddMore": "Add alternative offer"
+    }
+  },
+  "SUMMARY": {
+    "Title": "Booking Summary",
+    "Subtitle": "Please review your booking details",
+    "TimeSlots": {
+      "Title": "Selected Time Slots",
+      "MaxPersons": "Max {{count}} persons"
+    },
+    "VisitorInfo": {
+      "Title": "Visitor Information",
+      "PersonCount": "{{count}} person(s)",
+      "Type": "Type",
+      "GroupBooking": "Group Booking",
+      "IndividualBooking": "Individual Booking",
+      "AgeRange": "Age Range",
+      "Years": "years",
+      "Address": "Address"
+    },
+    "Terms": {
+      "Accepted": "Terms and conditions accepted",
+      "NotAccepted": "Terms and conditions not accepted"
+    },
+    "Action": {
+      "Edit": "Edit",
+      "Confirm": "Confirm Booking"
     }
   }
 }

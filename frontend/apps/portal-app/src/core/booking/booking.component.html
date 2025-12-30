@@ -5,7 +5,7 @@
         <app-booking-offer
           [entries]="service.entries()"
           [maxGroupSize]="service.maxGroupSize()"
-          (checkout)="this.service.proceedToCheckout()"
+          (checkout)="service.proceedToCheckout()"
         ></app-booking-offer>
       }
       @case ('checkout') {
@@ -13,7 +13,9 @@
           [entries]="service.entries()"
           [preferredEntry]="service.preferredEntry()!!"
           [spaceAvailable]="service.maxGroupSize()"
-          (request)="this.service.proceedToSummary($event)"
+          [data]="service.request()"
+          (back)="service.proceedToOffer()"
+          (request)="service.proceedToSummary($event)"
         />
       }
       @case ('summary') {

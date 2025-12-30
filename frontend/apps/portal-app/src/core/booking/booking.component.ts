@@ -2,7 +2,7 @@ import {Component, signal} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
-import {BookingCartService} from "./booking-cart.service";
+import {BookingProcessService} from "./booking-process.service";
 import {BookingRequest, CreateBookingRequest, DayInfoOffer} from "@open-booking/core";
 import {Router} from "@angular/router";
 import {BookingOfferComponent} from "./booking-offer/booking-offer.component";
@@ -32,7 +32,7 @@ export class BookingComponent {
   processing = signal(false)
 
   constructor(
-    protected readonly service: BookingCartService,
+    protected readonly service: BookingProcessService,
     private bookingService: BookingService,
     private router: Router,
     private dialog: MatDialog
