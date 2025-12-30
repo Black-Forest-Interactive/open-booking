@@ -1,4 +1,4 @@
-package de.sambalmueslie.openbooking.gateway.admin.staff
+package de.sambalmueslie.openbooking.gateway.admin.guide
 
 import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import io.micronaut.data.model.Pageable
@@ -7,9 +7,9 @@ import io.micronaut.security.authentication.Authentication
 import io.swagger.v3.oas.annotations.tags.Tag
 
 
-@Controller("/api/admin/staff")
-@Tag(name = "Admin Staff API")
-class StaffController(private val gateway: StaffGateway) {
+@Controller("/api/admin/guide")
+@Tag(name = "Admin Guide API")
+class GuideController(private val gateway: GuideGateway) {
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
 

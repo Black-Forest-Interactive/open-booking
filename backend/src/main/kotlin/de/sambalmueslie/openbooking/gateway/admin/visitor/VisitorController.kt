@@ -1,4 +1,4 @@
-package de.sambalmueslie.openbooking.gateway.admin.group
+package de.sambalmueslie.openbooking.gateway.admin.visitor
 
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import io.micronaut.data.model.Pageable
@@ -7,9 +7,9 @@ import io.micronaut.security.authentication.Authentication
 import io.swagger.v3.oas.annotations.tags.Tag
 
 
-@Controller("/api/admin/group")
-@Tag(name = "Admin Group API")
-class GroupController(private val gateway: GroupGateway) {
+@Controller("/api/admin/visitor")
+@Tag(name = "Admin Visitor API")
+class VisitorController(private val gateway: VisitorGateway) {
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
 

@@ -1,9 +1,9 @@
-package de.sambalmueslie.openbooking.role
+package de.sambalmueslie.openbooking.guide
 
 import de.sambalmueslie.openbooking.common.BaseServiceTest
-import de.sambalmueslie.openbooking.core.role.RoleService
-import de.sambalmueslie.openbooking.core.role.api.TourRole
-import de.sambalmueslie.openbooking.core.role.api.TourRoleChangeRequest
+import de.sambalmueslie.openbooking.core.guide.GuideService
+import de.sambalmueslie.openbooking.core.guide.api.Guide
+import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 @MicronautTest
-internal class RoleServiceTest : BaseServiceTest() {
+internal class GuideServiceTest : BaseServiceTest() {
 
     @Inject
-    lateinit var service: RoleService
+    lateinit var service: GuideService
 
     @Test
     fun checkCrud() {
@@ -24,10 +24,10 @@ internal class RoleServiceTest : BaseServiceTest() {
         every { timeProvider.now() } returns now
 
         // create
-        val createRequest = TourRoleChangeRequest("name", "description")
+        val createRequest = GuideChangeRequest("firstName", "lastName", "email", "phone", "mobile")
         var result = service.create(createRequest)
 
-        var reference = TourRole(result.id, createRequest.name, createRequest.description)
+        var reference = Guide(result.id, createRequest.firstName, createRequest.lastName, createRequest.email, createRequest.phone, createRequest.mobile)
         assertEquals(reference, result)
 
         // read
@@ -35,13 +35,16 @@ internal class RoleServiceTest : BaseServiceTest() {
         assertEquals(listOf(reference), service.getAll(Pageable.from(0)).content)
 
         // update
-        val updateRequest = TourRoleChangeRequest("update-name", "update-description")
+        val updateRequest = GuideChangeRequest("update-firstName", "update-lastName", "update-email", "update-phone", "update-mobile")
         result = service.update(reference.id, updateRequest)
 
-        reference = TourRole(
+        reference = Guide(
             result.id,
-            updateRequest.name,
-            updateRequest.description
+            updateRequest.firstName,
+            updateRequest.lastName,
+            updateRequest.email,
+            updateRequest.phone,
+            updateRequest.mobile,
         )
         assertEquals(reference, result)
 
@@ -50,6 +53,7 @@ internal class RoleServiceTest : BaseServiceTest() {
 
         // read empty
         assertEquals(null, service.get(reference.id))
-        assertEquals(emptyList<TourRole>(), service.getAll(Pageable.from(0)).content)
+        assertEquals(emptyList<Guide>(), service.getAll(Pageable.from(0)).content)
     }
+
 }

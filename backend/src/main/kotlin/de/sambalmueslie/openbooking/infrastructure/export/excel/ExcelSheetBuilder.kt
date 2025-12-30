@@ -260,7 +260,7 @@ class ExcelSheetBuilder(
         sheet.addMergedRegion(CellRangeAddress(row.rowNum, row.rowNum, 2, 3))
 
         val contactCell = row.createCell(4)
-        contactCell.setCellValue(info.visitor.contact)
+        contactCell.setCellValue(info.visitor.name)
         contactCell.cellStyle = styleBookingCombined
         row.createCell(5).cellStyle = styleBooking
         sheet.addMergedRegion(CellRangeAddress(row.rowNum, row.rowNum, 4, 5))

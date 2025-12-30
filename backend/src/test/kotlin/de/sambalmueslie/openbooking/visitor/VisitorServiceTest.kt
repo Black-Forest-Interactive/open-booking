@@ -1,4 +1,4 @@
-package de.sambalmueslie.openbooking.group
+package de.sambalmueslie.openbooking.visitor
 
 import de.sambalmueslie.openbooking.common.BaseServiceTest
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
