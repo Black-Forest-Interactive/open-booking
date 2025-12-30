@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.group
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
@@ -17,10 +17,10 @@ class GroupController(private val gateway: GroupGateway) {
     fun getAll(auth: Authentication, pageable: Pageable) = gateway.getAll(auth, pageable)
 
     @Post()
-    fun create(auth: Authentication, @Body request: VisitorGroupChangeRequest) = gateway.create(auth, request)
+    fun create(auth: Authentication, @Body request: VisitorChangeRequest) = gateway.create(auth, request)
 
     @Put("/{id}")
-    fun update(auth: Authentication, id: Long, @Body request: VisitorGroupChangeRequest) = gateway.update(auth, id, request)
+    fun update(auth: Authentication, id: Long, @Body request: VisitorChangeRequest) = gateway.update(auth, id, request)
 
     @Delete("/{id}")
     fun delete(auth: Authentication, id: Long) = gateway.delete(auth, id)

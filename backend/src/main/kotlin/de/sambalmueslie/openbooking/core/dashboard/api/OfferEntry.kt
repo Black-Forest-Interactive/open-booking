@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.dashboard.api
 
-import de.sambalmueslie.openbooking.core.staff.api.StaffMember
+import de.sambalmueslie.openbooking.core.guide.api.Guide
 import java.time.LocalDateTime
 
 data class OfferEntry(
@@ -12,6 +12,6 @@ data class OfferEntry(
     val confirmedSeats: Int,
     val pendingSeats: Int,
     val active: Boolean,
-    val guide: StaffMember?,
+    val guide: Guide?,
     val bookings: List<BookingEntry>
 )

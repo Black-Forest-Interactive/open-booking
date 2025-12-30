@@ -1,15 +1,15 @@
 package de.sambalmueslie.openbooking.gateway.admin.group
 
 import de.sambalmueslie.openbooking.common.checkPermission
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_GROUP_ADMIN
 import io.micronaut.data.model.Pageable
 import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton
 
 @Singleton
-class GroupGateway(private val service: VisitorGroupService) {
+class GroupGateway(private val service: VisitorService) {
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_GROUP_ADMIN) {
         service.get(id)
     }
@@ -18,11 +18,11 @@ class GroupGateway(private val service: VisitorGroupService) {
         service.getAll(pageable)
     }
 
-    fun create(auth: Authentication, request: VisitorGroupChangeRequest) = auth.checkPermission(PERMISSION_GROUP_ADMIN) {
+    fun create(auth: Authentication, request: VisitorChangeRequest) = auth.checkPermission(PERMISSION_GROUP_ADMIN) {
         service.create(request)
     }
 
-    fun update(auth: Authentication, id: Long, request: VisitorGroupChangeRequest) = auth.checkPermission(PERMISSION_GROUP_ADMIN) {
+    fun update(auth: Authentication, id: Long, request: VisitorChangeRequest) = auth.checkPermission(PERMISSION_GROUP_ADMIN) {
         service.update(id, request)
     }
 

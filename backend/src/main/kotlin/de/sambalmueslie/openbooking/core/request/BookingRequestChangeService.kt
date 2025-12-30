@@ -6,21 +6,21 @@ import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
 class BookingRequestChangeService(
     private val bookingService: BookingService,
-    private val visitorGroupService: VisitorGroupService,
+    private val visitorService: VisitorService,
     private val offerService: OfferService,
     private val repository: BookingRequestRepository,
     private val relationRepository: BookingRequestRelationRepository,
@@ -30,14 +30,14 @@ class BookingRequestChangeService(
         private val logger = LoggerFactory.getLogger(BookingRequestChangeService::class.java)
     }
 
-    fun updateVisitorGroup(id: Long, request: VisitorGroupChangeRequest): GenericRequestResult {
+    fun updateVisitorGroup(id: Long, request: VisitorChangeRequest): GenericRequestResult {
         logger.info("Update visitor group for request $id with $request")
-        visitorGroupService.isValid(request)
+        visitorService.isValid(request)
 
         val data = repository.findByIdOrNull(id)
             ?: return GenericRequestResult(false, BookingRequestService.MSG_UPDATE_REQUEST_FAIL)
 
-        val current = visitorGroupService.get(data.visitorGroupId)
+        val current = visitorService.get(data.visitorGroupId)
             ?: return GenericRequestResult(false, BookingRequestService.MSG_UPDATE_REQUEST_FAIL)
 
         val sizeChanged = current.size != request.size
@@ -48,7 +48,7 @@ class BookingRequestChangeService(
         }
     }
 
-    private fun updateVisitorGroupWithSizeChange(data: BookingRequestData, current: VisitorGroup, request: VisitorGroupChangeRequest): GenericRequestResult {
+    private fun updateVisitorGroupWithSizeChange(data: BookingRequestData, current: Visitor, request: VisitorChangeRequest): GenericRequestResult {
         logger.info("Update visitor group with size change ${data.id} $request")
         val reduceSize = current.size > request.size
         return if (reduceSize) {
@@ -58,19 +58,19 @@ class BookingRequestChangeService(
         }
     }
 
-    private fun updateVisitorGroupWithReduceSizeChange(data: BookingRequestData, request: VisitorGroupChangeRequest): GenericRequestResult {
+    private fun updateVisitorGroupWithReduceSizeChange(data: BookingRequestData, request: VisitorChangeRequest): GenericRequestResult {
         logger.info("Update visitor group with reduce size change ${data.id} $request")
 
         val relations = relationRepository.getByBookingRequestId(data.id)
         val bookingIds = relations.map { it.bookingId }.toSet()
         val bookings = bookingService.getBookings(bookingIds)
 
-        val visitorGroup = visitorGroupService.update(data.visitorGroupId, request)
+        val visitorGroup = visitorService.update(data.visitorGroupId, request)
         bookings.forEach { bookingService.update(it.id, visitorGroup, it.status) }
         return GenericRequestResult(true, BookingRequestService.MSG_UPDATE_REQUEST_SUCCESS)
     }
 
-    private fun updateVisitorGroupWithIncreaseSizeChange(data: BookingRequestData, current: VisitorGroup, request: VisitorGroupChangeRequest): GenericRequestResult {
+    private fun updateVisitorGroupWithIncreaseSizeChange(data: BookingRequestData, current: Visitor, request: VisitorChangeRequest): GenericRequestResult {
         logger.info("Update visitor group with increase size change ${data.id} $request")
 
         val relations = relationRepository.getByBookingRequestId(data.id)
@@ -86,7 +86,7 @@ class BookingRequestChangeService(
             .associateBy { it.id }
         if (suitableOffers.isEmpty()) return GenericRequestResult(false, "REQUEST.Error.NoSuitableOffer")
 
-        val visitorGroup = visitorGroupService.update(data.visitorGroupId, request)
+        val visitorGroup = visitorService.update(data.visitorGroupId, request)
 
         requestBookings.forEach { (offerId, bookings) ->
             val offerSuitable = suitableOffers.containsKey(offerId)
@@ -98,7 +98,7 @@ class BookingRequestChangeService(
         return GenericRequestResult(true, BookingRequestService.MSG_UPDATE_REQUEST_SUCCESS)
     }
 
-    private fun isEnoughSpaceAvailable(request: VisitorGroupChangeRequest, current: VisitorGroup, offer: Offer, requestBookings: List<Booking>, offerBookings: List<Booking>): Boolean {
+    private fun isEnoughSpaceAvailable(request: VisitorChangeRequest, current: Visitor, offer: Offer, requestBookings: List<Booking>, offerBookings: List<Booking>): Boolean {
         if (offerBookings.isEmpty()) return request.size <= offer.maxPersons
 
         val spaceConfirmed = offerBookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
@@ -111,9 +111,9 @@ class BookingRequestChangeService(
     }
 
 
-    private fun updateVisitorGroupWithoutSizeChange(data: BookingRequestData, request: VisitorGroupChangeRequest): GenericRequestResult {
+    private fun updateVisitorGroupWithoutSizeChange(data: BookingRequestData, request: VisitorChangeRequest): GenericRequestResult {
         logger.info("Update visitor group without size change ${data.id} $request")
-        visitorGroupService.update(data.visitorGroupId, request)
+        visitorService.update(data.visitorGroupId, request)
         return GenericRequestResult(true, BookingRequestService.MSG_UPDATE_REQUEST_SUCCESS)
     }
 

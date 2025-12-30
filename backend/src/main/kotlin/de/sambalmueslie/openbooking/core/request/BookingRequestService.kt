@@ -8,9 +8,6 @@ import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.cache.CacheService
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.api.*
@@ -18,6 +15,9 @@ import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelation
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
@@ -29,7 +29,7 @@ import java.util.*
 @Singleton
 class BookingRequestService(
     private val bookingService: BookingService,
-    private val visitorGroupService: VisitorGroupService,
+    private val visitorService: VisitorService,
     private val offerService: OfferService,
     private val repository: BookingRequestRepository,
     private val relationRepository: BookingRequestRelationRepository,
@@ -100,13 +100,13 @@ class BookingRequestService(
         val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
         val spaceAvailable = offer.maxPersons - spaceConfirmed
 
-        return spaceAvailable >= request.visitorGroupChangeRequest.size
+        return spaceAvailable >= request.visitorChangeRequest.size
     }
 
     override fun createData(request: BookingRequestChangeRequest): BookingRequestData {
-        val visitorGroup = visitorGroupService.create(request.visitorGroupChangeRequest)
+        val visitorGroup = visitorService.create(request.visitorChangeRequest)
         if (request.autoConfirm) {
-            visitorGroupService.confirm(visitorGroup.id)
+            visitorService.confirm(visitorGroup.id)
         }
 
         val key = UUID.randomUUID().toString().uppercase(Locale.getDefault())
@@ -123,14 +123,14 @@ class BookingRequestService(
     }
 
     override fun isValid(request: BookingRequestChangeRequest) {
-        visitorGroupService.isValid(request.visitorGroupChangeRequest)
+        visitorService.isValid(request.visitorChangeRequest)
     }
 
     override fun deleteDependencies(data: BookingRequestData) {
         val relations = relationRepository.getByBookingRequestId(data.id)
         relations.forEach { bookingService.delete(it.bookingId) }
 
-        visitorGroupService.delete(data.visitorGroupId)
+        visitorService.delete(data.visitorGroupId)
 
         relationRepository.deleteByBookingRequestId(data.id)
     }
@@ -143,9 +143,9 @@ class BookingRequestService(
     fun confirmEmail(key: String): GenericRequestResult {
         val request = repository.findOneByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
         val visitorGroupId = request.visitorGroupId
-        val result = visitorGroupService.confirm(visitorGroupId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        val result = visitorService.confirm(visitorGroupId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
-        return when (result.status == VisitorGroupStatus.CONFIRMED) {
+        return when (result.status == VerificationStatus.CONFIRMED) {
             true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
             else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
         }
@@ -198,7 +198,7 @@ class BookingRequestService(
         return converter.data { repository.findByIdOrNull(requestId) }
     }
 
-    fun updateVisitorGroup(id: Long, request: VisitorGroupChangeRequest) = changeService.updateVisitorGroup(id, request)
+    fun updateVisitorGroup(id: Long, request: VisitorChangeRequest) = changeService.updateVisitorGroup(id, request)
 
     fun info(id: Long) = converter.data { repository.findByIdOrNull(id) }
     fun setComment(id: Long, value: String): BookingRequest? {

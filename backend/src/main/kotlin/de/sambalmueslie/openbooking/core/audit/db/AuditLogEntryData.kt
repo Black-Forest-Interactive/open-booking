@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @Entity(name = "AuditLogEntry")
 @Table(name = "audit_log_entry")
 data class AuditLogEntryData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var timestamp: LocalDateTime,
     @Column var actor: String,
     @Column @Enumerated(EnumType.STRING) var level: AuditLogLevel,

@@ -2,7 +2,6 @@ package de.sambalmueslie.openbooking.core.notification.processor
 
 
 import de.sambalmueslie.openbooking.config.MailConfig
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.mail.MailService
 import de.sambalmueslie.openbooking.core.mail.api.Mail
 import de.sambalmueslie.openbooking.core.mail.api.MailParticipant
@@ -17,6 +16,7 @@ import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
 import de.sambalmueslie.openbooking.core.settings.SettingsService
 import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
@@ -56,7 +56,7 @@ class BookingRequestEventProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = service.info(event.sourceId) ?: return
-        val url = if (info.visitorGroup.status == VisitorGroupStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
+        val url = if (info.visitor.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
 
         val properties = mapOf(
             Pair("info", info),
@@ -91,7 +91,7 @@ class BookingRequestEventProcessor(
     }
 
     private fun notifyContact(mails: List<Mail>, info: BookingRequestInfo) {
-        val visitorGroup = info.visitorGroup
+        val visitorGroup = info.visitor
         if (visitorGroup.email.isBlank()) return
 
         val from = MailParticipant("", getFromAddress())

@@ -1,10 +1,10 @@
 package de.sambalmueslie.openbooking.core.request.api
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import java.time.LocalDate
 
 data class BookingRequestFilterRequest(
     val offerDate: LocalDate?,
-    val visitorGroupStatus: VisitorGroupStatus?,
+    val visitorGroupStatus: VerificationStatus?,
     val query: String?
 )

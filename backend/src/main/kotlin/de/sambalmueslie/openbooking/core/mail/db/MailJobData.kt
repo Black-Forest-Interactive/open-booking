@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 @Entity(name = "MailJob")
 @Table(name = "mail_job")
 data class MailJobData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column @Enumerated(EnumType.STRING) var status: MailJobStatus,
     @Column var title: String,
     @Column var created: LocalDateTime,

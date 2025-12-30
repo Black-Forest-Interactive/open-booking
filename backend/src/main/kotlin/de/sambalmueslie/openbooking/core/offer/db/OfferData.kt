@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 @Entity(name = "Offer")
 @Table(name = "offer")
 data class OfferData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var start: LocalDateTime,
     @Column var finish: LocalDateTime,
     @Column var maxPersons: Int,

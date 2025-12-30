@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 @Entity(name = "MailJobHistory")
 @Table(name = "mail_job_history")
 data class MailJobHistoryEntryData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var message: String,
     @Column var timestamp: LocalDateTime,
     @Column var jobId: Long

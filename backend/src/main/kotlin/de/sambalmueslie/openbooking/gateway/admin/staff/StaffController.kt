@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.staff
 
-import de.sambalmueslie.openbooking.core.staff.api.StaffMemberChangeRequest
+import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
@@ -17,10 +17,10 @@ class StaffController(private val gateway: StaffGateway) {
     fun getAll(auth: Authentication, pageable: Pageable) = gateway.getAll(auth, pageable)
 
     @Post()
-    fun create(auth: Authentication, @Body request: StaffMemberChangeRequest) = gateway.create(auth, request)
+    fun create(auth: Authentication, @Body request: GuideChangeRequest) = gateway.create(auth, request)
 
     @Put("/{id}")
-    fun update(auth: Authentication, id: Long, @Body request: StaffMemberChangeRequest) = gateway.update(auth, id, request)
+    fun update(auth: Authentication, id: Long, @Body request: GuideChangeRequest) = gateway.update(auth, id, request)
 
     @Delete("/{id}")
     fun delete(auth: Authentication, id: Long) = gateway.delete(auth, id)

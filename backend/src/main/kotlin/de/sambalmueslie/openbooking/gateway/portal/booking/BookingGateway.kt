@@ -23,9 +23,9 @@ class BookingGateway(
     fun create(request: CreateBookingRequest): BookingRequest {
         if (!request.termsAndConditions) throw InvalidRequestException("You must accept the terms and conditions")
         if (logger.isDebugEnabled) logger.debug("Create booking ${mapper.writeValueAsString(request)}")
-        return bookingRequestService.create(BookingRequestChangeRequest(request.visitorGroupChangeRequest, request.offerIds, request.comment, false, false))
+        return bookingRequestService.create(BookingRequestChangeRequest(request.visitorChangeRequest, request.offerIds, request.comment, false, false))
     }
-    
+
     fun getRequestReceivedMessage(requestId: Long, lang: String): ResolvedResponse? {
         return bookingRequestService.getRequestReceivedMessage(requestId, lang)
     }

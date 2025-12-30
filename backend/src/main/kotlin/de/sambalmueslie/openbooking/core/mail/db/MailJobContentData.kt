@@ -13,7 +13,7 @@ import jakarta.persistence.*
 @Entity(name = "MailJobContent")
 @Table(name = "mail_job_content")
 data class MailJobContentData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var mailJson: String,
     @Column var fromJson: String,
     @Column var toJson: String,

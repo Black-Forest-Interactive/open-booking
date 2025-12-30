@@ -187,7 +187,7 @@ class ExcelSheetBuilder(
         timeCell.cellStyle = colorHeader
         row.createCell(2).cellStyle = styleOfferHeaderBold
 
-        val spaceConfirmed = details.bookings.filter { it.status == BookingRequestStatus.CONFIRMED }.sumOf { it.visitorGroup.size }
+        val spaceConfirmed = details.bookings.filter { it.status == BookingRequestStatus.CONFIRMED }.sumOf { it.visitor.size }
         val spaceAvailable = Math.max(details.offer.maxPersons - spaceConfirmed, 0)
 
         val usedTextCell = row.createCell(3)
@@ -212,7 +212,7 @@ class ExcelSheetBuilder(
     }
 
 
-    private fun createOfferHeaderLine2(colorHeader: XSSFCellStyle,details: OfferDetails) {
+    private fun createOfferHeaderLine2(colorHeader: XSSFCellStyle, details: OfferDetails) {
         val row = sheet.createRow(rowIndex++)
 
         val indexCell = row.createCell(1)
@@ -253,20 +253,20 @@ class ExcelSheetBuilder(
         indexCell.cellStyle = styleBooking
 
         val groupCell = row.createCell(2)
-        groupCell.setCellValue(info.visitorGroup.title)
+        groupCell.setCellValue(info.visitor.title)
         groupCell.cellStyle = styleBookingCombined
 
         row.createCell(3).cellStyle = styleBooking
         sheet.addMergedRegion(CellRangeAddress(row.rowNum, row.rowNum, 2, 3))
 
         val contactCell = row.createCell(4)
-        contactCell.setCellValue(info.visitorGroup.contact)
+        contactCell.setCellValue(info.visitor.contact)
         contactCell.cellStyle = styleBookingCombined
         row.createCell(5).cellStyle = styleBooking
         sheet.addMergedRegion(CellRangeAddress(row.rowNum, row.rowNum, 4, 5))
 
         val sizeCell = row.createCell(6)
-        sizeCell.setCellValue(info.visitorGroup.size.toDouble())
+        sizeCell.setCellValue(info.visitor.size.toDouble())
         sizeCell.cellStyle = styleBooking
 
         val noteCell = row.createCell(7)

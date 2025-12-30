@@ -4,14 +4,14 @@ import de.sambalmueslie.openbooking.common.DataObject
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
+import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity(name = "Booking")
 @Table(name = "booking")
 data class BookingData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var offerId: Long,
     @Column var visitorGroupId: Long,
     @Column @Enumerated(EnumType.STRING) var status: BookingStatus,
@@ -20,17 +20,17 @@ data class BookingData(
     @Column var updated: LocalDateTime? = null,
 ) : DataObject<Booking> {
     companion object {
-        fun create(request: BookingChangeRequest, visitorGroup: VisitorGroup, timestamp: LocalDateTime): BookingData {
-            return BookingData(0, request.offerId, visitorGroup.id, BookingStatus.UNCONFIRMED, visitorGroup.size, timestamp)
+        fun create(request: BookingChangeRequest, visitor: Visitor, timestamp: LocalDateTime): BookingData {
+            return BookingData(0, request.offerId, visitor.id, BookingStatus.UNCONFIRMED, visitor.size, timestamp)
         }
     }
 
     override fun convert() = Booking(id, offerId, visitorGroupId, size, status)
 
-    fun update(request: BookingChangeRequest, visitorGroup: VisitorGroup, timestamp: LocalDateTime): BookingData {
+    fun update(request: BookingChangeRequest, visitor: Visitor, timestamp: LocalDateTime): BookingData {
         offerId = request.offerId
-        visitorGroupId = visitorGroup.id
-        size = visitorGroup.size
+        visitorGroupId = visitor.id
+        size = visitor.size
         updated = timestamp
         return this
     }
@@ -41,14 +41,14 @@ data class BookingData(
         return this
     }
 
-    fun update(visitorGroup: VisitorGroup, timestamp: LocalDateTime): BookingData {
-        this.size = visitorGroup.size
+    fun update(visitor: Visitor, timestamp: LocalDateTime): BookingData {
+        this.size = visitor.size
         updated = timestamp
         return this
     }
 
-    fun update(visitorGroup: VisitorGroup, status: BookingStatus, timestamp: LocalDateTime): BookingData {
-        this.size = visitorGroup.size
+    fun update(visitor: Visitor, status: BookingStatus, timestamp: LocalDateTime): BookingData {
+        this.size = visitor.size
         this.status = status
         updated = timestamp
         return this

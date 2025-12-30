@@ -6,10 +6,10 @@ import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
 import de.sambalmueslie.openbooking.core.cache.CacheService
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 class BookingService(
     private val offerService: OfferService,
-    private val visitorGroupService: VisitorGroupService,
+    private val visitorService: VisitorService,
     private val repository: BookingRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
@@ -37,43 +37,43 @@ class BookingService(
             }
         })
 
-        visitorGroupService.register(object : BusinessObjectChangeListener<Long, VisitorGroup> {
+        visitorService.register(object : BusinessObjectChangeListener<Long, Visitor> {
 
-            override fun handleCreated(obj: VisitorGroup) {
+            override fun handleCreated(obj: Visitor) {
                 handleVisitorGroupChanged(obj)
             }
 
-            override fun handleUpdated(obj: VisitorGroup) {
+            override fun handleUpdated(obj: Visitor) {
                 handleVisitorGroupChanged(obj)
             }
 
-            override fun handleDeleted(obj: VisitorGroup) {
+            override fun handleDeleted(obj: Visitor) {
                 val sequence = PageableSequence() { repository.findByVisitorGroupId(obj.id, it) }
                 sequence.forEach { delete(it) }
             }
         })
     }
 
-    private fun handleVisitorGroupChanged(visitorGroup: VisitorGroup) {
-        val sequence = PageableSequence() { repository.findByVisitorGroupId(visitorGroup.id, it) }
+    private fun handleVisitorGroupChanged(visitor: Visitor) {
+        val sequence = PageableSequence() { repository.findByVisitorGroupId(visitor.id, it) }
         sequence.forEach {
-            if (it.size != visitorGroup.size) patchData(it) { data -> data.update(visitorGroup, timeProvider.now()) }
+            if (it.size != visitor.size) patchData(it) { data -> data.update(visitor, timeProvider.now()) }
         }
     }
 
     override fun createData(request: BookingChangeRequest): BookingData {
-        val visitorGroup = visitorGroupService.get(request.visitorGroupId)!!
+        val visitorGroup = visitorService.get(request.visitorGroupId)!!
         return BookingData.create(request, visitorGroup, timeProvider.now())
     }
 
     override fun updateData(data: BookingData, request: BookingChangeRequest): BookingData {
-        val visitorGroup = visitorGroupService.get(request.visitorGroupId)!!
+        val visitorGroup = visitorService.get(request.visitorGroupId)!!
         return data.update(request, visitorGroup, timeProvider.now())
     }
 
     override fun isValid(request: BookingChangeRequest) {
         if (offerService.get(request.offerId) == null) throw InvalidRequestException("Cannot find offer (${request.offerId}) for booking")
-        if (visitorGroupService.get(request.visitorGroupId) == null) throw InvalidRequestException("Cannot find visitor group (${request.visitorGroupId}) for booking")
+        if (visitorService.get(request.visitorGroupId) == null) throw InvalidRequestException("Cannot find visitor group (${request.visitorGroupId}) for booking")
     }
 
     fun getBookings(offer: List<Offer>): List<Booking> {
@@ -104,7 +104,7 @@ class BookingService(
 
     private fun info(data: BookingData, offer: Offer?, confirmedBookings: List<BookingData>): BookingInfo? {
         if (offer == null) return null
-        val spaceConfirmed = confirmedBookings.sumOf { visitorGroupService.get(it.visitorGroupId)?.size ?: 0 }
+        val spaceConfirmed = confirmedBookings.sumOf { visitorService.get(it.visitorGroupId)?.size ?: 0 }
         val spaceAvailable = (offer.maxPersons - spaceConfirmed).coerceAtLeast(0)
 
         val timestamp = data.updated ?: data.created
@@ -113,7 +113,7 @@ class BookingService(
 
     override fun deleteDependencies(data: BookingData) {
         val amount = repository.countByVisitorGroupId(data.visitorGroupId)
-        if (amount <= 1) visitorGroupService.delete(data.visitorGroupId)
+        if (amount <= 1) visitorService.delete(data.visitorGroupId)
     }
 
     fun confirm(bookingId: Long) {
@@ -128,9 +128,9 @@ class BookingService(
         notifyUpdated(result)
     }
 
-    fun update(bookingId: Long, visitorGroup: VisitorGroup, status: BookingStatus) {
+    fun update(bookingId: Long, visitor: Visitor, status: BookingStatus) {
         val data = repository.findByIdOrNull(bookingId) ?: return
-        val result = repository.update(data.update(visitorGroup, status, timeProvider.now())).convert()
+        val result = repository.update(data.update(visitor, status, timeProvider.now())).convert()
         notifyUpdated(result)
     }
 
@@ -141,21 +141,21 @@ class BookingService(
     fun findDetailsByOffer(offerId: Long): List<BookingDetails> {
         val data = repository.findByOfferId(offerId)
         val visitorGroupIds = data.map { it.visitorGroupId }.toSet()
-        val visitorGroups = visitorGroupService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
+        val visitorGroups = visitorService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
 
         return data.mapNotNull { detail(it, visitorGroups[it.visitorGroupId]) }
     }
 
-    private fun detail(data: BookingData, visitorGroup: VisitorGroup?): BookingDetails? {
-        if (visitorGroup == null) return null
-        return BookingDetails(data.convert(), visitorGroup)
+    private fun detail(data: BookingData, visitor: Visitor?): BookingDetails? {
+        if (visitor == null) return null
+        return BookingDetails(data.convert(), visitor)
     }
 
     fun searchDetails(request: BookingSearchRequest, pageable: Pageable): Page<BookingSearchResult> {
         val query = "%${request.query}%"
         val page = repository.search(query, pageable)
         val visitorGroupIds = page.content.map { it.visitorGroupId }.toSet()
-        val visitorGroups = visitorGroupService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
+        val visitorGroups = visitorService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
         val offerIds = page.content.map { it.offerId }.toSet()
         val offers = offerService.getOffer(offerIds).associateBy { it.id }
 

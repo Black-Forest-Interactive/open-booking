@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @Entity(name = "NotificationTemplate")
 @Table(name = "notification_template")
 data class NotificationTemplateData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var lang: String,
     @Column @Enumerated(EnumType.STRING) var type: NotificationTemplateType,
     @Column var subject: String,

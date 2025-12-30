@@ -1,11 +1,11 @@
 package de.sambalmueslie.openbooking.core.request
 
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestFilterRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -23,7 +23,7 @@ class BookingRequestFilterService(
 
     fun filterInfoUnconfirmed(filter: BookingRequestFilterRequest, pageable: Pageable): Page<BookingRequestData> {
         val offerDate: LocalDate? = filter.offerDate
-        val visitorGroupStatus: VisitorGroupStatus? = filter.visitorGroupStatus
+        val visitorGroupStatus: VerificationStatus? = filter.visitorGroupStatus
         val query: String? = filter.query?.let { "%$it%" }
         val status = listOf(BookingRequestStatus.UNKNOWN, BookingRequestStatus.UNCONFIRMED)
 

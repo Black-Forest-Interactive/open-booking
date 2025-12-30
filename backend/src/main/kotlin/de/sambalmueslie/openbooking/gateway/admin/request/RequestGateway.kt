@@ -2,11 +2,11 @@ package de.sambalmueslie.openbooking.gateway.admin.request
 
 import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.common.checkPermission
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 import de.sambalmueslie.openbooking.core.request.BookingRequestService
 import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestFilterRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_REQUEST_ADMIN
 import io.micronaut.data.model.Pageable
 import io.micronaut.security.authentication.Authentication
@@ -42,7 +42,7 @@ class RequestGateway(private val service: BookingRequestService) {
 
     fun getInfoByBookingId(auth: Authentication, bookingId: Long) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.getInfoByBookingId(bookingId) }
 
-    fun updateVisitorGroup(auth: Authentication, id: Long, request: VisitorGroupChangeRequest) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.updateVisitorGroup(id, request) }
+    fun updateVisitorGroup(auth: Authentication, id: Long, request: VisitorChangeRequest) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.updateVisitorGroup(id, request) }
 
     fun setComment(auth: Authentication, id: Long, value: PatchRequest<String>) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.setComment(id, value.value) }
 }

@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.request.db
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jdbc.annotation.JdbcRepository
@@ -77,7 +77,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
         """,
         nativeQuery = true
     )
-    fun findByVisitorGroupStatus(visitorGroupStatus: VisitorGroupStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByVisitorGroupStatus(visitorGroupStatus: VerificationStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
     @Query(
         value = """
@@ -117,7 +117,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
         """,
         nativeQuery = true
     )
-    fun findByOfferDateAndVisitorGroupStatus(offerDate: LocalDate, visitorGroupStatus: VisitorGroupStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByOfferDateAndVisitorGroupStatus(offerDate: LocalDate, visitorGroupStatus: VerificationStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
     @Query(
         value = """
@@ -158,7 +158,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
         """,
         nativeQuery = true
     )
-    fun findByVisitorGroupStatusAndQuery(visitorGroupStatus: VisitorGroupStatus, query: String, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByVisitorGroupStatusAndQuery(visitorGroupStatus: VerificationStatus, query: String, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
 
     @Query(
@@ -184,7 +184,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
     )
     fun findByOfferDateAndVisitorGroupStatusAndQuery(
         offerDate: LocalDate,
-        visitorGroupStatus: VisitorGroupStatus,
+        visitorGroupStatus: VerificationStatus,
         query: String,
         status: List<BookingRequestStatus>,
         pageable: Pageable
