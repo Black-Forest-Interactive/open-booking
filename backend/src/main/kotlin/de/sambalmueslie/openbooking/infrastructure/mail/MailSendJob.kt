@@ -2,17 +2,20 @@ package de.sambalmueslie.openbooking.infrastructure.mail
 
 
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent
+import de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryEntryData
+import de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryRepository
 import org.slf4j.LoggerFactory
 
 internal class MailSendJob(
     val jobId: Long,
-    private val jobContent: de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent,
-    private val jobHistoryRepository: de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryRepository,
+    private val jobContent: MailJobContent,
+    private val jobHistoryRepository: MailJobHistoryRepository,
     private val timeProvider: TimeProvider,
     private var retryCounter: Int = 0
 ) {
     companion object {
-        private val logger = LoggerFactory.getLogger(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.MailSendJob::class.java)
+        private val logger = LoggerFactory.getLogger(MailSendJob::class.java)
     }
 
     init {
@@ -38,6 +41,6 @@ internal class MailSendJob(
     }
 
     private fun addHistoryEntry(message: String) {
-        jobHistoryRepository.save(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryEntryData(0, message, timeProvider.now(), jobId))
+        jobHistoryRepository.save(MailJobHistoryEntryData(0, message, timeProvider.now(), jobId))
     }
 }

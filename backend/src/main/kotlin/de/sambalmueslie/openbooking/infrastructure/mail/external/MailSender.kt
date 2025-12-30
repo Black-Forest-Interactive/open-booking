@@ -2,6 +2,8 @@ package de.sambalmueslie.openbooking.infrastructure.mail.external
 
 
 import de.sambalmueslie.openbooking.config.MailConfig
+import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
 import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingsAPI
 import io.micronaut.context.annotation.Requires
@@ -17,10 +19,10 @@ import org.slf4j.LoggerFactory
 class MailSender(
     private val config: MailConfig,
     private val settingsService: SettingsService
-) : de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient {
+) : MailClient {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.external.MailSender::class.java)
+        private val logger = LoggerFactory.getLogger(MailSender::class.java)
     }
 
     private val mailer = MailerBuilder
@@ -28,10 +30,10 @@ class MailSender(
         .buildMailer()
 
     override fun send(
-        mail: de.sambalmueslie.openbooking.infrastructure.mail.api.Mail,
-        from: de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant,
-        to: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>,
-        bcc: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>
+        mail: Mail,
+        from: MailParticipant,
+        to: List<MailParticipant>,
+        bcc: List<MailParticipant>
     ): Boolean {
         if (logger.isDebugEnabled) logger.debug("Send mail '${mail.subject}' to ${to.joinToString { it.address }}")
         val builder = EmailBuilder.startingBlank()

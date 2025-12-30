@@ -1,10 +1,13 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.external
 
+import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
+
 interface MailClient {
     fun send(
-        mail: de.sambalmueslie.openbooking.infrastructure.mail.api.Mail,
-        from: de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant,
-        to: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>,
-        bcc: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant> = emptyList()
+        mail: Mail,
+        from: MailParticipant,
+        to: List<MailParticipant>,
+        bcc: List<MailParticipant> = emptyList()
     ): Boolean
 }

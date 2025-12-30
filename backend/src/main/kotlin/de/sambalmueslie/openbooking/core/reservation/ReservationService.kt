@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.reservation
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.BookingService
@@ -8,6 +9,8 @@ import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_FAILED
+import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
@@ -16,6 +19,7 @@ import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelationRepository
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationRepository
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
@@ -30,6 +34,8 @@ class ReservationService(
     private val bookingService: BookingService,
     private val offerService: OfferService,
     private val visitorService: VisitorService,
+
+    private val messageService: ReservationMessageService,
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
@@ -116,6 +122,19 @@ class ReservationService(
     override fun isValid(request: ReservationChangeRequest) {
         if (request.offerIds.isEmpty()) throw InvalidRequestException("Offer list cannot be empty")
         visitorService.isValid(request.visitor)
+    }
+
+    fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
+
+    fun confirmEmail(key: String): GenericRequestResult {
+        val request = repository.findByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        val visitorId = request.visitorId
+        val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+
+        return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
+            true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
+            else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        }
     }
 
 }

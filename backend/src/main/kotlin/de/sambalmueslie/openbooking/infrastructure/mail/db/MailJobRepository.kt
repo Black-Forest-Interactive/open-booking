@@ -1,5 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.db
 
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.Page
@@ -10,9 +11,9 @@ import io.micronaut.data.repository.PageableRepository
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
-interface MailJobRepository : PageableRepository<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData, Long> {
+interface MailJobRepository : PageableRepository<MailJobData, Long> {
 
-    fun findAllOrderByUpdatedDesc(pageable: Pageable): Page<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData>
-    fun findAllByStatus(status: de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus, pageable: Pageable): Page<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData>
+    fun findAllOrderByUpdatedDesc(pageable: Pageable): Page<MailJobData>
+    fun findAllByStatus(status: MailJobStatus, pageable: Pageable): Page<MailJobData>
 
 }

@@ -54,7 +54,7 @@ class BookingInfoConverter(
         val visitorGroups = visitorService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
 
         return data.mapNotNull { info(it, relations, bookings, visitorGroups) }
-            .sortedBy { it.visitor.status.order }
+            .sortedBy { it.visitor.verification.status.order }
     }
 
     private fun info(request: BookingRequestData, relations: Map<Long, List<Long>>, bookings: Map<Long, BookingInfo>, visitorGroups: Map<Long, Visitor>): BookingRequestInfo? {

@@ -2,10 +2,7 @@ package de.sambalmueslie.openbooking.visitor
 
 import de.sambalmueslie.openbooking.common.BaseServiceTest
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
-import de.sambalmueslie.openbooking.core.visitor.api.Address
-import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
-import de.sambalmueslie.openbooking.core.visitor.api.Visitor
-import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.*
 import io.micronaut.data.model.Pageable
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -27,12 +24,12 @@ internal class VisitorServiceTest : BaseServiceTest() {
         every { timeProvider.now() } returns now
 
         // create
-        val createRequest = VisitorChangeRequest("title", 1, true, 2, 3, "contact", Address("street", "city", "zip"), "phone", "email")
+        val createRequest = VisitorChangeRequest(VisitorType.GROUP, "title", "description", 1, 2, 3, "contact", Address("street", "city", "zip"), "phone", "email")
         var result = service.create(createRequest)
 
         var reference = Visitor(
-            result.id, createRequest.title, createRequest.size, createRequest.isGroup, createRequest.minAge, createRequest.maxAge, createRequest.contact,
-            createRequest.address, createRequest.phone, createRequest.email, VerificationStatus.UNCONFIRMED
+            result.id, createRequest.type, createRequest.title, createRequest.description, createRequest.size, createRequest.minAge, createRequest.maxAge, createRequest.name,
+            createRequest.address, createRequest.phone, createRequest.email, Verification(VerificationStatus.UNCONFIRMED, null)
         )
         assertEquals(reference, result)
 
@@ -41,21 +38,33 @@ internal class VisitorServiceTest : BaseServiceTest() {
         assertEquals(listOf(reference), service.getAll(Pageable.from(0)).content)
 
         // update
-        val updateRequest = VisitorChangeRequest("update-title", 10, false, 20, 30, "update-contact", Address("update-street", "update-city", "update-zip"), "update-phone", "update-email")
+        val updateRequest = VisitorChangeRequest(
+            VisitorType.GROUP,
+            "update-title",
+            "update-description",
+            10,
+            20,
+            30,
+            "update-contact",
+            Address("update-street", "update-city", "update-zip"),
+            "update-phone",
+            "update-email"
+        )
         result = service.update(reference.id, updateRequest)
 
         reference = Visitor(
             result.id,
+            updateRequest.type,
             updateRequest.title,
+            updateRequest.description,
             updateRequest.size,
-            updateRequest.isGroup,
             updateRequest.minAge,
             updateRequest.maxAge,
-            updateRequest.contact,
+            updateRequest.name,
             updateRequest.address,
             updateRequest.phone,
             updateRequest.email,
-            VerificationStatus.UNCONFIRMED
+            Verification(VerificationStatus.UNCONFIRMED, null)
         )
         assertEquals(reference, result)
 

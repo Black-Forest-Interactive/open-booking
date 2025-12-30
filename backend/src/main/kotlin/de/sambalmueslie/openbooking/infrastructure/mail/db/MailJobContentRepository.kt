@@ -8,6 +8,6 @@ import io.micronaut.data.repository.PageableRepository
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
-interface MailJobContentRepository : PageableRepository<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData, Long> {
-    fun findByJobId(jobId: Long): de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData?
+interface MailJobContentRepository : PageableRepository<MailJobContentData, Long> {
+    fun findByJobId(jobId: Long): MailJobContentData?
 }

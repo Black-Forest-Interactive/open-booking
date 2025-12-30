@@ -10,7 +10,7 @@ import io.micronaut.data.repository.PageableRepository
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
-interface MailJobHistoryRepository : PageableRepository<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryEntryData, Long> {
+interface MailJobHistoryRepository : PageableRepository<MailJobHistoryEntryData, Long> {
 
-    fun findByJobIdOrderByTimestampDesc(jobId: Long, pageable: Pageable): Page<de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobHistoryEntryData>
+    fun findByJobIdOrderByTimestampDesc(jobId: Long, pageable: Pageable): Page<MailJobHistoryEntryData>
 }

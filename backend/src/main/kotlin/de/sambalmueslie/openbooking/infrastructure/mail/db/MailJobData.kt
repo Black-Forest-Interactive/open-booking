@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.db
 
 import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJob
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -8,17 +10,17 @@ import java.time.LocalDateTime
 @Table(name = "mail_job")
 data class MailJobData(
     @Id @GeneratedValue var id: Long,
-    @Column @Enumerated(EnumType.STRING) var status: de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus,
+    @Column @Enumerated(EnumType.STRING) var status: MailJobStatus,
     @Column var title: String,
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<de.sambalmueslie.openbooking.infrastructure.mail.api.MailJob> {
+) : DataObject<MailJob> {
 
     companion object {
-        fun create(title: String, timestamp: LocalDateTime): de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData {
-            return _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData(
+        fun create(title: String, timestamp: LocalDateTime): MailJobData {
+            return MailJobData(
                 0,
-                _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus.QUEUED,
+                MailJobStatus.QUEUED,
                 title,
                 timestamp,
                 timestamp
@@ -27,12 +29,12 @@ data class MailJobData(
 
     }
 
-    override fun convert(): de.sambalmueslie.openbooking.infrastructure.mail.api.MailJob {
+    override fun convert(): MailJob {
         val timestamp = updated ?: created
-        return _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailJob(id, title, status, timestamp)
+        return MailJob(id, title, status, timestamp)
     }
 
-    fun updateStatus(status: de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus, timestamp: LocalDateTime): de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobData {
+    fun updateStatus(status: MailJobStatus, timestamp: LocalDateTime): MailJobData {
         this.status = status
         this.updated = timestamp
         return this

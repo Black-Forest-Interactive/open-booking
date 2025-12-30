@@ -5,6 +5,9 @@ package de.sambalmueslie.openbooking.infrastructure.mail.db
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent
+import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
 import jakarta.persistence.*
 
 @Entity(name = "MailJobContent")
@@ -16,24 +19,24 @@ data class MailJobContentData(
     @Column var toJson: String,
     @Column var bccJson: String,
     @Column(unique = true) var jobId: Long,
-) : DataObject<de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent> {
+) : DataObject<MailJobContent> {
 
 
     companion object {
         private val mapper = ObjectMapper()
 
         fun create(
-            mail: de.sambalmueslie.openbooking.infrastructure.mail.api.Mail,
-            from: de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant,
-            to: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>,
-            bcc: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>,
+            mail: Mail,
+            from: MailParticipant,
+            to: List<MailParticipant>,
+            bcc: List<MailParticipant>,
             jobId: Long
-        ): de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData {
+        ): MailJobContentData {
             val m = mapper.writeValueAsString(mail)
             val f = mapper.writeValueAsString(from)
             val t = mapper.writeValueAsString(to)
             val b = mapper.writeValueAsString(bcc)
-            val data = _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData(0, m, f, t, b, jobId)
+            val data = MailJobContentData(0, m, f, t, b, jobId)
             data.mail = mail
             data.from = from
             data.to = to
@@ -42,30 +45,30 @@ data class MailJobContentData(
         }
     }
 
-    override fun convert(): de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent {
-        return _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent(id, getMailObj(), getFromObj(), getToObj(), getBccObj())
+    override fun convert(): MailJobContent {
+        return MailJobContent(id, getMailObj(), getFromObj(), getToObj(), getBccObj())
     }
 
     @Transient
-    private var mail: de.sambalmueslie.openbooking.infrastructure.mail.api.Mail? = null
+    private var mail: Mail? = null
 
     @Transient
-    fun getMailObj(): de.sambalmueslie.openbooking.infrastructure.mail.api.Mail {
+    fun getMailObj(): Mail {
         if (mail == null) {
             mail =
-                _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData.Companion.mapper.readValue<de.sambalmueslie.openbooking.infrastructure.mail.api.Mail>(mailJson)
+                mapper.readValue<Mail>(mailJson)
         }
         return mail!!
     }
 
     @Transient
-    private var from: de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant? = null
+    private var from: MailParticipant? = null
 
     @Transient
-    fun getFromObj(): de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant {
+    fun getFromObj(): MailParticipant {
         if (from == null) {
             from =
-                _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData.Companion.mapper.readValue<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>(
+                mapper.readValue<MailParticipant>(
                     fromJson
                 )
         }
@@ -73,13 +76,13 @@ data class MailJobContentData(
     }
 
     @Transient
-    private var to: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>? = null
+    private var to: List<MailParticipant>? = null
 
     @Transient
-    fun getToObj(): List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant> {
+    fun getToObj(): List<MailParticipant> {
         if (to == null) {
             to =
-                _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData.Companion.mapper.readValue<List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>>(
+                mapper.readValue<List<MailParticipant>>(
                     toJson
                 )
         }
@@ -87,13 +90,13 @@ data class MailJobContentData(
     }
 
     @Transient
-    private var bcc: List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>? = null
+    private var bcc: List<MailParticipant>? = null
 
     @Transient
-    fun getBccObj(): List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant> {
+    fun getBccObj(): List<MailParticipant> {
         if (bcc == null) {
             bcc =
-                _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.db.MailJobContentData.Companion.mapper.readValue<List<de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant>>(
+                mapper.readValue<List<MailParticipant>>(
                     bccJson
                 )
         }

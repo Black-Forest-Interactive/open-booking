@@ -143,14 +143,13 @@ class BookingRequestService(
 
     fun confirmEmail(key: String): GenericRequestResult {
         val request = repository.findOneByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        val visitorGroupId = request.visitorGroupId
-        val result = visitorService.confirm(visitorGroupId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        val visitorId = request.visitorGroupId
+        val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
-        return when (result.status == VerificationStatus.CONFIRMED) {
+        return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
             true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
             else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
         }
-
     }
 
     fun confirm(id: Long, bookingId: Long, content: BookingConfirmationContent): GenericRequestResult {

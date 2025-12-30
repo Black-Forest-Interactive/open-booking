@@ -54,7 +54,7 @@ class BookingRequestEventProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = service.info(event.sourceId) ?: return
-        val url = if (info.visitor.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
+        val url = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
 
         val properties = mapOf(
             Pair("info", info),
@@ -93,7 +93,7 @@ class BookingRequestEventProcessor(
         if (visitorGroup.email.isBlank()) return
 
         val from = _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant("", getFromAddress())
-        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant(visitorGroup.contact, visitorGroup.email))
+        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant(visitorGroup.name, visitorGroup.email))
         mails.forEach { mailService.send(it, from, to) }
     }
 
