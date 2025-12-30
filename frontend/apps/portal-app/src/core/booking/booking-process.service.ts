@@ -22,7 +22,6 @@ export class BookingProcessService {
     if (!this.preferredEntry()) {
       this.preferredEntry.set(offer)
     }
-    this.updateMode()
   }
 
   offerRemove(offer: DayInfoOffer) {
@@ -33,7 +32,6 @@ export class BookingProcessService {
     if (this.preferredEntry() === offer) {
       this.preferredEntry.set(this.entries()[0])
     }
-    this.updateMode()
   }
 
   setPreferred(offer: DayInfoOffer) {
@@ -53,6 +51,7 @@ export class BookingProcessService {
     this.entries.set([])
     this.preferredEntry.set(undefined)
     this.request.set(undefined)
+    this.mode.set('offer')
   }
 
   proceedToOffer() {
@@ -72,14 +71,4 @@ export class BookingProcessService {
     this.mode.set('summary')
   }
 
-  private updateMode() {
-    // const size = this.entries().length
-    // if (size == 0) {
-    //   this.mode.set('offer')
-    // } else if (size == 1) {
-    //   this.mode.set('checkout')
-    // } else {
-    //   this.mode.set('offer')
-    // }
-  }
 }

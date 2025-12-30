@@ -1,8 +1,12 @@
 <app-loading-bar [reloading]="reloading()"></app-loading-bar>
 <h2 mat-dialog-title>{{ title() }}</h2>
-<mat-dialog-content>
-  <div [innerHTML]="content()"></div>
+
+<mat-dialog-content class="!max-w-full">
+  <div class="prose prose-sm max-w-none break-words whitespace-pre-wrap" [innerHTML]="content()"></div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{ 'ACTION.Ok' | translate }}</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    {{ 'ACTION.Ok' | translate }}
+  </button>
 </mat-dialog-actions>
