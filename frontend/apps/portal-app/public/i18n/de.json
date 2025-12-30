@@ -203,6 +203,10 @@
       }
     },
     "Form": {
+      "BookingType": {
+        "Single": "Einzelperson",
+        "Group": "Gruppe oder Schulklasse"
+      },
       "City": {
         "Label": "Stadt"
       },
@@ -224,6 +228,10 @@
       "MinAge": {
         "Hint": "Das Alter des jüngsten Teilnehmers",
         "Label": "Jüngster Teilnehmer"
+      },
+      "Age": {
+        "Hint": "Alter des Besucherss",
+        "Label": "Alter"
       },
       "Phone": {
         "Label": "Telefon"
@@ -256,6 +264,10 @@
       "Title": {
         "Hint": "Bezeichnung für die Gruppe",
         "Label": "Bezeichung"
+      },
+      "Name": {
+        "Hint": "Name des Besuchers",
+        "Label": "Name"
       },
       "Zip": {
         "Label": "PLZ"

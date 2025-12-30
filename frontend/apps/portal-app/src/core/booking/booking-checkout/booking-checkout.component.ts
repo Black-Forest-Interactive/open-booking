@@ -1,4 +1,4 @@
-import {Component, computed, effect, input, output} from '@angular/core';
+import {Component, computed, effect, input, output, Signal} from '@angular/core';
 import {Address, CreateBookingRequest, DayInfoOffer, VisitorGroupChangeRequest} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SettingsService} from "@open-booking/portal";
@@ -8,7 +8,8 @@ import {MatInputModule} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatButtonModule} from "@angular/material/button";
-import {MatCard} from "@angular/material/card";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @Component({
   selector: 'app-booking-checkout',
@@ -18,9 +19,9 @@ import {MatCard} from "@angular/material/card";
     MatInputModule,
     MatSlideToggleModule,
     MatButtonModule,
+    MatButtonToggleModule,
     ReactiveFormsModule,
-    TranslatePipe,
-    MatCard
+    TranslatePipe
   ],
   templateUrl: './booking-checkout.component.html',
   styleUrl: './booking-checkout.component.scss',
@@ -35,11 +36,12 @@ export class BookingCheckoutComponent {
   groupBookingPossible = computed(() => this.spaceAvailable() >= (this.preferredEntry()?.offer?.maxPersons ?? 0))
   groupBookingSelected = false
 
+
   data = input<CreateBookingRequest | undefined>(undefined)
   request = output<CreateBookingRequest>()
   back = output<boolean>()
 
-
+  private formValueChanges: Signal<any>
   form: FormGroup
 
   constructor(
@@ -47,6 +49,7 @@ export class BookingCheckoutComponent {
     private settingsService: SettingsService,
   ) {
     this.form = this.fb.group({
+      type: ['single', Validators.required],
       title: ['', Validators.required],
       size: ['', [Validators.required, Validators.min(1)]],
       group: [false],
@@ -61,17 +64,7 @@ export class BookingCheckoutComponent {
       termsAndConditions: [false, Validators.requiredTrue],
       comment: [''],
     })
-    effect(() => {
-        let size = this.form.get('size')
-        if (size) {
-          let value = +(size.value ?? "0")
-          if (value > this.spaceAvailable()) {
-            size.setValue(this.spaceAvailable() + '')
-          }
-          size.setValidators([Validators.required, Validators.min(1), Validators.max(this.spaceAvailable())])
-        }
-      }
-    )
+
     effect(() => {
       let request = this.data()
       if (request) {
@@ -92,11 +85,64 @@ export class BookingCheckoutComponent {
         }
         this.form.setValue(value)
       }
-    });
+    })
+    this.formValueChanges = toSignal(this.form.valueChanges)
+    effect(() => {
+      const formValue = this.formValueChanges()
+      if (!formValue) return
+      const availableSpace = this.spaceAvailable()
+
+      const type = formValue.type
+
+      // If only 1 space available, force single mode
+      if (availableSpace === 1 && type !== 'single') {
+        this.form.patchValue({bookingType: 'single'}, {emitEvent: false})
+      }
+
+      if (type === 'single') {
+        if (this.form.get('title')?.value !== 'single visitor' || formValue.size !== 1) {
+          this.form.patchValue({
+            title: 'single visitor',
+            size: 1,
+            maxAge: formValue.minAge
+          }, {emitEvent: false});
+        }
+      }
+
+      if (type === 'group') {
+        let size = formValue.size ?? 0
+        let minSize = 2
+        if (size > availableSpace) {
+          this.form.patchValue({size: availableSpace}, {emitEvent: false})
+        } else if (size < minSize) {
+          this.form.patchValue({size: minSize}, {emitEvent: false})
+        }
+        if (formValue.title == 'single visitor') {
+          this.form.patchValue({title: ''}, {emitEvent: false})
+        }
+        const sizeControl = this.form.get('size')
+        if (sizeControl) sizeControl.setValidators([Validators.required, Validators.min(minSize), Validators.max(this.spaceAvailable())])
+      }
+
+      // Sync minAge to maxAge when size is 1 (in any mode)
+      if (formValue.size === 1) {
+        const currentMaxAge = this.form.get('maxAge')?.value;
+        if (currentMaxAge !== formValue.minAge) {
+          this.form.patchValue({
+            maxAge: formValue.minAge
+          }, {emitEvent: false});
+        }
+      }
+    })
   }
+
 
   get size() {
     return this.form.get('size')
+  }
+
+  get type() {
+    return this.form.get('type')
   }
 
   submit() {
@@ -127,7 +173,7 @@ export class BookingCheckoutComponent {
     )
     this.request.emit(request)
   }
-  
+
 
   protected showTermsAndConditions() {
     let newTab = window.open()
