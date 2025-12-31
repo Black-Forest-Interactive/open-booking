@@ -7,7 +7,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity(name = "Guide")
-@Table(name = "staff_member")
+@Table(name = "guide")
 data class GuideData(
     @Id @GeneratedValue var id: Long,
     @Column var firstName: String,

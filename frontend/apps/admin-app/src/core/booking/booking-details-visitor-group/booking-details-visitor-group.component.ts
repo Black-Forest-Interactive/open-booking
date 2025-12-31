@@ -8,8 +8,8 @@ import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {GenericRequestResult} from "@open-booking/shared";
 import {RequestService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {GroupChangeComponent} from "../../group/group-change/group-change.component";
-import {GroupInfoComponent} from "../../group/group-info/group-info.component";
+import {VisitorChangeComponent} from "../../visitor/visitor-change/visitor-change.component";
+import {VisitorInfoComponent} from "../../visitor/visitor-info/visitor-info.component";
 
 @Component({
   selector: 'app-booking-details-visitor-group',
@@ -19,8 +19,8 @@ import {GroupInfoComponent} from "../../group/group-info/group-info.component";
     MatIconModule,
     MatProgressSpinnerModule,
     TranslatePipe,
-    GroupChangeComponent,
-    GroupInfoComponent
+    VisitorChangeComponent,
+    VisitorInfoComponent
   ],
   templateUrl: './booking-details-visitor-group.component.html',
   styleUrl: './booking-details-visitor-group.component.scss',

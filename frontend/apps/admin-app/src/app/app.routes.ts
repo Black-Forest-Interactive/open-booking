@@ -5,14 +5,17 @@ import {
   PERMISSION_BOOKING_ADMIN,
   PERMISSION_CACHE_ADMIN,
   PERMISSION_DASHBOARD_ADMIN,
-  PERMISSION_GROUP_ADMIN,
+  PERMISSION_GUIDE_ADMIN,
+  PERMISSION_LABEL_ADMIN,
   PERMISSION_MAIL_ADMIN,
   PERMISSION_NOTIFICATION_ADMIN,
   PERMISSION_OFFER_ADMIN,
   PERMISSION_REQUEST_ADMIN,
+  PERMISSION_RESERVATION_ADMIN,
   PERMISSION_RESPONSE_ADMIN,
+  PERMISSION_SEARCH_ADMIN,
   PERMISSION_SETTINGS_ADMIN,
-  PERMISSION_STAFF_ADMIN
+  PERMISSION_VISITOR_ADMIN
 } from "@open-booking/admin";
 
 export const appRoutes: Route[] = [
@@ -41,10 +44,16 @@ export const appRoutes: Route[] = [
     data: {roles: [PERMISSION_REQUEST_ADMIN]}
   },
   {
+    path: 'reservation',
+    loadChildren: () => import('../core/reservation/reservation.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_RESERVATION_ADMIN]}
+  },
+  {
     path: 'search',
     loadChildren: () => import('../core/search/search.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],
-    // data: {roles: [Roles.ACCOUNT_READ]}
+    data: {roles: [PERMISSION_SEARCH_ADMIN]}
   },
   {
     path: 'response',
@@ -83,16 +92,22 @@ export const appRoutes: Route[] = [
     data: {roles: [PERMISSION_MAIL_ADMIN]}
   },
   {
-    path: 'group',
-    loadChildren: () => import('../core/group/group.routes').then(m => m.routes),
+    path: 'visitor',
+    loadChildren: () => import('../core/visitor/visitor.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],
-    data: {roles: [PERMISSION_GROUP_ADMIN]}
+    data: {roles: [PERMISSION_VISITOR_ADMIN]}
   },
   {
-    path: 'staff',
-    loadChildren: () => import('../core/staff/staff.routes').then(m => m.routes),
+    path: 'guide',
+    loadChildren: () => import('../core/guide/guide.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],
-    data: {roles: [PERMISSION_STAFF_ADMIN]}
+    data: {roles: [PERMISSION_GUIDE_ADMIN]}
+  },
+  {
+    path: 'label',
+    loadChildren: () => import('../core/label/label.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_LABEL_ADMIN]}
   },
   {
     path: 'forbidden',

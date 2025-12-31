@@ -26,3 +26,12 @@ export class ReservationChangeRequest {
   ) {
   }
 }
+
+export class ReservationFilterRequest {
+  constructor(
+    public offerDate: string | null | undefined,
+    public visitorStatus: string | null | undefined,
+    public query: string | null | undefined
+  ) {
+  }
+}

@@ -34,9 +34,7 @@ class GuideService(
 
     override fun isValid(request: GuideChangeRequest) {
         if (request.firstName.isEmpty()) throw InvalidRequestException("First name cannot be empty")
-        if (request.lastName.isEmpty()) throw InvalidRequestException("First name cannot be empty")
-        if (request.email.isEmpty() && request.phone.isEmpty() && request.mobile.isEmpty())
-            throw InvalidRequestException("Either mail or phone or mobile contact must be provided")
+        if (request.lastName.isEmpty()) throw InvalidRequestException("Last name cannot be empty")
     }
 
     fun getByIds(ids: Set<Long>): List<Guide> {

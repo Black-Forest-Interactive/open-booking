@@ -13,15 +13,26 @@
     "Submit": "Submit",
     "Yes": "Yes"
   },
-  "ADMIN": {
-    "MENU": {
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Dashboard": "Dashboard",
-      "Offer": "Offer Mgt",
-      "SearchBooking": "Search Booking",
-      "Texts": "Text Mgt"
-    }
+  "MENU": {
+    "AuditLog": "Audit Log",
+    "Booking": "Booking Mgt",
+    "BookingRequest": "Booking Request Mgt",
+    "Cache": "Cache Mgt",
+    "Dashboard": "Dashboard",
+    "Mail": "Mail Status",
+    "Notification": "Notification Mgt",
+    "Offer": "Offer Mgt",
+    "Response": "Response Mgt",
+    "Settings": "Settings",
+    "Guide": "Guide",
+    "Label": "Label",
+    "Search": "Search Index",
+    "Reservation": "Reservation",
+    "Help": "Help",
+    "Home": "Home",
+    "Language": "Language",
+    "Login": "Login",
+    "Logout": "Logout"
   },
   "APP": {
     "Title": "Open Booking",
@@ -47,21 +58,6 @@
       "User": {
         "Title": "User"
       }
-    }
-  },
-  "BACKOFFICE": {
-    "MENU": {
-      "AuditLog": "Audit Log",
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Cache": "Cache Mgt",
-      "Dashboard": "Dashboard",
-      "Mail": "Mail Status",
-      "Notification": "Notification Mgt",
-      "Offer": "Offer Mgt",
-      "Response": "Response Mgt",
-      "SearchBooking": "Search Booking",
-      "Settings": "Settings"
     }
   },
   "BOOKING": {
@@ -174,16 +170,6 @@
       "Timestamp": "Timestamp",
       "Title": "Title"
     }
-  },
-  "MENU": {
-    "Admin": "Admin",
-    "Backoffice": "Backoffice",
-    "Help": "Help",
-    "Home": "Home",
-    "Language": "Language",
-    "Login": "Login",
-    "Logout": "Logout",
-    "Title": "Menu"
   },
   "NOTIFICATION": {
     "Action": {
@@ -476,5 +462,27 @@
     "HOME_PAGE": "Home Page",
     "NEED_HELP": "Need help?",
     "CONTACT_SUPPORT": "Contact Support"
+  },
+  "SEARCH": {
+    "type": "Search Index",
+    "title": "Search Index Administration",
+    "key": {
+      "guide": "Guide"
+    },
+    "status": {
+      "UNKNOWN": "Unknown",
+      "CREATE_INDEX": "Create index",
+      "INITIAL_LOAD": "Initial load",
+      "READY": "Ready",
+      "IDLE": "Idle"
+    },
+    "statistics": {
+      "total": "Total entries",
+      "successfully": "Successfully",
+      "failed": "Failed"
+    },
+    "action": {
+      "setup": "Setup"
+    }
   }
 }

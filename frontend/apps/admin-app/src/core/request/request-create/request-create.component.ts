@@ -14,7 +14,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {DatePipe} from "@angular/common";
 import {
-  Address,
+  AddressChangeRequest,
   BookingRequest,
   BookingRequestChangeRequest,
   DateRangeSelectionRequest,
@@ -126,13 +126,14 @@ export class RequestCreateComponent {
     if (!size) return;
 
     let visitorGroupRequest = new VisitorChangeRequest(
+      "",
       value.title!!,
+      "",
       size,
-      value.group!!,
       +value.minAge!!,
       +value.maxAge!!,
       value.contact!!,
-      new Address(value.street!!, value.city!!, value.zip!!),
+      new AddressChangeRequest(value.street!!, value.city!!, value.zip!!),
       value.phone!!,
       value.mail!!
     )

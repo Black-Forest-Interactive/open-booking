@@ -12,9 +12,9 @@
     @if (changing()) {
       <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     } @else if (editMode()) {
-      <app-group-change [data]="data().visitorGroup" (changeEvent)="handleGroupChange($event)"/>
+      <app-visitor-change [data]="data().visitor" (changeEvent)="handleGroupChange($event)"/>
     } @else {
-      <app-group-info [data]="data().visitorGroup"/>
+      <app-visitor-info [data]="data().visitor"/>
     }
   </div>
 </mat-card>

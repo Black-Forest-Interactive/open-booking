@@ -13,15 +13,26 @@
     "Submit": "Absenden",
     "Yes": "Ja"
   },
-  "ADMIN": {
-    "MENU": {
-      "Booking": "Buchungsverwaltung",
-      "BookingRequest": "Anfrageverwaltung",
-      "Dashboard": "Übersicht",
-      "Offer": "Angebotsverwaltung",
-      "SearchBooking": "Buchung suchen",
-      "Texts": "Textverwaltung"
-    }
+  "MENU": {
+    "AuditLog": "Audit Log",
+    "Booking": "Buchungsverwaltung",
+    "BookingRequest": "Anfrageverwaltung",
+    "Cache": "Cache-Verwaltung",
+    "Dashboard": "Übersicht",
+    "Mail": "Mail-Status",
+    "Notification": "Benachrichtigungsverwaltung",
+    "Offer": "Angebotsverwaltung",
+    "Response": "Response Mgt",
+    "Settings": "Einstellungen",
+    "Guide": "Guide",
+    "Label": "Label",
+    "Search": "Search Index",
+    "Reservation": "Reservierungen",
+    "Help": "Hilfe",
+    "Home": "Startseite",
+    "Language": "Sprache",
+    "Login": "Login",
+    "Logout": "Logout"
   },
   "APP": {
     "Title": "Open Booking",
@@ -47,21 +58,6 @@
       "User": {
         "Title": "User"
       }
-    }
-  },
-  "BACKOFFICE": {
-    "MENU": {
-      "AuditLog": "Audit Log",
-      "Booking": "Buchungsverwaltung",
-      "BookingRequest": "Anfrageverwaltung",
-      "Cache": "Cache-Verwaltung",
-      "Dashboard": "Übersicht",
-      "Mail": "Mail-Status",
-      "Notification": "Benachrichtigungsverwaltung",
-      "Offer": "Angebotsverwaltung",
-      "Response": "Response Mgt",
-      "SearchBooking": "Buchung suchen",
-      "Settings": "Einstellungen"
     }
   },
   "BOOKING": {
@@ -174,16 +170,6 @@
       "Timestamp": "Zeitstempel",
       "Title": "Titel"
     }
-  },
-  "MENU": {
-    "Admin": "Verwaltung",
-    "Backoffice": "Backoffice",
-    "Help": "Hilfe",
-    "Home": "Startseite",
-    "Language": "Sprache",
-    "Login": "Login",
-    "Logout": "Logout",
-    "Title": "Menü"
   },
   "NOTIFICATION": {
     "Action": {

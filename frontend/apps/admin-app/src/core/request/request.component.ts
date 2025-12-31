@@ -18,11 +18,11 @@ import {MatTableModule} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {MatChipsModule} from "@angular/material/chips";
 import {DatePipe} from "@angular/common";
-import {GroupInfoDialogComponent} from "../group/group-info-dialog/group-info-dialog.component";
+import {VisitorInfoDialogComponent} from "../visitor/visitor-info-dialog/visitor-info-dialog.component";
 import {RequestCommentDialogComponent} from "./request-comment-dialog/request-comment-dialog.component";
-import {RequestVisitorEntryComponent} from "./request-visitor-group-entry/request-visitor-group-entry.component";
 import {RequestBookingEntryComponent} from "./request-booking-entry/request-booking-entry.component";
-import {GroupStatusComponent} from "../group/group-status/group-status.component";
+import {VisitorStatusComponent} from "../visitor/visitor-status/visitor-status.component";
+import {RequestVisitorEntryComponent} from "./request-visitor-entry/request-visitor-entry.component";
 
 @Component({
   selector: 'app-request',
@@ -43,9 +43,9 @@ import {GroupStatusComponent} from "../group/group-status/group-status.component
     RouterLink,
     LoadingBarComponent,
     SearchComponent,
-    RequestVisitorEntryComponent,
     RequestBookingEntryComponent,
-    GroupStatusComponent
+    VisitorStatusComponent,
+    RequestVisitorEntryComponent
   ],
   templateUrl: './request.component.html',
   styleUrl: './request.component.scss',
@@ -109,7 +109,7 @@ export class RequestComponent {
   }
 
   protected showDetails(visitorGroup: Visitor) {
-    this.dialog.open(GroupInfoDialogComponent, {data: visitorGroup});
+    this.dialog.open(VisitorInfoDialogComponent, {data: visitorGroup});
   }
 
   protected showVisitorDetailsChanged($event: MatSlideToggleChange) {

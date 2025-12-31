@@ -28,7 +28,7 @@ export class BookingDailyEntryComponent {
   reloading = computed(() => this.bookingDetailsResource.isLoading())
   bookings = computed(() => this.bookingDetailsResource.value() ?? [])
   data = computed(() => this.bookings().map(b => {
-    return {booking: b.booking, visitorGroup: b.visitorGroup, width: this.getWidth(b)}
+    return {booking: b.booking, visitor: b.visitor, width: this.getWidth(b)}
   }))
 
 
@@ -41,7 +41,7 @@ export class BookingDailyEntryComponent {
 
   private getWidth(b: BookingDetails): number {
     let totalSize = this.offer().maxPersons
-    return Math.abs(b.visitorGroup.size / totalSize * 12)
+    return Math.abs(b.visitor.size / totalSize * 12)
   }
 }
 
