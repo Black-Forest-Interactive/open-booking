@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:4.16.0")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:4.16.1")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -123,7 +123,7 @@ dependencies {
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.6.7")
+    implementation("com.jillesvangurp:search-client:2.8.3")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
