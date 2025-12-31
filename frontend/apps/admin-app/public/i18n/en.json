@@ -484,5 +484,18 @@
     "action": {
       "setup": "Setup"
     }
+  },
+  "LABEL": {
+    "Title": "Label",
+    "Action": {
+      "Search": "Search",
+      "Create": "Create"
+    },
+    "Field": {
+      "Id": "Id",
+      "Name": "Name",
+      "Color": "Color",
+      "Priority": "Priority"
+    }
   }
 }
