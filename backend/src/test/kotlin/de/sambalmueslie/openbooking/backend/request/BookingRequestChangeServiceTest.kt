@@ -58,7 +58,7 @@
 //    }
 //
 //    @Test
-//    fun singleBookingChangeVisitorGroupData() {
+//    fun singleBookingChangeVisitorData() {
 //        val offer = offerService.create(OfferChangeRequest(LocalDateTime.parse("2023-02-04T08:00:00"), LocalDateTime.parse("2023-02-04T08:50:00"), 25, true))
 //
 //        val visitorRequest = VisitorChangeRequest("title", 20, false, 5, 10, "contact", Address("street", "city", "zip"), "phone", "email")
@@ -71,17 +71,17 @@
 //        requestService.confirm(request.id, info!!.bookings.first().id, BookingConfirmationContent("", "", true))
 //
 //        val visitorChangeRequest = VisitorChangeRequest("title-change", 20, true, 15, 20, "contact-change", Address("street-change", "city-change", "zip-change"), "phone-change", "email-change")
-//        val result = service.updateVisitorGroup(request.id, visitorChangeRequest)
+//        val result = service.updateVisitor(request.id, visitorChangeRequest)
 //        assertEquals(true, result.success)
 //
 //
 //        info = requestService.info(request.id)
 //        assertNotNull(info)
 //
-//        val visitorGroup = info!!.visitor
+//        val visitor = info!!.visitor
 //        assertEquals(
 //            Visitor(
-//                visitorGroup.id,
+//                visitor.id,
 //                visitorChangeRequest.title,
 //                visitorChangeRequest.size,
 //                visitorChangeRequest.isGroup,
@@ -91,8 +91,8 @@
 //                visitorChangeRequest.address,
 //                visitorChangeRequest.phone,
 //                visitorChangeRequest.email,
-//                visitorGroup.status
-//            ), visitorGroup
+//                visitor.status
+//            ), visitor
 //        )
 //
 //        assertEquals(1, info.bookings.size)
@@ -105,7 +105,7 @@
 //    }
 //
 //    @Test
-//    fun singleBookingChangeVisitorGroupReduceSize() {
+//    fun singleBookingChangeVisitorReduceSize() {
 //        val offer = offerService.create(OfferChangeRequest(LocalDateTime.parse("2023-02-04T09:00:00"), LocalDateTime.parse("2023-02-04T09:50:00"), 25, true))
 //
 //        val visitorRequest = VisitorChangeRequest("title", 20, false, 5, 10, "contact", Address("street", "city", "zip"), "phone", "email")
@@ -118,17 +118,17 @@
 //        requestService.confirm(request.id, info!!.bookings.first().id, BookingConfirmationContent("", "", true))
 //
 //        val visitorChangeRequest = VisitorChangeRequest("title", 10, false, 5, 10, "contact", Address("street", "city", "zip"), "phone", "email")
-//        val result = service.updateVisitorGroup(request.id, visitorChangeRequest)
+//        val result = service.updateVisitor(request.id, visitorChangeRequest)
 //        assertEquals(true, result.success)
 //
 //
 //        info = requestService.info(request.id)
 //        assertNotNull(info)
 //
-//        val visitorGroup = info!!.visitor
+//        val visitor = info!!.visitor
 //        assertEquals(
 //            Visitor(
-//                visitorGroup.id,
+//                visitor.id,
 //                visitorChangeRequest.title,
 //                visitorChangeRequest.size,
 //                visitorChangeRequest.isGroup,
@@ -138,8 +138,8 @@
 //                visitorChangeRequest.address,
 //                visitorChangeRequest.phone,
 //                visitorChangeRequest.email,
-//                visitorGroup.status
-//            ), visitorGroup
+//                visitor.status
+//            ), visitor
 //        )
 //
 //        assertEquals(1, info.bookings.size)
@@ -152,7 +152,7 @@
 //    }
 //
 //    @Test
-//    fun singleBookingChangeVisitorGroupIncreaseSize() {
+//    fun singleBookingChangeVisitorIncreaseSize() {
 //        val offer = offerService.create(OfferChangeRequest(LocalDateTime.parse("2023-02-04T10:00:00"), LocalDateTime.parse("2023-02-04T10:50:00"), 25, true))
 //
 //        val visitorRequest = VisitorChangeRequest("title", 20, false, 5, 10, "contact", Address("street", "city", "zip"), "phone", "email")
@@ -165,17 +165,17 @@
 //        requestService.confirm(request.id, info!!.bookings.first().id, BookingConfirmationContent("", "", true))
 //
 //        val visitorChangeRequest = VisitorChangeRequest("title", 25, false, 5, 10, "contact", Address("street", "city", "zip"), "phone", "email")
-//        val result = service.updateVisitorGroup(request.id, visitorChangeRequest)
+//        val result = service.updateVisitor(request.id, visitorChangeRequest)
 //        assertEquals(true, result.success)
 //
 //
 //        info = requestService.info(request.id)
 //        assertNotNull(info)
 //
-//        val visitorGroup = info!!.visitor
+//        val visitor = info!!.visitor
 //        assertEquals(
 //            Visitor(
-//                visitorGroup.id,
+//                visitor.id,
 //                visitorChangeRequest.title,
 //                visitorChangeRequest.size,
 //                visitorChangeRequest.isGroup,
@@ -185,8 +185,8 @@
 //                visitorChangeRequest.address,
 //                visitorChangeRequest.phone,
 //                visitorChangeRequest.email,
-//                visitorGroup.status
-//            ), visitorGroup
+//                visitor.status
+//            ), visitor
 //        )
 //
 //        assertEquals(1, info.bookings.size)

@@ -50,29 +50,29 @@ class BookingInfoConverter(
         val bookingIds = relations.values.map { it }.flatten().toSet()
         val bookings = bookingService.getBookingInfos(bookingIds).associateBy { it.id }
 
-        val visitorGroupIds = data.map { it.visitorGroupId }.toSet()
-        val visitorGroups = visitorService.getVisitorGroups(visitorGroupIds).associateBy { it.id }
+        val visitorIds = data.map { it.visitorId }.toSet()
+        val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
 
-        return data.mapNotNull { info(it, relations, bookings, visitorGroups) }
+        return data.mapNotNull { info(it, relations, bookings, visitors) }
             .sortedBy { it.visitor.verification.status.order }
     }
 
-    private fun info(request: BookingRequestData, relations: Map<Long, List<Long>>, bookings: Map<Long, BookingInfo>, visitorGroups: Map<Long, Visitor>): BookingRequestInfo? {
-        val visitorGroup = visitorGroups[request.visitorGroupId] ?: return null
+    private fun info(request: BookingRequestData, relations: Map<Long, List<Long>>, bookings: Map<Long, BookingInfo>, visitors: Map<Long, Visitor>): BookingRequestInfo? {
+        val visitor = visitors[request.visitorId] ?: return null
         val relatedBookingIds = relations[request.id] ?: emptyList()
         val relatedBookings = relatedBookingIds.mapNotNull { bookings[it] }
 
         val timestamp = request.updated ?: request.created
-        return BookingRequestInfo(request.id, visitorGroup, relatedBookings, request.status, request.comment, timestamp)
+        return BookingRequestInfo(request.id, visitor, relatedBookings, request.status, request.comment, timestamp)
     }
 
     private fun info(data: BookingRequestData): BookingRequestInfo? {
         val relations = relationRepository.getByBookingRequestId(data.id)
         val bookings = bookingService.getBookingInfos(relations.map { it.bookingId }.toSet())
-        val visitorGroup = visitorService.get(data.visitorGroupId) ?: return null
+        val visitor = visitorService.get(data.visitorId) ?: return null
 
         val timestamp = data.updated ?: data.created
-        return BookingRequestInfo(data.id, visitorGroup, bookings, data.status, data.comment, timestamp)
+        return BookingRequestInfo(data.id, visitor, bookings, data.status, data.comment, timestamp)
     }
 
 }

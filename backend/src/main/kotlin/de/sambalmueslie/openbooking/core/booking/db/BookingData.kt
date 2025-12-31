@@ -12,25 +12,25 @@ import java.time.LocalDateTime
 @Table(name = "booking")
 data class BookingData(
     @Id @GeneratedValue var id: Long,
-    @Column var offerId: Long,
-    @Column var visitorGroupId: Long,
+    @Column var key: String,
     @Column @Enumerated(EnumType.STRING) var status: BookingStatus,
     @Column var size: Int,
+    @Column var comment: String,
+
+    @Column var offerId: Long,
+    @Column var visitorId: Long,
+
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
 ) : DataObject<Booking> {
-    companion object {
-        fun create(request: BookingChangeRequest, visitor: Visitor, timestamp: LocalDateTime): BookingData {
-            return BookingData(0, request.offerId, visitor.id, BookingStatus.UNCONFIRMED, visitor.size, timestamp)
-        }
-    }
 
-    override fun convert() = Booking(id, offerId, visitorGroupId, size, status)
+    override fun convert() = Booking(id, status, size, comment, offerId, visitorId)
 
     fun update(request: BookingChangeRequest, visitor: Visitor, timestamp: LocalDateTime): BookingData {
         offerId = request.offerId
-        visitorGroupId = visitor.id
+        visitorId = visitor.id
         size = visitor.size
+        comment = request.comment
         updated = timestamp
         return this
     }

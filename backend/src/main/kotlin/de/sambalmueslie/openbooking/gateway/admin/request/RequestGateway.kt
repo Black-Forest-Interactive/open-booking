@@ -42,7 +42,7 @@ class RequestGateway(private val service: BookingRequestService) {
 
     fun getInfoByBookingId(auth: Authentication, bookingId: Long) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.getInfoByBookingId(bookingId) }
 
-    fun updateVisitorGroup(auth: Authentication, id: Long, request: VisitorChangeRequest) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.updateVisitorGroup(id, request) }
+    fun updateVisitor(auth: Authentication, id: Long, request: VisitorChangeRequest) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.updateVisitor(id, request) }
 
     fun setComment(auth: Authentication, id: Long, value: PatchRequest<String>) = auth.checkPermission(PERMISSION_REQUEST_ADMIN) { service.setComment(id, value.value) }
 }

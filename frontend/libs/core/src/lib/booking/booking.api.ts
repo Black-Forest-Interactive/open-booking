@@ -1,9 +1,9 @@
-import {VisitorGroup, VisitorGroupChangeRequest} from "../group/group.api";
+import {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
 import {Offer} from "../offer/offer.api";
 
 export class CreateBookingRequest {
   constructor(
-    public visitorGroupChangeRequest: VisitorGroupChangeRequest,
+    public visitorChangeRequest: VisitorChangeRequest,
     public offerIds: number[],
     public comment: string,
     public termsAndConditions: boolean
@@ -13,16 +13,18 @@ export class CreateBookingRequest {
 
 export interface Booking {
   id: number,
-  offerId: number,
-  visitorGroupId: number,
-  size: number,
   status: string,
+  size: number,
+  comment: string,
+  offerId: number,
+  visitorId: number,
 }
 
 export class BookingChangeRequest {
   constructor(
     public offerId: number,
-    public visitorGroupId: number,
+    public visitorId: number,
+    public comment: string,
   ) {
   }
 }
@@ -30,7 +32,7 @@ export class BookingChangeRequest {
 
 export interface BookingDetails {
   booking: Booking,
-  visitorGroup: VisitorGroup
+  visitor: Visitor
 }
 
 export class BookingSearchRequest {
@@ -43,7 +45,7 @@ export class BookingSearchRequest {
 export interface BookingSearchResult {
   offer: Offer,
   booking: Booking,
-  visitorGroup: VisitorGroup
+  visitor: Visitor
 }
 
 

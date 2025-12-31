@@ -6,7 +6,7 @@ import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Entity(name = "StaffMember")
+@Entity(name = "Guide")
 @Table(name = "staff_member")
 data class GuideData(
     @Id @GeneratedValue var id: Long,

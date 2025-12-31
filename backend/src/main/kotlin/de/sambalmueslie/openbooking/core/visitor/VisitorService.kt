@@ -49,12 +49,12 @@ class VisitorService(
     }
 
     fun get(bookings: List<Booking>): List<Visitor> {
-        val visitorGroupIds = bookings.map { it.visitorGroupId }.toSet()
-        return getVisitorGroups(visitorGroupIds)
+        val visitorIds = bookings.map { it.visitorId }.toSet()
+        return getVisitors(visitorIds)
     }
 
-    fun getVisitorGroups(visitorGroupIds: Set<Long>): List<Visitor> {
-        return repository.findByIdIn(visitorGroupIds).map { it.convert() }
+    fun getVisitors(visitorIds: Set<Long>): List<Visitor> {
+        return repository.findByIdIn(visitorIds).map { it.convert() }
     }
 
     fun confirm(id: Long): Visitor? {

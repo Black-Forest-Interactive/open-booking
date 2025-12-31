@@ -1,5 +1,5 @@
 import {Component, input, output, signal} from '@angular/core';
-import {BookingRequestInfo, VisitorGroupChangeRequest} from "@open-booking/core";
+import {BookingRequestInfo, VisitorChangeRequest} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -25,7 +25,7 @@ import {GroupInfoComponent} from "../../group/group-info/group-info.component";
   templateUrl: './booking-details-visitor-group.component.html',
   styleUrl: './booking-details-visitor-group.component.scss',
 })
-export class BookingDetailsVisitorGroupComponent {
+export class BookingDetailsVisitorComponent {
   data = input.required<BookingRequestInfo>()
   requestReload = output<boolean>()
 
@@ -41,14 +41,14 @@ export class BookingDetailsVisitorGroupComponent {
   }
 
 
-  handleGroupChange(request: VisitorGroupChangeRequest | undefined) {
+  handleGroupChange(request: VisitorChangeRequest | undefined) {
     if (!request) {
       this.editMode.set(false)
       return
     }
     if (this.changing()) return
     this.changing.set(true)
-    this.service.updateVisitorGroup(this.data().id, request).subscribe(
+    this.service.updateVisitor(this.data().id, request).subscribe(
       {
         next: (result) => this.handleResult(result)
       }

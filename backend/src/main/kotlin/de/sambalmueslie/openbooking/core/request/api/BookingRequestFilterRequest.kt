@@ -6,6 +6,6 @@ import java.time.LocalDate
 @Deprecated("use reservation instead.", ReplaceWith("reservation"))
 data class BookingRequestFilterRequest(
     val offerDate: LocalDate?,
-    val visitorGroupStatus: VerificationStatus?,
+    val visitorStatus: VerificationStatus?,
     val query: String?
 )

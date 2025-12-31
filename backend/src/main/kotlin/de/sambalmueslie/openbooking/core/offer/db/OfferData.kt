@@ -15,12 +15,16 @@ data class OfferData(
     @Column var finish: LocalDateTime,
     @Column var maxPersons: Int,
     @Column var active: Boolean,
+
+    @Column var labelId: Long?,
+    @Column var guideId: Long?,
+
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
 ) : DataObject<Offer> {
     companion object {
         fun create(request: OfferChangeRequest, timestamp: LocalDateTime): OfferData {
-            return OfferData(0, request.start, request.finish, request.maxPersons, request.active, timestamp)
+            return OfferData(0, request.start, request.finish, request.maxPersons, request.active, null, null, timestamp)
         }
     }
 

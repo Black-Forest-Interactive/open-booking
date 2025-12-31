@@ -1,4 +1,4 @@
-import {BookingInfo, VisitorGroup, VisitorGroupChangeRequest} from "@open-booking/core";
+import {BookingInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
 
 export interface BookingRequest {
   id: number,
@@ -10,7 +10,7 @@ export interface BookingRequest {
 
 export interface BookingRequestInfo {
   id: number,
-  visitorGroup: VisitorGroup,
+  visitor: Visitor,
   bookings: BookingInfo[],
   status: string,
   comment: string,
@@ -19,7 +19,7 @@ export interface BookingRequestInfo {
 
 export class BookingRequestChangeRequest {
   constructor(
-    public visitorGroupChangeRequest: VisitorGroupChangeRequest,
+    public visitorChangeRequest: VisitorChangeRequest,
     public offerIds: number[],
     public comment: string,
     public autoConfirm: boolean,
@@ -40,7 +40,7 @@ export class BookingConfirmationContent {
 export class BookingRequestFilterRequest {
   constructor(
     public offerDate: string | null | undefined,
-    public visitorGroupStatus: string | null | undefined,
+    public visitorStatus: string | null | undefined,
     public query: string | null | undefined
   ) {
   }

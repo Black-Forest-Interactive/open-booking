@@ -1,5 +1,5 @@
 import {Component, computed, input} from '@angular/core';
-import {VisitorGroup} from "@open-booking/core";
+import {Visitor} from "@open-booking/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
@@ -18,7 +18,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   styleUrl: './group-info.component.scss',
 })
 export class GroupInfoComponent {
-  data = input.required<VisitorGroup>()
+  data = input.required<Visitor>()
 
   title = computed(() => this.data().title)
   size = computed(() => this.data().size)

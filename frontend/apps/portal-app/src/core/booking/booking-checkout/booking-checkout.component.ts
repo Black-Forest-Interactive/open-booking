@@ -1,5 +1,5 @@
 import {Component, computed, effect, input, output, Signal} from '@angular/core';
-import {Address, CreateBookingRequest, DayInfoOffer, VisitorGroupChangeRequest} from "@open-booking/core";
+import {Address, CreateBookingRequest, DayInfoOffer, VisitorChangeRequest} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SettingsService} from "@open-booking/portal";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -151,7 +151,7 @@ export class BookingCheckoutComponent {
     let size = ((value.group) ? this.spaceAvailable() : +value.size!!)
     if (!size) return
 
-    let visitorGroupRequest = new VisitorGroupChangeRequest(
+    let visitorGroupRequest = new VisitorChangeRequest(
       value.title!!,
       size,
       value.group!!,

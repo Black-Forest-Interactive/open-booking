@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/
 import {MatButtonModule} from "@angular/material/button";
 import {GroupInfoComponent} from "../group-info/group-info.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {VisitorGroup} from "@open-booking/core";
+import {Visitor} from "@open-booking/core";
 
 @Component({
   selector: 'app-group-info-dialog',
@@ -17,7 +17,7 @@ import {VisitorGroup} from "@open-booking/core";
   styleUrl: './group-info-dialog.component.scss',
 })
 export class GroupInfoDialogComponent {
-  data = inject<VisitorGroup>(MAT_DIALOG_DATA)
+  data = inject<Visitor>(MAT_DIALOG_DATA)
 
   constructor(
     private dialogRef: MatDialogRef<GroupInfoDialogComponent>

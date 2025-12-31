@@ -81,7 +81,7 @@
         "Offer": {
           "Header": "Offer"
         },
-        "VisitorGroup": {
+        "Visitor": {
           "City": "City",
           "Contact": "Contact",
           "Header": "Visitor Group",
@@ -379,7 +379,7 @@
     "Table": {
       "Bookings": "Bookings",
       "Timestamp": "Timestamp",
-      "VisitorGroup": "Visitor Group"
+      "Visitor": "Visitor Group"
     },
     "Title": "Booking Request"
   },

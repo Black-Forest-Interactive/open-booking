@@ -41,7 +41,7 @@ export class StaffComponent {
   private settingsResource = resource({
     params: this.settingsCriteria,
     loader: (param) => {
-      return toPromise(this.service.getAllStaffMember(param.params.page, param.params.size), param.abortSignal)
+      return toPromise(this.service.getAllGuide(param.params.page, param.params.size), param.abortSignal)
     }
   })
 

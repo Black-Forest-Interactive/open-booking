@@ -1,5 +1,5 @@
 import {Component, computed, input, model, signal} from '@angular/core';
-import {VisitorGroup} from "@open-booking/core";
+import {Visitor} from "@open-booking/core";
 import {GroupService} from "@open-booking/admin";
 import {MatDialog} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
@@ -19,9 +19,9 @@ import {GroupInfoDialogComponent} from "../../group/group-info-dialog/group-info
   templateUrl: './request-visitor-group-entry.component.html',
   styleUrl: './request-visitor-group-entry.component.scss',
 })
-export class RequestVisitorGroupEntryComponent {
+export class RequestVisitorEntryComponent {
 
-  data = model.required<VisitorGroup>()
+  data = model.required<Visitor>()
   showDetails = input(true)
 
   confirming = signal(false)
@@ -39,13 +39,13 @@ export class RequestVisitorGroupEntryComponent {
     this.confirming.set(true)
     this.service.confirm(this.data().id).subscribe(
       {
-        next: d => this.handleVisitorGroupChange(d),
+        next: d => this.handleVisitorChange(d),
         complete: () => this.confirming.set(false)
       }
     )
   }
 
-  private handleVisitorGroupChange(d: VisitorGroup) {
+  private handleVisitorChange(d: Visitor) {
     this.data.set(d)
   }
 

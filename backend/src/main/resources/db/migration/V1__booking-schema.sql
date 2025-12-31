@@ -52,7 +52,7 @@ CREATE TABLE label
 
     created  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated  TIMESTAMP WITHOUT TIME ZONE
-)
+);
 
 -- offer
 CREATE SEQUENCE offer_seq;
@@ -101,40 +101,19 @@ CREATE TABLE reservation_offer_relation
 CREATE SEQUENCE booking_seq;
 CREATE TABLE booking
 (
-    id               BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('booking_seq'::regclass),
-    key              VARCHAR(255) NOT NULL,
-    type             VARCHAR(255) NOT NULL,
-    status           VARCHAR(255) NOT NULL,
-    size             INT          NOT NULL,
-    comment          TEXT         NOT NULL,
+    id         BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('booking_seq'::regclass),
+    key        VARCHAR(255) NOT NULL,
+    status     VARCHAR(255) NOT NULL,
+    size       INT          NOT NULL,
+    comment    TEXT         NOT NULL,
 
-    offer_id         BIGINT       NOT NULL REFERENCES offer (id),
-    visitor_group_id BIGINT       NOT NULL REFERENCES visitor_group (id),
+    offer_id   BIGINT       NOT NULL REFERENCES offer (id),
+    visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
 
-    created          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated          TIMESTAMP WITHOUT TIME ZONE,
+    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated    TIMESTAMP WITHOUT TIME ZONE
 );
 
--- booking request
-CREATE SEQUENCE booking_request_seq;
-CREATE TABLE booking_request
-(
-    id               BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('booking_request_seq'::regclass),
-    key              VARCHAR(255) NOT NULL,
-    status           VARCHAR(255) NOT NULL,
-    comment          TEXT         NOT NULL,
-
-    visitor_group_id BIGINT       NOT NULL,
-
-    created          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated          TIMESTAMP WITHOUT TIME ZONE
-);
-
-CREATE TABLE booking_request_booking
-(
-    booking_request_id BIGINT NOT NULL REFERENCES booking_request (id),
-    booking_id         BIGINT NOT NULL REFERENCES booking (id),
-);
 
 -- response
 CREATE SEQUENCE response_seq;

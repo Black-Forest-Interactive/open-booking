@@ -36,7 +36,7 @@
         "Offer": {
           "Header": "Termine"
         },
-        "VisitorGroup": {
+        "Visitor": {
           "City": "Stadt",
           "Contact": "Name",
           "Header": "Gruppenbezeichnung",
@@ -282,7 +282,7 @@
     "Table": {
       "Bookings": "Buchungen",
       "Timestamp": "Zeitstempel",
-      "VisitorGroup": "Gruppenbezeichnung"
+      "Visitor": "Gruppenbezeichnung"
     },
     "Title": "Buchungsanfrage"
   },

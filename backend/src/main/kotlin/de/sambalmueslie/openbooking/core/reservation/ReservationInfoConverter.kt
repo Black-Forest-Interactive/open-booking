@@ -49,7 +49,7 @@ class ReservationInfoConverter(
         val offers = offerService.getOffer(offerIds).associateBy { it.id }
 
         val visitorIds = data.map { it.visitorId }.toSet()
-        val visitors = visitorService.getVisitorGroups(visitorIds).associateBy { it.id }
+        val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
 
         return data.mapNotNull { info(it, relations, offers, visitors) }
             .sortedBy { it.visitor.verification.status.order }

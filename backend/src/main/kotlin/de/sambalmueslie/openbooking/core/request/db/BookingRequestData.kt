@@ -14,7 +14,7 @@ data class BookingRequestData(
     @Column var key: String,
 
     @Column @Enumerated(EnumType.STRING) var status: BookingRequestStatus,
-    @Column var visitorGroupId: Long,
+    @Column var visitorId: Long,
     @Column var comment: String,
 
     @Column var created: LocalDateTime,

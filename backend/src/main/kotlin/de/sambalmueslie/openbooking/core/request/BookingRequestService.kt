@@ -85,7 +85,7 @@ class BookingRequestService(
         isValid(request)
         val data = repository.save(createData(request))
 
-        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorGroupId)) }
+        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorId, "")) }
         val relations = bookings.map { BookingRequestRelation(it.id, data.id) }
         relationRepository.saveAll(relations)
 
@@ -105,13 +105,13 @@ class BookingRequestService(
     }
 
     override fun createData(request: BookingRequestChangeRequest): BookingRequestData {
-        val visitorGroup = visitorService.create(request.visitorChangeRequest)
+        val visitor = visitorService.create(request.visitorChangeRequest)
         if (request.autoConfirm) {
-            visitorService.confirm(visitorGroup.id)
+            visitorService.confirm(visitor.id)
         }
 
         val key = UUID.randomUUID().toString().uppercase(Locale.getDefault())
-        return BookingRequestData(0, key, BookingRequestStatus.UNCONFIRMED, visitorGroup.id, request.comment, timeProvider.now())
+        return BookingRequestData(0, key, BookingRequestStatus.UNCONFIRMED, visitor.id, request.comment, timeProvider.now())
     }
 
 
@@ -131,7 +131,7 @@ class BookingRequestService(
         val relations = relationRepository.getByBookingRequestId(data.id)
         relations.forEach { bookingService.delete(it.bookingId) }
 
-        visitorService.delete(data.visitorGroupId)
+        visitorService.delete(data.visitorId)
 
         relationRepository.deleteByBookingRequestId(data.id)
     }
@@ -143,7 +143,7 @@ class BookingRequestService(
 
     fun confirmEmail(key: String): GenericRequestResult {
         val request = repository.findOneByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        val visitorId = request.visitorGroupId
+        val visitorId = request.visitorId
         val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
         return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
@@ -198,7 +198,7 @@ class BookingRequestService(
         return converter.data { repository.findByIdOrNull(requestId) }
     }
 
-    fun updateVisitorGroup(id: Long, request: VisitorChangeRequest) = changeService.updateVisitorGroup(id, request)
+    fun updateVisitor(id: Long, request: VisitorChangeRequest) = changeService.updateVisitor(id, request)
 
     fun info(id: Long) = converter.data { repository.findByIdOrNull(id) }
     fun setComment(id: Long, value: String): BookingRequest? {

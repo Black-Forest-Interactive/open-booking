@@ -1,4 +1,8 @@
-import {defaultVisitorGroup, VisitorGroup, VisitorGroupChangeRequest} from "../../../visitor-group/model/visitor-group-api";
+import {
+  defaultVisitorGroup,
+  VisitorGroup,
+  VisitorGroupChangeRequest
+} from "../../../visitor-group/model/visitor-group-api";
 import {BookingInfo} from "../../booking/model/booking-api";
 
 export interface BookingRequest {
@@ -11,7 +15,7 @@ export interface BookingRequest {
 
 export interface BookingRequestInfo {
   id: number,
-  visitorGroup: VisitorGroup,
+  visitor: VisitorGroup,
   bookings: BookingInfo[],
   status: string,
   comment: string,
@@ -20,11 +24,10 @@ export interface BookingRequestInfo {
 
 export class BookingRequestChangeRequest {
   constructor(
-    public visitorGroupChangeRequest: VisitorGroupChangeRequest,
+    public visitorChangeRequest: VisitorGroupChangeRequest,
     public offerIds: number[],
     public comment: string,
     public autoConfirm: boolean,
-
     public ignoreSizeCheck: boolean
   ) {
   }
@@ -32,7 +35,7 @@ export class BookingRequestChangeRequest {
 
 export const defaultBookingRequestInfo: BookingRequestInfo = {
   id: -1,
-  visitorGroup: defaultVisitorGroup,
+  visitor: defaultVisitorGroup,
   bookings: [],
   status: "",
   comment: "",
@@ -51,7 +54,7 @@ export class BookingConfirmationContent {
 export class BookingRequestFilterRequest {
   constructor(
     public offerDate: string | null | undefined,
-    public visitorGroupStatus: string | null | undefined,
+    public visitorStatus: string | null | undefined,
     public query: string | null | undefined
   ) {
   }

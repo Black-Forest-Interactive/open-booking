@@ -1,5 +1,5 @@
 import {Component, input, output} from '@angular/core';
-import {VisitorGroup, VisitorGroupChangeRequest} from "@open-booking/core";
+import {Visitor, VisitorChangeRequest} from "@open-booking/core";
 
 @Component({
   selector: 'app-group-change',
@@ -8,6 +8,6 @@ import {VisitorGroup, VisitorGroupChangeRequest} from "@open-booking/core";
   styleUrl: './group-change.component.scss',
 })
 export class GroupChangeComponent {
-  data = input.required<VisitorGroup>()
-  changeEvent = output<VisitorGroupChangeRequest>()
+  data = input.required<Visitor>()
+  changeEvent = output<VisitorChangeRequest>()
 }

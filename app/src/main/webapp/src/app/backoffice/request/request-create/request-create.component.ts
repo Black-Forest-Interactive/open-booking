@@ -8,7 +8,9 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 import {Address, VisitorGroupChangeRequest} from "../../../visitor-group/model/visitor-group-api";
 import {BookingRequestService} from "../model/booking-request.service";
 import {BookingRequest, BookingRequestChangeRequest} from "../model/booking-request-api";
-import {CreateBookingFailedDialogComponent} from "../../../home/create-booking-failed-dialog/create-booking-failed-dialog.component";
+import {
+  CreateBookingFailedDialogComponent
+} from "../../../home/create-booking-failed-dialog/create-booking-failed-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
@@ -96,7 +98,7 @@ export class RequestCreateComponent {
     let size = +value.size!!
     if (!size) return;
 
-    let visitorGroupRequest = new VisitorGroupChangeRequest(
+    let visitorRequest = new VisitorGroupChangeRequest(
       value.title!!,
       size,
       value.group!!,
@@ -113,7 +115,7 @@ export class RequestCreateComponent {
     let offerIds: number[] = [offer.id]
 
     let request = new BookingRequestChangeRequest(
-      visitorGroupRequest,
+      visitorRequest,
       offerIds,
       value.comment!!,
       value.autoConfirm!!,

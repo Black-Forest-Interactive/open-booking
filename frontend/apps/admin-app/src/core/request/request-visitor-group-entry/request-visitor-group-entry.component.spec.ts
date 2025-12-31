@@ -1,18 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RequestVisitorGroupEntryComponent } from './request-visitor-group-entry.component';
+import {RequestVisitorEntryComponent} from './request-visitor-group-entry.component';
 
-describe('RequestVisitorGroupEntryComponent', () => {
-  let component: RequestVisitorGroupEntryComponent;
-  let fixture: ComponentFixture<RequestVisitorGroupEntryComponent>;
+describe('RequestVisitorEntryComponent', () => {
+  let component: RequestVisitorEntryComponent;
+  let fixture: ComponentFixture<RequestVisitorEntryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RequestVisitorGroupEntryComponent]
+      imports: [RequestVisitorEntryComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(RequestVisitorGroupEntryComponent);
+    fixture = TestBed.createComponent(RequestVisitorEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

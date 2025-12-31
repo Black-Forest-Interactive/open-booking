@@ -89,11 +89,11 @@ class BookingRequestEventProcessor(
     }
 
     private fun notifyContact(mails: List<de.sambalmueslie.openbooking.infrastructure.mail.api.Mail>, info: BookingRequestInfo) {
-        val visitorGroup = info.visitor
-        if (visitorGroup.email.isBlank()) return
+        val visitor = info.visitor
+        if (visitor.email.isBlank()) return
 
         val from = _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant("", getFromAddress())
-        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant(visitorGroup.name, visitorGroup.email))
+        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant(visitor.name, visitor.email))
         mails.forEach { mailService.send(it, from, to) }
     }
 

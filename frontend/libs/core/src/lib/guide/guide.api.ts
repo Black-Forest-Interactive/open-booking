@@ -1,4 +1,4 @@
-export interface StaffMember {
+export interface Guide {
   id: number,
   firstName: string,
   lastName: string,
@@ -7,7 +7,7 @@ export interface StaffMember {
   mobile: string
 }
 
-export class StaffMemberChangeRequest {
+export class GuideChangeRequest {
   constructor(
     public firstName: string,
     public lastName: string,

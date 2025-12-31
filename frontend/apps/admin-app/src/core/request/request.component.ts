@@ -3,7 +3,7 @@ import {RequestService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
-import {BookingRequestFilterRequest, BookingRequestInfo, VISITOR_GROUP_STATUS, VisitorGroup} from "@open-booking/core";
+import {BookingRequestFilterRequest, BookingRequestInfo, Visitor, VISITOR_GROUP_STATUS} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -20,7 +20,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {DatePipe} from "@angular/common";
 import {GroupInfoDialogComponent} from "../group/group-info-dialog/group-info-dialog.component";
 import {RequestCommentDialogComponent} from "./request-comment-dialog/request-comment-dialog.component";
-import {RequestVisitorGroupEntryComponent} from "./request-visitor-group-entry/request-visitor-group-entry.component";
+import {RequestVisitorEntryComponent} from "./request-visitor-group-entry/request-visitor-group-entry.component";
 import {RequestBookingEntryComponent} from "./request-booking-entry/request-booking-entry.component";
 import {GroupStatusComponent} from "../group/group-status/group-status.component";
 
@@ -43,7 +43,7 @@ import {GroupStatusComponent} from "../group/group-status/group-status.component
     RouterLink,
     LoadingBarComponent,
     SearchComponent,
-    RequestVisitorGroupEntryComponent,
+    RequestVisitorEntryComponent,
     RequestBookingEntryComponent,
     GroupStatusComponent
   ],
@@ -51,13 +51,13 @@ import {GroupStatusComponent} from "../group/group-status/group-status.component
   styleUrl: './request.component.scss',
 })
 export class RequestComponent {
-  displayedColumns: string[] = ['timestamp', 'visitorGroup', 'bookings', 'note']
+  displayedColumns: string[] = ['timestamp', 'visitor', 'bookings', 'note']
   form: FormGroup
 
   pageNumber = signal(0)
   pageSize = signal(25)
-  showVisitorGroupDetails = signal(true)
-  visitorGroupStatus = VISITOR_GROUP_STATUS
+  showVisitorDetails = signal(true)
+  visitorStatus = VISITOR_GROUP_STATUS
   request = signal<BookingRequestFilterRequest | undefined>(undefined)
 
   private requestCriteria = computed(() => ({
@@ -108,12 +108,12 @@ export class RequestComponent {
     this.toast.error("Sorry searching '" + data + "' is not supported yet")
   }
 
-  protected showDetails(visitorGroup: VisitorGroup) {
+  protected showDetails(visitorGroup: Visitor) {
     this.dialog.open(GroupInfoDialogComponent, {data: visitorGroup});
   }
 
-  protected showVisitorGroupDetailsChanged($event: MatSlideToggleChange) {
-    this.showVisitorGroupDetails.set($event.checked)
+  protected showVisitorDetailsChanged($event: MatSlideToggleChange) {
+    this.showVisitorDetails.set($event.checked)
   }
 
   protected showNote(request: BookingRequestInfo) {

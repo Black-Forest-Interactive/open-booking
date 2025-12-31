@@ -11,7 +11,7 @@ import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
 import io.micronaut.context.annotation.Context
 
 @Context
-class VisitorGroupChangeHandler(
+class VisitorChangeHandler(
     source: VisitorService,
     private val service: AuditLogEntryService,
     private val timeProvider: TimeProvider

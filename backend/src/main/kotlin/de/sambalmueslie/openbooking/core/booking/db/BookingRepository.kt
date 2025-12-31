@@ -19,10 +19,10 @@ interface BookingRepository : PageableRepository<BookingData, Long> {
     fun findByOfferIdAndStatus(offerId: Long, status: BookingStatus): List<BookingData>
     fun findByOfferIdInAndStatus(offerIds: Set<Long>, status: BookingStatus): List<BookingData>
 
-    fun countByVisitorGroupId(visitorGroupId: Long): Long
+    fun countByVisitorId(visitorId: Long): Long
     fun findByIdIn(bookingIds: Set<Long>): List<BookingData>
 
-    fun findByVisitorGroupId(visitorGroupId: Long, pageable: Pageable): Page<BookingData>
+    fun findByVisitorId(visitorId: Long, pageable: Pageable): Page<BookingData>
 
     @Query(
         value = "SELECT b.* FROM booking b INNER JOIN visitor_group v ON b.visitor_group_id = v.id WHERE (v.title ILIKE :query) OR (v.contact ILIKE  :query) ORDER BY b.created",

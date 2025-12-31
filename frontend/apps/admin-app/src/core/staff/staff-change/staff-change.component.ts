@@ -6,7 +6,7 @@ import {StaffService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {StaffMember, StaffMemberChangeRequest} from "@open-booking/core";
+import {Guide, GuideChangeRequest} from "@open-booking/core";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {navigateToStaff} from "../../../app/app.navigation";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -34,10 +34,10 @@ export class StaffChangeComponent {
 
   private staffResource = resource({
     params: this.id,
-    loader: param => toPromise(this.service.getStaffMember(param.params), param.abortSignal)
+    loader: param => toPromise(this.service.getGuide(param.params), param.abortSignal)
   })
 
-  data = model<StaffMember | null>(null)
+  data = model<Guide | null>(null)
   title = signal('STAFF.CHANGE.Create')
   reloading = signal(false)
 
@@ -64,14 +64,14 @@ export class StaffChangeComponent {
     })
   }
 
-  private handleDataEdit(data: StaffMember) {
+  private handleDataEdit(data: Guide) {
     this.data.set(data)
     this.initValues(data)
     this.translate.get("STAFF.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
     this.validateForm()
   }
 
-  private initValues(data: StaffMember) {
+  private initValues(data: Guide) {
     this.form.setValue(data)
   }
 
@@ -102,7 +102,7 @@ export class StaffChangeComponent {
     )
   }
 
-  private get request(): StaffMemberChangeRequest | null {
+  private get request(): GuideChangeRequest | null {
     return this.form.value
   }
 
@@ -111,20 +111,20 @@ export class StaffChangeComponent {
     if (!request) {
       this.showFormInvalidError()
     } else {
-      this.service.createStaffMember(request).subscribe((result) => this.handleChangeResult(result))
+      this.service.createGuide(request).subscribe((result) => this.handleChangeResult(result))
     }
   }
 
-  private update(setting: StaffMember) {
+  private update(setting: Guide) {
     let request = this.request
     if (!request) {
       this.showFormInvalidError()
     } else {
-      this.service.updateStaffMember(setting.id, request).subscribe((result) => this.handleChangeResult(result))
+      this.service.updateGuide(setting.id, request).subscribe((result) => this.handleChangeResult(result))
     }
   }
 
-  private handleChangeResult(result: StaffMember) {
+  private handleChangeResult(result: Guide) {
     if (result == null) {
       this.translate.get("STAFF.Message.CreateFailure").subscribe(
         msg => this.toast.error(msg)

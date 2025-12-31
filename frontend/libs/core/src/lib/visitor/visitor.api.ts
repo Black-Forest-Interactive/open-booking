@@ -1,39 +1,49 @@
-export interface VisitorGroup {
+export interface Visitor {
   id: number,
+  type: string,
   title: string,
+  description: string,
+
   size: number,
-  isGroup: boolean,
   minAge: number,
   maxAge: number,
-  contact: string,
-  address: VisitorGroupAddress,
+
+  name: string,
+  address: Address,
   phone: string,
   email: string,
-  status: string
+
+  verification: Verification
 }
 
-export interface VisitorGroupAddress {
+export interface Verification {
+  status: string,
+  timestamp: string | undefined,
+}
+
+export interface Address {
   street: string,
   city: string,
-  zip: string,
+  zip: string
 }
 
-export class VisitorGroupChangeRequest {
+export class VisitorChangeRequest {
   public constructor(
+    public type: string,
     public title: string,
+    public description: string,
     public size: number,
-    public isGroup: boolean,
     public minAge: number,
     public maxAge: number,
-    public contact: string,
-    public address: Address,
+    public name: string,
+    public address: AddressChangeRequest,
     public phone: string,
-    public email: string,
+    public email: string
   ) {
   }
 }
 
-export class Address {
+export class AddressChangeRequest {
   public constructor(
     public street: string,
     public city: string,

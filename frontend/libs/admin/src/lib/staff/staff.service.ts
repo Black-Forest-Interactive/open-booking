@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BaseService, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
-import {StaffMember, StaffMemberChangeRequest} from "@open-booking/core";
+import {Guide, GuideChangeRequest} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +13,23 @@ export class StaffService extends BaseService {
   }
 
 
-  getAllStaffMember(page: number, size: number): Observable<Page<StaffMember>> {
+  getAllGuide(page: number, size: number): Observable<Page<Guide>> {
     return this.getPaged('', page, size)
   }
 
-  getStaffMember(id: number): Observable<StaffMember> {
+  getGuide(id: number): Observable<Guide> {
     return this.get('' + id)
   }
 
-  createStaffMember(request: StaffMemberChangeRequest): Observable<StaffMember> {
+  createGuide(request: GuideChangeRequest): Observable<Guide> {
     return this.post('', request)
   }
 
-  updateStaffMember(id: number, request: StaffMemberChangeRequest): Observable<StaffMember> {
+  updateGuide(id: number, request: GuideChangeRequest): Observable<Guide> {
     return this.put('' + id, request)
   }
 
-  deleteStaffMember(id: number): Observable<StaffMember> {
+  deleteGuide(id: number): Observable<Guide> {
     return this.delete('' + id)
   }
 }
