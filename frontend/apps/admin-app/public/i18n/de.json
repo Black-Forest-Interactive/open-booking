@@ -462,5 +462,38 @@
     "HOME_PAGE": "Startseite",
     "NEED_HELP": "Benötigen Sie Hilfe?",
     "CONTACT_SUPPORT": "Support kontaktieren"
+  },
+  "LABEL": {
+    "Title": "Label-Verwaltung",
+    "Action": {
+      "Search": "Suchen",
+      "Create": "Erstellen",
+      "Add": "Label hinzufügen",
+      "Save": "Speichern",
+      "Cancel": "Abbrechen",
+      "Delete": "Löschen",
+      "Edit": "Bearbeiten",
+      "PickColor": "Farbe auswählen",
+      "ClickToEdit": "Zum Bearbeiten klicken",
+      "Auto": "Generieren"
+    },
+    "Field": {
+      "Id": "ID",
+      "Name": "Name",
+      "Color": "Farbe",
+      "Priority": "Priorität",
+      "CustomColor": "Benutzerdefiniert"
+    },
+    "Message": {
+      "NoLabels": "Noch keine Labels vorhanden. Klicken Sie auf \"Label hinzufügen\", um eines zu erstellen.",
+      "TotalLabels": "Gesamt Labels"
+    },
+    "Help": {
+      "Title": "So verwenden Sie es:",
+      "DragToReorder": "Ziehen Sie Labels am Griff-Symbol, um die Reihenfolge zu ändern (ändert die Priorität)",
+      "ClickToEdit": "Klicken Sie auf ein Label, um Name und Farbe zu bearbeiten",
+      "ClickTrashToDelete": "Klicken Sie auf das Papierkorb-Symbol, um ein Label zu löschen",
+      "ClickAddToCreate": "Klicken Sie auf \"Label hinzufügen\", um ein neues zu erstellen"
+    }
   }
 }

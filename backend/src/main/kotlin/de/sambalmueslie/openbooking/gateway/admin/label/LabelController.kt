@@ -15,6 +15,9 @@ class LabelController(private val gateway: LabelGateway) {
     @Get()
     fun getAll(auth: Authentication, pageable: Pageable) = gateway.getAll(auth, pageable)
 
+    @Get("sorted")
+    fun getAllSorted(auth: Authentication) = gateway.getAllSorted(auth)
+
     @Post()
     fun create(auth: Authentication, @Body request: LabelChangeRequest) = gateway.create(auth, request)
 

@@ -486,16 +486,37 @@
     }
   },
   "LABEL": {
-    "Title": "Label",
+    "Title": "Label Manager",
     "Action": {
       "Search": "Search",
-      "Create": "Create"
+      "Create": "Create",
+      "Add": "Add Label",
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "PickColor": "Pick any color",
+      "ClickToEdit": "Click to edit",
+      "Auto": "Autogenerate"
     },
     "Field": {
-      "Id": "Id",
+      "Id": "ID",
       "Name": "Name",
       "Color": "Color",
-      "Priority": "Priority"
+      "Priority": "Priority",
+      "CustomColor": "Custom"
+    },
+    "Message": {
+      "NoLabels": "No labels yet. Click \"Add Label\" to create one.",
+      "TotalLabels": "Total labels"
+    },
+    "Help": {
+      "Title": "How to use:",
+      "DragToReorder": "Drag labels by the grip icon to reorder (changes priority)",
+      "ClickToEdit": "Click a label to edit its name and color",
+      "ClickTrashToDelete": "Click the trash icon to delete a label",
+      "ClickAddToCreate": "Click \"Add Label\" to create a new one"
     }
+  }
   }
 }

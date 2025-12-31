@@ -16,6 +16,10 @@ export class LabelService extends BaseService {
     return this.getPaged('', page, size)
   }
 
+  getAllLabelSorted(): Observable<Label[]> {
+    return this.get('sorted')
+  }
+
   getLabel(id: number): Observable<Label> {
     return this.get('' + id)
   }

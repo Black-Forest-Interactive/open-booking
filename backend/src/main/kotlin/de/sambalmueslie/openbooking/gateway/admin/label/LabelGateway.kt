@@ -18,6 +18,10 @@ class LabelGateway(private val service: LabelService) {
         service.getAll(pageable)
     }
 
+    fun getAllSorted(auth: Authentication) = auth.checkPermission(PERMISSION_LABEL_ADMIN) {
+        service.getSortedLabels()
+    }
+
     fun create(auth: Authentication, request: LabelChangeRequest) = auth.checkPermission(PERMISSION_LABEL_ADMIN) {
         service.create(request)
     }

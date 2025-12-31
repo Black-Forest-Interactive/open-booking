@@ -8,13 +8,13 @@ import de.sambalmueslie.openbooking.core.label.db.LabelData
 import de.sambalmueslie.openbooking.core.label.db.LabelRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
+import io.micronaut.data.model.Sort
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
 class LabelService(
     private val repository: LabelRepository,
-
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Label, LabelChangeRequest, LabelData>(repository, cacheService, Label::class, logger) {
@@ -33,5 +33,9 @@ class LabelService(
 
     override fun isValid(request: LabelChangeRequest) {
         if (request.color.isEmpty()) throw InvalidRequestException("Color cannot be empty")
+    }
+
+    fun getSortedLabels(): List<Label> {
+        return repository.findAll(Sort.of(Sort.Order.asc(Label::priority.name))).map { it.convert() }
     }
 }

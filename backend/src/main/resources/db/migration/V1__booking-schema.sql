@@ -48,7 +48,7 @@ CREATE TABLE label
     id       BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('label_seq'::regclass),
     name     VARCHAR(255) NOT NULL,
     color    VARCHAR(255) NOT NULL UNIQUE,
-    priority INT          NOT NULL UNIQUE,
+    priority INT          NOT NULL,
 
     created  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated  TIMESTAMP WITHOUT TIME ZONE
