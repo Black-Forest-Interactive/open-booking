@@ -9,6 +9,8 @@ import {MatCardModule} from "@angular/material/card";
 import {EChartsCoreOption} from "echarts";
 import {MatDividerModule} from "@angular/material/divider";
 import {NgxEchartsDirective} from "ngx-echarts";
+import {MatListModule} from "@angular/material/list";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-cache',
@@ -17,7 +19,9 @@ import {NgxEchartsDirective} from "ngx-echarts";
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatListModule,
     MatDividerModule,
+    MatTooltipModule,
     LoadingBarComponent,
     NgxEchartsDirective
   ],
@@ -30,51 +34,112 @@ export class CacheComponent {
   chart: EChartsCoreOption = {
     animation: true,
     animationDuration: 400,
-
+    animationEasing: 'cubicOut',
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow'
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(0, 0, 0, 0.05)'
+        }
+      },
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: '#e0e0e0',
+      borderWidth: 1,
+      textStyle: {
+        color: '#333'
+      },
+      formatter: (params: any) => {
+        if (Array.isArray(params)) {
+          let tooltip = `<div style="font-weight: 600; margin-bottom: 8px;">${params[0].axisValue}</div>`;
+          params.forEach((param: any) => {
+            tooltip += `
+              <div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">
+                <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: ${param.color}; margin-right: 8px;"></span>
+                <span style="flex: 1;">${param.seriesName}:</span>
+                <strong style="margin-left: 12px;">${param.value.toLocaleString()}</strong>
+              </div>
+            `;
+          });
+          return tooltip;
+        }
+        return '';
       }
     },
-
     legend: {
       top: 0,
-      icon: 'roundRect'
+      left: 'center',
+      icon: 'roundRect',
+      itemWidth: 14,
+      itemHeight: 14,
+      textStyle: {
+        fontSize: 13,
+        fontWeight: 500
+      },
+      itemGap: 20
     },
-
     grid: {
-      left: 80,
-      right: 24,
-      top: 40,
-      bottom: 24,
+      left: 100,
+      right: 40,
+      top: 50,
+      bottom: 40,
       containLabel: true
     },
-
     xAxis: {
       type: 'value',
       name: 'Count',
       nameLocation: 'middle',
       nameGap: 30,
-      axisLine: {show: true},
+      nameTextStyle: {
+        fontSize: 13,
+        fontWeight: 500,
+        color: '#666'
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {color: '#e0e0e0'}
+      },
       axisTick: {show: false},
+      axisLabel: {
+        fontSize: 12,
+        color: '#666',
+        formatter: (value: number) => {
+          if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+          if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+          return value.toString();
+        }
+      },
       splitLine: {
-        lineStyle: {type: 'dashed'}
+        lineStyle: {
+          type: 'dashed',
+          color: '#f0f0f0'
+        }
       }
     },
-
     yAxis: {
       type: 'category',
-      data: ['hit', 'load', 'evict'],
+      data: ['Hits', 'Loads', 'Evictions'],
       axisTick: {show: false},
-      axisLine: {show: true},
+      axisLine: {
+        show: true,
+        lineStyle: {color: '#e0e0e0'}
+      },
       axisLabel: {
-        fontWeight: 500
+        fontWeight: 500,
+        fontSize: 13,
+        color: '#333'
       }
     },
-
-    series: []
-  }
+    series: [],
+    color: [
+      '#4CAF50', // Green for primary
+      '#2196F3', // Blue for secondary
+      '#FF9800', // Orange for tertiary
+      '#9C27B0', // Purple
+      '#00BCD4', // Cyan
+      '#F44336'  // Red
+    ]
+  };
 
 
   private cacheResource = resource({
@@ -178,6 +243,33 @@ export class CacheComponent {
 
   reset(info: CacheInfo) {
     this.service.resetCache(info.key).subscribe(d => this.cacheResource.reload())
+  }
+
+  formatCacheInfo(stats: CacheInfo): string {
+    const parts: string[] = [];
+
+
+    let hitRate = (stats.hitCount <= 0) ? 0 : (stats.hitCount / (stats.hitCount + stats.missCount)) * 100
+    if (hitRate !== undefined) {
+      parts.push(`Hit rate: ${hitRate.toFixed(1)}%`);
+    }
+
+    const total = stats.hitCount + stats.missCount + stats.evictionCount
+    if (total > 0) {
+      parts.push(`Total ops: ${this.formatNumber(total)}`);
+    }
+
+    return parts.join(' • ');
+  }
+
+  formatNumber(num: number): string {
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    }
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
   }
 
 
