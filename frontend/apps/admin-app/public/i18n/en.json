@@ -517,6 +517,21 @@
       "ClickTrashToDelete": "Click the trash icon to delete a label",
       "ClickAddToCreate": "Click \"Add Label\" to create a new one"
     }
-  }
+  },
+  "GUIDE": {
+    "Title": "Guides",
+    "Action": {
+      "Search": "Search",
+      "Create": "Create"
+    },
+    "Field": {
+      "Id": "ID",
+      "Name": "Name",
+      "FirstName": "First Name",
+      "LastName": "Last Name",
+      "Email": "E-Mail",
+      "Phone": "Phone",
+      "Mobile": "Mobile"
+    }
   }
 }

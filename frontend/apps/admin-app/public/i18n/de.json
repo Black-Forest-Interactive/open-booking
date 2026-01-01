@@ -494,6 +494,22 @@
       "ClickToEdit": "Klicken Sie auf ein Label, um Name und Farbe zu bearbeiten",
       "ClickTrashToDelete": "Klicken Sie auf das Papierkorb-Symbol, um ein Label zu löschen",
       "ClickAddToCreate": "Klicken Sie auf \"Label hinzufügen\", um ein neues zu erstellen"
+    },
+    "GUIDE": {
+      "Title": "Guides",
+      "Action": {
+        "Search": "Suchen",
+        "Create": "Erstellen"
+      },
+      "Field": {
+        "Id": "ID",
+        "Name": "Name",
+        "FirstName": "Vorname",
+        "LastName": "Nachname",
+        "Email": "E-Mail",
+        "Phone": "Telefon",
+        "Mobile": "Handy"
+      }
     }
   }
 }
