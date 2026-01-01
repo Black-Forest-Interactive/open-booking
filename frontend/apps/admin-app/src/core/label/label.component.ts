@@ -90,9 +90,19 @@ export class LabelComponent {
     this.saving.set(true);
     try {
       const maxPriority = Math.max(...this.entries().map(l => l.priority), -1);
+      const usedColors = new Set(this.entries().map(l => l.color.toUpperCase()));
+
+      let newColor = this.COLORS.find(c => !usedColors.has(c.toUpperCase()));
+
+      if (!newColor) {
+        do {
+          newColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase();
+        } while (usedColors.has(newColor));
+      }
+
       const request: LabelChangeRequest = {
-        name: "New Label",
-        color: this.COLORS[0],
+        name: "Label " + (maxPriority + 1),
+        color: newColor,
         priority: maxPriority + 1
       };
 

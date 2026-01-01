@@ -3,24 +3,18 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">{{ 'LABEL.Title' | translate }}</h1>
-        <button
-          matButton="filled"
-          color="primary"
-          (click)="addLabel()"
-          [disabled]="reloading() || saving()"
-        >
-          <mat-icon>add</mat-icon>
-          {{ 'LABEL.Action.Add' | translate }}
-        </button>
-        <button
-          matButton="filled"
-          color="primary"
-          (click)="autoGenerate()"
-          [disabled]="reloading() || saving()"
-        >
-          <mat-icon>auto_awesome_motion</mat-icon>
-          {{ 'LABEL.Action.Auto' | translate }}
-        </button>
+        <div class="flex gap-2">
+          <button matButton="filled" color="primary" (click)="addLabel()" [disabled]="reloading() || saving()">
+            <mat-icon>add</mat-icon>
+            {{ 'LABEL.Action.Add' | translate }}
+          </button>
+          @if (entries().length < COLORS.length) {
+            <button matButton="filled" color="primary" (click)="autoGenerate()" [disabled]="reloading() || saving()">
+              <mat-icon>auto_awesome_motion</mat-icon>
+              {{ 'LABEL.Action.Auto' | translate }}
+            </button>
+          }
+        </div>
       </div>
 
       @if (reloading()) {
@@ -40,10 +34,8 @@
                 [cdkDragDisabled]="editingId() === label.id || saving()"
                 class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border-2 border-transparent hover:border-slate-200 transition-all"
               >
-                <mat-icon
-                  cdkDragHandle
-                  class="cursor-grab active:cursor-grabbing text-slate-400"
-                  [class.cursor-not-allowed]="editingId() === label.id || saving()"
+                <mat-icon cdkDragHandle class="cursor-grab active:cursor-grabbing text-slate-400"
+                          [class.cursor-not-allowed]="editingId() === label.id || saving()"
                 >
                   drag_indicator
                 </mat-icon>
@@ -51,11 +43,7 @@
                 @if (editingId() === label.id) {
                   <mat-form-field appearance="fill" class="flex-1">
                     <mat-label>{{ 'LABEL.Field.Name' | translate }}</mat-label>
-                    <input
-                      matInput
-                      [(ngModel)]="editName"
-                      [placeholder]="'LABEL.Field.Name' | translate"
-                    >
+                    <input matInput [(ngModel)]="editName" [placeholder]="'LABEL.Field.Name' | translate">
                   </mat-form-field>
 
                   <div class="flex flex-col gap-2">
@@ -86,7 +74,7 @@
                   </div>
 
                   <button
-                    mat-icon-button
+                    matIconButton
                     color="primary"
                     (click)="saveEdit(label)"
                     [matTooltip]="'LABEL.Action.Save' | translate"
@@ -99,7 +87,7 @@
                     }
                   </button>
                   <button
-                    mat-icon-button
+                    matIconButton
                     color="warn"
                     (click)="cancelEdit()"
                     [matTooltip]="'LABEL.Action.Cancel' | translate"
@@ -123,7 +111,7 @@
                       </span>
 
                   <button
-                    mat-icon-button
+                    matIconButton
                     color="warn"
                     (click)="deleteLabel(label.id)"
                     [matTooltip]="'LABEL.Action.Delete' | translate"
@@ -147,12 +135,6 @@
           <li>• {{ 'LABEL.Help.ClickAddToCreate' | translate }}</li>
         </ul>
       </div>
-
-      @if (entries().length > 0) {
-        <div class="mt-4 text-sm text-slate-600 text-center">
-          {{ 'LABEL.Message.TotalLabels' | translate }}: {{ entries().length }}
-        </div>
-      }
     </div>
   </div>
 </div>
