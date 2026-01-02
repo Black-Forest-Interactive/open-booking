@@ -2,6 +2,7 @@ package de.sambalmueslie.openbooking.core.label
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.label.api.Label
 import de.sambalmueslie.openbooking.core.label.api.LabelChangeRequest
 import de.sambalmueslie.openbooking.core.label.db.LabelData
@@ -23,6 +24,10 @@ class LabelService(
         private val logger = LoggerFactory.getLogger(LabelService::class.java)
     }
 
+    fun getByIds(ids: Set<Long>): List<Label> {
+        return repository.findByIdIn(ids).map { it.convert() }
+    }
+
     override fun createData(request: LabelChangeRequest): LabelData {
         return LabelData.create(request, timeProvider.now())
     }
@@ -37,5 +42,18 @@ class LabelService(
 
     fun getSortedLabels(): List<Label> {
         return repository.findAll(Sort.of(Sort.Order.asc(Label::priority.name))).map { it.convert() }
+    }
+
+    fun getLabelIterator() = InfiniteLabelIterator(getSortedLabels())
+
+    fun getNext(previousLabelId: Long?): Label? {
+        val label = previousLabelId?.let { repository.findByIdOrNull(it) }
+        return getNext(label)
+    }
+
+    private fun getNext(label: LabelData?): Label? {
+        if (label == null) return repository.findOneOrderByPriority()?.convert()
+        val data = repository.findOneByPriorityGreaterThanOrderByPriority(label.priority) ?: repository.findOneOrderByPriority()
+        return data?.convert()
     }
 }

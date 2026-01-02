@@ -16,6 +16,7 @@ import java.time.LocalDate
 @Singleton
 class OfferGateway(private val service: OfferService) {
     fun getAll(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.getAll(pageable) }
+    fun getAllInfo(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.getAllInfos(pageable) }
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.get(id) }
     fun findByDate(auth: Authentication, date: LocalDate) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.getOffer(date) }
     fun setActive(auth: Authentication, id: Long, value: PatchRequest<Boolean>) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.setActive(id, value.value) }
@@ -26,4 +27,6 @@ class OfferGateway(private val service: OfferService) {
     fun createSeries(auth: Authentication, request: OfferSeriesRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.createSeries(request) }
     fun createRange(auth: Authentication, request: OfferRangeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.createRange(request) }
     fun filter(auth: Authentication, request: OfferFilterRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.filter(request, pageable) }
+    fun filterInfo(auth: Authentication, request: OfferFilterRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.filterInfo(request, pageable) }
+
 }

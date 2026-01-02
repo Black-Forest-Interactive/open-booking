@@ -9,7 +9,6 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {toPromise} from "@open-booking/shared";
 import {MatChipsModule} from "@angular/material/chips";
-import {DecimalPipe} from "@angular/common";
 
 @Component({
   selector: 'app-search',
@@ -20,7 +19,6 @@ import {DecimalPipe} from "@angular/common";
     MatProgressBarModule,
     MatChipsModule,
     TranslatePipe,
-    DecimalPipe,
 
   ],
   templateUrl: './search.component.html',

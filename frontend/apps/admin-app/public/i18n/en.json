@@ -216,10 +216,12 @@
     }
   },
   "OFFER": {
+    "Title": "Offer",
     "Action": {
       "CreateRange": "Create (Range)",
       "CreateSeries": "Create (Series)",
       "CreateSingle": "Create (Single)",
+      "CreateFirst": "Create first offer",
       "Details": "Details",
       "Export_Excel": "Excel",
       "Export_PDF": "PDF",
@@ -227,7 +229,11 @@
       "Search": "Search offer",
       "Select": "Select Offer",
       "ShowBookings": "Bookings",
-      "Filter": "Filter"
+      "Filter": "Filter",
+      "SelectLabel": "Select Label",
+      "SelectGuide": "Select Guide",
+      "Edit": "Edit offer",
+      "Delete": "Delete offer"
     },
     "Field": {
       "Active": "Active",
@@ -237,7 +243,8 @@
       "Id": "Id",
       "MaxPersons": "Max Persons",
       "Start": "Start",
-      "StartTime": "Start Time"
+      "StartTime": "Start Time",
+      "Actions": "Actions"
     },
     "Form": {
       "Active": "Active",
@@ -247,7 +254,8 @@
       "Start": "Start"
     },
     "Info": {
-      "SpaceAvailable": "There are {{value}} places available"
+      "SpaceAvailable": "There are {{value}} places available",
+      "TotalOffers": "Total offers"
     },
     "Operation": {
       "Create": "Create Offer",
@@ -262,6 +270,21 @@
       "MinTime": "Min Time",
       "Quantity": "Quantity",
       "Time": "Time"
+    },
+    "Range": {
+      "Date": "Date",
+      "TimeFrom": "Time from",
+      "TimeTo": "Time to"
+    },
+    "Dialog": {
+      "Delete": {
+        "Title": "Delete offer",
+        "Question": "Do you really want to delete the offer?"
+      }
+    },
+    "Empty": {
+      "Title": "No offers found",
+      "Description": "Create some offers to get started or select a different range"
     }
   },
   "REQUEST": {

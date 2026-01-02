@@ -18,6 +18,9 @@ class OfferController(private val gateway: OfferGateway) {
     @Get()
     fun getAll(auth: Authentication, pageable: Pageable) = gateway.getAll(auth, pageable)
 
+    @Get("info")
+    fun getAllInfo(auth: Authentication, pageable: Pageable) = gateway.getAllInfo(auth, pageable)
+
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
 
@@ -43,8 +46,12 @@ class OfferController(private val gateway: OfferGateway) {
     fun createSeries(auth: Authentication, @Body request: OfferSeriesRequest) = gateway.createSeries(auth, request)
 
     @Post("/range")
-    fun createRange(auth: Authentication, request: OfferRangeRequest) = gateway.createRange(auth, request)
+    fun createRange(auth: Authentication, @Body request: OfferRangeRequest) = gateway.createRange(auth, request)
 
     @Post("/filter")
     fun filter(auth: Authentication, @Body request: OfferFilterRequest, pageable: Pageable) = gateway.filter(auth, request, pageable)
+
+
+    @Post("/filter/info")
+    fun filterInfo(auth: Authentication, @Body request: OfferFilterRequest, pageable: Pageable) = gateway.filterInfo(auth, request, pageable)
 }

@@ -14,7 +14,7 @@ import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
-import {Offer, OfferFilterRequest} from "@open-booking/core";
+import {OfferFilterRequest, OfferInfo} from "@open-booking/core";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatChipsModule} from "@angular/material/chips";
@@ -22,6 +22,9 @@ import {DateTime} from "luxon";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
+import {OfferDeleteDialogComponent} from "./offer-delete-dialog/offer-delete-dialog.component";
+import {OfferContentComponent} from "./offer-content/offer-content.component";
+import {OfferEditDialogComponent} from "./offer-edit-dialog/offer-edit-dialog.component";
 
 @Component({
   selector: 'app-offer',
@@ -44,16 +47,14 @@ import {MatInputModule} from "@angular/material/input";
     FormsModule,
     RouterLink,
     TranslatePipe,
-    LoadingBarComponent
+    LoadingBarComponent,
+    OfferContentComponent
   ],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfferComponent {
-
-
-  displayedColumns: string[] = ['start', 'finish', 'maxPersons', 'active', 'cmd']
 
   range = new FormGroup({
     start: new FormControl<DateTime | null>(null, Validators.required),
@@ -74,9 +75,9 @@ export class OfferComponent {
     params: this.offerCriteria,
     loader: (param) => {
       if (param.params.request) {
-        return toPromise(this.service.filter(param.params.request, param.params.page, param.params.size), param.abortSignal)
+        return toPromise(this.service.filterInfo(param.params.request, param.params.page, param.params.size), param.abortSignal)
       } else {
-        return toPromise(this.service.getAllOffer(param.params.page, param.params.size), param.abortSignal)
+        return toPromise(this.service.getAllOfferInfo(param.params.page, param.params.size), param.abortSignal)
       }
     }
   })
@@ -93,6 +94,7 @@ export class OfferComponent {
     private toastService: HotToastService,
     private dialog: MatDialog
   ) {
+    this.range.valueChanges.subscribe(d => this.handleSelectionChange())
   }
 
   protected handlePageChange(event: PageEvent) {
@@ -110,8 +112,8 @@ export class OfferComponent {
   protected applyFilter() {
     let filter = this.range.value
     if (filter.start || filter.end) {
-      const start = filter.start?.toISO()
-      const end = filter.end?.toISO()
+      const start = filter.start?.toISODate()
+      const end = filter.end?.toISODate()
       this.request.set(new OfferFilterRequest(start, end, null))
     } else {
       this.request.set(undefined)
@@ -128,21 +130,20 @@ export class OfferComponent {
     }
   }
 
+  protected handleEdit(info: OfferInfo) {
+    let dialogRef = this.dialog.open(OfferEditDialogComponent, {data: info, disableClose: true})
 
-  delete(offer: Offer) {
-    // let dialogRef = this.dialog.open(OfferDeleteDialogComponent, {data: offer})
-    //
-    // dialogRef.afterClosed().subscribe((value) => {
-    //   if (value) this.service.deleteOffer(offer.id).subscribe(() => this.handleDeleted(offer))
-    // })
+    dialogRef.afterClosed().subscribe((value) => {
+      debugger
+      if (value) this.service.updateOffer(info.offer.id, value).subscribe(() => this.offerResource.reload())
+    })
   }
 
-  protected getOfferMode(offer: Offer) {
-    // TODO
-    return "none"
-  }
+  protected handleDelete(info: OfferInfo) {
+    let dialogRef = this.dialog.open(OfferDeleteDialogComponent, {data: info.offer})
 
-  toggleActive(offer: Offer) {
-    // TODO
+    dialogRef.afterClosed().subscribe((value) => {
+      if (value) this.service.deleteOffer(info.offer.id).subscribe(() => this.offerResource.reload())
+    })
   }
 }

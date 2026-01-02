@@ -9,4 +9,6 @@ import io.micronaut.data.repository.PageableRepository
 @JdbcRepository(dialect = Dialect.POSTGRES)
 interface LabelRepository : PageableRepository<LabelData, Long> {
     fun findByIdIn(ids: Set<Long>): List<LabelData>
+    fun findOneOrderByPriority(): LabelData?
+    fun findOneByPriorityGreaterThanOrderByPriority(priority: Int): LabelData?
 }

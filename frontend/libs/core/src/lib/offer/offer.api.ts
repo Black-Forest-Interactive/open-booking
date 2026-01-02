@@ -1,3 +1,6 @@
+import {Label} from "../label/label.api";
+import {Guide} from "../guide/guide.api";
+
 export interface Offer {
   id: number,
   start: string,
@@ -6,13 +9,21 @@ export interface Offer {
   active: boolean
 }
 
+export interface OfferInfo {
+  offer: Offer,
+  label: Label | undefined,
+  guide: Guide | undefined
+}
+
 
 export class OfferChangeRequest {
   constructor(
     public start: string,
     public finish: string,
     public maxPersons: number,
-    public active: boolean
+    public active: boolean,
+    public labelId: number | null,
+    public guideId: number | null
   ) {
   }
 }
