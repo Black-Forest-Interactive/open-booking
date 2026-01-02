@@ -134,7 +134,6 @@ export class OfferComponent {
     let dialogRef = this.dialog.open(OfferEditDialogComponent, {data: info, disableClose: true})
 
     dialogRef.afterClosed().subscribe((value) => {
-      debugger
       if (value) this.service.updateOffer(info.offer.id, value).subscribe(() => this.offerResource.reload())
     })
   }

@@ -54,7 +54,7 @@
         <mat-select formControlName="label">
           <mat-option [value]="null">--</mat-option>
           @for (label of labels(); track label.id) {
-            <mat-option [value]="label">
+            <mat-option [value]="label.id">
               <div class="flex items-center gap-3">
               <span
                 class="w-4 h-4 rounded-full border border-gray-300 flex-shrink-0"
