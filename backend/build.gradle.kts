@@ -225,12 +225,12 @@ sonar {
 jib {
     from.image = "eclipse-temurin:25-jre-ubi10-minimal"
     to {
-        image = "open-event-backend"
+        image = "open-booking-backend"
         tags = setOf(version.toString(), "latest")
     }
     container {
         creationTime.set("USE_CURRENT_TIMESTAMP")
-
+        mainClass = application.mainClass.get()
         jvmFlags = listOf(
             "-server",
             "-XX:+UseContainerSupport",
