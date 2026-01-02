@@ -1,32 +1,65 @@
-<div class="flex gap-4 flex-1 border-l-8 border rounded px-4 py-2 h-20"
-     [style.border-left-color]="color()"
-     [ngClass]="active() ? ' border-gray-200 hover:border-blue-300' : 'bg-gray-50 border-gray-300 opacity-60'"
+<div class="flex gap-3 border-l-4 border rounded-lg px-4 py-3 transition-all duration-200 h-32"
+     [class]="active()
+       ? 'bg-white border-gray-200 hover:border-gray-400 hover:shadow-sm'
+       : 'bg-gray-50 border-gray-300 opacity-70'"
 >
-  <div class="flex flex-col gap-1 flex-auto justify-between">
+  <!-- Main Content -->
+  <div class="flex flex-col gap-2 flex-auto justify-between min-w-0">
+    <!-- Time -->
     <div class="flex items-center gap-2">
-      <mat-icon class="text-gray-500" inline>schedule</mat-icon>
-      <div class="font-medium text-gray-800">{{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
+      <mat-icon class="text-gray-600" inline>schedule</mat-icon>
+      <div class="font-semibold text-gray-900 text-base">
+        {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
       </div>
     </div>
+
+    <!-- Guide Info -->
     @if (info().guide) {
-      <div class="flex items-center gap-2 rounded-sm border-gray-300 bg-gray-200 px-2">
-        <mat-icon class="text-gray-500" inline>follow_the_signs</mat-icon>
-        <div class="text-xs text-gray-800">{{ guide() }}</div>
+      <div class="flex items-center gap-2 rounded bg-gray-100 border border-gray-300 px-3 py-1">
+        <mat-icon class="text-gray-600" inline>follow_the_signs</mat-icon>
+        <div class="text-sm text-gray-800 font-medium truncate">{{ guide() }}</div>
+      </div>
+    }
+
+    <!-- Label (if exists) -->
+    @if (info().label) {
+      <div class="flex items-center gap-2 rounded px-3 py-1 border border-gray-300"
+           [style.background-color]="color() + '15'">
+        <mat-icon class="text-gray-600" inline>label</mat-icon>
+        <div class="flex gap-2 items-center justify-between flex-auto">
+          <div class="text-sm font-medium truncate text-gray-800">
+            {{ label() }}
+          </div>
+          <span class="w-4 h-4 rounded-full flex-shrink-0" [style.background-color]="color()"></span>
+        </div>
       </div>
     }
   </div>
-  <div class="flex items-center gap-2">
-    <mat-icon class="text-gray-500" inline>groups</mat-icon>
-    <span class="text-gray-700">{{ maxPersons() }}</span>
-  </div>
-  <div class="flex items-center gap-1">
-    <button matIconButton matTooltip="{{ 'OFFER.Action.Edit' | translate }}" (click)="edit.emit(info())"
-            [disabled]="reloading()">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button matIconButton matTooltip="{{ 'OFFER.Action.Delete' | translate }}" (click)="delete.emit(info())"
-            [disabled]="reloading()">
-      <mat-icon>delete</mat-icon>
-    </button>
+
+  <!-- Right Side: Capacity & Actions -->
+  <div class="flex flex-col items-end justify-between gap-2">
+    <!-- Max Persons -->
+    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 border border-gray-300 rounded-full">
+      <mat-icon class="text-gray-600" inline>groups</mat-icon>
+      <span class="text-sm font-semibold text-gray-700">{{ maxPersons() }}</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-1">
+      <button
+        mat-icon-button
+        [matTooltip]="'OFFER.Action.Edit' | translate"
+        (click)="edit.emit(info())"
+        [disabled]="reloading()">
+        <mat-icon class="text-gray-600">edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        [matTooltip]="'OFFER.Action.Delete' | translate"
+        (click)="delete.emit(info())"
+        [disabled]="reloading()">
+        <mat-icon class="text-gray-600">delete</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

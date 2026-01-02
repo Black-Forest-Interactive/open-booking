@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {OfferInfo} from "@open-booking/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {DatePipe, NgClass} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 
@@ -13,8 +13,7 @@ import {TranslatePipe} from "@ngx-translate/core";
     MatButtonModule,
     MatTooltipModule,
     TranslatePipe,
-    DatePipe,
-    NgClass
+    DatePipe
   ],
   templateUrl: './offer-content-entry.component.html',
   styleUrl: './offer-content-entry.component.scss',
@@ -28,6 +27,7 @@ export class OfferContentEntryComponent {
 
 
   color = computed(() => this.info().label?.color ?? '')
+  label = computed(() => this.info().label?.name ?? '')
   start = computed(() => this.info().offer.start ?? '')
   finish = computed(() => this.info().offer.finish ?? '')
   maxPersons = computed(() => this.info().offer.maxPersons ?? '')

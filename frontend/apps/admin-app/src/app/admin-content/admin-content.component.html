@@ -1,4 +1,4 @@
-<mat-sidenav-container class="h-full w-full">
+<mat-sidenav-container class="h-screen w-full">
 
   <!-- Side Navigation -->
   <mat-sidenav #drawer
@@ -24,27 +24,28 @@
           </a>
           <mat-divider></mat-divider>
 
-
           <a routerLink="./booking"
              routerLinkActive="active-nav-link"
              class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
             <mat-icon>bookmarks</mat-icon>
             <span class="text-sm font-medium">{{ 'MENU.Booking' | translate }}</span>
           </a>
-
-          <a routerLink="./request"
-             routerLinkActive="active-nav-link"
-             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-            <mat-icon>thumb_up_alt</mat-icon>
-            <span class="text-sm font-medium">{{ 'MENU.BookingRequest' | translate }}</span>
-          </a>
-
           <a routerLink="./reservation"
              routerLinkActive="active-nav-link"
              class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
             <mat-icon>thumb_up_alt</mat-icon>
             <span class="text-sm font-medium">{{ 'MENU.Reservation' | translate }}</span>
           </a>
+          
+          <a routerLink="./request"
+             routerLinkActive="active-nav-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <mat-icon>thumb_up_alt</mat-icon>
+            <span class="text-sm font-medium">{{ 'MENU.BookingRequest' | translate }}</span>
+            <span class="text-xs px-2 py-1 rounded bg-red-200">Deprecated</span>
+          </a>
+
+
           <mat-divider></mat-divider>
           <a routerLink="./label"
              routerLinkActive="active-nav-link"
@@ -124,8 +125,8 @@
   </mat-sidenav>
 
   <!-- Scrollable Content -->
-  <mat-sidenav-content class="overflow-y-auto">
-    <div class="container px-4 mx-auto">
+  <mat-sidenav-content class="flex flex-col h-full">
+    <div class="container px-4 mx-auto flex-1 min-h-0">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

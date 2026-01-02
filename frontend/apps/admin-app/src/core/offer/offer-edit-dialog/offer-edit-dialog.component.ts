@@ -13,6 +13,8 @@ import {DateTime} from "luxon";
 import {GuideService, LabelService, OfferService} from "@open-booking/admin";
 import {toPromise} from "@open-booking/shared";
 import {MatSelectModule} from "@angular/material/select";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-offer-edit-dialog',
@@ -24,6 +26,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatCheckboxModule,
     MatInputModule,
     MatSelectModule,
+    MatDividerModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     TranslatePipe,
   ],
@@ -107,5 +111,10 @@ export class OfferEditDialogComponent {
   onSubmit() {
     let request = this.request
     this.dialogRef.close(request)
+  }
+
+  getSelectedLabelColor(): string {
+    const selectedLabelId = this.form.get('label')?.value;
+    return this.labels().find(label => label.id === selectedLabelId)?.color || '#cccccc';
   }
 }
