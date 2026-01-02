@@ -94,7 +94,7 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.8.3")
     // jsoup
-    implementation("org.jsoup:jsoup:1.21.2")
+    implementation("org.jsoup:jsoup:1.22.1")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
