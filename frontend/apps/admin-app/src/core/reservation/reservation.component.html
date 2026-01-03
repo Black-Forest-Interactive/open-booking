@@ -1,1 +1,55 @@
-<p>reservation works!</p>
+<div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
+  <app-loading-bar [reloading]="reloading()"/>
+
+  <!-- Header -->
+  <div class="flex items-stretch gap-3 px-2 pt-2">
+    <lib-search label="RESERVATION.Action.Search" (search)="search($event)" class="flex-auto"/>
+  </div>
+
+
+  <!-- ✅ SCROLL AREA -->
+  <div class="flex-1 overflow-auto min-h-0">
+    <div class="container mx-auto py-4">
+      <app-reservation-content
+        [entries]="entries()"
+        [reloading]="reloading()">
+      </app-reservation-content>
+
+      <!-- Results Summary -->
+      @if (entries().length > 0) {
+        <div class="text-center text-sm text-gray-600 py-4">
+          Showing {{ entries().length }}
+          of {{ totalElements() }} {{ 'RESERVATION.Table.Reservations' | translate | lowercase }}
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (entries().length === 0 && !reloading()) {
+        <div class="text-center py-12">
+          <mat-icon class="w-16 h-16 text-gray-300 mb-4" style="width: 64px; height: 64px; font-size: 64px;">
+            search
+          </mat-icon>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">
+            No {{ 'RESERVATION.Table.Reservations' | translate | lowercase }} found
+          </h3>
+          <p class="text-gray-600">Try adjusting your search criteria</p>
+        </div>
+      }
+    </div>
+  </div>
+
+
+  <!-- Paginator -->
+  <div class="border-t">
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageNumber()"
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [showFirstLastButtons]="true"
+      [disabled]="reloading()"
+      (page)="handlePageChange($event)">
+    </mat-paginator>
+  </div>
+
+</div>

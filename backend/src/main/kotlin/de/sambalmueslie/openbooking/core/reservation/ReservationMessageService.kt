@@ -20,7 +20,7 @@ class ReservationMessageService(
 
 
     fun getRequestReceivedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
-        val info = converter.data { repository.findByIdOrNull(id) } ?: return null
+        val info = converter.dataToInfo { repository.findByIdOrNull(id) } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),
@@ -30,7 +30,7 @@ class ReservationMessageService(
     }
 
     fun getRequestFailedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
-        val info = converter.data { repository.findByIdOrNull(id) } ?: return null
+        val info = converter.dataToInfo { repository.findByIdOrNull(id) } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),

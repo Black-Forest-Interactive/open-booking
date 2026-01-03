@@ -1,9 +1,11 @@
 package de.sambalmueslie.openbooking.core.reservation.api
 
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import java.time.LocalDateTime
 
 data class ReservationDetails(
     val reservation: Reservation,
     val visitor: Visitor,
-    val offerIds: Set<Long>
+    val offers: List<ReservationOfferEntry>,
+    val timestamp: LocalDateTime
 )

@@ -7,9 +7,12 @@ import {
   ReservationChangeRequest,
   ReservationFilterRequest,
   ReservationInfo,
+  ReservationSearchRequest,
+  ReservationSearchResponse,
   ResolvedResponse,
   VisitorChangeRequest
 } from "@open-booking/core";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,13 @@ export class ReservationService extends BaseService {
 
   getReservation(id: number): Observable<Reservation> {
     return this.get('' + id)
+  }
+
+  searchReservation(request: ReservationSearchRequest, page: number, size: number): Observable<ReservationSearchResponse> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+    return this.post('search', request, params)
   }
 
   createReservation(request: ReservationChangeRequest): Observable<Reservation> {

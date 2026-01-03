@@ -1,4 +1,5 @@
 import {Offer, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {Page} from "@open-booking/shared";
 
 export interface Reservation {
   id: number,
@@ -14,6 +15,18 @@ export interface ReservationInfo {
   status: string,
   comment: string,
   timestamp: string
+}
+
+export interface ReservationDetails {
+  reservation: Reservation,
+  visitor: Visitor,
+  offers: ReservationOfferEntry[],
+  timestamp: string
+}
+
+export interface ReservationOfferEntry {
+  offerId: number,
+  priority: number
 }
 
 export class ReservationChangeRequest {
@@ -35,3 +48,22 @@ export class ReservationFilterRequest {
   ) {
   }
 }
+
+export class ReservationSearchRequest {
+  constructor(
+    public fullTextSearch: String
+  ) {
+  }
+}
+
+export interface ReservationSearchResponse {
+  result: Page<ReservationSearchEntry>
+}
+
+export interface ReservationSearchEntry {
+  reservation: Reservation,
+  visitor: Visitor,
+  offers: ReservationOfferEntry[],
+  timestamp: string
+}
+

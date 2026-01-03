@@ -287,10 +287,10 @@
       "Description": "Create some offers to get started or select a different range"
     }
   },
-  "REQUEST": {
+  "RESERVATION": {
     "Action": {
-      "Confirm": "Confirm booking",
-      "Deny": "Deny booking",
+      "Confirm": "Confirm reservation",
+      "Deny": "Deny reservation",
       "MailConfirm": "Confirm Mail",
       "RequestConfirm": "Confirm Offer",
       "RequestDenial": "Denial Offer",
@@ -313,11 +313,11 @@
           "Space": "Available space",
           "Start": "Start Time"
         },
-        "Title": "Confirm Booking Request"
+        "Title": "Confirm Reservation"
       },
       "Failed": {
         "Message": "We are sorry, but something went wrong with your request. Please try again or choose a different date.",
-        "Title": "Booking Request Failed"
+        "Title": "Reservation Failed"
       }
     },
     "Form": {
@@ -386,11 +386,11 @@
       "UNKNOWN": "Unknown"
     },
     "Table": {
-      "Bookings": "Bookings",
+      "Reservations": "Reservations",
       "Timestamp": "Timestamp",
       "Visitor": "Visitor Group"
     },
-    "Title": "Booking Request"
+    "Title": "Reservation"
   },
   "RESPONSE": {
     "Action": {

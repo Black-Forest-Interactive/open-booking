@@ -8,10 +8,10 @@ import jakarta.inject.Singleton
 class GuideFieldMappingProvider : FieldMappingProvider {
     override fun createMappings(): FieldMappings.() -> Unit {
         return {
-            number<Long>("id")
-            text("firstName")
-            text("lastName")
-            text("email")
+            number<Long>(GuideSearchEntryData::id)
+            text(GuideSearchEntryData::firstName)
+            text(GuideSearchEntryData::lastName)
+            text(GuideSearchEntryData::email)
         }
     }
 }

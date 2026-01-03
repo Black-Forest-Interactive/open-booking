@@ -1,0 +1,178 @@
+<mat-card class="shadow-sm hover:shadow-md transition-shadow">
+  <!-- Card Header -->
+  <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+    <div class="flex items-start justify-between">
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-2 flex-wrap">
+          <h3 class="text-xl font-semibold text-gray-900">{{ data().reservation.key }}</h3>
+          <mat-chip [class]="statusClass()" class="font-medium">
+            {{ 'RESERVATION.Status.' + data().reservation.status | translate }}
+          </mat-chip>
+        </div>
+        @if (data().reservation.comment) {
+          <div class="mt-2 p-3 bg-white/60 rounded-lg border border-blue-100">
+            <div class="flex items-start gap-2">
+              <mat-icon class="w-4 h-4 text-blue-600 mt-0.5">comment</mat-icon>
+              <div class="flex-1">
+                <div class="text-xs font-medium text-gray-500 mb-1">
+                  {{ 'RESERVATION.Form.Comment.Label' | translate }}
+                </div>
+                <p class="text-sm text-gray-700">{{ data().reservation.comment }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="text-right ml-4">
+        <div class="text-xs text-gray-500 mb-1">
+          {{ 'RESERVATION.Table.Timestamp' | translate }}
+        </div>
+        <div class="text-sm font-medium text-gray-700">{{ data().timestamp | date:'short' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Content -->
+  <div class="p-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Visitor Information -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <mat-icon class="text-blue-600">person</mat-icon>
+          <h4 class="font-semibold text-gray-900">
+            {{ 'RESERVATION.Table.Visitor' | translate }}
+          </h4>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                    <span class="font-medium text-gray-900">
+                      {{ data().visitor.title }} {{ data().visitor.name }}
+                    </span>
+                <mat-icon
+                  [class]="verificationIconClass()"
+                  class="w-5 h-5"
+                  [matTooltip]="data().visitor.verification.status">
+                  {{ verificationIcon() }}
+                </mat-icon>
+              </div>
+              <div class="text-sm text-gray-600">{{ data().visitor.description }}</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <span class="text-gray-500">{{ 'RESERVATION.Form.Title.Label' | translate }}:</span>
+              <span class="ml-2 font-medium text-gray-900 capitalize">{{ data().visitor.type }}</span>
+            </div>
+            <div>
+              <span class="text-gray-500">{{ 'RESERVATION.Form.Size.Label' | translate }}:</span>
+              <span class="ml-2 font-medium text-gray-900">
+                    {{ data().visitor.size }} {{ data().visitor.size === 1 ? 'person' : 'people' }}
+                  </span>
+            </div>
+            <div class="col-span-2">
+                  <span class="text-gray-500">{{ 'RESERVATION.Form.MinAge.Label' | translate }}
+                    - {{ 'RESERVATION.Form.MaxAge.Label' | translate }}:</span>
+              <span class="ml-2 font-medium text-gray-900">
+                    {{ data().visitor.minAge }}-{{ data().visitor.maxAge }} years
+                  </span>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 text-sm">
+              <mat-icon class="w-5 h-5 text-gray-400">phone</mat-icon>
+              <span class="text-gray-500 min-w-[60px]">{{ 'RESERVATION.Form.Phone.Label' | translate }}:</span>
+              <span class="text-gray-700">{{ data().visitor.phone }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <mat-icon class="w-5 h-5 text-gray-400">email</mat-icon>
+              <span class="text-gray-500 min-w-[60px]">{{ 'RESERVATION.Form.Mail.Label' | translate }}:</span>
+              <span class="text-gray-700">{{ data().visitor.email }}</span>
+            </div>
+            <div class="flex items-start gap-2 text-sm">
+              <mat-icon class="w-5 h-5 text-gray-400">location_on</mat-icon>
+              <div class="flex-1">
+                <div class="text-gray-700">
+                  <span class="text-gray-500">{{ 'RESERVATION.Form.Street.Label' | translate }}:</span>
+                  {{ data().visitor.address.street }}
+                </div>
+                <div class="text-gray-700">
+                  <span class="text-gray-500">{{ 'RESERVATION.Form.Zip.Label' | translate }}:</span>
+                  {{ data().visitor.address.zip }},
+                  <span class="text-gray-500">{{ 'RESERVATION.Form.City.Label' | translate }}:</span>
+                  {{ data().visitor.address.city }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (data().visitor.verification.timestamp) {
+            <mat-divider></mat-divider>
+            <div class="text-xs text-gray-500">
+              Verified on {{ data().visitor.verification.timestamp | date:'short' }}
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Offers & Actions -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <mat-icon class="text-blue-600">event</mat-icon>
+          <h4 class="font-semibold text-gray-900">
+            {{ 'RESERVATION.Table.Reservations' | translate }}
+          </h4>
+          <mat-chip class="ml-auto bg-blue-100 text-blue-800">
+            {{ data().offers.length }} {{ data().offers.length === 1 ? 'offer' : 'offers' }}
+          </mat-chip>
+        </div>
+
+        <div class="space-y-2 mb-4">
+          @for (offer of sortedOffers(); track offer.offerId) {
+            <div
+              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                  {{ offer.priority }}
+                </div>
+                <div>
+                  <div class="font-medium text-gray-900">Offer #{{ offer.offerId }}</div>
+                  <div class="text-xs text-gray-500">Priority {{ offer.priority }}</div>
+                </div>
+              </div>
+              <button
+                matButton="filled"
+                color="primary"
+                [disabled]="data().reservation.status === 'CONFIRMED'"
+                (click)="confirmOffer(offer.offerId)">
+                <mat-icon>check_circle</mat-icon>
+                {{ 'RESERVATION.Action.Confirm' | translate }}
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Deny Action -->
+        <mat-divider class="my-4"></mat-divider>
+        <div class="flex gap-2 py-4">
+          <button
+            matButton="outlined"
+            color="warn"
+            [disabled]="data().reservation.status === 'CANCELLED'"
+            (click)="denyReservation()"
+            class="flex-1">
+            <mat-icon>cancel</mat-icon>
+            {{ 'RESERVATION.Action.Deny' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

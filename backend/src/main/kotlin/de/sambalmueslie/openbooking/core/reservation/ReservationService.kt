@@ -23,6 +23,8 @@ import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
+import io.micronaut.data.model.Page
+import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -37,6 +39,7 @@ class ReservationService(
     private val visitorService: VisitorService,
 
     private val messageService: ReservationMessageService,
+    private val converter: ReservationConverter,
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
@@ -138,21 +141,17 @@ class ReservationService(
         }
     }
 
-    fun getReservations(offer: List<Offer>): List<ReservationDetails> {
-        val offerIds = offer.map { it.id }.toSet()
-        return getReservationsByOfferId(offerIds)
+    fun getDetails(id: Long): ReservationDetails? {
+        return converter.dataToDetails { repository.findByIdOrNull(id) }
     }
 
-    private fun getReservationsByOfferId(offerIds: Set<Long>): List<ReservationDetails> {
-        val relations = relationRepository.findByIdOfferIdIn(offerIds).groupBy { it.id.reservationId }
-            .mapValues { r -> r.value.map { it.id.offerId }.toSet() }
-        val data = repository.findByIdIn(relations.keys)
-        val visitors = visitorService.getVisitors(data.map { it.visitorId }.toSet()).associateBy { it.id }
-        return data.mapNotNull {
-            val offerIds = relations[it.id] ?: emptySet()
-            val visitor = visitors[it.visitorId] ?: return@mapNotNull null
-            ReservationDetails(it.convert(), visitor, offerIds)
-        }
+    fun getAllDetails(pageable: Pageable): Page<ReservationDetails> {
+        return converter.pageToDetails { repository.findAll(pageable) }
+    }
+
+    fun getReservations(offer: List<Offer>): List<ReservationDetails> {
+        val offerIds = offer.map { it.id }.toSet()
+        return converter.relationsToDetails { relationRepository.findByIdOfferIdIn(offerIds) }
     }
 
 }
