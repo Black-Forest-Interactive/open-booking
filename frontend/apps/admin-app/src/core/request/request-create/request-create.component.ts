@@ -22,7 +22,8 @@ import {
   DayInfoHelper,
   DayInfoOffer,
   Offer,
-  VisitorChangeRequest
+  VisitorChangeRequest,
+  VisitorType
 } from "@open-booking/core";
 import {Router} from "@angular/router";
 import {navigateToBookingDetails} from "../../booking/booking.routes";
@@ -126,7 +127,7 @@ export class RequestCreateComponent {
     if (!size) return;
 
     let visitorGroupRequest = new VisitorChangeRequest(
-      "",
+      VisitorType.GROUP,
       value.title!!,
       "",
       size,

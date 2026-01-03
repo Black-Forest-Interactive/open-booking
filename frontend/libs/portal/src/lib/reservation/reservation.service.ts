@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult} from "@open-booking/shared";
-import {Reservation, ReservationChangeRequest, ResolvedResponse} from "@open-booking/core";
+import {Reservation, ResolvedResponse} from "@open-booking/core";
 import {Observable} from "rxjs";
 import {HttpParams} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
+import {CreateReservationRequest} from "./reservation.api";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ReservationService extends BaseService {
     super('portal/reservation')
   }
 
-  createReservation(request: ReservationChangeRequest): Observable<Reservation> {
+  createReservation(request: CreateReservationRequest): Observable<Reservation> {
     return super.post('', request)
   }
 

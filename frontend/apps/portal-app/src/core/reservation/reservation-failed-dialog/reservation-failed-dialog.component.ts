@@ -4,19 +4,19 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButtonModule} from "@angular/material/button";
 
 @Component({
-  selector: 'app-booking-failed-dialog',
+  selector: 'app-reservation-failed-dialog',
   imports: [
     TranslatePipe,
     MatDialogModule,
     MatButtonModule
   ],
-  templateUrl: './booking-failed-dialog.component.html',
-  styleUrl: './booking-failed-dialog.component.scss',
+  templateUrl: './reservation-failed-dialog.component.html',
+  styleUrl: './reservation-failed-dialog.component.scss',
 })
-export class BookingFailedDialogComponent {
+export class ReservationFailedDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<BookingFailedDialogComponent>,
+    public dialogRef: MatDialogRef<ReservationFailedDialogComponent>,
   ) {
     console.log(data)
   }

@@ -3,30 +3,30 @@ import {AppService} from "../../../app/app.service";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatBadgeModule} from "@angular/material/badge";
-import {BookingProcessService} from "../booking-process.service";
+import {ReservationProcessService} from "../reservation-process.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Router} from "@angular/router";
-import {navigateToBooking} from "../../../app/app.navigation";
+import {navigateToReservation} from "../../../app/app.navigation";
 
 @Component({
-  selector: 'app-booking-toolbar-entry',
+  selector: 'app-reservation-toolbar-entry',
   imports: [
     MatButtonModule,
     MatIconModule,
     MatBadgeModule,
     TranslatePipe,
   ],
-  templateUrl: './booking-toolbar-entry.component.html',
-  styleUrl: './booking-toolbar-entry.component.scss',
+  templateUrl: './reservation-toolbar-entry.component.html',
+  styleUrl: './reservation-toolbar-entry.component.scss',
 })
-export class BookingToolbarEntryComponent {
+export class ReservationToolbarEntryComponent {
 
   cartCount = computed(() => this.service.entries().length)
 
-  constructor(protected readonly appService: AppService, private service: BookingProcessService, private router: Router) {
+  constructor(protected readonly appService: AppService, private service: ReservationProcessService, private router: Router) {
   }
 
   protected openCart() {
-    navigateToBooking(this.router)
+    navigateToReservation(this.router)
   }
 }

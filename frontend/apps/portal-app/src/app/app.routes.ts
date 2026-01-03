@@ -8,8 +8,8 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('../core/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
-    path: 'booking',
-    loadComponent: () => import('../core/booking/booking.component').then(m => m.BookingComponent)
+    path: 'reservation',
+    loadComponent: () => import('../core/reservation/reservation.component').then(m => m.ReservationComponent)
   },
   {
     path: 'confirm/email/:key',

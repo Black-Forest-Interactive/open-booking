@@ -1,25 +1,25 @@
 import {Component, computed, inject, resource, signal} from '@angular/core';
-import {BookingService} from "@open-booking/portal";
-import {BookingRequest} from "@open-booking/core";
+import {ReservationService} from "@open-booking/portal";
+import {Reservation} from "@open-booking/core";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButtonModule} from "@angular/material/button";
 
 @Component({
-  selector: 'app-booking-success-dialog',
+  selector: 'app-reservation-success-dialog',
   imports: [
     LoadingBarComponent,
     TranslatePipe,
     MatDialogModule,
     MatButtonModule
   ],
-  templateUrl: './booking-success-dialog.component.html',
-  styleUrl: './booking-success-dialog.component.scss',
+  templateUrl: './reservation-success-dialog.component.html',
+  styleUrl: './reservation-success-dialog.component.scss',
 })
-export class BookingSuccessDialogComponent {
+export class ReservationSuccessDialogComponent {
 
-  data = inject<BookingRequest>(MAT_DIALOG_DATA)
+  data = inject<Reservation>(MAT_DIALOG_DATA)
   requestId = signal(-1)
   messageResource = resource({
     params: this.requestId,
@@ -37,8 +37,8 @@ export class BookingSuccessDialogComponent {
   reloading = this.messageResource.isLoading
 
   constructor(
-    public dialogRef: MatDialogRef<BookingSuccessDialogComponent>,
-    private service: BookingService
+    public dialogRef: MatDialogRef<ReservationSuccessDialogComponent>,
+    private service: ReservationService
   ) {
     this.requestId.set(this.data.id)
   }

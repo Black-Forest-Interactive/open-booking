@@ -59,36 +59,53 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
   <div class="space-y-3">
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Title.Label' | translate }}</p>
-      <p class="font-medium">{{ visitorGroup().title }}</p>
-    </div>
+    @if (isGroup()) {
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Title.Label' | translate }}</p>
+        <p class="font-medium">{{ visitorGroup().title }}</p>
+      </div>
 
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Size.Label' | translate }}</p>
-      <p
-        class="font-medium">{{ 'SUMMARY.VisitorInfo.PersonCount' | translate: {count: visitorGroup().size} }}</p>
-    </div>
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Size.Label' | translate }}</p>
+        <p
+          class="font-medium">{{ 'SUMMARY.VisitorInfo.PersonCount' | translate: {count: visitorGroup().size} }}</p>
+      </div>
+    }
 
     <div>
       <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Type' | translate }}</p>
       <p class="font-medium">
-        {{ (visitorGroup().isGroup ? 'SUMMARY.VisitorInfo.GroupBooking' : 'SUMMARY.VisitorInfo.IndividualBooking') | translate }}
+        {{ (visitorGroup().type === 'GROUP' ? 'SUMMARY.VisitorInfo.GroupReservation' : 'SUMMARY.VisitorInfo.IndividualReservation') | translate }}
       </p>
     </div>
 
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.AgeRange' | translate }}</p>
-      <p class="font-medium">{{ visitorGroup().minAge }}
-        - {{ visitorGroup().maxAge }} {{ 'SUMMARY.VisitorInfo.Years' | translate }}</p>
-    </div>
+    @if (isGroup()) {
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.AgeRange' | translate }}</p>
+        <p class="font-medium">{{ visitorGroup().minAge }}
+          - {{ visitorGroup().maxAge }} {{ 'SUMMARY.VisitorInfo.Years' | translate }}</p>
+      </div>
+    } @else {
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Age' | translate }}</p>
+        <p class="font-medium">{{ visitorGroup().minAge }} {{ 'SUMMARY.VisitorInfo.Years' | translate }}</p>
+      </div>
+    }
+
   </div>
 
   <div class="space-y-3">
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Contact.Label' | translate }}</p>
-      <p class="font-medium">{{ visitorGroup().contact }}</p>
-    </div>
+    @if (isGroup()) {
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Contact.Label' | translate }}</p>
+        <p class="font-medium">{{ visitorGroup().name }}</p>
+      </div>
+    } @else {
+      <div>
+        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Name.Label' | translate }}</p>
+        <p class="font-medium">{{ visitorGroup().name }}</p>
+      </div>
+    }
 
     <div>
       <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Phone.Label' | translate }}</p>

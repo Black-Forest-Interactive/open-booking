@@ -1,18 +1,18 @@
 import {Component, computed, effect, input, output, Signal} from '@angular/core';
-import {Address, CreateBookingRequest, DayInfoOffer, VisitorChangeRequest} from "@open-booking/core";
+import {AddressChangeRequest, DayInfoOffer, VisitorChangeRequest, VisitorType} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {SettingsService} from "@open-booking/portal";
+import {CreateReservationRequest, SettingsService} from "@open-booking/portal";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatButtonModule} from "@angular/material/button";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @Component({
-  selector: 'app-booking-checkout',
+  selector: 'app-reservation-checkout',
   imports: [
     MatFormFieldModule,
     MatIconModule,
@@ -23,22 +23,20 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     ReactiveFormsModule,
     TranslatePipe
   ],
-  templateUrl: './booking-checkout.component.html',
-  styleUrl: './booking-checkout.component.scss',
+  templateUrl: './reservation-checkout.component.html',
+  styleUrl: './reservation-checkout.component.scss',
 })
-export class BookingCheckoutComponent {
+export class ReservationCheckoutComponent {
 
   spaceAvailable = input.required<number>()
   entries = input.required<DayInfoOffer[]>()
   preferredEntry = input.required<DayInfoOffer>()
 
   spacePlaceholder = computed(() => (this.spaceAvailable() > 0) ? "1 - " + this.spaceAvailable() : "")
-  groupBookingPossible = computed(() => this.spaceAvailable() >= (this.preferredEntry()?.offer?.maxPersons ?? 0))
-  groupBookingSelected = false
 
 
-  data = input<CreateBookingRequest | undefined>(undefined)
-  request = output<CreateBookingRequest>()
+  data = input<CreateReservationRequest | undefined>(undefined)
+  request = output<CreateReservationRequest>()
   back = output<boolean>()
 
   private formValueChanges: Signal<any>
@@ -49,13 +47,13 @@ export class BookingCheckoutComponent {
     private settingsService: SettingsService,
   ) {
     this.form = this.fb.group({
-      type: ['single', Validators.required],
+      type: [VisitorType.GROUP, Validators.required],
       title: ['', Validators.required],
+      description: [''],
       size: ['', [Validators.required, Validators.min(1)]],
-      group: [false],
       minAge: ['', [Validators.required, Validators.min(0)]],
       maxAge: ['', [Validators.required, Validators.min(0)]],
-      contact: ['', Validators.required],
+      name: ['', Validators.required],
       street: [''],
       zip: [''],
       city: [''],
@@ -69,17 +67,18 @@ export class BookingCheckoutComponent {
       let request = this.data()
       if (request) {
         let value = {
-          title: request.visitorGroupChangeRequest.title,
-          size: request.visitorGroupChangeRequest.size,
-          group: request.visitorGroupChangeRequest.isGroup,
-          minAge: request.visitorGroupChangeRequest.minAge,
-          maxAge: request.visitorGroupChangeRequest.maxAge,
-          contact: request.visitorGroupChangeRequest.contact,
-          street: request.visitorGroupChangeRequest.address.street,
-          zip: request.visitorGroupChangeRequest.address.zip,
-          city: request.visitorGroupChangeRequest.address.city,
-          phone: request.visitorGroupChangeRequest.phone,
-          mail: request.visitorGroupChangeRequest.email,
+          type: request.visitor.type,
+          title: request.visitor.title,
+          description: request.visitor.description,
+          size: request.visitor.size,
+          minAge: request.visitor.minAge,
+          maxAge: request.visitor.maxAge,
+          name: request.visitor.name,
+          street: request.visitor.address.street,
+          zip: request.visitor.address.zip,
+          city: request.visitor.address.city,
+          phone: request.visitor.phone,
+          mail: request.visitor.email,
           termsAndConditions: request.termsAndConditions,
           comment: request.comment,
         }
@@ -95,11 +94,11 @@ export class BookingCheckoutComponent {
       const type = formValue.type
 
       // If only 1 space available, force single mode
-      if (availableSpace === 1 && type !== 'single') {
-        this.form.patchValue({bookingType: 'single'}, {emitEvent: false})
+      if (availableSpace === 1 && type !== VisitorType.SINGLE) {
+        this.form.patchValue({bookingType: VisitorType.SINGLE}, {emitEvent: false})
       }
 
-      if (type === 'single') {
+      if (type === VisitorType.SINGLE) {
         if (this.form.get('title')?.value !== 'single visitor' || formValue.size !== 1) {
           this.form.patchValue({
             title: 'single visitor',
@@ -109,7 +108,7 @@ export class BookingCheckoutComponent {
         }
       }
 
-      if (type === 'group') {
+      if (type === VisitorType.GROUP) {
         let size = formValue.size ?? 0
         let minSize = 2
         if (size > availableSpace) {
@@ -148,25 +147,24 @@ export class BookingCheckoutComponent {
   submit() {
     if (this.form.invalid) return
     let value = this.form.value
-    let size = ((value.group) ? this.spaceAvailable() : +value.size!!)
-    if (!size) return
 
-    let visitorGroupRequest = new VisitorChangeRequest(
+    let visitorRequest = new VisitorChangeRequest(
+      value.type,
       value.title!!,
-      size,
-      value.group!!,
+      value.description!!,
+      +value.size!!,
       +value.minAge!!,
       +value.maxAge!!,
-      value.contact!!,
-      new Address(value.street!!, value.city!!, value.zip!!),
+      value.name!!,
+      new AddressChangeRequest(value.street!!, value.city!!, value.zip!!),
       value.phone!!,
       value.mail!!
     )
 
     let offerIds: number[] = this.entries().map(e => e.offer.id)
 
-    let request = new CreateBookingRequest(
-      visitorGroupRequest,
+    let request = new CreateReservationRequest(
+      visitorRequest,
       offerIds,
       value.comment!!,
       value.termsAndConditions!!
@@ -181,18 +179,6 @@ export class BookingCheckoutComponent {
     this.settingsService.getTermsAndConditionsUrl().subscribe(url => newTab.location.href = url.url)
   }
 
-  protected handleGroupBookingChange(event: MatSlideToggleChange) {
-    this.groupBookingSelected = event.checked
-    if (this.groupBookingSelected) {
-      this.form.controls['size'].disable()
-      let offer = this.preferredEntry()?.offer
-      if (offer) {
-        this.size?.setValue(offer.maxPersons + '')
-      }
-    } else {
-      this.form.controls['size'].enable()
-    }
-  }
 
-
+  protected readonly VisitorType = VisitorType;
 }

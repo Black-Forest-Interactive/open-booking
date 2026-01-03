@@ -2,14 +2,14 @@
   <mat-card>
     @switch (service.mode()) {
       @case ('offer') {
-        <app-booking-offer
+        <app-reservation-offer
           [entries]="service.entries()"
           [maxGroupSize]="service.maxGroupSize()"
           (checkout)="service.proceedToCheckout()"
-        ></app-booking-offer>
+        ></app-reservation-offer>
       }
       @case ('checkout') {
-        <app-booking-checkout
+        <app-reservation-checkout
           [entries]="service.entries()"
           [preferredEntry]="service.preferredEntry()!!"
           [spaceAvailable]="service.maxGroupSize()"
@@ -19,7 +19,7 @@
         />
       }
       @case ('summary') {
-        <app-booking-summary
+        <app-reservation-summary
           [entries]="service.entries()"
           [preferredEntry]="service.preferredEntry()!!"
           [spaceAvailable]="service.maxGroupSize()"

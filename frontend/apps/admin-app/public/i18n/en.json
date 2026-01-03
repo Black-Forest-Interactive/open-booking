@@ -16,7 +16,7 @@
   "MENU": {
     "AuditLog": "Audit Log",
     "Booking": "Booking Mgt",
-    "BookingRequest": "Booking Request Mgt",
+    "ReservationRequest": "Reservation Request Mgt",
     "Cache": "Cache Mgt",
     "Dashboard": "Dashboard",
     "Mail": "Mail Status",
@@ -421,9 +421,10 @@
         "Title": "Title"
       },
       "Type": {
-        "BOOKING_CONFIRMED": "Booking Request Confirmed (EMail)",
-        "BOOKING_DENIED": "Booking Request Denied (EMail)",
-        "BOOKING_REQUEST_RECEIVED": "Booking Request Received (Dialog)",
+        "RESERVATION_CONFIRMED": "Reservation Confirmed (EMail)",
+        "RESERVATION_DENIED": "Reservation Denied (EMail)",
+        "RESERVATION_RECEIVED": "Reservation Received (Dialog)",
+        "RESERVATION_FAILED": "Reservation Failed (Dialog)",
         "Hint": "",
         "Title": "Type"
       }

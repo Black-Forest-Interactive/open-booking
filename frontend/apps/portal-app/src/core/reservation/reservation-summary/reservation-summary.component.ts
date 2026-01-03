@@ -5,11 +5,12 @@ import {MatChipsModule} from "@angular/material/chips";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatButtonModule} from "@angular/material/button";
-import {CreateBookingRequest, DayInfoOffer} from "@open-booking/core";
+import {DayInfoOffer, VisitorType} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
+import {CreateReservationRequest} from "@open-booking/portal";
 
 @Component({
-  selector: 'app-booking-summary',
+  selector: 'app-reservation-summary',
   imports: [
     MatCardModule,
     MatIconModule,
@@ -19,22 +20,23 @@ import {DatePipe} from "@angular/common";
     TranslatePipe,
     DatePipe
   ],
-  templateUrl: './booking-summary.component.html',
-  styleUrl: './booking-summary.component.scss',
+  templateUrl: './reservation-summary.component.html',
+  styleUrl: './reservation-summary.component.scss',
 })
-export class BookingSummaryComponent {
+export class ReservationSummaryComponent {
   spaceAvailable = input.required<number>()
   entries = input.required<DayInfoOffer[]>()
   preferredEntry = input.required<DayInfoOffer>()
-  request = input.required<CreateBookingRequest>()
+  request = input.required<CreateReservationRequest>()
 
-  visitorGroup = computed(() => this.request().visitorGroupChangeRequest)
+  visitorGroup = computed(() => this.request().visitor)
   address = computed(() => this.visitorGroup().address.zip + " " + this.visitorGroup().address.city + " " + this.visitorGroup().address.street + " ")
   comment = computed(() => this.request().comment)
   termsAccepted = computed(() => this.request().termsAndConditions)
+  isGroup = computed(() => this.visitorGroup().type === VisitorType.GROUP)
 
-  confirm = output<CreateBookingRequest>()
-  edit = output<CreateBookingRequest>()
+  confirm = output<CreateReservationRequest>()
+  edit = output<CreateReservationRequest>()
 
   isPreferred(info: DayInfoOffer): boolean {
     return info.offer.id === this.preferredEntry().offer.id;

@@ -5,10 +5,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
-import {BookingProcessService} from "../booking-process.service";
+import {ReservationProcessService} from "../reservation-process.service";
 
 @Component({
-  selector: 'app-booking-entry',
+  selector: 'app-reservation-entry',
   imports: [
     MatCardModule,
     MatIconModule,
@@ -16,10 +16,10 @@ import {BookingProcessService} from "../booking-process.service";
     TranslatePipe,
     DatePipe
   ],
-  templateUrl: './booking-entry.component.html',
-  styleUrl: './booking-entry.component.scss',
+  templateUrl: './reservation-entry.component.html',
+  styleUrl: './reservation-entry.component.scss',
 })
-export class BookingEntryComponent {
+export class ReservationEntryComponent {
   data = input.required<DayInfoOffer>()
 
 
@@ -28,7 +28,7 @@ export class BookingEntryComponent {
   availableSpace = computed(() => this.data().offer.maxPersons - this.confirmedSpace() - this.unconfirmedSpace())
   isPreferred = computed(() => this.service.preferredEntry()?.offer?.id === this.data().offer.id)
 
-  constructor(private service: BookingProcessService) {
+  constructor(private service: ReservationProcessService) {
   }
 
   protected setPreferred() {

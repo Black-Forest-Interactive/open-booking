@@ -13,7 +13,7 @@
   } @else {
     <div class="flex flex-col gap-2">
       @for (item of entries(); track item.offer.id) {
-        <app-booking-entry [data]="item"></app-booking-entry>
+        <app-reservation-entry [data]="item"></app-reservation-entry>
       }
     </div>
   }

@@ -3,24 +3,24 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
-import {BookingEntryComponent} from "../booking-entry/booking-entry.component";
+import {ReservationEntryComponent} from "../reservation-entry/reservation-entry.component";
 import {DayInfoOffer} from "@open-booking/core";
 import {navigateToDashboard} from "../../../app/app.navigation";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-booking-offer',
+  selector: 'app-reservation-offer',
   imports: [
     MatButtonModule,
     MatIconModule,
     MatCardModule,
     TranslatePipe,
-    BookingEntryComponent
+    ReservationEntryComponent
   ],
-  templateUrl: './booking-offer.component.html',
-  styleUrl: './booking-offer.component.scss',
+  templateUrl: './reservation-offer.component.html',
+  styleUrl: './reservation-offer.component.scss',
 })
-export class BookingOfferComponent {
+export class ReservationOfferComponent {
 
   entries = input.required<DayInfoOffer[]>()
   maxGroupSize = input.required<number>()

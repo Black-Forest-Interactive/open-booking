@@ -1,10 +1,11 @@
 import {computed, Injectable, signal} from "@angular/core";
-import {CreateBookingRequest, DayInfoHelper, DayInfoOffer} from "@open-booking/core";
+import {DayInfoHelper, DayInfoOffer} from "@open-booking/core";
+import {CreateReservationRequest} from "@open-booking/portal";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookingProcessService {
+export class ReservationProcessService {
 
   entries = signal<DayInfoOffer[]>([])
   preferredEntry = signal<DayInfoOffer | undefined>(undefined)
@@ -12,7 +13,7 @@ export class BookingProcessService {
 
   mode = signal<'offer' | 'checkout' | 'summary'>('offer')
 
-  request = signal<CreateBookingRequest | undefined>(undefined)
+  request = signal<CreateReservationRequest | undefined>(undefined)
 
   offerAdd(offer: DayInfoOffer) {
     this.entries.update(entries =>
@@ -66,7 +67,7 @@ export class BookingProcessService {
     }
   }
 
-  proceedToSummary(request: CreateBookingRequest) {
+  proceedToSummary(request: CreateReservationRequest) {
     this.request.set(request)
     this.mode.set('summary')
   }

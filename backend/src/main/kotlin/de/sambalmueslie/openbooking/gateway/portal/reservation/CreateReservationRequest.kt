@@ -8,3 +8,4 @@ data class CreateReservationRequest(
     val comment: String,
     val termsAndConditions: Boolean
 )
+

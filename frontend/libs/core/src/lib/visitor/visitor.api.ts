@@ -27,9 +27,16 @@ export interface Address {
   zip: string
 }
 
+export const VisitorType = {
+  SINGLE: 'SINGLE',
+  GROUP: 'GROUP'
+} as const;
+
+export type VisitorType = typeof VisitorType[keyof typeof VisitorType];
+
 export class VisitorChangeRequest {
   public constructor(
-    public type: string,
+    public type: VisitorType,
     public title: string,
     public description: string,
     public size: number,
