@@ -13,13 +13,13 @@ import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
-class ReservationInfoConverter(
+class ReservationConverter(
     private val offerService: OfferService,
     private val visitorService: VisitorService,
     private val relationRepository: ReservationOfferRelationRepository,
 ) {
     companion object {
-        private val logger = LoggerFactory.getLogger(ReservationInfoConverter::class.java)
+        private val logger = LoggerFactory.getLogger(ReservationConverter::class.java)
     }
 
     fun page(provider: () -> Page<ReservationData>): Page<ReservationInfo> {

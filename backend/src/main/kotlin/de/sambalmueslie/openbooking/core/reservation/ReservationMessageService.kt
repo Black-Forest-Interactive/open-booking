@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 class ReservationMessageService(
     private val responseService: ResponseService,
     private val repository: ReservationRepository,
-    private val converter: ReservationInfoConverter
+    private val converter: ReservationConverter
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(ReservationMessageService::class.java)

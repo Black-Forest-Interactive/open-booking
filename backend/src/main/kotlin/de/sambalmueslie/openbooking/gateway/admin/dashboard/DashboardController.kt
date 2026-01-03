@@ -16,7 +16,6 @@ class DashboardController(private val gateway: DashboardGateway) {
     @Get("/visitor/daily")
     fun getDailyVisitorStats(auth: Authentication) = gateway.getDailyVisitorStats(auth)
 
-
     @Get("/summary")
     fun getSummary(auth: Authentication) = gateway.getSummary(auth)
 

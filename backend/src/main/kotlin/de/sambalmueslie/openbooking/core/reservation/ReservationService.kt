@@ -13,6 +13,7 @@ import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
@@ -134,6 +135,23 @@ class ReservationService(
         return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
             true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
             else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        }
+    }
+
+    fun getReservations(offer: List<Offer>): List<ReservationDetails> {
+        val offerIds = offer.map { it.id }.toSet()
+        return getReservationsByOfferId(offerIds)
+    }
+
+    private fun getReservationsByOfferId(offerIds: Set<Long>): List<ReservationDetails> {
+        val relations = relationRepository.findByIdOfferIdIn(offerIds).groupBy { it.id.reservationId }
+            .mapValues { r -> r.value.map { it.id.offerId }.toSet() }
+        val data = repository.findByIdIn(relations.keys)
+        val visitors = visitorService.getVisitors(data.map { it.visitorId }.toSet()).associateBy { it.id }
+        return data.mapNotNull {
+            val offerIds = relations[it.id] ?: emptySet()
+            val visitor = visitors[it.visitorId] ?: return@mapNotNull null
+            ReservationDetails(it.convert(), visitor, offerIds)
         }
     }
 
