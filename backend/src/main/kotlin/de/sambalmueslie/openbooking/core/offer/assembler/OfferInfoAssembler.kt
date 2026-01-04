@@ -25,19 +25,19 @@ class OfferInfoAssembler(
     }
 
 
-    fun getAllInfos(pageable: Pageable): Page<OfferInfo> {
+    fun getAll(pageable: Pageable): Page<OfferInfo> {
         return pageToInfo { repository.findAllOrderByStart(pageable) }
     }
 
-    fun getInfo(id: Long): OfferInfo? {
+    fun get(id: Long): OfferInfo? {
         return dataToInfo { repository.findByIdOrNull(id) }
     }
 
-    fun getInfoByIds(ids: Set<Long>): List<OfferInfo> {
+    fun getByIds(ids: Set<Long>): List<OfferInfo> {
         return listToInfo { repository.findByIdIn(ids) }
     }
 
-    fun getInfoByDate(date: LocalDate): List<OfferInfo> {
+    fun getByDate(date: LocalDate): List<OfferInfo> {
         return listToInfo { getDataByDate(date) }
     }
 

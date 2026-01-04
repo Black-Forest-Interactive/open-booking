@@ -48,7 +48,7 @@ class InfoCache(
 
             val offerIds = offer.map { it.id }.toSet()
             val bookingsByOffer = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
-            val reservationsByOffer = reservationService.getDetailByOfferIds(offerIds)
+            val reservationsByOffer = reservationService.getByOfferIds(offerIds)
                 .flatMap { details -> details.offers.map { entry -> entry.offer.id to details } }
                 .groupBy({ it.first }, { it.second })
 

@@ -59,13 +59,13 @@ open class ReservationSearchOperator(
     }
 
     private fun handleChanged(reservation: Reservation) {
-        val details = detailAssembler.getDetail(reservation.id) ?: return
+        val details = detailAssembler.get(reservation.id) ?: return
         val data = convert(details)
         updateDocument(data)
     }
 
     override fun initialLoadPage(pageable: Pageable): Page<Pair<String, String>> {
-        val page = detailAssembler.getAllDetails(pageable)
+        val page = detailAssembler.getAll(pageable)
         return page.map { convert(it) }
     }
 

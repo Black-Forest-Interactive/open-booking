@@ -10,7 +10,7 @@ import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
@@ -60,13 +60,13 @@ open class OfferSearchOperator(
     }
 
     private fun handleChanged(offer: Offer) {
-        val details = detailsAssembler.getDetail(offer.id) ?: return
+        val details = detailsAssembler.get(offer.id) ?: return
         val data = convert(details)
         updateDocument(data)
     }
 
     override fun initialLoadPage(pageable: Pageable): Page<Pair<String, String>> {
-        val page = detailsAssembler.getAllDetails(pageable)
+        val page = detailsAssembler.getAll(pageable)
         return page.map { convert(it) }
     }
 
@@ -110,10 +110,10 @@ open class OfferSearchOperator(
     }
 
 
-    private fun convert(info: ReservationDetails): OfferReservationEntryData {
+    private fun convert(info: ReservationInfo): OfferReservationEntryData {
         return OfferReservationEntryData(
-            info.reservation.id,
-            info.reservation.status,
+            info.id,
+            info.status,
             info.visitor.id,
             info.visitor.type,
             info.visitor.title,

@@ -18,7 +18,7 @@ class ReservationMessageService(
 
 
     fun getRequestReceivedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
-        val info = infoAssembler.getInfo(id) ?: return null
+        val info = infoAssembler.get(id) ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),
@@ -28,7 +28,7 @@ class ReservationMessageService(
     }
 
     fun getRequestFailedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
-        val info = infoAssembler.getInfo(id) ?: return null
+        val info = infoAssembler.get(id) ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),
@@ -38,8 +38,8 @@ class ReservationMessageService(
     }
 
     fun getConfirmationMessage(id: Long, offerId: Long, lang: String = "de"): ResolvedResponse? {
-        val info = infoAssembler.getInfo(id) ?: return null
-        val selected = info.offer.find { it.id == offerId } ?: return null
+        val info = infoAssembler.get(id) ?: return null
+        val selected = info.offer.find { it.offerId == offerId } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),
@@ -51,7 +51,7 @@ class ReservationMessageService(
 
 
     fun getDenialMessage(id: Long, lang: String = "de"): ResolvedResponse? {
-        val info = infoAssembler.getInfo(id) ?: return null
+        val info = infoAssembler.get(id) ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
             Pair("visitor", info.visitor),

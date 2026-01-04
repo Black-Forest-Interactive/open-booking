@@ -30,7 +30,7 @@ class ExportService(
 
     private fun createDailyReport(date: LocalDate, exporter: Exporter): SystemFile? {
         val (duration, result) = measureTimeMillisWithReturn {
-            val offer = offerService.getDetailByDate(date)
+            val offer = offerService.getByDate(date)
             exporter.export(date, offer) ?: return@measureTimeMillisWithReturn null
         }
         logger.info("Created daily report for $date within $duration ms")

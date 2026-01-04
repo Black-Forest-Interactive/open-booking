@@ -8,9 +8,9 @@ import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
-import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationInfoAssembler
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -21,25 +21,25 @@ import java.time.LocalDate
 class OfferDetailsAssembler(
     private val repository: OfferRepository,
     private val bookingAssembler: BookingDetailsAssembler,
-    private val reservationAssembler: ReservationDetailsAssembler,
+    private val reservationAssembler: ReservationInfoAssembler,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(OfferDetailsAssembler::class.java)
     }
 
-    fun getAllDetails(pageable: Pageable): Page<OfferDetails> {
+    fun getAll(pageable: Pageable): Page<OfferDetails> {
         return pageToDetails { repository.findAllOrderByStart(pageable) }
     }
 
-    fun getDetail(id: Long): OfferDetails? {
+    fun get(id: Long): OfferDetails? {
         return dataToDetails { repository.findByIdOrNull(id) }
     }
 
-    fun getDetailByIds(ids: Set<Long>): List<OfferDetails> {
+    fun getByIds(ids: Set<Long>): List<OfferDetails> {
         return listToDetails { repository.findByIdIn(ids) }
     }
 
-    fun getDetailByDate(date: LocalDate): List<OfferDetails> {
+    fun getByDate(date: LocalDate): List<OfferDetails> {
         return listToDetails { getDataByDate(date) }
     }
 
@@ -64,13 +64,13 @@ class OfferDetailsAssembler(
     private fun details(data: List<OfferData>): List<OfferDetails> {
         val offerIds = data.map { it.id }.toSet()
         val bookings = bookingAssembler.getDetailByOfferIds(offerIds).groupBy { it.booking.offerId }
-        val reservations = reservationAssembler.getDetailByOfferIds(offerIds)
-            .flatMap { details -> details.offers.map { offer -> offer.offer.id to details } }
+        val reservations = reservationAssembler.getByOfferIds(offerIds)
+            .flatMap { infos -> infos.offer.map { offer -> offer.offerId to infos } }
             .groupBy({ it.first }, { it.second })
         return data.map { details(it, bookings[it.id] ?: emptyList(), reservations[it.id] ?: emptyList()) }
     }
 
-    private fun details(data: OfferData, bookings: Map<Long, List<BookingDetails>>, reservations: Map<Long, List<ReservationDetails>>): OfferDetails? {
+    private fun details(data: OfferData, bookings: Map<Long, List<BookingDetails>>, reservations: Map<Long, List<ReservationInfo>>): OfferDetails? {
         val bookings = bookings[data.id] ?: return null
         val reservations = reservations[data.id] ?: return null
 
@@ -79,13 +79,13 @@ class OfferDetailsAssembler(
 
     private fun details(data: OfferData): OfferDetails {
         val bookings = bookingAssembler.getDetailByOfferId(data.id)
-        val reservations = reservationAssembler.getDetailByOfferId(data.id)
+        val reservations = reservationAssembler.getByOfferId(data.id)
         return details(data, bookings, reservations)
     }
 
-    private fun details(data: OfferData, bookings: List<BookingDetails>, reservations: List<ReservationDetails>): OfferDetails {
+    private fun details(data: OfferData, bookings: List<BookingDetails>, reservations: List<ReservationInfo>): OfferDetails {
         val bookedSpace = bookings.filter { it.booking.status == BookingStatus.CONFIRMED }.sumOf { it.booking.size }
-        val reservedSpace = reservations.filter { it.reservation.status == ReservationStatus.UNCONFIRMED }.sumOf { it.visitor.size }
+        val reservedSpace = reservations.filter { it.status == ReservationStatus.UNCONFIRMED }.sumOf { it.visitor.size }
         val availableSpace = 0.coerceAtLeast(data.maxPersons - bookedSpace - reservedSpace)
 
         val assignment = Assignment(bookedSpace, reservedSpace, availableSpace)

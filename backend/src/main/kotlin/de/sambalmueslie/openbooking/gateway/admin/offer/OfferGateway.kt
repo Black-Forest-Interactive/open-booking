@@ -22,7 +22,7 @@ class OfferGateway(
     private val searchOperator: OfferSearchOperator
 ) {
     fun getAll(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.getAll(pageable) }
-    fun getAllInfo(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { infoAssembler.getAllInfos(pageable) }
+    fun getAllInfo(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { infoAssembler.getAll(pageable) }
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.get(id) }
     fun search(auth: Authentication, request: OfferSearchRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { searchOperator.search(request, pageable) }
 

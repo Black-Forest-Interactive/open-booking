@@ -1,10 +1,9 @@
 package de.sambalmueslie.openbooking.core.reservation.assembler
 
 import de.sambalmueslie.openbooking.common.findByIdOrNull
-import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.reservation.ReservationRelationService
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferReference
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationRepository
@@ -19,31 +18,29 @@ import org.slf4j.LoggerFactory
 class ReservationInfoAssembler(
     private val repository: ReservationRepository,
     private val relationService: ReservationRelationService,
-
-    private val offerService: OfferService,
     private val visitorService: VisitorService,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(ReservationInfoAssembler::class.java)
     }
 
-    fun getAllInfos(pageable: Pageable): Page<ReservationInfo> {
+    fun getAll(pageable: Pageable): Page<ReservationInfo> {
         return pageToInfo { repository.findAll(pageable) }
     }
 
-    fun getInfo(id: Long): ReservationInfo? {
+    fun get(id: Long): ReservationInfo? {
         return dataToInfo { repository.findByIdOrNull(id) }
     }
 
-    fun getInfoByIds(ids: Set<Long>): List<ReservationInfo> {
+    fun getByIds(ids: Set<Long>): List<ReservationInfo> {
         return listToInfo { repository.findByIdIn(ids) }
     }
 
-    fun getInfoByOfferId(offerId: Long): List<ReservationInfo> {
+    fun getByOfferId(offerId: Long): List<ReservationInfo> {
         return listToInfo { repository.findByIdIn(relationService.getIdsByOfferId(offerId)) }
     }
 
-    fun getInfoByOfferIds(offerIds: Set<Long>): List<ReservationInfo> {
+    fun getByOfferIds(offerIds: Set<Long>): List<ReservationInfo> {
         return listToInfo { repository.findByIdIn(relationService.getIdsByOfferIds(offerIds)) }
     }
 
@@ -72,13 +69,10 @@ class ReservationInfoAssembler(
     private fun info(data: List<ReservationData>): List<ReservationInfo> {
         val relations = relationService.get(data)
 
-        val offerIds = relations.map { r -> r.value.map { it.id.offerId } }.flatten().toSet()
-        val offers = offerService.getByIds(offerIds).associateBy { it.id }
-
         val visitorIds = data.map { it.visitorId }.toSet()
         val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
 
-        return data.mapNotNull { info(it, relations, offers, visitors) }.sortedBy { it.visitor.verification.status.order }
+        return data.mapNotNull { info(it, relations, visitors) }.sortedBy { it.visitor.verification.status.order }
     }
 
     private fun relationInfo(relations: List<ReservationOfferRelation>): List<ReservationInfo> {
@@ -87,24 +81,23 @@ class ReservationInfoAssembler(
         return info(data)
     }
 
-    private fun info(data: ReservationData, relations: Map<Long, List<ReservationOfferRelation>>, offers: Map<Long, Offer>, visitors: Map<Long, Visitor>): ReservationInfo? {
+    private fun info(data: ReservationData, relations: Map<Long, List<ReservationOfferRelation>>, visitors: Map<Long, Visitor>): ReservationInfo? {
         val visitor = visitors[data.visitorId] ?: return null
         val relation = relations[data.id] ?: return null
 
-        return info(data, visitor, relation, offers)
+        return info(data, visitor, relation)
     }
 
     private fun info(data: ReservationData): ReservationInfo? {
         val relations = relationService.getOrderByPriority(data)
-        val offers = offerService.getByIds(relations.map { it.id.offerId }.toSet()).associateBy { it.id }
 
         val visitor = visitorService.get(data.visitorId) ?: return null
-        return info(data, visitor, relations, offers)
+        return info(data, visitor, relations)
     }
 
-    private fun info(data: ReservationData, visitor: Visitor, relations: List<ReservationOfferRelation>, offers: Map<Long, Offer>): ReservationInfo {
+    private fun info(data: ReservationData, visitor: Visitor, relations: List<ReservationOfferRelation>): ReservationInfo {
         val timestamp = data.updated ?: data.created
-        return ReservationInfo(data.id, visitor, relations.mapNotNull { offers[it.id.offerId] }, data.status, data.comment, timestamp)
+        return ReservationInfo(data.id, visitor, relations.map { ReservationOfferReference(it.id.offerId, it.priority) }, data.status, data.comment, timestamp)
     }
 
 }

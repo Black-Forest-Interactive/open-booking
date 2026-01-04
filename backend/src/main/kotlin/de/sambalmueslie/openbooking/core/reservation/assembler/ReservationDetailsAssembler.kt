@@ -28,23 +28,23 @@ class ReservationDetailsAssembler(
         private val logger = LoggerFactory.getLogger(ReservationDetailsAssembler::class.java)
     }
 
-    fun getAllDetails(pageable: Pageable): Page<ReservationDetails> {
+    fun getAll(pageable: Pageable): Page<ReservationDetails> {
         return pageToDetails { repository.findAll(pageable) }
     }
 
-    fun getDetail(id: Long): ReservationDetails? {
+    fun get(id: Long): ReservationDetails? {
         return dataToDetails { repository.findByIdOrNull(id) }
     }
 
-    fun getDetailByIds(ids: Set<Long>): List<ReservationDetails> {
+    fun getByIds(ids: Set<Long>): List<ReservationDetails> {
         return listToDetails { repository.findByIdIn(ids) }
     }
 
-    fun getDetailByOfferId(offerId: Long): List<ReservationDetails> {
+    fun getByOfferId(offerId: Long): List<ReservationDetails> {
         return listToDetails { repository.findByIdIn(relationService.getIdsByOfferId(offerId)) }
     }
 
-    fun getDetailByOfferIds(offerIds: Set<Long>): List<ReservationDetails> {
+    fun getByOfferIds(offerIds: Set<Long>): List<ReservationDetails> {
         return listToDetails { repository.findByIdIn(relationService.getIdsByOfferIds(offerIds)) }
     }
 
@@ -74,14 +74,14 @@ class ReservationDetailsAssembler(
     private fun details(data: List<ReservationData>): List<ReservationDetails> {
         val relations = relationService.get(data)
         val offerIds = relations.map { it.value.map { it.id.offerId } }.flatten().toSet()
-        val offers = offerService.getDetailByIds(offerIds).associateBy { it.offer.id }
+        val offers = offerService.getByIds(offerIds).associateBy { it.offer.id }
         return details(data, relations, offers)
     }
 
     private fun relationDetails(relations: List<ReservationOfferRelation>): List<ReservationDetails> {
         val relationsByReservationId = relations.groupBy { it.id.reservationId }
         val offerIds = relations.map { it.id.offerId }.toSet()
-        val offers = offerService.getDetailByIds(offerIds).associateBy { it.offer.id }
+        val offers = offerService.getByIds(offerIds).associateBy { it.offer.id }
         val data = repository.findByIdIn(relationsByReservationId.keys)
         return details(data, relationsByReservationId, offers)
     }
@@ -104,7 +104,7 @@ class ReservationDetailsAssembler(
         val relations = relationService.getOrderByPriority(data)
         val visitor = visitorService.get(data.visitorId) ?: return null
         val offerIds = relations.map { it.id.offerId }.toSet()
-        val offers = offerService.getDetailByIds(offerIds).associateBy { it.offer.id }
+        val offers = offerService.getByIds(offerIds).associateBy { it.offer.id }
         return details(data, visitor, relations, offers)
     }
 
