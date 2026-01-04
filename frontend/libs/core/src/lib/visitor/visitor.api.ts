@@ -1,6 +1,6 @@
 export interface Visitor {
   id: number,
-  type: string,
+  type: VisitorType,
   title: string,
   description: string,
 

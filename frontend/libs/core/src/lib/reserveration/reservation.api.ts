@@ -40,11 +40,11 @@ export class ReservationChangeRequest {
   }
 }
 
-export class ReservationFilterRequest {
+export class ReservationConfirmationContent {
   constructor(
-    public offerDate: string | null | undefined,
-    public visitorStatus: string | null | undefined,
-    public query: string | null | undefined
+    public subject: string,
+    public content: string,
+    public silent: boolean
   ) {
   }
 }

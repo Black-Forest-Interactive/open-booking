@@ -1,9 +1,107 @@
 <div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
   <app-loading-bar [reloading]="reloading()"/>
 
-  <!-- Header -->
-  <div class="flex items-stretch gap-3 px-2 pt-2">
-    <lib-search label="RESERVATION.Action.Search" (search)="search($event)" class="flex-auto"/>
+  <!-- Search and Filters Toolbar -->
+  <div class="flex flex-col gap-3 px-2 pt-2 pb-4">
+    <!-- Filters Row -->
+    <div class="flex flex-wrap items-center gap-3">
+      <!-- Search Bar -->
+      <lib-search
+        label="RESERVATION.Action.Search"
+        (search)="handleSearch($event)"
+        class="min-w-[500px]"/>
+
+      <!-- Status Filter -->
+      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="min-w-[200px]">
+        <mat-label>{{ 'RESERVATION.Status.Title' | translate }}</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" multiple>
+          <mat-option value="CONFIRMED">
+            {{ 'RESERVATION.Status.CONFIRMED' | translate }}
+          </mat-option>
+          <mat-option value="UNCONFIRMED">
+            {{ 'RESERVATION.Status.UNCONFIRMED' | translate }}
+          </mat-option>
+          <mat-option value="CANCELLED">
+            {{ 'RESERVATION.Status.CANCELLED' | translate }}
+          </mat-option>
+          <mat-option value="UNKNOWN">
+            {{ 'RESERVATION.Status.UNKNOWN' | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Date Range Filter -->
+      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="min-w-[200px]">
+        <mat-label>{{ 'RESERVATION.Form.SelectedDate.Label' | translate }} (From)</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerFrom"
+          [(ngModel)]="dateFrom">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="min-w-[200px]">
+        <mat-label>{{ 'RESERVATION.Form.SelectedDate.Label' | translate }} (To)</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerTo"
+          [(ngModel)]="dateTo">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Clear Filters Button -->
+      @if (hasActiveFilters()) {
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear Filters
+        </button>
+      }
+    </div>
+
+    <!-- Active Filters Display -->
+    @if (hasActiveFilters()) {
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm text-gray-600 font-medium">Active Filters:</span>
+
+        <mat-chip-grid>
+          @for (status of selectedStatus(); track status) {
+            <mat-chip-row (removed)="removeStatusFilter(status)" class="!bg-blue-100 !text-blue-800 ">
+              {{ 'RESERVATION.Status.' + status | translate }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+
+        @if (dateFrom() || dateTo()) {
+          <mat-chip-grid>
+            @if (dateFrom()) {
+              <mat-chip-row (removed)="clearDateFrom()" class="!bg-green-100 !text-green-800 ">
+                From: {{ dateFrom() | date:'shortDate' }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+
+            @if (dateTo()) {
+              <mat-chip-row (removed)="clearDateTo()" class="!bg-green-100 !text-green-800 ">
+                To: {{ dateTo() | date:'shortDate' }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+        }
+      </div>
+    }
   </div>
 
 

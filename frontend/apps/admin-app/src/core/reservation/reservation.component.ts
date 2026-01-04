@@ -10,8 +10,13 @@ import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDividerModule} from "@angular/material/divider";
-import {LowerCasePipe} from "@angular/common";
+import {DatePipe, LowerCasePipe} from "@angular/common";
 import {ReservationContentComponent} from "./reservation-content/reservation-content.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-reservation',
@@ -23,11 +28,17 @@ import {ReservationContentComponent} from "./reservation-content/reservation-con
     MatTooltipModule,
     MatDividerModule,
     MatPaginatorModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatInputModule,
     LoadingBarComponent,
     SearchComponent,
     TranslatePipe,
     LowerCasePipe,
-    ReservationContentComponent
+    ReservationContentComponent,
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',
@@ -35,6 +46,10 @@ import {ReservationContentComponent} from "./reservation-content/reservation-con
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
+  selectedStatus = signal<string[]>([]);
+  dateFrom = signal<Date | null>(null);
+  dateTo = signal<Date | null>(null);
+
   pageNumber = signal(0)
   pageSize = signal(25)
 
@@ -54,12 +69,16 @@ export class ReservationComponent {
   entries = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.reservationsResource.isLoading
-
+  hasActiveFilters = computed(() =>
+    this.selectedStatus().length > 0 ||
+    this.dateFrom() !== null ||
+    this.dateTo() !== null
+  )
 
   constructor(private service: ReservationService) {
   }
 
-  protected search(text: string) {
+  protected handleSearch(text: string) {
     this.fullTextSearch.set(text)
   }
 
@@ -68,5 +87,22 @@ export class ReservationComponent {
     this.pageSize.set(event.pageSize)
   }
 
+  protected clearFilters() {
+    this.selectedStatus.set([])
+    this.dateFrom.set(null)
+    this.dateTo.set(null)
+  }
+  
+  removeStatusFilter(status: string) {
+    const current = this.selectedStatus();
+    this.selectedStatus.set(current.filter(s => s !== status))
+  }
 
+  clearDateFrom() {
+    this.dateFrom.set(null)
+  }
+
+  clearDateTo() {
+    this.dateTo.set(null)
+  }
 }

@@ -38,4 +38,27 @@ class ReservationMessageService(
         )
         return responseService.resolve(lang, ResponseType.RESERVATION_FAILED, properties)
     }
+
+    fun getConfirmationMessage(id: Long, offerId: Long, lang: String = "de"): ResolvedResponse? {
+        val info = converter.dataToInfo { repository.findByIdOrNull(id) } ?: return null
+        val selected = info.offer.find { it.id == offerId } ?: return null
+        val properties = mutableMapOf(
+            Pair("status", info.status),
+            Pair("visitor", info.visitor),
+            Pair("offer", info.offer),
+            Pair("selected", selected),
+        )
+        return responseService.resolve(lang, ResponseType.RESERVATION_CONFIRMED, properties)
+    }
+
+
+    fun getDenialMessage(id: Long, lang: String = "de"): ResolvedResponse? {
+        val info = converter.dataToInfo { repository.findByIdOrNull(id) } ?: return null
+        val properties = mutableMapOf(
+            Pair("status", info.status),
+            Pair("visitor", info.visitor),
+            Pair("offer", info.offer),
+        )
+        return responseService.resolve(lang, ResponseType.RESERVATION_DENIED, properties)
+    }
 }

@@ -2,10 +2,9 @@ import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
 import {
-  BookingConfirmationContent,
   Reservation,
   ReservationChangeRequest,
-  ReservationFilterRequest,
+  ReservationConfirmationContent,
   ReservationInfo,
   ReservationSearchRequest,
   ReservationSearchResponse,
@@ -54,15 +53,12 @@ export class ReservationService extends BaseService {
     return this.getPaged('unconfirmed/info', page, size)
   }
 
-  filterAllReservationInfoUnconfirmed(filter: ReservationFilterRequest, page: number, size: number): Observable<Page<ReservationInfo>> {
-    return this.postPaged('unconfirmed/info', filter, page, size)
-  }
 
   getConfirmationMessage(id: number, bookingId: number): Observable<ResolvedResponse> {
     return this.get('' + id + '/confirm/' + bookingId + '/message')
   }
 
-  confirmReservation(id: number, bookingId: number, content: BookingConfirmationContent): Observable<GenericRequestResult> {
+  confirmReservation(id: number, bookingId: number, content: ReservationConfirmationContent): Observable<GenericRequestResult> {
     return this.put('' + id + '/confirm/' + bookingId, content)
   }
 
@@ -70,7 +66,7 @@ export class ReservationService extends BaseService {
     return this.get('' + id + '/deny/message')
   }
 
-  denyReservation(id: number, content: BookingConfirmationContent): Observable<GenericRequestResult> {
+  denyReservation(id: number, content: ReservationConfirmationContent): Observable<GenericRequestResult> {
     return this.put('' + id + '/deny', content)
   }
 

@@ -1,5 +1,5 @@
-import {Component, computed, input} from '@angular/core';
-import {ReservationSearchEntry} from "@open-booking/core";
+import {Component, computed, input, output, signal} from '@angular/core';
+import {ReservationConfirmationContent, ReservationSearchEntry, VisitorType} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
@@ -8,6 +8,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatDividerModule} from "@angular/material/divider";
 import {DatePipe} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {ReservationService} from "@open-booking/admin";
+import {ReservationProcessDialogComponent} from "../reservation-process-dialog/reservation-process-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {EMPTY, switchMap} from "rxjs";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -34,6 +38,9 @@ const classes: Record<string, string> = {
 export class ReservationContentEntryComponent {
   data = input.required<ReservationSearchEntry>()
   reloading = input.required()
+  reload = output<boolean>()
+
+  updating = signal(false)
 
   sortedOffers = computed(() => this.data().offers.sort((a, b) => a.priority - b.priority))
   statusClass = computed(() => classes[this.data().reservation.status] || 'bg-gray-100 text-gray-800')
@@ -49,13 +56,75 @@ export class ReservationContentEntryComponent {
       status === 'pending' ? 'text-yellow-600' :
         'text-red-600';
   })
+  visitorTypeIcon = computed(() => {
+    const type = this.data().visitor.type;
+    const icons: Record<VisitorType, string> = {
+      GROUP: 'groups',
+      SINGLE: 'person'
+    };
+    return icons[type] || 'person';
+  });
+
+
+  protected readonly VisitorType = VisitorType;
+
+  constructor(private service: ReservationService, private dialog: MatDialog) {
+  }
 
 
   protected confirmOffer(offerId: number) {
+    this.updating.set(true)
+    let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
+      data: {info: this.data(), offerId: offerId, confirmation: true},
+      height: '800px',
+      width: '800px',
+    })
 
+    dialogRef.afterClosed().pipe(
+      switchMap(result => {
+        if (!result) {
+          this.updating.set(false)
+          return EMPTY
+        }
+        let content = result as ReservationConfirmationContent
+        return this.service.confirmReservation(this.data().reservation.id, offerId, content)
+      })
+    ).subscribe({
+      complete: () => {
+        this.updating.set(false)
+        this.reload.emit(true)
+      }
+    })
   }
+
 
   protected denyReservation() {
-    
+    this.updating.set(true)
+    let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
+      data: {info: this.data(), offerId: 0, confirmation: false},
+      height: '800px',
+      width: '800px',
+    })
+
+    dialogRef.afterClosed().pipe(
+      switchMap(result => {
+        if (!result) {
+          this.updating.set(false)
+          return EMPTY
+        }
+        let content = result as ReservationConfirmationContent
+        return this.service.denyReservation(this.data().reservation.id, content)
+      })
+    ).subscribe({
+      complete: () => {
+        this.updating.set(false)
+        this.reload.emit(true)
+      }
+    })
   }
+
+  protected confirmMail() {
+
+  }
+
 }

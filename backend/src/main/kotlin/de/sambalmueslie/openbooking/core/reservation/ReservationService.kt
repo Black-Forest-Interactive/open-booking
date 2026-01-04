@@ -11,10 +11,7 @@ import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_FAILED
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
-import de.sambalmueslie.openbooking.core.reservation.api.Reservation
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
+import de.sambalmueslie.openbooking.core.reservation.api.*
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelationRepository
@@ -129,6 +126,9 @@ class ReservationService(
     }
 
     fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
+    fun getConfirmationMessage(id: Long, offerId: Long, lang: String = "de") = messageService.getConfirmationMessage(id, offerId, lang)
+    fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
+
 
     fun confirmEmail(key: String): GenericRequestResult {
         val request = repository.findByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
@@ -152,6 +152,39 @@ class ReservationService(
     fun getReservations(offer: List<Offer>): List<ReservationDetails> {
         val offerIds = offer.map { it.id }.toSet()
         return converter.relationsToDetails { relationRepository.findByIdOfferIdIn(offerIds) }
+    }
+
+    fun confirm(id: Long, bookingId: Long, content: ReservationConfirmationContent): GenericRequestResult {
+//        val relations = relationRepository.getByBookingRequestId(id)
+//        if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) }
+//            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        relations.forEach {
+//            if (it.bookingId == bookingId) {
+//                bookingService.confirm(it.bookingId)
+//            } else {
+//                bookingService.denial(it.bookingId)
+//            }
+//        }
+//
+//
+//        listeners.forEachWithTryCatch { it.confirmed(result, content) }
+//        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
+        TODO("not implemented yet")
+    }
+
+    fun deny(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
+//        val result = patchData(id) { it.setStatus(BookingRequestStatus.DENIED, timeProvider.now()) }
+//            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val relations = relationRepository.getByBookingRequestId(id)
+//        relations.forEach { bookingService.denial(it.bookingId) }
+//
+//        listeners.forEachWithTryCatch { it.denied(result, content) }
+//        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
+        TODO("not implemented yet")
     }
 
 }

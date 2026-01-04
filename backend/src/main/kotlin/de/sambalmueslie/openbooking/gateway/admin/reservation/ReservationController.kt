@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.reservation
 
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
@@ -27,5 +28,21 @@ class ReservationController(private val gateway: ReservationGateway) {
 
     @Delete("/{id}")
     fun delete(auth: Authentication, id: Long) = gateway.delete(auth, id)
+
+
+    @Get("/{id}/received/message")
+    fun getRequestReceivedMessage(auth: Authentication, id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getRequestReceivedMessage(auth, id, lang)
+
+    @Get("/{id}/confirm/{offerId}/message")
+    fun getConfirmationMessage(auth: Authentication, id: Long, offerId: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getConfirmationMessage(auth, id, offerId, lang)
+
+    @Put("/{id}/confirm/{offerId}")
+    fun confirm(auth: Authentication, id: Long, offerId: Long, @Body content: ReservationConfirmationContent) = gateway.confirm(auth, id, offerId, content)
+
+    @Get("/{id}/deny/message")
+    fun getDenialMessage(auth: Authentication, id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getDenialMessage(auth, id, lang)
+
+    @Put("/{id}/deny")
+    fun deny(auth: Authentication, id: Long, @Body content: ReservationConfirmationContent) = gateway.deny(auth, id, content)
 
 }

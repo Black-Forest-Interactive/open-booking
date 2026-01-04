@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.gateway.admin.reservation
 import de.sambalmueslie.openbooking.common.checkPermission
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
 import de.sambalmueslie.openbooking.core.search.reservation.ReservationSearchOperator
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_RESERVATION_ADMIN
@@ -22,4 +23,13 @@ class ReservationGateway(
     fun create(auth: Authentication, request: ReservationChangeRequest) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.create(request) }
     fun update(auth: Authentication, id: Long, request: ReservationChangeRequest) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.update(id, request) }
     fun delete(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.delete(id) }
+
+
+    fun getRequestReceivedMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getRequestReceivedMessage(id, lang) }
+    fun getConfirmationMessage(auth: Authentication, id: Long, offerId: Long, lang: String) =
+        auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getConfirmationMessage(id, offerId, lang) }
+
+    fun confirm(auth: Authentication, id: Long, offerId: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.confirm(id, offerId, content) }
+    fun getDenialMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getDenialMessage(id, lang) }
+    fun deny(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.deny(id, content) }
 }
