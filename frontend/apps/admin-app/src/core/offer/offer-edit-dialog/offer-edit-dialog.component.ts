@@ -1,6 +1,6 @@
 import {Component, computed, inject, resource} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OfferChangeRequest, OfferInfo} from "@open-booking/core";
+import {OfferChangeRequest, OfferSearchEntry} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -35,7 +35,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
   styleUrl: './offer-edit-dialog.component.scss',
 })
 export class OfferEditDialogComponent {
-  data: OfferInfo = inject<OfferInfo>(MAT_DIALOG_DATA)
+  data: OfferSearchEntry = inject<OfferSearchEntry>(MAT_DIALOG_DATA)
   form: FormGroup
 
   private labelResource = resource({
@@ -69,17 +69,17 @@ export class OfferEditDialogComponent {
     )
 
     let data = this.data
-    let start = DateTime.fromISO(data.offer.start)
-    let finish = DateTime.fromISO(data.offer.finish)
+    let start = DateTime.fromISO(data.info.offer.start)
+    let finish = DateTime.fromISO(data.info.offer.finish)
 
     this.form.patchValue({
       date: start,
       startTime: start.toFormat("HH:mm"),
       finishTime: finish.toFormat("HH:mm"),
-      maxPersons: data.offer.maxPersons,
-      active: data.offer.active,
-      label: data.label?.id,
-      guide: data.guide?.id
+      maxPersons: data.info.offer.maxPersons,
+      active: data.info.offer.active,
+      label: data.info.label?.id,
+      guide: data.info.guide?.id
     })
   }
 

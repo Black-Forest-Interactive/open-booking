@@ -4,12 +4,14 @@ import {Observable} from "rxjs";
 import {
   Offer,
   OfferChangeRequest,
-  OfferFilterRequest,
   OfferInfo,
   OfferRangeRequest,
+  OfferSearchRequest,
+  OfferSearchResponse,
   OfferSeriesRequest
 } from "@open-booking/core";
 import {DateTime} from "luxon";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,14 @@ export class OfferService extends BaseService {
   getOffer(id: number): Observable<Offer> {
     return this.get('' + id)
   }
+
+  searchOffer(request: OfferSearchRequest, page: number, size: number): Observable<OfferSearchResponse> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+    return this.post('search', request, params)
+  }
+
 
   createOffer(request: OfferChangeRequest): Observable<Offer> {
     return this.post('', request)
@@ -66,15 +76,6 @@ export class OfferService extends BaseService {
 
   setOfferMaxPersons(id: number, value: number): Observable<Offer> {
     return this.patch('' + id + '/max_persons', {value: value})
-  }
-
-  filter(request: OfferFilterRequest, page: number, size: number): Observable<Page<Offer>> {
-    return this.postPaged('filter', request, page, size)
-  }
-
-
-  filterInfo(request: OfferFilterRequest, page: number, size: number): Observable<Page<OfferInfo>> {
-    return this.postPaged('filter/info', request, page, size)
   }
 
 

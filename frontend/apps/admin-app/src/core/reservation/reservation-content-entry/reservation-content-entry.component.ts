@@ -1,5 +1,10 @@
 import {Component, computed, input, output, signal} from '@angular/core';
-import {ReservationConfirmationContent, ReservationSearchEntry, VisitorType} from "@open-booking/core";
+import {
+  ReservationConfirmationContent,
+  ReservationOfferEntry,
+  ReservationSearchEntry,
+  VisitorType
+} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
@@ -72,10 +77,10 @@ export class ReservationContentEntryComponent {
   }
 
 
-  protected confirmOffer(offerId: number) {
+  protected confirmOffer(offer: ReservationOfferEntry) {
     this.updating.set(true)
     let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
-      data: {info: this.data(), offerId: offerId, confirmation: true},
+      data: {info: this.data(), offer: offer, confirmation: true},
       height: '800px',
       width: '800px',
     })
@@ -87,7 +92,7 @@ export class ReservationContentEntryComponent {
           return EMPTY
         }
         let content = result as ReservationConfirmationContent
-        return this.service.confirmReservation(this.data().reservation.id, offerId, content)
+        return this.service.confirmReservation(this.data().reservation.id, offer.offer.id, content)
       })
     ).subscribe({
       complete: () => {

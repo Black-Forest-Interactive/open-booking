@@ -14,7 +14,7 @@
     </div>
 
     <!-- Guide Info -->
-    @if (info().guide) {
+    @if (entry().info.guide) {
       <div class="flex items-center gap-2 rounded bg-gray-100 border border-gray-300 px-3 py-1">
         <mat-icon class="text-gray-600" inline>follow_the_signs</mat-icon>
         <div class="text-sm text-gray-800 font-medium truncate">{{ guide() }}</div>
@@ -22,7 +22,7 @@
     }
 
     <!-- Label (if exists) -->
-    @if (info().label) {
+    @if (entry().info.label) {
       <div class="flex items-center gap-2 rounded px-3 py-1 border border-gray-300"
            [style.background-color]="color() + '15'">
         <mat-icon class="text-gray-600" inline>label</mat-icon>
@@ -49,14 +49,14 @@
       <button
         mat-icon-button
         [matTooltip]="'OFFER.Action.Edit' | translate"
-        (click)="edit.emit(info())"
+        (click)="edit.emit(entry())"
         [disabled]="reloading()">
         <mat-icon class="text-gray-600">edit</mat-icon>
       </button>
       <button
         mat-icon-button
         [matTooltip]="'OFFER.Action.Delete' | translate"
-        (click)="delete.emit(info())"
+        (click)="delete.emit(entry())"
         [disabled]="reloading()">
         <mat-icon class="text-gray-600">delete</mat-icon>
       </button>

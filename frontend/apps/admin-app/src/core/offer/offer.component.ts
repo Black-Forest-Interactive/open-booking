@@ -14,7 +14,7 @@ import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
-import {OfferFilterRequest, OfferInfo} from "@open-booking/core";
+import {OfferSearchEntry, OfferSearchRequest} from "@open-booking/core";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatChipsModule} from "@angular/material/chips";
@@ -56,6 +56,10 @@ import {OfferEditDialogComponent} from "./offer-edit-dialog/offer-edit-dialog.co
 })
 export class OfferComponent {
 
+  private fullTextSearch = signal('')
+  private dateFrom = signal<string | null | undefined>(null)
+  private dateTo = signal<string | null | undefined>(null)
+
   range = new FormGroup({
     start: new FormControl<DateTime | null>(null, Validators.required),
     end: new FormControl<DateTime | null>(null, Validators.required),
@@ -63,26 +67,19 @@ export class OfferComponent {
 
   pageNumber = signal(0)
   pageSize = signal(25)
-  request = signal<OfferFilterRequest | undefined>(undefined)
 
   private offerCriteria = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize(),
-    request: this.request()
+    request: new OfferSearchRequest(this.fullTextSearch(), this.dateFrom(), this.dateTo())
   }))
 
   private offerResource = resource({
     params: this.offerCriteria,
-    loader: (param) => {
-      if (param.params.request) {
-        return toPromise(this.service.filterInfo(param.params.request, param.params.page, param.params.size), param.abortSignal)
-      } else {
-        return toPromise(this.service.getAllOfferInfo(param.params.page, param.params.size), param.abortSignal)
-      }
-    }
+    loader: (param) => toPromise(this.service.searchOffer(param.params.request, param.params.page, param.params.size), param.abortSignal)
   })
 
-  private page = computed(() => this.offerResource.value())
+  private page = computed(() => this.offerResource.value()?.result)
   offer = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.offerResource.isLoading
@@ -111,13 +108,8 @@ export class OfferComponent {
 
   protected applyFilter() {
     let filter = this.range.value
-    if (filter.start || filter.end) {
-      const start = filter.start?.toISODate()
-      const end = filter.end?.toISODate()
-      this.request.set(new OfferFilterRequest(start, end, null))
-    } else {
-      this.request.set(undefined)
-    }
+    this.dateFrom.set(filter.start?.toISODate())
+    this.dateTo.set(filter.end?.toISODate())
   }
 
   protected handleSelectionChange() {
@@ -130,19 +122,19 @@ export class OfferComponent {
     }
   }
 
-  protected handleEdit(info: OfferInfo) {
-    let dialogRef = this.dialog.open(OfferEditDialogComponent, {data: info, disableClose: true})
+  protected handleEdit(entry: OfferSearchEntry) {
+    let dialogRef = this.dialog.open(OfferEditDialogComponent, {data: entry, disableClose: true})
 
     dialogRef.afterClosed().subscribe((value) => {
-      if (value) this.service.updateOffer(info.offer.id, value).subscribe(() => this.offerResource.reload())
+      if (value) this.service.updateOffer(entry.info.offer.id, value).subscribe(() => this.offerResource.reload())
     })
   }
 
-  protected handleDelete(info: OfferInfo) {
-    let dialogRef = this.dialog.open(OfferDeleteDialogComponent, {data: info.offer})
+  protected handleDelete(entry: OfferSearchEntry) {
+    let dialogRef = this.dialog.open(OfferDeleteDialogComponent, {data: entry.info.offer})
 
     dialogRef.afterClosed().subscribe((value) => {
-      if (value) this.service.deleteOffer(info.offer.id).subscribe(() => this.offerResource.reload())
+      if (value) this.service.deleteOffer(entry.info.offer.id).subscribe(() => this.offerResource.reload())
     })
   }
 }

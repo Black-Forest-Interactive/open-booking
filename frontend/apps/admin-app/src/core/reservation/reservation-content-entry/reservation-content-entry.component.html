@@ -135,7 +135,7 @@
         </div>
 
         <div class="space-y-2 mb-4">
-          @for (offer of sortedOffers(); track offer.offerId) {
+          @for (offer of sortedOffers(); track offer.offer.id) {
             <div
               class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
               <div class="flex items-center gap-3">
@@ -144,7 +144,7 @@
                   {{ offer.priority }}
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900">Offer #{{ offer.offerId }}</div>
+                  <div class="font-medium text-gray-900">Offer #{{ offer.offer }}</div>
                   <div class="text-xs text-gray-500">Priority {{ offer.priority }}</div>
                 </div>
               </div>
@@ -152,7 +152,7 @@
                 matButton="filled"
                 color="primary"
                 [disabled]="data().reservation.status === 'CONFIRMED'"
-                (click)="confirmOffer(offer.offerId)">
+                (click)="confirmOffer(offer)">
                 <mat-icon>check_circle</mat-icon>
                 {{ 'RESERVATION.Action.Confirm' | translate }}
               </button>

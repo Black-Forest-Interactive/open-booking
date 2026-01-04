@@ -2,6 +2,7 @@ package de.sambalmueslie.openbooking.core.search.offer
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
+import com.jillesvangurp.ktsearch.ids
 import com.jillesvangurp.ktsearch.total
 import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
@@ -10,6 +11,7 @@ import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
+import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
@@ -28,6 +30,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 open class OfferSearchOperator(
     service: OfferService,
+    private val infoAssembler: OfferInfoAssembler,
     private val detailsAssembler: OfferDetailsAssembler,
 
     private val fieldMapping: OfferFieldMappingProvider,
@@ -135,10 +138,18 @@ open class OfferSearchOperator(
     override fun processSearchResponse(request: SearchRequest, response: SearchResponse, pageable: Pageable): OfferSearchResponse {
         val result = response.hits?.hits?.mapNotNull { hit ->
             hit.source?.let { source ->
-                mapper.readValue<OfferSearchEntryData>(source.toString()).convert()
+                mapper.readValue<OfferSearchEntryData>(source.toString())
             }
         } ?: emptyList()
 
-        return OfferSearchResponse(Page.of(result, pageable, response.total))
+        val offerIds = response.ids.map { it.toLong() }.toSet()
+        val infos = infoAssembler.getByIds(offerIds).associateBy { it.offer.id }
+
+        val content = result.mapNotNull {
+            val info = infos[it.id] ?: return@mapNotNull null
+            it.convert(info)
+        }
+
+        return OfferSearchResponse(Page.of(content, pageable, response.total))
     }
 }

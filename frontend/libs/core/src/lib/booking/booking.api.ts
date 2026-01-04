@@ -57,3 +57,12 @@ export interface BookingInfo {
   status: string,
   timestamp: string
 }
+
+export const BookingStatus = {
+  UNKNOWN: 'UNKNOWN',
+  UNCONFIRMED: 'UNCONFIRMED',
+  CONFIRMED: 'CONFIRMED',
+  DENIED: 'DENIED'
+} as const;
+
+export type BookingStatus = typeof BookingStatus[keyof typeof BookingStatus]

@@ -1,5 +1,5 @@
 import {Component, computed, input, output} from '@angular/core';
-import {OfferInfo} from "@open-booking/core";
+import {OfferSearchEntry} from "@open-booking/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {DatePipe} from "@angular/common";
@@ -19,18 +19,18 @@ import {TranslatePipe} from "@ngx-translate/core";
   styleUrl: './offer-content-entry.component.scss',
 })
 export class OfferContentEntryComponent {
-  info = input.required<OfferInfo>()
+  entry = input.required<OfferSearchEntry>()
   reloading = input.required()
 
-  edit = output<OfferInfo>()
-  delete = output<OfferInfo>()
+  edit = output<OfferSearchEntry>()
+  delete = output<OfferSearchEntry>()
 
 
-  color = computed(() => this.info().label?.color ?? '')
-  label = computed(() => this.info().label?.name ?? '')
-  start = computed(() => this.info().offer.start ?? '')
-  finish = computed(() => this.info().offer.finish ?? '')
-  maxPersons = computed(() => this.info().offer.maxPersons ?? '')
-  active = computed(() => this.info().offer.active ?? '')
-  guide = computed(() => (this.info().guide?.firstName ?? '') + ' ' + (this.info().guide?.lastName ?? ''))
+  color = computed(() => this.entry().info.label?.color ?? '')
+  label = computed(() => this.entry().info.label?.name ?? '')
+  start = computed(() => this.entry().info.offer.start ?? '')
+  finish = computed(() => this.entry().info.offer.finish ?? '')
+  maxPersons = computed(() => this.entry().info.offer.maxPersons ?? '')
+  active = computed(() => this.entry().info.offer.active ?? '')
+  guide = computed(() => (this.entry().info.guide?.firstName ?? '') + ' ' + (this.entry().info.guide?.lastName ?? ''))
 }

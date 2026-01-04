@@ -46,9 +46,9 @@ import {MatInputModule} from "@angular/material/input";
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
-  selectedStatus = signal<string[]>([]);
-  dateFrom = signal<Date | null>(null);
-  dateTo = signal<Date | null>(null);
+  selectedStatus = signal<string[]>([])
+  dateFrom = signal<Date | null>(null)
+  dateTo = signal<Date | null>(null)
 
   pageNumber = signal(0)
   pageSize = signal(25)
@@ -92,7 +92,7 @@ export class ReservationComponent {
     this.dateFrom.set(null)
     this.dateTo.set(null)
   }
-  
+
   removeStatusFilter(status: string) {
     const current = this.selectedStatus();
     this.selectedStatus.set(current.filter(s => s !== status))

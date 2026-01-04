@@ -1,5 +1,9 @@
 import {Label} from "../label/label.api";
 import {Guide} from "../guide/guide.api";
+import {BookingDetails, BookingStatus} from "../booking/booking.api";
+import {ReservationInfo, ReservationStatus} from "../reserveration/reservation.api";
+import {Page} from "@open-booking/shared";
+import {Visitor} from "../visitor/visitor.api";
 
 export interface Offer {
   id: number,
@@ -15,6 +19,19 @@ export interface OfferInfo {
   guide: Guide | undefined
 }
 
+export interface OfferDetails {
+  offer: Offer,
+  assignment: Assignment,
+  bookings: BookingDetails[],
+  reservations: ReservationInfo[],
+  timestamp: string
+}
+
+export interface Assignment {
+  bookedSpace: number,
+  reservedSpace: number,
+  availableSpace: number,
+}
 
 export class OfferChangeRequest {
   constructor(
@@ -54,11 +71,35 @@ export class OfferRangeRequest {
   }
 }
 
-export class OfferFilterRequest {
+
+export class OfferSearchRequest {
   constructor(
+    public fullTextSearch: string,
     public from: string | null | undefined,
     public to: string | null | undefined,
-    public active: boolean | null | undefined,
   ) {
   }
+}
+
+export interface OfferSearchResponse {
+  result: Page<OfferSearchEntry>
+}
+
+export interface OfferSearchEntry {
+  info: OfferInfo,
+  assignment: Assignment,
+  reservations: OfferReservationEntry[],
+  bookings: OfferBookingEntry[]
+}
+
+export interface OfferReservationEntry {
+  reservationId: number,
+  status: ReservationStatus,
+  visitor: Visitor
+}
+
+export interface OfferBookingEntry {
+  bookingId: number,
+  status: BookingStatus,
+  visitor: Visitor
 }

@@ -1,5 +1,5 @@
 import {Component, computed, input, output} from '@angular/core';
-import {OfferInfo} from "@open-booking/core";
+import {OfferSearchEntry} from "@open-booking/core";
 import {DateTime} from "luxon";
 import {MatCardModule} from "@angular/material/card";
 import {DatePipe} from "@angular/common";
@@ -23,18 +23,18 @@ import {OfferContentEntryComponent} from "../offer-content-entry/offer-content-e
 })
 export class OfferContentComponent {
   reloading = input(false)
-  entries = input.required<OfferInfo[]>()
+  entries = input.required<OfferSearchEntry[]>()
 
 
-  edit = output<OfferInfo>()
-  delete = output<OfferInfo>()
+  edit = output<OfferSearchEntry>()
+  delete = output<OfferSearchEntry>()
 
 
   offersGroupedByDay = computed(() => {
-    return this.entries().reduce<Record<string, OfferInfo[]>>(
+    return this.entries().reduce<Record<string, OfferSearchEntry[]>>(
       (acc, offerInfo) => {
         const dayKey = DateTime
-          .fromISO(offerInfo.offer.start)
+          .fromISO(offerInfo.info.offer.start)
           .toISODate()
 
         if (!dayKey) {
@@ -58,7 +58,7 @@ export class OfferContentComponent {
     )
   )
 
-  getOffersForDay(day: string): OfferInfo[] {
+  getOffersForDay(day: string): OfferSearchEntry[] {
     return this.offersGroupedByDay()[day] ?? []
   }
 

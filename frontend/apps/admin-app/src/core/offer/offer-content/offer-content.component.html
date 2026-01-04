@@ -15,9 +15,9 @@
 
       <!-- Offers List -->
       <div class="flex flex-col gap-3 p-3">
-        @for (info of getOffersForDay(day); track info.offer.id) {
+        @for (entry of getOffersForDay(day); track entry.info.offer.id) {
           <app-offer-content-entry
-            [info]="info"
+            [entry]="entry"
             [reloading]="reloading()"
             (edit)="edit.emit($event)"
             (delete)="delete.emit($event)"

@@ -491,7 +491,9 @@
     "type": "Search Index",
     "title": "Search Index Administration",
     "key": {
-      "guide": "Guide"
+      "guide": "Guide",
+      "offer": "Offer",
+      "reservation": "Reservation"
     },
     "status": {
       "UNKNOWN": "Unknown",
