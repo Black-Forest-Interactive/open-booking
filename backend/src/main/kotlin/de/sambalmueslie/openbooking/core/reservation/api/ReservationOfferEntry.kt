@@ -1,5 +1,10 @@
 package de.sambalmueslie.openbooking.core.reservation.api
 
+import de.sambalmueslie.openbooking.core.offer.api.Assignment
+import de.sambalmueslie.openbooking.core.offer.api.Offer
+
 data class ReservationOfferEntry(
-    val offerId: Long, val priority: Int
+    val offer: Offer,
+    val assignment: Assignment,
+    val priority: Int
 )

@@ -17,9 +17,9 @@ class OfferFieldMappingProvider : FieldMappingProvider {
             number<Int>(OfferSearchEntryData::maxPersons)
             bool(OfferSearchEntryData::active)
             // stats
-            number<Int>(OfferSearchEntryData::bookedSeats)
-            number<Int>(OfferSearchEntryData::reservedSeats)
-            number<Int>(OfferSearchEntryData::availableSeats)
+            number<Int>(OfferSearchEntryData::bookedSpace)
+            number<Int>(OfferSearchEntryData::reservedSpace)
+            number<Int>(OfferSearchEntryData::availableSpace)
             // reservations
             nestedField(OfferSearchEntryData::reservations) {
                 number<Long>(OfferReservationEntryData::reservationId)

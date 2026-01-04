@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.core.request
 
 
-import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
+import de.sambalmueslie.openbooking.core.booking.assembler.BookingInfoAssembler
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 @Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingInfoConverter(
-    private val bookingService: BookingService,
+    private val bookingService: BookingInfoAssembler,
     private val visitorService: VisitorService,
     private val relationRepository: BookingRequestRelationRepository,
 ) {
@@ -47,8 +47,8 @@ class BookingInfoConverter(
         val relations = relationRepository.getByBookingRequestIdIn(requestIds)
             .groupBy { it.bookingRequestId }
             .mapValues { it.value.map { it.bookingId } }
-        val bookingIds = relations.values.map { it }.flatten().toSet()
-        val bookings = bookingService.getBookingInfos(bookingIds).associateBy { it.id }
+        val bookingIds = relations.values.flatten().toSet()
+        val bookings = bookingService.getInfoByIds(bookingIds).associateBy { it.id }
 
         val visitorIds = data.map { it.visitorId }.toSet()
         val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
@@ -68,7 +68,7 @@ class BookingInfoConverter(
 
     private fun info(data: BookingRequestData): BookingRequestInfo? {
         val relations = relationRepository.getByBookingRequestId(data.id)
-        val bookings = bookingService.getBookingInfos(relations.map { it.bookingId }.toSet())
+        val bookings = bookingService.getInfoByIds(relations.map { it.bookingId }.toSet())
         val visitor = visitorService.get(data.visitorId) ?: return null
 
         val timestamp = data.updated ?: data.created

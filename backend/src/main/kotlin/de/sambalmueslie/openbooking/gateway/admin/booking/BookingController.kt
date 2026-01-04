@@ -1,7 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.booking
 
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
-import de.sambalmueslie.openbooking.core.booking.api.BookingSearchRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
@@ -31,6 +30,4 @@ class BookingController(private val gateway: BookingGateway) {
     @Get("/by/offer/{offerId}/details")
     fun findDetailsByOffer(auth: Authentication, offerId: Long) = gateway.findDetailsByOffer(auth, offerId)
 
-    @Post("/search")
-    fun searchDetails(auth: Authentication, @Body request: BookingSearchRequest, pageable: Pageable) = gateway.searchDetails(auth, request, pageable)
 }

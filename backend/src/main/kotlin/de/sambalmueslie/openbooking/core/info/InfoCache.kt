@@ -12,9 +12,9 @@ import de.sambalmueslie.openbooking.core.info.api.DayInfoBooking
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -23,7 +23,10 @@ import java.util.concurrent.TimeUnit
 
 @Singleton
 class InfoCache(
-    private val offerService: OfferService, private val bookingService: BookingService, private val reservationService: ReservationService, cacheService: CacheService
+    private val offerService: OfferService,
+    private val bookingService: BookingService,
+    private val reservationService: ReservationDetailsAssembler,
+    cacheService: CacheService
 ) {
 
     companion object {
@@ -37,15 +40,16 @@ class InfoCache(
 
     private fun createDayInfo(date: LocalDate): DayInfo? {
         val (duration, data) = measureTimeMillisWithReturn {
-            val offer = offerService.getOffer(date)
+            val offer = offerService.getByDate(date)
             if (offer.isEmpty()) return null
 
             val first = offer.first()
             val last = offer.last()
 
-            val bookingsByOffer = bookingService.getBookings(offer).groupBy { it.offerId }
-            val reservationsByOffer = reservationService.getReservations(offer)
-                .flatMap { details -> details.offers.map { entry -> entry.offerId to details } }
+            val offerIds = offer.map { it.id }.toSet()
+            val bookingsByOffer = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+            val reservationsByOffer = reservationService.getDetailByOfferIds(offerIds)
+                .flatMap { details -> details.offers.map { entry -> entry.offer.id to details } }
                 .groupBy({ it.first }, { it.second })
 
             val offerInfo = offer.map { createOfferInfo(it, bookingsByOffer, reservationsByOffer) }

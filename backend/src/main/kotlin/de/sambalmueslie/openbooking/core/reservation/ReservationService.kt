@@ -11,17 +11,16 @@ import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_FAILED
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
-import de.sambalmueslie.openbooking.core.reservation.api.*
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
-import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
-import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelationRepository
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationRepository
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
-import io.micronaut.data.model.Page
-import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -29,14 +28,13 @@ import java.util.*
 @Singleton
 class ReservationService(
     private val repository: ReservationRepository,
-    private val relationRepository: ReservationOfferRelationRepository,
 
     private val bookingService: BookingService,
     private val offerService: OfferService,
     private val visitorService: VisitorService,
 
     private val messageService: ReservationMessageService,
-    private val converter: ReservationConverter,
+    private val relationService: ReservationRelationService,
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
@@ -47,6 +45,18 @@ class ReservationService(
         private val logger = LoggerFactory.getLogger(ReservationService::class.java)
     }
 
+    fun getByOffer(offer: List<Offer>): List<Reservation> {
+        val offerIds = offer.map { it.id }.toSet()
+        return getByOfferIds(offerIds)
+    }
+
+    fun getByOfferId(offerId: Long): List<Reservation> {
+        return repository.findByIdIn(relationService.getIdsByOfferId(offerId)).map { it.convert() }
+    }
+
+    fun getByOfferIds(offerIds: Set<Long>): List<Reservation> {
+        return repository.findByIdIn(relationService.getIdsByOfferIds(offerIds)).map { it.convert() }
+    }
 
     override fun create(request: ReservationChangeRequest): Reservation {
         val suitableOffers = getSuitableOffers(request)
@@ -55,8 +65,7 @@ class ReservationService(
         isValid(request)
         val data = repository.save(createData(request))
 
-        val relations = suitableOffers.sortedBy { request.offerIds.indexOf(it.id) }.mapIndexed { index, offer -> ReservationOfferRelation.create(data, offer.id, index) }
-        relationRepository.saveAll(relations)
+        relationService.create(data, request, suitableOffers)
 
         val result = data.convert()
         notifyCreated(result)
@@ -71,11 +80,7 @@ class ReservationService(
 
         isValid(request)
 
-        relationRepository.deleteByIdReservationId(data.id)
-
-        val relations = suitableOffers.sortedBy { request.offerIds.indexOf(it.id) }.mapIndexed { index, offer -> ReservationOfferRelation.create(data, offer.id, index) }
-        relationRepository.saveAll(relations)
-
+        relationService.update(data, request, suitableOffers)
 
         val result = repository.update(updateData(data, request)).convert()
         notifyUpdated(result)
@@ -84,8 +89,8 @@ class ReservationService(
 
     private fun getSuitableOffers(request: ReservationChangeRequest): List<Offer> {
         val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getBookingsByOfferId(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getOffer(offerIds).filter { offer ->
+        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+        val suitableOffers = offerService.getByIds(offerIds).filter { offer ->
             isSuitable(request, offer, existingBookings[offer.id] ?: emptyList())
         }
         return suitableOffers
@@ -120,6 +125,10 @@ class ReservationService(
         return data.update(request, timeProvider.now())
     }
 
+    override fun deleteDependencies(data: ReservationData) {
+        relationService.delete(data)
+    }
+
     override fun isValid(request: ReservationChangeRequest) {
         if (request.offerIds.isEmpty()) throw InvalidRequestException("Offer list cannot be empty")
         visitorService.isValid(request.visitor)
@@ -139,27 +148,6 @@ class ReservationService(
             true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
             else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
         }
-    }
-
-    fun getDetails(id: Long): ReservationDetails? {
-        return converter.dataToDetails { repository.findByIdOrNull(id) }
-    }
-
-    fun getAllDetails(pageable: Pageable): Page<ReservationDetails> {
-        return converter.pageToDetails { repository.findAll(pageable) }
-    }
-
-    fun getReservations(offer: List<Offer>): List<ReservationDetails> {
-        val offerIds = offer.map { it.id }.toSet()
-        return converter.relationsToDetails { relationRepository.findByIdOfferIdIn(offerIds) }
-    }
-
-    fun getReservationInfoByOfferId(offerId: Long): List<ReservationInfo> {
-        return converter.relationsToInfo { relationRepository.findByIdOfferId(offerId) }
-    }
-
-    fun getReservationInfoByOfferIds(offerIds: Set<Long>): List<ReservationInfo> {
-        return converter.relationsToInfo { relationRepository.findByIdOfferIdIn(offerIds) }
     }
 
     fun confirm(id: Long, bookingId: Long, content: ReservationConfirmationContent): GenericRequestResult {

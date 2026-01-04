@@ -1,7 +1,6 @@
 package de.sambalmueslie.openbooking.core.search.reservation.db
 
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferEntry
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.search.common.LocalDateTimeSerializer
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchEntry
@@ -46,7 +45,7 @@ data class ReservationSearchEntryData(
     fun convert() = ReservationSearchEntry(
         Reservation(id.toLong(), key, comment, status),
         Visitor(visitorId, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verificationTimestamp)),
-        offers.map { ReservationOfferEntry(it.offerId, it.priority) },
+        offers.map { it.convert() },
         timestamp
     )
 }

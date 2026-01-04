@@ -8,6 +8,8 @@ import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferEntry
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 open class ReservationSearchOperator(
     private val service: ReservationService,
+    private val detailAssembler: ReservationDetailsAssembler,
 
     private val fieldMapping: ReservationFieldMappingProvider,
     private val queryBuilder: ReservationSearchQueryBuilder,
@@ -56,13 +59,13 @@ open class ReservationSearchOperator(
     }
 
     private fun handleChanged(reservation: Reservation) {
-        val details = service.getDetails(reservation.id) ?: return
+        val details = detailAssembler.getDetail(reservation.id) ?: return
         val data = convert(details)
         updateDocument(data)
     }
 
     override fun initialLoadPage(pageable: Pageable): Page<Pair<String, String>> {
-        val page = service.getAllDetails(pageable)
+        val page = detailAssembler.getAllDetails(pageable)
         return page.map { convert(it) }
     }
 
@@ -88,9 +91,23 @@ open class ReservationSearchOperator(
             obj.visitor.email,
             obj.visitor.verification.status,
             obj.visitor.verification.timestamp,
-            obj.offers.map { ReservationOfferEntryData(it.offerId, it.priority) }
+            obj.offers.map { convert(it) }
         )
         return Pair(input.id, mapper.writeValueAsString(input))
+    }
+
+    private fun convert(obj: ReservationOfferEntry): ReservationOfferEntryData {
+        return ReservationOfferEntryData(
+            obj.offer.id,
+            obj.offer.start,
+            obj.offer.finish,
+            obj.offer.maxPersons,
+            obj.offer.active,
+            obj.assignment.bookedSpace,
+            obj.assignment.reservedSpace,
+            obj.assignment.availableSpace,
+            obj.priority
+        )
     }
 
     override fun processSearchResponse(request: SearchRequest, response: SearchResponse, pageable: Pageable): ReservationSearchResponse {

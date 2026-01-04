@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.core.search.reservation
 
 import com.jillesvangurp.searchdsls.mappingdsl.FieldMappings
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferEntry
 import de.sambalmueslie.openbooking.core.search.common.FieldMappingProvider
+import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationOfferEntryData
 import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import jakarta.inject.Singleton
 
@@ -33,8 +33,16 @@ class ReservationFieldMappingProvider : FieldMappingProvider {
             date(ReservationSearchEntryData::verificationTimestamp)
             // offer
             nestedField(ReservationSearchEntryData::offers) {
-                number<Long>(ReservationOfferEntry::offerId)
-                number<Int>(ReservationOfferEntry::priority)
+                number<Long>(ReservationOfferEntryData::offerId)
+                date(ReservationOfferEntryData::start)
+                date(ReservationOfferEntryData::finish)
+                number<Int>(ReservationOfferEntryData::maxPersons)
+                bool(ReservationOfferEntryData::active)
+                // stats
+                number<Int>(ReservationOfferEntryData::bookedSpace)
+                number<Int>(ReservationOfferEntryData::reservedSpace)
+                number<Int>(ReservationOfferEntryData::availableSpace)
+                number<Int>(ReservationOfferEntryData::priority)
             }
         }
     }

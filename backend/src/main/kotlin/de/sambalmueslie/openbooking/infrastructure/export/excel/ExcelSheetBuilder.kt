@@ -1,9 +1,9 @@
 package de.sambalmueslie.openbooking.infrastructure.export.excel
 
 
+import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
-import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
-import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
@@ -163,7 +163,7 @@ class ExcelSheetBuilder(
         createOfferHeaderLine1(colorHeader, details)
         createOfferHeaderLine2(colorHeader, details)
 
-        val bookings = details.bookings.filter { it.status != BookingRequestStatus.DENIED }
+        val bookings = details.bookings.filter { it.booking.status != BookingStatus.DENIED }
         bookings.forEachIndexed { index, info -> setupBooking(index, info) }
 
         if (bookings.isEmpty()) setupEmptyBooking()
@@ -187,14 +187,11 @@ class ExcelSheetBuilder(
         timeCell.cellStyle = colorHeader
         row.createCell(2).cellStyle = styleOfferHeaderBold
 
-        val spaceConfirmed = details.bookings.filter { it.status == BookingRequestStatus.CONFIRMED }.sumOf { it.visitor.size }
-        val spaceAvailable = Math.max(details.offer.maxPersons - spaceConfirmed, 0)
-
         val usedTextCell = row.createCell(3)
         usedTextCell.setCellValue("Belegt:")
         usedTextCell.cellStyle = styleOfferHeaderText
         val usedValueCell = row.createCell(4)
-        usedValueCell.setCellValue(spaceConfirmed.toDouble())
+        usedValueCell.setCellValue(details.assignment.bookedSpace.toDouble())
         usedValueCell.cellStyle = styleOfferHeaderBold
         CellUtil.setAlignment(usedValueCell, HorizontalAlignment.LEFT)
 
@@ -202,7 +199,7 @@ class ExcelSheetBuilder(
         availableTextCell.setCellValue("frei:")
         availableTextCell.cellStyle = styleOfferHeaderText
         val availableValueCell = row.createCell(6)
-        availableValueCell.setCellValue(spaceAvailable.toDouble())
+        availableValueCell.setCellValue(details.assignment.availableSpace.toDouble())
         availableValueCell.cellStyle = styleOfferHeaderBold
         CellUtil.setAlignment(availableValueCell, HorizontalAlignment.LEFT)
 
@@ -245,7 +242,7 @@ class ExcelSheetBuilder(
         sheet.addMergedRegion(CellRangeAddress(row.rowNum, row.rowNum, 7, 9))
     }
 
-    private fun setupBooking(index: Int, info: BookingRequestInfo) {
+    private fun setupBooking(index: Int, info: BookingDetails) {
         val row = sheet.createRow(rowIndex++)
 
         val indexCell = row.createCell(1)
@@ -270,7 +267,7 @@ class ExcelSheetBuilder(
         sizeCell.cellStyle = styleBooking
 
         val noteCell = row.createCell(7)
-        noteCell.setCellValue(info.comment)
+        noteCell.setCellValue(info.booking.comment)
         noteCell.cellStyle = styleBookingCombined
         CellUtil.setCellStyleProperty(noteCell, CellUtil.BORDER_LEFT, BorderStyle.THIN)
 

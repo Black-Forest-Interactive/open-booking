@@ -1,5 +1,6 @@
 package de.sambalmueslie.openbooking.core.search.offer.db
 
+import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.search.common.LocalDateTimeSerializer
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
@@ -8,22 +9,23 @@ import java.time.LocalDateTime
 
 @Serializable
 data class OfferSearchEntryData(
-    val id: Long,
-    @Serializable(with = LocalDateTimeSerializer::class) val start: LocalDateTime,
-    @Serializable(with = LocalDateTimeSerializer::class) val finish: LocalDateTime,
-    val maxPersons: Int,
-    val active: Boolean,
+    var id: Long,
+    @Serializable(with = LocalDateTimeSerializer::class) var start: LocalDateTime,
+    @Serializable(with = LocalDateTimeSerializer::class) var finish: LocalDateTime,
+    var maxPersons: Int,
+    var active: Boolean,
 
-    val bookedSeats: Int,
-    val reservedSeats: Int,
-    val availableSeats: Int,
+    var bookedSpace: Int,
+    var reservedSpace: Int,
+    var availableSpace: Int,
 
-    val reservations: List<OfferReservationEntryData>,
-    val bookings: List<OfferBookingEntryData>
+    var reservations: List<OfferReservationEntryData>,
+    var bookings: List<OfferBookingEntryData>
 
 ) {
     fun convert() = OfferSearchEntry(
         Offer(id, start, finish, maxPersons, active),
+        Assignment(bookedSpace, reservedSpace, availableSpace),
         reservations.map { it.convert() },
         bookings.map { it.convert() }
     )

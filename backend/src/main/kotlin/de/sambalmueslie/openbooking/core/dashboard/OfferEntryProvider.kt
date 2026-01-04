@@ -38,7 +38,7 @@ class OfferEntryProvider(
     )
 
     fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferEntry> {
-        val offers = offerService.getOffer(day).sortedBy { it.start }
+        val offers = offerService.getByDate(day).sortedBy { it.start }
 
         return offers.mapIndexed { index, offer ->
             val request = requestService.findByOfferId(offer.id)

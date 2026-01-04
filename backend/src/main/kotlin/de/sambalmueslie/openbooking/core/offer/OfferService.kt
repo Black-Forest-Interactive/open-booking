@@ -4,10 +4,12 @@ package de.sambalmueslie.openbooking.core.offer
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.label.LabelService
-import de.sambalmueslie.openbooking.core.offer.api.*
+import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
+import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
+import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
@@ -28,10 +30,6 @@ class OfferService(
     private val labelService: LabelService,
     private val guideService: GuideService,
 
-    private val offerLabelService: OfferLabelService,
-
-    private val converter: OfferConverter,
-
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferData>(repository, cacheService, Offer::class, logger) {
@@ -49,12 +47,35 @@ class OfferService(
         return repository.findAllOrderByStart(pageable).map { it.convert() }
     }
 
-    fun getAllInfos(pageable: Pageable): Page<OfferInfo> {
-        return converter.pageToInfo { repository.findAllOrderByStart(pageable) }
+    fun getByIds(ids: Set<Long>): List<Offer> {
+        return repository.findByIdIn(ids).map { it.convert() }
     }
 
-    fun getInfo(id: Long): OfferInfo? {
-        return converter.dataToInfo { repository.findByIdOrNull(id) }
+    fun getByDate(date: LocalDate): List<Offer> {
+        return getDataByDate(date).map { it.convert() }
+    }
+
+    fun getFirstOffer(): Offer? {
+        return repository.findOneOrderByStart()?.convert()
+    }
+
+    fun getFirstOffer(date: LocalDate): Offer? {
+        return repository.findOneByStartGreaterThanEqualsOrderByStart(date.atStartOfDay())?.convert()
+    }
+
+    fun getLastOffer(): Offer? {
+        return repository.findOneOrderByStartDesc()?.convert()
+    }
+
+    fun getLastOffer(date: LocalDate): Offer? {
+        return repository.findOneByStartGreaterThanEqualsOrderByStartDesc(date.atStartOfDay())?.convert()
+    }
+
+
+    private fun getDataByDate(date: LocalDate): List<OfferData> {
+        val start = date.atStartOfDay()
+        val finish = date.atTime(23, 59, 59)
+        return repository.findByStartGreaterThanEqualsAndFinishLessThanEqualsOrderByStart(start, finish)
     }
 
     override fun createData(request: OfferChangeRequest): OfferData {
@@ -75,35 +96,8 @@ class OfferService(
 
     override fun isValid(request: OfferChangeRequest) {
         if (request.maxPersons <= 0) throw InvalidRequestException("Max Person for offer cannot be below or equals 0")
-
     }
 
-
-    fun getOffer(date: LocalDate): List<Offer> {
-        val start = date.atStartOfDay()
-        val finish = date.atTime(23, 59, 59)
-        return repository.findByStartGreaterThanEqualsAndFinishLessThanEqualsOrderByStart(start, finish).map { it.convert() }
-    }
-
-    fun getOffer(offerIds: Set<Long>): List<Offer> {
-        return repository.findByIdIn(offerIds).map { it.convert() }
-    }
-
-    fun getFirstOffer(): Offer? {
-        return repository.findOneOrderByStart()?.convert()
-    }
-
-    fun getFirstOffer(date: LocalDate): Offer? {
-        return repository.findOneByStartGreaterThanEqualsOrderByStart(date.atStartOfDay())?.convert()
-    }
-
-    fun getLastOffer(): Offer? {
-        return repository.findOneOrderByStartDesc()?.convert()
-    }
-
-    fun getLastOffer(date: LocalDate): Offer? {
-        return repository.findOneByStartGreaterThanEqualsOrderByStartDesc(date.atStartOfDay())?.convert()
-    }
 
     fun setActive(id: Long, value: Boolean) = patchData(id) { it.active = value }
 

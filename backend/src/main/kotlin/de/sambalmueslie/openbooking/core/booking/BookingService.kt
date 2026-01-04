@@ -2,7 +2,10 @@ package de.sambalmueslie.openbooking.core.booking
 
 
 import de.sambalmueslie.openbooking.common.*
-import de.sambalmueslie.openbooking.core.booking.api.*
+import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
+import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
 import de.sambalmueslie.openbooking.core.offer.OfferService
@@ -11,8 +14,6 @@ import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
-import io.micronaut.data.model.Page
-import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -24,7 +25,6 @@ class BookingService(
     private val offerService: OfferService,
     private val visitorService: VisitorService,
 
-    private val converter: BookingConverter,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingData>(repository, cacheService, Booking::class, logger) {
@@ -65,6 +65,25 @@ class BookingService(
         }
     }
 
+
+    fun getByIds(ids: Set<Long>): List<Booking> {
+        return repository.findByIdIn(ids).map { it.convert() }
+    }
+
+    fun getByOffer(offer: List<Offer>): List<Booking> {
+        val offerIds = offer.map { it.id }.toSet()
+        return getByOfferIds(offerIds)
+    }
+
+    fun getByOfferId(offerId: Long): List<Booking> {
+        return repository.findByOfferId(offerId).map { it.convert() }
+    }
+
+    fun getByOfferIds(offerIds: Set<Long>): List<Booking> {
+        return repository.findByOfferIdIn(offerIds).map { it.convert() }
+    }
+
+
     override fun createData(request: BookingChangeRequest): BookingData {
         val visitor = visitorService.get(request.visitorId)!!
         val offer = offerService.get(request.offerId)!!
@@ -81,35 +100,6 @@ class BookingService(
     override fun isValid(request: BookingChangeRequest) {
         if (offerService.get(request.offerId) == null) throw InvalidRequestException("Cannot find offer (${request.offerId}) for booking")
         if (visitorService.get(request.visitorId) == null) throw InvalidRequestException("Cannot find visitor group (${request.visitorId}) for booking")
-    }
-
-    fun getBookings(offer: List<Offer>): List<Booking> {
-        val offerIds = offer.map { it.id }.toSet()
-        return getBookingsByOfferId(offerIds)
-    }
-
-    fun getBookings(offer: Offer): List<Booking> {
-        return repository.findByOfferId(offer.id).map { it.convert() }
-    }
-
-    fun getBookingsByOfferId(offerIds: Set<Long>): List<Booking> {
-        return repository.findByOfferIdIn(offerIds).map { it.convert() }
-    }
-
-    fun getBookings(bookingIds: Set<Long>): List<Booking> {
-        return repository.findByIdIn(bookingIds).map { it.convert() }
-    }
-
-    fun getBookingInfos(bookingIds: Set<Long>): List<BookingInfo> {
-        return converter.listToInfo { repository.findByIdIn(bookingIds) }
-    }
-    
-    fun getBookingInfoByOfferId(offerId: Long): List<BookingInfo> {
-        return converter.listToInfo { repository.findByOfferId(offerId) }
-    }
-
-    fun getBookingInfoByOfferIds(offerIds: Set<Long>): List<BookingInfo> {
-        return converter.listToInfo { repository.findByOfferIdIn(offerIds) }
     }
 
 
@@ -153,15 +143,5 @@ class BookingService(
         return BookingDetails(data.convert(), visitor)
     }
 
-    fun searchDetails(request: BookingSearchRequest, pageable: Pageable): Page<BookingSearchResult> {
-        val query = "%${request.query}%"
-        val page = repository.search(query, pageable)
-        val visitorIds = page.content.map { it.visitorId }.toSet()
-        val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
-        val offerIds = page.content.map { it.offerId }.toSet()
-        val offers = offerService.getOffer(offerIds).associateBy { it.id }
-
-        return page.map { BookingSearchResult(offers[it.offerId]!!, it.convert(), visitors[it.visitorId]!!) }
-    }
 
 }

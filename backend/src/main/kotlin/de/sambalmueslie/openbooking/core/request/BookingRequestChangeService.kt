@@ -64,7 +64,7 @@ class BookingRequestChangeService(
 
         val relations = relationRepository.getByBookingRequestId(data.id)
         val bookingIds = relations.map { it.bookingId }.toSet()
-        val bookings = bookingService.getBookings(bookingIds)
+        val bookings = bookingService.getByIds(bookingIds)
 
         val visitor = visitorService.update(data.visitorId, request)
         bookings.forEach { bookingService.update(it.id, visitor, it.status) }
@@ -76,11 +76,11 @@ class BookingRequestChangeService(
 
         val relations = relationRepository.getByBookingRequestId(data.id)
         val bookingIds = relations.map { it.bookingId }.toSet()
-        val requestBookings = bookingService.getBookings(bookingIds).groupBy { it.offerId }
+        val requestBookings = bookingService.getByIds(bookingIds).groupBy { it.offerId }
 
         val offerIds = requestBookings.keys
-        val offerBookings = bookingService.getBookingsByOfferId(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getOffer(offerIds)
+        val offerBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+        val suitableOffers = offerService.getByIds(offerIds)
             .filter {
                 isEnoughSpaceAvailable(request, current, it, requestBookings[it.id] ?: emptyList(), offerBookings[it.id] ?: emptyList())
             }

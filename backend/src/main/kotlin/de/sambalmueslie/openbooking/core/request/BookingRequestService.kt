@@ -76,8 +76,8 @@ class BookingRequestService(
 
     override fun create(request: BookingRequestChangeRequest): BookingRequest {
         val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getBookingsByOfferId(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getOffer(offerIds).filter {
+        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+        val suitableOffers = offerService.getByIds(offerIds).filter {
             isEnoughSpaceAvailable(request, it, existingBookings[it.id] ?: emptyList())
         }
         if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
@@ -206,7 +206,7 @@ class BookingRequestService(
     }
 
     fun findByOfferId(offerId: Long): List<BookingRequestInfo> {
-        val bookings = bookingService.getBookingsByOfferId(setOf(offerId)).associateBy { it.id }
+        val bookings = bookingService.getByOfferId(offerId).associateBy { it.id }
         val relations = relationRepository.getByBookingIdIn(bookings.keys)
         return converter.list { repository.findByIdIn(relations.map { it.bookingRequestId }.toSet()) }
     }

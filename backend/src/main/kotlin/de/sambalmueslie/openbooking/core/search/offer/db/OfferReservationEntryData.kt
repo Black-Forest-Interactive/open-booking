@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 
 @Serializable
 data class OfferReservationEntryData(
-    val reservationId: Long,
-    val status: ReservationStatus,
+    var reservationId: Long,
+    var status: ReservationStatus,
     // visitor
     var visitorId: Long,
     var type: VisitorType,
