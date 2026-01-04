@@ -1,4 +1,4 @@
-package de.sambalmueslie.openbooking.core.search.reservation
+package de.sambalmueslie.openbooking.core.search.reservation.db
 
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferEntry

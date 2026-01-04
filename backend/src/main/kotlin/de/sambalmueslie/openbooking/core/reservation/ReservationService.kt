@@ -154,6 +154,14 @@ class ReservationService(
         return converter.relationsToDetails { relationRepository.findByIdOfferIdIn(offerIds) }
     }
 
+    fun getReservationInfoByOfferId(offerId: Long): List<ReservationInfo> {
+        return converter.relationsToInfo { relationRepository.findByIdOfferId(offerId) }
+    }
+
+    fun getReservationInfoByOfferIds(offerIds: Set<Long>): List<ReservationInfo> {
+        return converter.relationsToInfo { relationRepository.findByIdOfferIdIn(offerIds) }
+    }
+
     fun confirm(id: Long, bookingId: Long, content: ReservationConfirmationContent): GenericRequestResult {
 //        val relations = relationRepository.getByBookingRequestId(id)
 //        if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)

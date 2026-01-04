@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.search.reservation
 import com.jillesvangurp.searchdsls.mappingdsl.FieldMappings
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationOfferEntry
 import de.sambalmueslie.openbooking.core.search.common.FieldMappingProvider
+import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import jakarta.inject.Singleton
 
 @Singleton

@@ -11,6 +11,7 @@ interface ReservationOfferRelationRepository : CrudRepository<ReservationOfferRe
     fun findByIdReservationIdOrderByPriority(reservationId: Long): List<ReservationOfferRelation>
     fun findByIdReservationIdIn(reservationIds: List<Long>): List<ReservationOfferRelation>
 
+    fun findByIdOfferId(offerIds: Long): List<ReservationOfferRelation>
     fun findByIdOfferIdIn(offerIds: Set<Long>): List<ReservationOfferRelation>
 
     fun deleteByIdReservationId(reservationId: Long)

@@ -6,6 +6,7 @@ import com.jillesvangurp.searchdsls.querydsl.match
 import com.jillesvangurp.searchdsls.querydsl.matchAll
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
+import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 

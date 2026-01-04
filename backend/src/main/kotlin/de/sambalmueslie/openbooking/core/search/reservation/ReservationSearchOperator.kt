@@ -14,6 +14,8 @@ import de.sambalmueslie.openbooking.core.search.common.SearchRequest
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchEntry
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchResponse
+import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationOfferEntryData
+import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton

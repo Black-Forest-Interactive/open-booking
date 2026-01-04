@@ -40,6 +40,10 @@ class ReservationConverter(
         return info(data)
     }
 
+    fun relationsToInfo(provider: () -> List<ReservationOfferRelation>): List<ReservationInfo> {
+        return relationInfo(provider.invoke())
+    }
+
     private fun info(data: Page<ReservationData>): Page<ReservationInfo> {
         val result = info(data.content)
         return Page.of(result, data.pageable, data.totalSize)
@@ -56,6 +60,12 @@ class ReservationConverter(
         val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
 
         return data.mapNotNull { info(it, relations, offers, visitors) }.sortedBy { it.visitor.verification.status.order }
+    }
+
+    private fun relationInfo(relations: List<ReservationOfferRelation>): List<ReservationInfo> {
+        val reservationIds = relations.map { it.id.reservationId }.toSet()
+        val data = repository.findByIdIn(reservationIds)
+        return info(data)
     }
 
     private fun info(data: ReservationData, relations: Map<Long, List<ReservationOfferRelation>>, offers: Map<Long, Offer>, visitors: Map<Long, Visitor>): ReservationInfo? {

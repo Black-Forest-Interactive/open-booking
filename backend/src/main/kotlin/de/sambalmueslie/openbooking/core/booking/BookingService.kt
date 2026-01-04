@@ -19,9 +19,12 @@ import java.util.*
 
 @Singleton
 class BookingService(
+    private val repository: BookingRepository,
+
     private val offerService: OfferService,
     private val visitorService: VisitorService,
-    private val repository: BookingRepository,
+
+    private val converter: BookingConverter,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingData>(repository, cacheService, Booking::class, logger) {
@@ -98,22 +101,17 @@ class BookingService(
     }
 
     fun getBookingInfos(bookingIds: Set<Long>): List<BookingInfo> {
-        val data = repository.findByIdIn(bookingIds)
-        val offerIds = data.map { it.offerId }.toSet()
-        val offer = offerService.getOffer(offerIds).associateBy { it.id }
-        val confirmedBookings = repository.findByOfferIdInAndStatus(offerIds, BookingStatus.CONFIRMED).groupBy { it.offerId }
-        return data.mapNotNull { info(it, offer[it.offerId], confirmedBookings[it.offerId] ?: emptyList()) }
+        return converter.listToInfo { repository.findByIdIn(bookingIds) }
+    }
+    
+    fun getBookingInfoByOfferId(offerId: Long): List<BookingInfo> {
+        return converter.listToInfo { repository.findByOfferId(offerId) }
     }
 
-
-    private fun info(data: BookingData, offer: Offer?, confirmedBookings: List<BookingData>): BookingInfo? {
-        if (offer == null) return null
-        val spaceConfirmed = confirmedBookings.sumOf { visitorService.get(it.visitorId)?.size ?: 0 }
-        val spaceAvailable = (offer.maxPersons - spaceConfirmed).coerceAtLeast(0)
-
-        val timestamp = data.updated ?: data.created
-        return BookingInfo(data.id, offer, spaceAvailable, spaceConfirmed, data.status, timestamp)
+    fun getBookingInfoByOfferIds(offerIds: Set<Long>): List<BookingInfo> {
+        return converter.listToInfo { repository.findByOfferIdIn(offerIds) }
     }
+
 
     override fun deleteDependencies(data: BookingData) {
         val amount = repository.countByVisitorId(data.visitorId)

@@ -4,17 +4,16 @@ package de.sambalmueslie.openbooking.core.offer
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.label.LabelService
 import de.sambalmueslie.openbooking.core.offer.api.*
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
-import de.sambalmueslie.openbooking.core.offer.db.Queries
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
-import io.micronaut.data.repository.jpa.criteria.PredicateSpecification
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
@@ -51,7 +50,11 @@ class OfferService(
     }
 
     fun getAllInfos(pageable: Pageable): Page<OfferInfo> {
-        return converter.info(repository.findAllOrderByStart(pageable))
+        return converter.pageToInfo { repository.findAllOrderByStart(pageable) }
+    }
+
+    fun getInfo(id: Long): OfferInfo? {
+        return converter.dataToInfo { repository.findByIdOrNull(id) }
     }
 
     override fun createData(request: OfferChangeRequest): OfferData {
@@ -159,35 +162,6 @@ class OfferService(
             date = date.plusDays(1)
         }
         return GenericRequestResult(true, MSG_OFFER_RANGE_SUCCESS)
-    }
-
-    fun filter(request: OfferFilterRequest, pageable: Pageable): Page<Offer> {
-        return filterData(request, pageable).map { it.convert() }
-    }
-
-    fun filterInfo(request: OfferFilterRequest, pageable: Pageable): Page<OfferInfo> {
-        return converter.info(filterData(request, pageable))
-    }
-
-    private fun filterData(request: OfferFilterRequest, pageable: Pageable): Page<OfferData> {
-        val from: LocalDate? = request.from
-        val to: LocalDate? = request.to
-        val active: Boolean? = request.active
-
-        if (from != null && to != null && active == null) {
-            return repository.findAllByStartGreaterThanEqualsAndFinishLessThanOrderByStart(from.atStartOfDay(), to.atStartOfDay().plusDays(1), pageable)
-        }
-
-        val predicates = mutableListOf<PredicateSpecification<OfferData>>()
-        if (active != null) predicates.add(Queries.active(active))
-        if (from != null) predicates.add(Queries.from(from))
-        if (to != null) predicates.add(Queries.to(to))
-
-        if (predicates.isEmpty()) return repository.findAllOrderByStart(pageable)
-
-        val spec: PredicateSpecification<OfferData> = PredicateSpecification.where(
-            predicates.reduce { acc, spec -> acc.and(spec) })
-        return repository.findAll(spec, pageable)
     }
 
 

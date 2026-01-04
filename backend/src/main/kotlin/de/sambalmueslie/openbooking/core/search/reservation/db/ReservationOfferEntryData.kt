@@ -1,4 +1,4 @@
-package de.sambalmueslie.openbooking.core.search.reservation
+package de.sambalmueslie.openbooking.core.search.reservation.db
 
 import kotlinx.serialization.Serializable
 
