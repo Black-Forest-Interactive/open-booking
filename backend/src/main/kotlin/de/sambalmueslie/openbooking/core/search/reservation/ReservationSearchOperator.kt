@@ -13,7 +13,6 @@ import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetail
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
-import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchEntry
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchResponse
 import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationOfferEntryData
@@ -33,7 +32,7 @@ open class ReservationSearchOperator(
     config: OpenSearchConfig,
     openSearch: SearchClientFactory
 
-) : BaseOpenSearchOperator<ReservationSearchEntry, ReservationSearchRequest, ReservationSearchResponse>(openSearch, "reservation", config, logger) {
+) : BaseOpenSearchOperator<ReservationDetails, ReservationSearchRequest, ReservationSearchResponse>(openSearch, "reservation", config, logger) {
     companion object {
         private val logger = LoggerFactory.getLogger(ReservationSearchOperator::class.java)
     }

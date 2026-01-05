@@ -71,17 +71,14 @@
     </div>
     @if (!collapsed()) {
 
-      <!-- Bookings List -->
+      <!-- Reservations List -->
       <div class="p-3 max-h-96 overflow-y-auto bg-gray-50 ">
         @if (reservations().length === 0) {
           <p class="text-gray-500 text-center py-3 text-sm">No reservations yet</p>
         } @else {
           <div class="flex flex-col gap-1">
             @for (reservation of reservations(); track reservation.reservationId) {
-              <app-dashboard-content-entry-reservation
-                [reservation]="reservation"
-                (confirmReservation)="handleConfirmReservation($event)"
-              />
+              <app-dashboard-content-entry-reservation [reservation]="reservation"/>
             }
           </div>
         }

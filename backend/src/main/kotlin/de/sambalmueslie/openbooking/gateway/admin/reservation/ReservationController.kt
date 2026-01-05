@@ -17,6 +17,12 @@ class ReservationController(private val gateway: ReservationGateway) {
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
 
+    @Get("/{id}/info")
+    fun getInfo(auth: Authentication, id: Long) = gateway.getInfo(auth, id)
+
+    @Get("/{id}/details")
+    fun getDetails(auth: Authentication, id: Long) = gateway.getDetails(auth, id)
+
     @Post("search")
     fun search(auth: Authentication, @Body request: ReservationSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
 

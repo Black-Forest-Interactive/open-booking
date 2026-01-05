@@ -3,7 +3,6 @@
   @for (offer of content(); track offer.info.offer.id) {
     <app-dashboard-content-entry
       [data]="offer"
-      (confirmReservation)="handleConfirmReservation($event)"
       class="bg-white rounded-lg shadow-sm overflow-hidden border-l-8"
       [style.border-color]="offer.info.label?.color ?? ''"
     />

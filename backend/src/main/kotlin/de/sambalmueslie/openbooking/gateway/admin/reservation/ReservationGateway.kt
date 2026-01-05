@@ -4,6 +4,8 @@ import de.sambalmueslie.openbooking.common.checkPermission
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationInfoAssembler
 import de.sambalmueslie.openbooking.core.search.reservation.ReservationSearchOperator
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_RESERVATION_ADMIN
@@ -14,10 +16,14 @@ import jakarta.inject.Singleton
 @Singleton
 class ReservationGateway(
     private val service: ReservationService,
+    private val infoAssembler: ReservationInfoAssembler,
+    private val detailsAssembler: ReservationDetailsAssembler,
     private val searchOperator: ReservationSearchOperator,
 ) {
     fun getAll(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getAll(pageable) }
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.get(id) }
+    fun getInfo(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { infoAssembler.get(id) }
+    fun getDetails(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { detailsAssembler.get(id) }
     fun search(auth: Authentication, request: ReservationSearchRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { searchOperator.search(request, pageable) }
 
     fun create(auth: Authentication, request: ReservationChangeRequest) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.create(request) }

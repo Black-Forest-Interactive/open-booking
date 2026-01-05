@@ -1,8 +1,8 @@
 import {Component, computed, input, output, signal} from '@angular/core';
 import {
   ReservationConfirmationContent,
+  ReservationDetails,
   ReservationOfferEntry,
-  ReservationSearchEntry,
   ReservationStatus,
   VisitorType
 } from "@open-booking/core";
@@ -46,7 +46,7 @@ const classes: Record<string, string> = {
   styleUrl: './reservation-content-entry.component.scss',
 })
 export class ReservationContentEntryComponent {
-  data = input.required<ReservationSearchEntry>()
+  data = input.required<ReservationDetails>()
   reloading = input.required()
   reload = output<boolean>()
 

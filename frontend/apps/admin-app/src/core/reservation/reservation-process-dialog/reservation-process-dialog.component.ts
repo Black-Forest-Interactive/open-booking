@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, resource} from '@angular/core';
-import {ReservationConfirmationContent, ReservationOfferEntry, ReservationSearchEntry} from "@open-booking/core";
+import {ReservationConfirmationContent, ReservationDetails, ReservationOfferEntry} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {ReservationService} from "@open-booking/admin";
@@ -86,7 +86,7 @@ export class ReservationProcessDialogComponent {
 }
 
 export interface ReservationProcessDialogData {
-  info: ReservationSearchEntry,
+  info: ReservationDetails,
   offer: ReservationOfferEntry,
   confirmation: boolean
 }

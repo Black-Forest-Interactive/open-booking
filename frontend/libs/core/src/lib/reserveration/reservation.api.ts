@@ -66,15 +66,9 @@ export class ReservationSearchRequest {
 }
 
 export interface ReservationSearchResponse {
-  result: Page<ReservationSearchEntry>
+  result: Page<ReservationDetails>
 }
 
-export interface ReservationSearchEntry {
-  reservation: Reservation,
-  visitor: Visitor,
-  offers: ReservationOfferEntry[],
-  timestamp: string
-}
 
 export const ReservationStatus = {
   UNKNOWN: 'UNKNOWN',

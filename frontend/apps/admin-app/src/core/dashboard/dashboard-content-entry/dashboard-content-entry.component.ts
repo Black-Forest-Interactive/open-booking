@@ -1,10 +1,10 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, computed, input, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {OfferReservationEntry, OfferSearchEntry, ReservationStatus} from "@open-booking/core";
+import {OfferSearchEntry, ReservationStatus} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
 import {
   DashboardContentEntryReservationComponent
@@ -34,8 +34,6 @@ export class DashboardContentEntryComponent {
 
   collapsed = signal<boolean>(false)
 
-  confirmReservation = output<OfferReservationEntry>()
-
   constructor(private toast: HotToastService) {
   }
 
@@ -53,7 +51,4 @@ export class DashboardContentEntryComponent {
     this.toast.error("Select guide is not implemented yet")
   }
 
-  protected handleConfirmReservation(reservation: OfferReservationEntry) {
-    this.confirmReservation.emit(reservation)
-  }
 }

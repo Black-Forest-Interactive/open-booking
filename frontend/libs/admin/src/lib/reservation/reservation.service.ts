@@ -5,6 +5,7 @@ import {
   Reservation,
   ReservationChangeRequest,
   ReservationConfirmationContent,
+  ReservationDetails,
   ReservationInfo,
   ReservationSearchRequest,
   ReservationSearchResponse,
@@ -28,6 +29,14 @@ export class ReservationService extends BaseService {
 
   getReservation(id: number): Observable<Reservation> {
     return this.get('' + id)
+  }
+
+  getReservationDetails(id: number): Observable<ReservationDetails> {
+    return this.get('' + id + '/details')
+  }
+
+  getReservationInfo(id: number): Observable<ReservationInfo> {
+    return this.get('' + id + '/info')
   }
 
   searchReservation(request: ReservationSearchRequest, page: number, size: number): Observable<ReservationSearchResponse> {

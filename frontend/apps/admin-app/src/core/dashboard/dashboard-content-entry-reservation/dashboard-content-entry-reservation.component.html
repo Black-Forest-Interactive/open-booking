@@ -29,13 +29,10 @@
         </mat-icon>
       }
 
-      <!-- Confirm Button -->
-      @if (!isConfirmed()) {
-        <button matButton="tonal" color="primary" (click)="handleConfirm()"
-                class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
-          Confirm
-        </button>
-      }
+      <!-- Details Button -->
+      <button matButton="tonal" color="primary" (click)="showDetails()" class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
+        Details
+      </button>
 
       <!-- Expand Button -->
       <button matIconButton (click)="toggleExpand()">
