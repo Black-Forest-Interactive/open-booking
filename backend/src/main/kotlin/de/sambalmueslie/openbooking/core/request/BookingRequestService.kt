@@ -1,8 +1,12 @@
 package de.sambalmueslie.openbooking.core.request
 
 
-import de.sambalmueslie.openbooking.common.*
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.GenericRequestResult
+import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.config.AppConfig
+import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
@@ -43,7 +47,7 @@ class BookingRequestService(
     private val config: AppConfig,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, BookingRequest, BookingRequestChangeRequest, BookingRequestData>(repository, cacheService, BookingRequest::class, logger) {
+) : GenericCrudService<Long, BookingRequest, BookingRequestChangeRequest, BookingRequestChangeListener, BookingRequestData>(repository, cacheService, BookingRequest::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(BookingRequestService::class.java)
@@ -56,18 +60,9 @@ class BookingRequestService(
         const val MSG_UPDATE_REQUEST_SUCCESS = "REQUEST.MESSAGE.UPDATE.SUCCESS"
     }
 
-    private val listeners = mutableSetOf<BookingRequestChangeListener>()
-    fun register(listener: BookingRequestChangeListener) {
-        listeners.add(listener)
-    }
-
-    fun unregister(listener: BookingRequestChangeListener) {
-        listeners.remove(listener)
-    }
-
 
     init {
-        bookingService.register(object : BusinessObjectChangeListener<Long, Booking> {
+        bookingService.register(object : BookingChangeListener {
             override fun handleDeleted(obj: Booking) {
                 relationRepository.deleteByBookingId(obj.id)
             }
@@ -156,8 +151,7 @@ class BookingRequestService(
         val relations = relationRepository.getByBookingRequestId(id)
         if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
 
-        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) }
-            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
 
         relations.forEach {
             if (it.bookingId == bookingId) {
@@ -167,19 +161,17 @@ class BookingRequestService(
             }
         }
 
-
-        listeners.forEachWithTryCatch { it.confirmed(result, content) }
+        notify { it.confirmed(result, content) }
         return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
     }
 
     fun deny(id: Long, content: BookingConfirmationContent): GenericRequestResult {
-        val result = patchData(id) { it.setStatus(BookingRequestStatus.DENIED, timeProvider.now()) }
-            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+        val result = patchData(id) { it.setStatus(BookingRequestStatus.DENIED, timeProvider.now()) } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
 
         val relations = relationRepository.getByBookingRequestId(id)
         relations.forEach { bookingService.denial(it.bookingId) }
 
-        listeners.forEachWithTryCatch { it.denied(result, content) }
+        notify { it.denied(result, content) }
         return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
     }
 

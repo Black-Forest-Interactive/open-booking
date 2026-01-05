@@ -48,7 +48,7 @@ import {DateTime} from "luxon";
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
-  selectedStatus = signal<ReservationStatus[]>([])
+  selectedStatus = signal<ReservationStatus[]>([ReservationStatus.UNCONFIRMED])
   dateFrom = signal<string | null | undefined>(null)
   dateTo = signal<string | null | undefined>(null)
 

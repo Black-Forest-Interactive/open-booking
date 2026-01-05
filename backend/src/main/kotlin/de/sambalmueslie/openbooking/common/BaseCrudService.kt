@@ -3,30 +3,34 @@ package de.sambalmueslie.openbooking.common
 import org.slf4j.Logger
 
 
-abstract class BaseCrudService<T, O : BusinessObject<T>, R : BusinessObjectChangeRequest>(
+abstract class BaseCrudService<T, O : BusinessObject<T>, R : BusinessObjectChangeRequest, L : BusinessObjectChangeListener<T, O>>(
     private val logger: Logger
-) : CrudService<T, O, R> {
+) : CrudService<T, O, R, L> {
 
-    private val listeners = mutableSetOf<BusinessObjectChangeListener<T, O>>()
+    private val listeners = mutableSetOf<L>()
 
-    override fun register(listener: BusinessObjectChangeListener<T, O>) {
+    override fun register(listener: L) {
         listeners.add(listener)
     }
 
-    override fun unregister(listener: BusinessObjectChangeListener<T, O>) {
+    override fun unregister(listener: L) {
         listeners.remove(listener)
     }
 
     protected fun notifyCreated(obj: O) {
-        listeners.forEachWithTryCatch { it.handleCreated(obj) }
+        notify { it.handleCreated(obj) }
     }
 
     protected fun notifyUpdated(obj: O) {
-        listeners.forEachWithTryCatch { it.handleUpdated(obj) }
+        notify { it.handleUpdated(obj) }
     }
 
     protected fun notifyDeleted(obj: O) {
-        listeners.forEachWithTryCatch { it.handleDeleted(obj) }
+        notify { it.handleDeleted(obj) }
+    }
+
+    protected fun notify(action: (L) -> Unit) {
+        listeners.forEachWithTryCatch { action.invoke(it) }
     }
 }
 

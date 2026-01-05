@@ -18,7 +18,7 @@ class LabelService(
     private val repository: LabelRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Label, LabelChangeRequest, LabelData>(repository, cacheService, Label::class, logger) {
+) : GenericCrudService<Long, Label, LabelChangeRequest, LabelChangeListener, LabelData>(repository, cacheService, Label::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(LabelService::class.java)

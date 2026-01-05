@@ -4,9 +4,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.ids
 import com.jillesvangurp.ktsearch.total
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
@@ -47,7 +47,7 @@ open class OfferSearchOperator(
 
 
     init {
-        service.register(object : BusinessObjectChangeListener<Long, Offer> {
+        service.register(object : OfferChangeListener {
             override fun handleCreated(obj: Offer) {
                 handleChanged(obj)
             }

@@ -1,11 +1,12 @@
 package de.sambalmueslie.openbooking.core.info
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
+import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import io.micronaut.scheduling.annotation.Scheduled
@@ -28,7 +29,7 @@ class InfoService(
 
 
     init {
-        bookingService.register(object : BusinessObjectChangeListener<Long, Booking> {
+        bookingService.register(object : BookingChangeListener {
             override fun handleCreated(obj: Booking) {
                 updateCache(obj)
             }
@@ -42,7 +43,7 @@ class InfoService(
             }
         })
 
-        offerService.register(object : BusinessObjectChangeListener<Long, Offer> {
+        offerService.register(object : OfferChangeListener {
             override fun handleCreated(obj: Offer) {
                 updateCache(obj)
             }

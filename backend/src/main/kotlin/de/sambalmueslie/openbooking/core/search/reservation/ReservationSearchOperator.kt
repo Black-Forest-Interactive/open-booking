@@ -3,8 +3,8 @@ package de.sambalmueslie.openbooking.core.search.reservation
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.total
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
+import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
@@ -43,7 +43,7 @@ open class ReservationSearchOperator(
 
 
     init {
-        service.register(object : BusinessObjectChangeListener<Long, Reservation> {
+        service.register(object : ReservationChangeListener {
             override fun handleCreated(obj: Reservation) {
                 handleChanged(obj)
             }

@@ -17,7 +17,7 @@ class GuideService(
     private val repository: GuideRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Guide, GuideChangeRequest, GuideData>(repository, cacheService, Guide::class, logger) {
+) : GenericCrudService<Long, Guide, GuideChangeRequest, GuideChangeListener, GuideData>(repository, cacheService, Guide::class, logger) {
 
 
     companion object {

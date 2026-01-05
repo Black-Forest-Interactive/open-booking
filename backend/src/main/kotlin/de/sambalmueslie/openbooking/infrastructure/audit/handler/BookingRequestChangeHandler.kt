@@ -1,9 +1,10 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.handler
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.core.request.BookingRequestChangeListener
 import de.sambalmueslie.openbooking.core.request.BookingRequestService
+import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
@@ -15,7 +16,7 @@ class BookingRequestChangeHandler(
     source: BookingRequestService,
     private val service: AuditLogEntryService,
     private val timeProvider: TimeProvider
-) : BusinessObjectChangeListener<Long, BookingRequest> {
+) : BookingRequestChangeListener {
 
     init {
         source.register(this)
@@ -31,6 +32,14 @@ class BookingRequestChangeHandler(
 
     override fun handleDeleted(obj: BookingRequest) {
         handleChange(obj, "BOOKING REQUEST DELETED")
+    }
+
+    override fun confirmed(request: BookingRequest, content: BookingConfirmationContent) {
+        handleChange(request, "BOOKING REQUEST CONFIRMED")
+    }
+
+    override fun denied(request: BookingRequest, content: BookingConfirmationContent) {
+        handleChange(request, "BOOKING REQUEST DENIED")
     }
 
     private fun handleChange(obj: BookingRequest, message: String) {

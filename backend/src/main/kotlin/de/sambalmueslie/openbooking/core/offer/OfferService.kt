@@ -32,7 +32,7 @@ class OfferService(
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferData>(repository, cacheService, Offer::class, logger) {
+) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferChangeListener, OfferData>(repository, cacheService, Offer::class, logger) {
 
 
     companion object {

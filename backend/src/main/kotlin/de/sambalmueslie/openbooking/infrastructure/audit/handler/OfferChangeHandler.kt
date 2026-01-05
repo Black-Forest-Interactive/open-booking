@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.handler
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
@@ -15,7 +15,7 @@ class OfferChangeHandler(
     source: OfferService,
     private val service: AuditLogEntryService,
     private val timeProvider: TimeProvider
-) : BusinessObjectChangeListener<Long, Offer> {
+) : OfferChangeListener {
 
     init {
         source.register(this)

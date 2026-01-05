@@ -48,4 +48,8 @@ class ReservationRelationService(
         relationRepository.deleteByIdReservationId(data.id)
     }
 
+    fun delete(data: List<ReservationOfferRelation>) {
+        relationRepository.deleteAll(data)
+    }
+
 }

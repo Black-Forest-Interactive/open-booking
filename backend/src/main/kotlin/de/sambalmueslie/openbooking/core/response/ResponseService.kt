@@ -21,7 +21,7 @@ class ResponseService(
     private val resolver: ResponseResolver,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Response, ResponseChangeRequest, ResponseData>(repository, cacheService, Response::class, logger) {
+) : GenericCrudService<Long, Response, ResponseChangeRequest, ResponseChangeListener, ResponseData>(repository, cacheService, Response::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(ResponseService::class.java)

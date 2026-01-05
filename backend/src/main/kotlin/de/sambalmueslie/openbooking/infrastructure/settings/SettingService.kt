@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
 @Singleton
-class SettingsService(
+class SettingService(
     private val repository: SettingsRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Setting, SettingChangeRequest, SettingData>(repository, cacheService, Setting::class, logger) {
+) : GenericCrudService<Long, Setting, SettingChangeRequest, SettingChangeListener, SettingData>(repository, cacheService, Setting::class, logger) {
 
     private val keyCache: LoadingCache<String, Setting?> = cacheService.register("Settings-Key") {
         Caffeine.newBuilder()
@@ -31,7 +31,7 @@ class SettingsService(
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(SettingsService::class.java)
+        private val logger = LoggerFactory.getLogger(SettingService::class.java)
     }
 
     override fun getAll(pageable: Pageable): Page<Setting> {

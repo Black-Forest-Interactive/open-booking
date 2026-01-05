@@ -19,7 +19,6 @@
     <logger name="io.micronaut.core.io.service" level="INFO"/>
     <logger name="de.sambalmueslie" level="INFO"/>
     <logger name="de.sambalmueslie.openbooking.common" level="DEBUG"/>
-    <logger name="de.sambalmueslie.openbooking.IndexController" level="INFO"/>
     <logger name="de.sambalmueslie.openbooking.backend.mail.external.MailSender" level="DEBUG"/>
     <logger name="de.sambalmueslie.openbooking.frontend.user.logic" level="DEBUG"/>
 </configuration>

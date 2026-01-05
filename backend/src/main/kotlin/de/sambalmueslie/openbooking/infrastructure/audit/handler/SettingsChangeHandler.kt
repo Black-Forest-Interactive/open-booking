@@ -1,21 +1,21 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.handler
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
-import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingChangeListener
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.Setting
 import io.micronaut.context.annotation.Context
 
 @Context
 class SettingsChangeHandler(
-    source: SettingsService,
+    source: SettingService,
     private val service: AuditLogEntryService,
     private val timeProvider: TimeProvider
-) : BusinessObjectChangeListener<Long, Setting> {
+) : SettingChangeListener {
 
     init {
         source.register(this)

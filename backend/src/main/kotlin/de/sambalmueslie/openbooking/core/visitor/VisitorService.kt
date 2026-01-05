@@ -20,7 +20,7 @@ class VisitorService(
     private val repository: VisitorRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Visitor, VisitorChangeRequest, VisitorData>(repository, cacheService, Visitor::class, logger) {
+) : GenericCrudService<Long, Visitor, VisitorChangeRequest, VisitorChangeListener, VisitorData>(repository, cacheService, Visitor::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(VisitorService::class.java)
