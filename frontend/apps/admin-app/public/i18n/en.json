@@ -379,10 +379,35 @@
         "Label": "Zip Code"
       }
     },
+    "Offer": {
+      "Title": "Available Offers",
+      "Label": "Offer",
+      "Single": "offer",
+      "Multiple": "offers",
+      "Inactive": "Inactive",
+      "Stats": {
+        "Available": "Available",
+        "Booked": "Booked",
+        "Reserved": "Reserved",
+        "CurrentGroup": "Current Group"
+      },
+      "Capacity": {
+        "Label": "Capacity"
+      },
+      "Error": {
+        "Inactive": "Offer is inactive",
+        "InsufficientCapacity": "Insufficient capacity (need {{need}}, available {{available}})"
+      },
+      "Info": {
+        "AlreadyConfirmed": "Reservation already confirmed",
+        "ConfirmationEffect": "Confirming will move {{size}} people from reserved to booked. {{remaining}} spaces will remain available."
+      }
+    },
     "Status": {
       "CONFIRMED": "Confirmed",
       "Title": "Status",
       "UNCONFIRMED": "Unconfirmed",
+      "CANCELLED": "Cancelled",
       "UNKNOWN": "Unknown"
     },
     "Table": {

@@ -1,7 +1,7 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {ReservationService} from "@open-booking/admin";
 import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
-import {ReservationSearchRequest} from "@open-booking/core";
+import {ReservationSearchRequest, ReservationStatus} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
@@ -15,8 +15,9 @@ import {ReservationContentComponent} from "./reservation-content/reservation-con
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-reservation',
@@ -38,7 +39,8 @@ import {MatInputModule} from "@angular/material/input";
     LowerCasePipe,
     ReservationContentComponent,
     FormsModule,
-    DatePipe
+    DatePipe,
+    ReactiveFormsModule
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',
@@ -46,9 +48,14 @@ import {MatInputModule} from "@angular/material/input";
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
-  selectedStatus = signal<string[]>([])
-  dateFrom = signal<Date | null>(null)
-  dateTo = signal<Date | null>(null)
+  selectedStatus = signal<ReservationStatus[]>([])
+  dateFrom = signal<string | null | undefined>(null)
+  dateTo = signal<string | null | undefined>(null)
+
+  range = new FormGroup({
+    start: new FormControl<DateTime | null>(null, Validators.required),
+    end: new FormControl<DateTime | null>(null, Validators.required),
+  })
 
   pageNumber = signal(0)
   pageSize = signal(25)
@@ -56,7 +63,7 @@ export class ReservationComponent {
   private reservationsCriteria = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize(),
-    request: new ReservationSearchRequest(this.fullTextSearch())
+    request: new ReservationSearchRequest(this.fullTextSearch(), this.selectedStatus(), this.dateFrom(), this.dateTo())
   }))
 
 
@@ -76,6 +83,7 @@ export class ReservationComponent {
   )
 
   constructor(private service: ReservationService) {
+    this.range.valueChanges.subscribe(d => this.handleSelectionChange())
   }
 
   protected handleSearch(text: string) {
@@ -85,6 +93,22 @@ export class ReservationComponent {
   protected handlePageChange(event: PageEvent) {
     this.pageNumber.set(event.pageIndex)
     this.pageSize.set(event.pageSize)
+  }
+
+  protected handleSelectionChange() {
+    let start = this.range.get('start')?.value
+    let end = this.range.get('end')?.value
+    if (this.range.invalid) return
+    if (start != null && end != null) {
+      this.pageNumber.set(0)
+      this.applyFilter()
+    }
+  }
+
+  protected applyFilter() {
+    let filter = this.range.value
+    this.dateFrom.set(filter.start?.toISODate())
+    this.dateTo.set(filter.end?.toISODate())
   }
 
   protected clearFilters() {
@@ -105,4 +129,6 @@ export class ReservationComponent {
   clearDateTo() {
     this.dateTo.set(null)
   }
+
+  protected readonly ReservationStatus = ReservationStatus;
 }

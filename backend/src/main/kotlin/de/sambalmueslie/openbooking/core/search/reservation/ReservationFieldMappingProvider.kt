@@ -28,7 +28,12 @@ class ReservationFieldMappingProvider : FieldMappingProvider {
             keyword(ReservationSearchEntryData::city)
             keyword(ReservationSearchEntryData::zip)
             text(ReservationSearchEntryData::phone)
-            text(ReservationSearchEntryData::email)
+            // Email with multi-field: text for fuzzy search + keyword for exact/prefix
+            text(ReservationSearchEntryData::email) {
+                fields {
+                    keyword("keyword")
+                }
+            }
             keyword(ReservationSearchEntryData::verificationStatus)
             date(ReservationSearchEntryData::verificationTimestamp)
             // offer

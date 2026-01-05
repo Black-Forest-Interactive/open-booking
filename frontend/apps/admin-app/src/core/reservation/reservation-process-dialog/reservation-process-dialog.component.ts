@@ -43,8 +43,8 @@ export class ReservationProcessDialogComponent {
   loading = this.resource.isLoading
   response = computed(() => this.resource.value())
 
-  title = (this.data.confirmation) ? 'REQUEST.Dialog.Confirm.Title' : 'REQUEST.Dialog.Deny.Title'
-  confirm = (this.data.confirmation) ? 'REQUEST.Action.Confirm' : 'REQUEST.Action.Deny'
+  title = (this.data.confirmation) ? 'RESERVATION.Dialog.Confirm.Title' : 'RESERVATION.Dialog.Deny.Title'
+  confirm = (this.data.confirmation) ? 'RESERVATION.Action.Confirm' : 'RESERVATION.Action.Deny'
 
   fg: FormGroup
 

@@ -57,7 +57,10 @@ export class ReservationConfirmationContent {
 
 export class ReservationSearchRequest {
   constructor(
-    public fullTextSearch: String
+    public fullTextSearch: String,
+    public status: ReservationStatus[],
+    public from: string | null | undefined,
+    public to: string | null | undefined
   ) {
   }
 }

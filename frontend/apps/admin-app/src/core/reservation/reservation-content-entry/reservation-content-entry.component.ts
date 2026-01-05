@@ -3,6 +3,7 @@ import {
   ReservationConfirmationContent,
   ReservationOfferEntry,
   ReservationSearchEntry,
+  ReservationStatus,
   VisitorType
 } from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
@@ -17,6 +18,9 @@ import {ReservationService} from "@open-booking/admin";
 import {ReservationProcessDialogComponent} from "../reservation-process-dialog/reservation-process-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EMPTY, switchMap} from "rxjs";
+import {
+  ReservationContentEntryOfferComponent
+} from "../reservation-content-entry-offer/reservation-content-entry-offer.component";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -35,7 +39,8 @@ const classes: Record<string, string> = {
     MatDividerModule,
     MatTooltipModule,
     TranslatePipe,
-    DatePipe
+    DatePipe,
+    ReservationContentEntryOfferComponent
   ],
   templateUrl: './reservation-content-entry.component.html',
   styleUrl: './reservation-content-entry.component.scss',
@@ -132,4 +137,5 @@ export class ReservationContentEntryComponent {
 
   }
 
+  protected readonly ReservationStatus = ReservationStatus;
 }
