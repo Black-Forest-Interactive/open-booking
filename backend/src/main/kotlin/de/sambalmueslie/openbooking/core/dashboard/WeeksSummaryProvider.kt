@@ -2,11 +2,12 @@ package de.sambalmueslie.openbooking.core.dashboard
 
 
 import de.sambalmueslie.openbooking.common.PageableSequence
-import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DaySummary
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
+import de.sambalmueslie.openbooking.core.search.reservation.ReservationSearchOperator
+import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.DayOfWeek
@@ -17,7 +18,7 @@ import java.time.temporal.TemporalAdjusters
 @Singleton
 class WeeksSummaryProvider(
     private val offerService: OfferService,
-    private val bookingService: BookingService
+    private val searchService: ReservationSearchOperator
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(WeeksSummaryProvider::class.java)
@@ -27,12 +28,20 @@ class WeeksSummaryProvider(
         val firstOffer = offerService.getFirstOffer() ?: return emptyList()
         val lastOffer = offerService.getLastOffer() ?: return emptyList()
 
-        val bookingSequence = PageableSequence() { bookingService.getAll(it) }
-        val unconfirmedByOfferId = bookingSequence.filter { it.status == BookingStatus.UNCONFIRMED }.map { it.offerId to 1 }
-            .groupBy { it.first }.mapValues { v -> v.value.sumOf { it.second } }
+        val reservationRequest = ReservationSearchRequest("", listOf(ReservationStatus.UNCONFIRMED), null, null)
+        val reservationSequence = PageableSequence() { searchService.search(reservationRequest, it).result }
+        val unconfirmedByOfferId = mutableMapOf<Long, Int>()
+        reservationSequence.forEach {
+            it.offers.forEach { o ->
+                val current = unconfirmedByOfferId.getOrPut(o.offer.id) { 0 }
+                unconfirmedByOfferId[o.offer.id] = current + 1
+            }
+        }
 
         val offerSequence = PageableSequence() { offerService.getAll(it) }
-        val unconfirmedByDate = offerSequence.map { it.start.toLocalDate() to (unconfirmedByOfferId[it.id] ?: 0) }.toMap()
+        val unconfirmedByDate = offerSequence.map { it.start.toLocalDate() to (unconfirmedByOfferId[it.id] ?: 0) }
+            .groupBy { it.first }
+            .mapValues { it.value.sumOf { v -> v.second } }
 
         val from = firstOffer.start.toLocalDate()
         val to = lastOffer.start.toLocalDate()

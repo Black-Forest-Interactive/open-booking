@@ -34,12 +34,12 @@ class ReservationChangeHandler(
         handleChange(obj, "RESERVATION DELETED")
     }
 
-    override fun confirmed(request: Reservation, content: ReservationConfirmationContent) {
-        handleChange(request, "RESERVATION CONFIRMED")
+    override fun confirmed(reservation: Reservation, content: ReservationConfirmationContent) {
+        handleChange(reservation, "RESERVATION CONFIRMED")
     }
 
-    override fun denied(request: Reservation, content: ReservationConfirmationContent) {
-        handleChange(request, "RESERVATION DENIED")
+    override fun denied(reservation: Reservation, content: ReservationConfirmationContent) {
+        handleChange(reservation, "RESERVATION DENIED")
     }
 
     private fun handleChange(obj: Reservation, message: String) {

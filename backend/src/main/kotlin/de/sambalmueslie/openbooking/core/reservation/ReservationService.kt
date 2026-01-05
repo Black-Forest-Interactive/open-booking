@@ -197,4 +197,8 @@ class ReservationService(
         val data = repository.findByIdOrNull(id) ?: return ""
         return "${config.baseUrl}/confirm/email/${data.key}"
     }
+
+    fun getRelatedOffers(reservation: Reservation): List<Long> {
+        return relationService.getOrderByPriority(reservation).map { it.id.offerId }
+    }
 }

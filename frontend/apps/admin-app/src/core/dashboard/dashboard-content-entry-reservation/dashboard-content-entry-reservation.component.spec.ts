@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {DashboardContentEntryBookingComponent} from './dashboard-content-entry-booking.component';
+import {DashboardContentEntryReservationComponent} from './dashboard-content-entry-reservation.component';
 
 describe('DashboardContentEntryBookingComponent', () => {
-  let component: DashboardContentEntryBookingComponent;
-  let fixture: ComponentFixture<DashboardContentEntryBookingComponent>;
+  let component: DashboardContentEntryReservationComponent;
+  let fixture: ComponentFixture<DashboardContentEntryReservationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardContentEntryBookingComponent]
+      imports: [DashboardContentEntryReservationComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(DashboardContentEntryBookingComponent);
+    fixture = TestBed.createComponent(DashboardContentEntryReservationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

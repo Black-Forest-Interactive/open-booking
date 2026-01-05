@@ -15,7 +15,7 @@ class ReservationChangeHandler(
     source: ReservationService,
     private val service: NotificationService,
 ) : ReservationChangeListener {
-    
+
     companion object {
         private val logger = LoggerFactory.getLogger(ReservationChangeHandler::class.java)
         const val TYPE_KEY = "type"
@@ -32,14 +32,14 @@ class ReservationChangeHandler(
         createEvent(obj, NotificationEventType.OBJ_CREATED)
     }
 
-    override fun confirmed(request: Reservation, content: ReservationConfirmationContent) {
+    override fun confirmed(reservation: Reservation, content: ReservationConfirmationContent) {
         if (content.silent) return
-        createEvent(request, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_CONFIRMED), Pair(CONTENT, content)))
+        createEvent(reservation, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_CONFIRMED), Pair(CONTENT, content)))
     }
 
-    override fun denied(request: Reservation, content: ReservationConfirmationContent) {
+    override fun denied(reservation: Reservation, content: ReservationConfirmationContent) {
         if (content.silent) return
-        createEvent(request, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_DENIED), Pair(CONTENT, content)))
+        createEvent(reservation, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_DENIED), Pair(CONTENT, content)))
     }
 
     private fun createEvent(request: Reservation, type: NotificationEventType, parameter: Map<String, Any> = emptyMap()) {

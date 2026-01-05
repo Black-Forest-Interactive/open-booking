@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.jillesvangurp.ktsearch.*
+import com.jillesvangurp.searchdsls.querydsl.SearchDSL
 import de.sambalmueslie.openbooking.common.PageSequence
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import io.micronaut.data.model.Page
@@ -19,10 +20,7 @@ import kotlin.time.Duration.Companion.seconds
 
 
 abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T>>(
-    openSearch: SearchClientFactory,
-    private val name: String,
-    config: OpenSearchConfig,
-    private val logger: Logger
+    openSearch: SearchClientFactory, private val name: String, config: OpenSearchConfig, private val logger: Logger
 ) : SearchOperator<T, R, S> {
 
     private val key = "${config.prefix}.$name"
@@ -39,12 +37,9 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
 
     protected val client = openSearch.getClient()
 
-    protected val mapper = ObjectMapper()
-        .registerKotlinModule()
-        .registerModule(JavaTimeModule())
-        .setSerializationInclusion(JsonInclude.Include.ALWAYS)
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        .disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+    protected val mapper =
+        ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule()).setSerializationInclusion(JsonInclude.Include.ALWAYS).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
 
 
     init {
@@ -60,10 +55,7 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
 
     override fun info(): SearchOperatorInfo {
         return SearchOperatorInfo(
-            key,
-            name,
-            status,
-            SearchOperatorStats(statsTotal, statsSuccessful, statsFailed)
+            key, name, status, SearchOperatorStats(statsTotal, statsSuccessful, statsFailed)
         )
     }
 
@@ -103,15 +95,18 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
 
         val data = PageSequence { initialLoadPage(it) }
         data.forEach { page ->
-            statsTotal = page.totalSize
-            try {
-                client.bulk(target = key) {
-                    page.forEach { (id, value) -> index(value, id = id) }
+            val duration = measureTimeMillis {
+                statsTotal = page.totalSize
+                try {
+                    client.bulk(target = key) {
+                        page.forEach { (id, value) -> index(value, id = id) }
+                    }
+                    statsSuccessful += page.content.size
+                } catch (e: Exception) {
+                    statsFailed += page.content.size
                 }
-                statsSuccessful += page.content.size
-            } catch (e: Exception) {
-                statsFailed += page.content.size
             }
+            logger.debug("[$key] initial load ${page.pageNumber}/${page.totalPages} with ${page.size} elements took $duration ms.")
         }
     }
 
@@ -136,11 +131,7 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
             val type = if (existing) OperationType.Index else OperationType.Create
 
             client.indexDocument(
-                target = key,
-                serializedJson = value,
-                id = id,
-                opType = type,
-                refresh = refresh
+                target = key, serializedJson = value, id = id, opType = type, refresh = refresh
             )
             statsTotal++
             statsSuccessful++
@@ -151,10 +142,7 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
     private suspend fun indexDocument(id: String, value: String, type: OperationType) {
         val duration = measureTimeMillis {
             client.indexDocument(
-                target = key,
-                serializedJson = value,
-                id = id,
-                opType = type
+                target = key, serializedJson = value, id = id, opType = type
             )
             statsTotal++
             statsSuccessful++
@@ -180,12 +168,17 @@ abstract class BaseOpenSearchOperator<T, R : SearchRequest, S : SearchResponse<T
         return processSearchResponse(request, response, pageable)
     }
 
+
+    protected fun search(block: (SearchDSL.() -> Unit)? = null): com.jillesvangurp.ktsearch.SearchResponse {
+        return runBlocking {
+            client.search(key, block = block)
+        }
+    }
+
     abstract fun getSearchQueryBuilder(): SearchQueryBuilder<R>
 
     abstract fun processSearchResponse(
-        request: SearchRequest,
-        response: com.jillesvangurp.ktsearch.SearchResponse,
-        pageable: Pageable
+        request: SearchRequest, response: com.jillesvangurp.ktsearch.SearchResponse, pageable: Pageable
     ): S
 
 

@@ -5,7 +5,7 @@ import {DashboardContentComponent} from "./dashboard-content/dashboard-content.c
 import {DailyOffersFilterRequest, DashboardService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {toPromise} from "@open-booking/shared";
-import {BookingEntry, DaySummary, WeekSummary} from "@open-booking/core";
+import {DaySummary, OfferReservationEntry, WeekSummary} from "@open-booking/core";
 
 @Component({
   selector: 'app-dashboard',
@@ -83,7 +83,7 @@ export class DashboardComponent {
 
   }
 
-  protected handleBookingConfirmation(booking: BookingEntry) {
+  protected handleReservationConfirmation(reservation: OfferReservationEntry) {
 
   }
 }

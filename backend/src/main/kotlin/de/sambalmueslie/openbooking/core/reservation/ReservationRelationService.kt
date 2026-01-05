@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.reservation
 
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationOfferRelation
@@ -27,9 +28,19 @@ class ReservationRelationService(
         return relationRepository.findByIdReservationIdIn(reservationIds).groupBy { it.id.reservationId }
     }
 
+
     fun getOrderByPriority(data: ReservationData): List<ReservationOfferRelation> {
-        return relationRepository.findByIdReservationIdOrderByPriority(data.id)
+        return getOrderByPriority(data.id)
     }
+
+    fun getOrderByPriority(data: Reservation): List<ReservationOfferRelation> {
+        return getOrderByPriority(data.id)
+    }
+
+    private fun getOrderByPriority(reservationId: Long): List<ReservationOfferRelation> {
+        return relationRepository.findByIdReservationIdOrderByPriority(reservationId)
+    }
+
 
     fun create(data: ReservationData, request: ReservationChangeRequest, offers: List<Offer>) {
         val relations = offers.sortedBy { request.offerIds.indexOf(it.id) }

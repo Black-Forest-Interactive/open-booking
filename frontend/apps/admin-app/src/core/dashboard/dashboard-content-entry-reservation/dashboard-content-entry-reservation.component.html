@@ -1,36 +1,36 @@
-<div [class]="booking().confirmed
+<div [class]="isConfirmed()
   ? 'rounded border-2 border-green-200 bg-green-50'
   : 'rounded border-2 border-amber-200 bg-amber-50'">
 
   <!-- Booking Header -->
   <div class="flex items-center justify-between p-2">
     <div class="flex items-center gap-2 flex-1">
-      <mat-icon [class]="booking().confirmed ? 'text-green-600' : 'text-amber-600'" inline>
-        {{ booking().confirmed ? 'check_circle' : 'cancel' }}
+      <mat-icon [class]="isConfirmed() ? 'text-green-600' : 'text-amber-600'" inline>
+        {{ isConfirmed() ? 'check_circle' : 'cancel' }}
       </mat-icon>
 
       <div class="flex-1">
         <div class="font-medium text-gray-800 text-sm">
-          {{ booking().visitorGroup.title }}
+          {{ reservation().visitor.title }}
         </div>
         <div class="text-xs text-gray-600">
-          {{ booking().visitorGroup.size }} {{ booking().visitorGroup.size === 1 ? 'guest' : 'guests' }}
+          {{ reservation().visitor.size }} {{ reservation().visitor.size === 1 ? 'guest' : 'guests' }}
         </div>
       </div>
     </div>
 
     <div class="flex items-center gap-2">
       <!-- Email Status Icon -->
-      @if (booking().emailSent) {
+      @if (emailSent()) {
         <mat-icon
-          [matTooltip]="booking().emailDelivered ? 'Email delivered' : 'Email sent, pending delivery'"
-          [class]="booking().emailDelivered ? 'text-green-600' : 'text-gray-400'" inline>
-          {{ booking().emailDelivered ? 'mark_email_read' : 'mail' }}
+          [matTooltip]="emailDelivered() ? 'Email delivered' : 'Email sent, pending delivery'"
+          [class]="emailDelivered() ? 'text-green-600' : 'text-gray-400'" inline>
+          {{ emailDelivered() ? 'mark_email_read' : 'mail' }}
         </mat-icon>
       }
 
       <!-- Confirm Button -->
-      @if (!booking().confirmed) {
+      @if (!isConfirmed()) {
         <button matButton="tonal" color="primary" (click)="handleConfirm()"
                 class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
           Confirm
@@ -54,7 +54,7 @@
         <mat-icon class="text-gray-500" inline>mail</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Email</div>
-          <div class="text-gray-800">{{ booking().visitorGroup.email }}</div>
+          <div class="text-gray-800">{{ reservation().visitor.email }}</div>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
         <mat-icon class="text-gray-500" inline>phone</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Phone</div>
-          <div class="text-gray-800">{{ booking().visitorGroup.phone }}</div>
+          <div class="text-gray-800">{{ reservation().visitor.phone }}</div>
         </div>
       </div>
 
@@ -72,17 +72,17 @@
         <mat-icon class="text-gray-500" inline>location_on</mat-icon>
         <div>
           <div class="text-gray-600 text-xs">Address</div>
-          <div class="text-gray-800">{{ booking().visitorGroup.address | address }}</div>
+          <div class="text-gray-800">{{ reservation().visitor.address | address }}</div>
         </div>
       </div>
 
       <!-- Comment -->
-      @if (booking().comment) {
+      @if (comment()) {
         <div class="flex items-start gap-2 text-sm">
           <mat-icon class="text-gray-500" inline>comment</mat-icon>
           <div>
             <div class="text-gray-600 text-xs">Comment</div>
-            <div class="text-gray-800">{{ booking().comment }}</div>
+            <div class="text-gray-800">{{ comment() }}</div>
           </div>
         </div>
       }
@@ -91,10 +91,10 @@
       <div class="pt-2 border-t border-gray-200">
         <div class="text-xs text-gray-600">Email Status</div>
         <div class="flex items-center gap-2 mt-1">
-          @if (booking().emailSent) {
+          @if (emailSent()) {
             <mat-icon class="!text-xs text-green-600" inline>check_circle</mat-icon>
             <span class="text-xs text-gray-800">
-              Email sent {{ booking().emailDelivered ? '& delivered' : '' }}
+              Email sent {{ emailDelivered() ? '& delivered' : '' }}
             </span>
           } @else {
             <mat-icon class="!text-xs text-red-600" inline>cancel</mat-icon>
