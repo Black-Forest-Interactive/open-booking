@@ -171,7 +171,7 @@
             </div>
           </div>
 
-          <div class="space-y-3 mb-4">
+          <div class="flex flex-col gap-2">
             @for (entry of sortedOffers(); track entry.offer.id) {
               <app-reservation-content-entry-offer
                 [entry]="entry"

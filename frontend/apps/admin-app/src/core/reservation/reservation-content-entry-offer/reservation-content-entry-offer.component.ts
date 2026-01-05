@@ -4,12 +4,14 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-reservation-content-entry-offer',
   imports: [
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     TranslatePipe,
     DatePipe
   ],
@@ -58,6 +60,8 @@ export class ReservationContentEntryOfferComponent {
   remainingAfterConfirmation = computed(() => this.availableSpace() - this.visitor().size)
 
   hasCapacity = computed(() => this.availableSpace() >= this.visitor().size)
+
+  isPreferred = computed(() => this.entry().priority === 0)
 
   canConfirmOffer = computed(() =>
     this.active() &&
