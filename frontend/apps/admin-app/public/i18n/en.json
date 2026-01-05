@@ -13,15 +13,26 @@
     "Submit": "Submit",
     "Yes": "Yes"
   },
-  "ADMIN": {
-    "MENU": {
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Dashboard": "Dashboard",
-      "Offer": "Offer Mgt",
-      "SearchBooking": "Search Booking",
-      "Texts": "Text Mgt"
-    }
+  "MENU": {
+    "AuditLog": "Audit Log",
+    "Booking": "Booking Mgt",
+    "ReservationRequest": "Reservation Request Mgt",
+    "Cache": "Cache Mgt",
+    "Dashboard": "Dashboard",
+    "Mail": "Mail Status",
+    "Notification": "Notification Mgt",
+    "Offer": "Offer Mgt",
+    "Response": "Response Mgt",
+    "Settings": "Settings",
+    "Guide": "Guide",
+    "Label": "Label",
+    "Search": "Search Index",
+    "Reservation": "Reservation",
+    "Help": "Help",
+    "Home": "Home",
+    "Language": "Language",
+    "Login": "Login",
+    "Logout": "Logout"
   },
   "APP": {
     "Title": "Open Booking",
@@ -49,21 +60,6 @@
       }
     }
   },
-  "BACKOFFICE": {
-    "MENU": {
-      "AuditLog": "Audit Log",
-      "Booking": "Booking Mgt",
-      "BookingRequest": "Booking Request Mgt",
-      "Cache": "Cache Mgt",
-      "Dashboard": "Dashboard",
-      "Mail": "Mail Status",
-      "Notification": "Notification Mgt",
-      "Offer": "Offer Mgt",
-      "Response": "Response Mgt",
-      "SearchBooking": "Search Booking",
-      "Settings": "Settings"
-    }
-  },
   "BOOKING": {
     "Action": {
       "Create": "Create Booking",
@@ -81,7 +77,7 @@
         "Offer": {
           "Header": "Offer"
         },
-        "VisitorGroup": {
+        "Visitor": {
           "City": "City",
           "Contact": "Contact",
           "Header": "Visitor Group",
@@ -175,16 +171,6 @@
       "Title": "Title"
     }
   },
-  "MENU": {
-    "Admin": "Admin",
-    "Backoffice": "Backoffice",
-    "Help": "Help",
-    "Home": "Home",
-    "Language": "Language",
-    "Login": "Login",
-    "Logout": "Logout",
-    "Title": "Menu"
-  },
   "NOTIFICATION": {
     "Action": {
       "Create": "Create Notification Template",
@@ -230,10 +216,12 @@
     }
   },
   "OFFER": {
+    "Title": "Offer",
     "Action": {
       "CreateRange": "Create (Range)",
       "CreateSeries": "Create (Series)",
       "CreateSingle": "Create (Single)",
+      "CreateFirst": "Create first offer",
       "Details": "Details",
       "Export_Excel": "Excel",
       "Export_PDF": "PDF",
@@ -241,7 +229,11 @@
       "Search": "Search offer",
       "Select": "Select Offer",
       "ShowBookings": "Bookings",
-      "Filter": "Filter"
+      "Filter": "Filter",
+      "SelectLabel": "Select Label",
+      "SelectGuide": "Select Guide",
+      "Edit": "Edit offer",
+      "Delete": "Delete offer"
     },
     "Field": {
       "Active": "Active",
@@ -251,7 +243,8 @@
       "Id": "Id",
       "MaxPersons": "Max Persons",
       "Start": "Start",
-      "StartTime": "Start Time"
+      "StartTime": "Start Time",
+      "Actions": "Actions"
     },
     "Form": {
       "Active": "Active",
@@ -261,7 +254,8 @@
       "Start": "Start"
     },
     "Info": {
-      "SpaceAvailable": "There are {{value}} places available"
+      "SpaceAvailable": "There are {{value}} places available",
+      "TotalOffers": "Total offers"
     },
     "Operation": {
       "Create": "Create Offer",
@@ -276,12 +270,27 @@
       "MinTime": "Min Time",
       "Quantity": "Quantity",
       "Time": "Time"
+    },
+    "Range": {
+      "Date": "Date",
+      "TimeFrom": "Time from",
+      "TimeTo": "Time to"
+    },
+    "Dialog": {
+      "Delete": {
+        "Title": "Delete offer",
+        "Question": "Do you really want to delete the offer?"
+      }
+    },
+    "Empty": {
+      "Title": "No offers found",
+      "Description": "Create some offers to get started or select a different range"
     }
   },
-  "REQUEST": {
+  "RESERVATION": {
     "Action": {
-      "Confirm": "Confirm booking",
-      "Deny": "Deny booking",
+      "Confirm": "Confirm reservation",
+      "Deny": "Deny reservation",
       "MailConfirm": "Confirm Mail",
       "RequestConfirm": "Confirm Offer",
       "RequestDenial": "Denial Offer",
@@ -304,11 +313,11 @@
           "Space": "Available space",
           "Start": "Start Time"
         },
-        "Title": "Confirm Booking Request"
+        "Title": "Confirm Reservation"
       },
       "Failed": {
         "Message": "We are sorry, but something went wrong with your request. Please try again or choose a different date.",
-        "Title": "Booking Request Failed"
+        "Title": "Reservation Failed"
       }
     },
     "Form": {
@@ -370,18 +379,43 @@
         "Label": "Zip Code"
       }
     },
+    "Offer": {
+      "Title": "Available Offers",
+      "Label": "Offer",
+      "Single": "offer",
+      "Multiple": "offers",
+      "Inactive": "Inactive",
+      "Stats": {
+        "Available": "Available",
+        "Booked": "Booked",
+        "Reserved": "Reserved",
+        "CurrentGroup": "Current Group"
+      },
+      "Capacity": {
+        "Label": "Capacity"
+      },
+      "Error": {
+        "Inactive": "Offer is inactive",
+        "InsufficientCapacity": "Insufficient capacity (need {{need}}, available {{available}})"
+      },
+      "Info": {
+        "AlreadyConfirmed": "Reservation already confirmed",
+        "ConfirmationEffect": "Confirming will move {{size}} people from reserved to booked. {{remaining}} spaces will remain available."
+      }
+    },
     "Status": {
       "CONFIRMED": "Confirmed",
       "Title": "Status",
       "UNCONFIRMED": "Unconfirmed",
+      "CANCELLED": "Cancelled",
       "UNKNOWN": "Unknown"
     },
     "Table": {
-      "Bookings": "Bookings",
+      "Reservations": "Reservations",
       "Timestamp": "Timestamp",
-      "VisitorGroup": "Visitor Group"
+      "Visitor": "Visitor Group"
     },
-    "Title": "Booking Request"
+    "Title": "Reservation"
   },
   "RESPONSE": {
     "Action": {
@@ -412,9 +446,10 @@
         "Title": "Title"
       },
       "Type": {
-        "BOOKING_CONFIRMED": "Booking Request Confirmed (EMail)",
-        "BOOKING_DENIED": "Booking Request Denied (EMail)",
-        "BOOKING_REQUEST_RECEIVED": "Booking Request Received (Dialog)",
+        "RESERVATION_CONFIRMED": "Reservation Confirmed (EMail)",
+        "RESERVATION_DENIED": "Reservation Denied (EMail)",
+        "RESERVATION_RECEIVED": "Reservation Received (Dialog)",
+        "RESERVATION_FAILED": "Reservation Failed (Dialog)",
         "Hint": "",
         "Title": "Type"
       }
@@ -476,5 +511,78 @@
     "HOME_PAGE": "Home Page",
     "NEED_HELP": "Need help?",
     "CONTACT_SUPPORT": "Contact Support"
+  },
+  "SEARCH": {
+    "type": "Search Index",
+    "title": "Search Index Administration",
+    "key": {
+      "guide": "Guide",
+      "offer": "Offer",
+      "reservation": "Reservation"
+    },
+    "status": {
+      "UNKNOWN": "Unknown",
+      "CREATE_INDEX": "Create index",
+      "INITIAL_LOAD": "Initial load",
+      "READY": "Ready",
+      "IDLE": "Idle"
+    },
+    "statistics": {
+      "total": "Total entries",
+      "successfully": "Successfully",
+      "failed": "Failed"
+    },
+    "action": {
+      "setup": "Setup"
+    }
+  },
+  "LABEL": {
+    "Title": "Label Manager",
+    "Action": {
+      "Search": "Search",
+      "Create": "Create",
+      "Add": "Add Label",
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "PickColor": "Pick any color",
+      "ClickToEdit": "Click to edit",
+      "Auto": "Autogenerate"
+    },
+    "Field": {
+      "Id": "ID",
+      "Name": "Name",
+      "Color": "Color",
+      "Priority": "Priority",
+      "CustomColor": "Custom"
+    },
+    "Message": {
+      "NoLabels": "No labels yet. Click \"Add Label\" to create one.",
+      "TotalLabels": "Total labels"
+    },
+    "Help": {
+      "Title": "How to use:",
+      "DragToReorder": "Drag labels by the grip icon to reorder (changes priority)",
+      "ClickToEdit": "Click a label to edit its name and color",
+      "ClickTrashToDelete": "Click the trash icon to delete a label",
+      "ClickAddToCreate": "Click \"Add Label\" to create a new one"
+    }
+  },
+  "GUIDE": {
+    "Title": "Guides",
+    "Action": {
+      "Search": "Search",
+      "Create": "Create"
+    },
+    "Field": {
+      "Id": "ID",
+      "Name": "Name",
+      "FirstName": "First Name",
+      "LastName": "Last Name",
+      "Email": "E-Mail",
+      "Phone": "Phone",
+      "Mobile": "Mobile"
+    }
   }
 }

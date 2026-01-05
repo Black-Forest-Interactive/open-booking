@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.gateway.admin.cache
 
 import de.sambalmueslie.openbooking.common.checkPermission
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_CACHE_ADMIN
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton
 

@@ -13,6 +13,7 @@ import io.micronaut.context.annotation.Context
 import org.slf4j.LoggerFactory
 
 @Context
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestChangeHandler(
     source: BookingRequestService,
     private val service: NotificationService,

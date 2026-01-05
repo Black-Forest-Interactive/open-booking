@@ -1,8 +1,13 @@
 package de.sambalmueslie.openbooking.core.offer.api
 
-import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
+import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
+import java.time.LocalDateTime
 
 data class OfferDetails(
     val offer: Offer,
-    val bookings: List<BookingRequestInfo>
+    val assignment: Assignment,
+    val bookings: List<BookingDetails>,
+    val reservations: List<ReservationInfo>,
+    val timestamp: LocalDateTime
 )

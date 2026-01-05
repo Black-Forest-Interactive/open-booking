@@ -9,12 +9,18 @@ import {Page} from "../../../shared/page/page";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 import {VisitorGroup} from "../../../visitor-group/model/visitor-group-api";
 import {PageEvent} from "@angular/material/paginator";
-import {VisitorGroupInfoDialogComponent} from "../../visitor-group/visitor-group-info-dialog/visitor-group-info-dialog.component";
+import {
+  VisitorGroupInfoDialogComponent
+} from "../../visitor-group/visitor-group-info-dialog/visitor-group-info-dialog.component";
 import {RequestCommentDialogComponent} from "../request-comment-dialog/request-comment-dialog.component";
 import {VISITOR_GROUP_STATUS} from "../../visitor-group/model/visitor-group-api";
 import {FormBuilder} from "@angular/forms";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
-import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from "@angular/material-moment-adapter";
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter
+} from "@angular/material-moment-adapter";
 
 @Component({
   selector: 'app-request-board',
@@ -38,18 +44,18 @@ export class RequestBoardComponent {
 
   data: BookingRequestInfo[] = []
 
-  displayedColumns: string[] = ['timestamp', 'visitorGroup', 'bookings', 'note']
+  displayedColumns: string[] = ['timestamp', 'visitor', 'bookings', 'note']
 
   keyUp: EventEmitter<string> = new EventEmitter<string>()
 
   showVisitorGroupDetails: boolean = true
 
-  visitorGroupStatus = VISITOR_GROUP_STATUS
+  visitorStatus = VISITOR_GROUP_STATUS
 
   filterForm = this.fb.group(
     {
       offerDate: [null],
-      visitorGroupStatus: [null],
+      visitorStatus: [null],
       query: [null],
     }
   )
@@ -108,8 +114,8 @@ export class RequestBoardComponent {
     this.loadPage(event.pageIndex)
   }
 
-  showDetails(visitorGroup: VisitorGroup) {
-    this.dialog.open(VisitorGroupInfoDialogComponent, {data: visitorGroup});
+  showDetails(visitor: VisitorGroup) {
+    this.dialog.open(VisitorGroupInfoDialogComponent, {data: visitor});
   }
 
   showVisitorGroupDetailsChanged($event: MatSlideToggleChange) {
@@ -129,11 +135,11 @@ export class RequestBoardComponent {
     if (this.filterForm.invalid) return
 
     let value = this.filterForm.value
-    if (!value.offerDate && !value.visitorGroupStatus && !value.query) return
+    if (!value.offerDate && !value.visitorStatus && !value.query) return
 
     this.filter = new BookingRequestFilterRequest(
       value.offerDate,
-      value.visitorGroupStatus,
+      value.visitorStatus,
       value.query
     )
     this.loadPage(0)

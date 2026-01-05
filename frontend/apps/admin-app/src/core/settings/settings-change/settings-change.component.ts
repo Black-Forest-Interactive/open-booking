@@ -62,22 +62,20 @@ export class SettingsChangeComponent {
       }
     )
     effect(() => {
-      const offer = this.settingResource.value()
-      if (offer) this.handleDataEdit(offer)
+      const setting = this.settingResource.value()
+      if (setting) this.handleDataEdit(setting)
     })
   }
 
   private handleDataEdit(data: Setting) {
     this.data.set(data)
     this.initValues(data)
-    this.translate.get("SETTING.CHANGE.Update", {offer: data.id}).subscribe(text => this.title = text)
+    this.translate.get("SETTING.CHANGE.Update", {setting: data.id}).subscribe(text => this.title = text)
     this.validateForm()
   }
 
   private initValues(data: Setting) {
-    this.form.get('key')?.setValue(data.key)
-    this.form.get('value')?.setValue(data.value)
-    this.form.get('type')?.setValue(data.type)
+    this.form.patchValue(data)
   }
 
   private validateForm() {

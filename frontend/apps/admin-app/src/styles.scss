@@ -1,5 +1,39 @@
 @use 'theme';
 
+/* ROBOTO */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/roboto-v50-latin-300.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/roboto-v50-latin-regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/roboto-v50-latin-500.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* MATERIAL ICONS */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/MaterialIcons-Regular.woff2') format('woff2');
+}
+
+
 // Set the base font and body styles.
 html, body {
   height: 100%;
@@ -9,6 +43,22 @@ html, body {
   font: var(--mat-sys-body-medium);
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
 }
 
 // The Tailwind directives MUST come AFTER Angular Material theming

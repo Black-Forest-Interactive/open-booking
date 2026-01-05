@@ -2,12 +2,15 @@
   <configuration default="false" name="BookingApplication" type="MicronautRunConfigurationType" factoryName="Micronaut">
     <envs>
       <env name="app.base-url" value="http://localhost:4200" />
+      <env name="mail.default-admin-address" value="admin@localhost" />
+      <env name="mail.from-address" value="from@localhost" />
       <env name="mail.password" value="test" />
+      <env name="mail.reply-to-address" value="reply@localhost" />
       <env name="mail.server" value="http://localhost:1025" />
       <env name="mail.username" value="test" />
-      <env name="mail.from-address" value="from@localhost" />
-      <env name="mail.reply-to-address" value="reply@localhost" />
-      <env name="mail.default-admin-address" value="admin@localhost" />
+      <env name="opensearch.user" value="test" />
+      <env name="opensearch.password" value="test" />
+      <env name="opensearch.prefix" value="dev" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="de.sambalmueslie.openbooking.BookingApplication" />
     <module name="open-booking-backend.main" />

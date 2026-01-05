@@ -13,7 +13,7 @@
             <div class="w-32">
               <mat-chip>{{ 'BOOKING.Status.' + booking.status | translate }}</mat-chip>
             </div>
-            <div>{{ data().visitorGroup.size }} / {{ booking.spaceAvailable }}</div>
+            <div>{{ data().visitor.size }} / {{ booking.spaceAvailable }}</div>
             <div class="flex-1"></div>
             <div class="flex gap-1">
               @if (booking.status != 'CONFIRMED') {

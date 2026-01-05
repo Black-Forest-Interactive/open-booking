@@ -3,11 +3,11 @@ package de.sambalmueslie.openbooking.core.dashboard
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.dashboard.api.BookingEntry
 import de.sambalmueslie.openbooking.core.dashboard.api.OfferEntry
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
+import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.request.BookingRequestService
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
-import de.sambalmueslie.openbooking.core.staff.StaffService
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.gateway.admin.dashboard.DailyOffersFilterRequest
 import jakarta.inject.Singleton
 import java.time.LocalDate
@@ -17,8 +17,8 @@ class OfferEntryProvider(
     private val offerService: OfferService,
     private val bookingService: BookingService,
     private val requestService: BookingRequestService,
-    private val groupService: VisitorGroupService,
-    private val staffService: StaffService,
+    private val groupService: VisitorService,
+    private val guideService: GuideService,
 ) {
 
     @Deprecated("just temporary")
@@ -38,18 +38,18 @@ class OfferEntryProvider(
     )
 
     fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferEntry> {
-        val offers = offerService.getOffer(day).sortedBy { it.start }
+        val offers = offerService.getByDate(day).sortedBy { it.start }
 
         return offers.mapIndexed { index, offer ->
             val request = requestService.findByOfferId(offer.id)
 
             val bookings = request.map {
                 val confirmed = it.status == BookingRequestStatus.CONFIRMED
-                BookingEntry(it.id, it.visitorGroup, confirmed, it.status, it.comment, false, false, it.timestamp)
+                BookingEntry(it.id, it.visitor, confirmed, it.status, it.comment, false, false, it.timestamp)
             }
 
-            val confirmedSeats = bookings.filter { it.confirmed }.sumOf { it.visitorGroup.size }
-            val pendingSeats = bookings.filterNot { it.confirmed }.sumOf { it.visitorGroup.size }
+            val confirmedSeats = bookings.filter { it.confirmed }.sumOf { it.visitor.size }
+            val pendingSeats = bookings.filterNot { it.confirmed }.sumOf { it.visitor.size }
 
             OfferEntry(offer.id, offer.start, offer.finish, colors[index % colors.size], offer.maxPersons, confirmedSeats, pendingSeats, offer.active, null, bookings)
         }

@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.booking.api
 import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
 
 data class BookingChangeRequest(
-    var offerId: Long,
-    var visitorGroupId: Long,
+    val offerId: Long,
+    val visitorId: Long,
+    val comment: String
 ) : BusinessObjectChangeRequest

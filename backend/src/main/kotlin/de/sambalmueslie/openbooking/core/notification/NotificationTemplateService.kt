@@ -3,13 +3,13 @@ package de.sambalmueslie.openbooking.core.notification
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateChangeRequest
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateType
 import de.sambalmueslie.openbooking.core.notification.db.NotificationTemplateData
 import de.sambalmueslie.openbooking.core.notification.db.NotificationTemplateRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

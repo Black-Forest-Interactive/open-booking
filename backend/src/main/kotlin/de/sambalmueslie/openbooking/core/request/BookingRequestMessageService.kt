@@ -10,6 +10,7 @@ import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestMessageService(
     private val responseService: ResponseService,
     private val repository: BookingRequestRepository,
@@ -24,7 +25,7 @@ class BookingRequestMessageService(
         val info = converter.data { repository.findByIdOrNull(id) } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
-            Pair("visitor", info.visitorGroup),
+            Pair("visitor", info.visitor),
             Pair("bookings", info.bookings),
         )
         return responseService.resolve(lang, ResponseType.BOOKING_REQUEST_RECEIVED, properties)
@@ -35,7 +36,7 @@ class BookingRequestMessageService(
         val selected = info.bookings.find { it.id == bookingId } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
-            Pair("visitor", info.visitorGroup),
+            Pair("visitor", info.visitor),
             Pair("bookings", info.bookings),
             Pair("selected", selected),
         )
@@ -47,7 +48,7 @@ class BookingRequestMessageService(
         val info = converter.data { repository.findByIdOrNull(id) } ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
-            Pair("visitor", info.visitorGroup),
+            Pair("visitor", info.visitor),
             Pair("bookings", info.bookings),
         )
         return responseService.resolve(lang, ResponseType.BOOKING_DENIED, properties)

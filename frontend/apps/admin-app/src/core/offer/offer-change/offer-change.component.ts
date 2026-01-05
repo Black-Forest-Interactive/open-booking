@@ -139,7 +139,7 @@ export class OfferChangeComponent {
       startDateTime,
       finishDateTime,
       maxPersons,
-      active
+      active, null, null
     )
   }
 

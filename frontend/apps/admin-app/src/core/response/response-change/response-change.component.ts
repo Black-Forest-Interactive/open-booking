@@ -1,11 +1,11 @@
 import {Component, effect, inject, model, resource, signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
-import {map} from "rxjs";
+import {map, of} from "rxjs";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ResponseService} from "@open-booking/admin";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {Response, RESPONSE_TYPES, ResponseChangeRequest} from "@open-booking/core";
+import {Response, ResponseChangeRequest, ResponseType} from "@open-booking/core";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -38,13 +38,13 @@ export class ResponseChangeComponent {
 
   private responseResource = resource({
     params: this.id,
-    loader: param => toPromise(this.service.getResponse(param.params), param.abortSignal)
+    loader: param => (param.params) ? toPromise(this.service.getResponse(param.params), param.abortSignal) : toPromise(of())
   })
 
   data = model<Response | null>(null)
   title = signal('RESPONSE.CHANGE.Create')
   reloading = signal(false)
-  types: string[] = RESPONSE_TYPES
+  types: string[] = [ResponseType.RESERVATION_CONFIRMED, ResponseType.RESERVATION_DENIED, ResponseType.RESERVATION_FAILED, ResponseType.RESERVATION_RECEIVED]
   languages: readonly string[] = []
 
   form: FormGroup

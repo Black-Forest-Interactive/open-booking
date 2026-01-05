@@ -68,11 +68,11 @@ export abstract class BaseService {
     return this.createPipe(observable, url, 'put');
   }
 
-  protected post<T>(suffix: string, body: any): Observable<T> {
+  protected post<T>(suffix: string, body: any, params: HttpParams = new HttpParams()): Observable<T> {
     this.logger.info("[POST] " + JSON.stringify(body));
     const url = this.createUrl(suffix);
     console.debug("Post '" + url + "'")
-    const observable = this.http.post<T>(url, body);
+    const observable = this.http.post<T>(url, body, {params: params})
     return this.createPipe(observable, url, 'post');
   }
 

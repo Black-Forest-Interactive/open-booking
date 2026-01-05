@@ -29,7 +29,7 @@ export class BookingDailyBoardOfferComponent {
   private handleData(d: BookingDetails[]) {
     this.bookings = d
     this.data = d.map(b => {
-      return {booking: b.booking, visitorGroup: b.visitorGroup, width: this.getWidth(b)}
+      return {booking: b.booking, visitor: b.visitor, width: this.getWidth(b)}
     })
     this.reloading = false
   }
@@ -40,14 +40,14 @@ export class BookingDailyBoardOfferComponent {
 
   private getWidth(b: BookingDetails): number {
     let totalSize = this.offer.maxPersons
-    return Math.abs(b.visitorGroup.size / totalSize * 12)
+    return Math.abs(b.visitor.size / totalSize * 12)
   }
 
 }
 
 export interface BookingDetailsEntry {
   booking: Booking,
-  visitorGroup: VisitorGroup,
+  visitor: VisitorGroup,
   width: number
 
 }

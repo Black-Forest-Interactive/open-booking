@@ -19,10 +19,10 @@
     "Title": "Open Booking",
     "Welcome": "Willkommen"
   },
-  "BOOKING": {
+  "RESERVATION": {
     "Action": {
-      "Create": "Buchung erstellen",
-      "Search": "Buchung suchen"
+      "Create": "Reservierung erstellen",
+      "Search": "Reservierung suchen"
     },
     "Create": {
       "Action": {
@@ -36,7 +36,7 @@
         "Offer": {
           "Header": "Termine"
         },
-        "VisitorGroup": {
+        "Visitor": {
           "City": "Stadt",
           "Contact": "Name",
           "Header": "Gruppenbezeichnung",
@@ -50,13 +50,13 @@
           "Zip": "PLZ"
         }
       },
-      "Title": "Eine neue Buchung erstellen"
+      "Title": "Eine neue Reservierung erstellen"
     },
     "Details": {
-      "Title": "Buchungsdetails"
+      "Title": "Reservierungsdetails"
     },
     "Dialog": {
-      "InfoTitle": "Buchungsinfo"
+      "InfoTitle": "Reservierungsinfo"
     },
     "Entry": {
       "Empty": "Leider keine gültigen Werte gefunden.",
@@ -64,7 +64,7 @@
     },
     "Status": {
       "CONFIRMED": "Bestätigt",
-      "Title": "Buchungsstatus",
+      "Title": "Reservierungsstatus",
       "UNCONFIRMED": "Unbestätigt",
       "DENIED": "Abgelehnt",
       "UNKNOWN": "Unbekannt"
@@ -75,9 +75,9 @@
       "Space": {
         "Series": {
           "Available": "Verfügbare Plätze",
-          "Confirmed": "Bestätigte Buchung",
-          "Deactivated": "Keine Buchung möglich",
-          "Unconfirmed": "Unbestätigte Buchung"
+          "Confirmed": "Bestätigte Reservierung",
+          "Deactivated": "Keine Reservierung möglich",
+          "Unconfirmed": "Unbestätigte Reservierung"
         },
         "Title": "Belegung der jeweiligen Führungen"
       }
@@ -89,8 +89,8 @@
     }
   },
   "ERROR": {
-    "NoDaySelectedForBooking": "Sie müssen mindestens einen Tag auswählen, um eine Buchung zu starten",
-    "NoSpaceLeftForBooking": "Leider ist diese Führung bereits ausgebucht",
+    "NoDaySelectedForReservation": "Sie müssen mindestens einen Tag auswählen, um eine Reservierung zu starten",
+    "NoSpaceLeftForReservation": "Leider ist diese Führung bereits ausgebucht",
     "OfferIsDeactivated": "Die Führung wurde deaktivert und kann daher nicht gebucht werden"
   },
   "LANG": {
@@ -122,9 +122,9 @@
       "Print": "Drucken",
       "Search": "Termin suchen",
       "Select": "Termin auswählen",
-      "ShowBookings": "Buchungen",
+      "ShowReservations": "Reservierungen",
       "Filter": "Filtern",
-      "ProceedToCheckout": "Buchung abschliesen"
+      "ProceedToCheckout": "Reservierung abschliesen"
     },
     "Field": {
       "Active": "Aktiv",
@@ -171,8 +171,8 @@
   },
   "REQUEST": {
     "Action": {
-      "Confirm": "Buchung bestätigen",
-      "Deny": "Buchung ablehnen",
+      "Confirm": "Reservierung bestätigen",
+      "Deny": "Reservierung ablehnen",
       "MailConfirm": "Mailadresse bestätigen",
       "RequestConfirm": "Angebot bestätigen",
       "RequestDenial": "Angebot ablehnen",
@@ -195,7 +195,7 @@
           "Space": "Verfügbare Plätze",
           "Start": "Beginn"
         },
-        "Title": "Buchungsanfrage bestätigen"
+        "Title": "Reservierung bestätigen"
       },
       "Failed": {
         "Message": "Es tut uns leid, aber es ist bei der Anfrage leider etwas schief gegangen. Bitte erneut probieren oder einen anderen Termin auswählen.",
@@ -203,6 +203,10 @@
       }
     },
     "Form": {
+      "ReservationType": {
+        "Single": "Einzelperson",
+        "Group": "Gruppe oder Schulklasse"
+      },
       "City": {
         "Label": "Stadt"
       },
@@ -224,6 +228,10 @@
       "MinAge": {
         "Hint": "Das Alter des jüngsten Teilnehmers",
         "Label": "Jüngster Teilnehmer"
+      },
+      "Age": {
+        "Hint": "Alter des Besucherss",
+        "Label": "Alter"
       },
       "Phone": {
         "Label": "Telefon"
@@ -257,6 +265,10 @@
         "Hint": "Bezeichnung für die Gruppe",
         "Label": "Bezeichung"
       },
+      "Name": {
+        "Hint": "Name des Besuchers",
+        "Label": "Name"
+      },
       "Zip": {
         "Label": "PLZ"
       }
@@ -268,11 +280,11 @@
       "UNKNOWN": "Unbekannt"
     },
     "Table": {
-      "Bookings": "Buchungen",
+      "Reservations": "Reservierungen",
       "Timestamp": "Zeitstempel",
-      "VisitorGroup": "Gruppenbezeichnung"
+      "Visitor": "Gruppenbezeichnung"
     },
-    "Title": "Buchungsanfrage"
+    "Title": "Reservierung"
   },
   "RESPONSE": {
     "Action": {
@@ -303,9 +315,9 @@
         "Title": "Titel"
       },
       "Type": {
-        "BOOKING_CONFIRMED": "Buchungsanfrage bestätigt (EMail)",
-        "BOOKING_DENIED": "Buchungsanfrage abgelehnt (EMail)",
-        "BOOKING_REQUEST_RECEIVED": "Buchungsanfrage erhalten (Dialog)",
+        "RESERVATION_CONFIRMED": "Reservierung bestätigt (EMail)",
+        "RESERVATION_DENIED": "Reservierung abgelehnt (EMail)",
+        "RESERVATION_REQUEST_RECEIVED": "Reservierung erhalten (Dialog)",
         "Hint": "",
         "Title": "Typ"
       }
@@ -343,12 +355,12 @@
   "DASHBOARD": {
     "Stats": {
       "DailyVisitor": {
-        "Title": "Buchungsstatistik auf Tagesbasis",
+        "Title": "Reservierungsstatistik auf Tagesbasis",
         "yAxis": "Plätze",
         "TotalSpace": "Angebotene Plätze"
       },
       "TotalVisitor": {
-        "Title": "Buchungsstatistik Gesamt",
+        "Title": "Reservierungsstatistik Gesamt",
         "TotalRemaining": "Verbleibende Plätze"
       }
     },
@@ -376,13 +388,13 @@
     "Action": {
       "Close": "Schließen",
       "Remove": "Entfernen",
-      "Checkout": "Zur Buchung",
+      "Checkout": "Zur Reservierung",
       "AddMore": "Alternativtermin hinzufügen"
     }
   },
   "SUMMARY": {
-    "Title": "Buchungszusammenfassung",
-    "Subtitle": "Bitte überprüfen Sie Ihre Buchungsdetails",
+    "Title": "Reservierungszusammenfassung",
+    "Subtitle": "Bitte überprüfen Sie Ihre Reservierungsdetails",
     "TimeSlots": {
       "Title": "Ausgewählte Zeitfenster",
       "MaxPersons": "Max. {{count}} Personen"
@@ -391,9 +403,10 @@
       "Title": "Besucherinformationen",
       "PersonCount": "{{count}} Person(en)",
       "Type": "Art",
-      "GroupBooking": "Gruppenbuchung",
-      "IndividualBooking": "Einzelbuchung",
+      "GroupReservation": "Gruppenreservierung",
+      "IndividualReservation": "Einzelreservierung",
       "AgeRange": "Altersbereich",
+      "Age": "Alter",
       "Years": "Jahre",
       "Address": "Adresse"
     },
@@ -403,7 +416,7 @@
     },
     "Action": {
       "Edit": "Bearbeiten",
-      "Confirm": "Buchung bestätigen"
+      "Confirm": "Reservierung bestätigen"
     }
   }
 }

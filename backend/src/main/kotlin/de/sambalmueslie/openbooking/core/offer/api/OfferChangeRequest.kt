@@ -7,5 +7,7 @@ data class OfferChangeRequest(
     val start: LocalDateTime,
     val finish: LocalDateTime,
     val maxPersons: Int,
-    val active: Boolean
+    val active: Boolean,
+    val labelId: Long?,
+    val guideId: Long?
 ) : BusinessObjectChangeRequest

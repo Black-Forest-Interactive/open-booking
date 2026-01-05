@@ -4,6 +4,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'lib-search',
@@ -11,10 +12,16 @@ import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatButtonModule,
     TranslatePipe
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
+  styles: [`
+    :host {
+      display: block;
+    }
+  `]
 })
 export class SearchComponent {
 
@@ -37,5 +44,8 @@ export class SearchComponent {
     this.keyUp.next(value);
   }
 
-
+  clearSearch(input: HTMLInputElement) {
+    input.value = ''
+    this.search.emit('')
+  }
 }

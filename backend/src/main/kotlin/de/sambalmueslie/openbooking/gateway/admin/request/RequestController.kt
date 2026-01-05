@@ -1,10 +1,10 @@
 package de.sambalmueslie.openbooking.gateway.admin.request
 
 import de.sambalmueslie.openbooking.common.PatchRequest
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestChangeRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestFilterRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
@@ -57,7 +57,7 @@ class RequestController(private val gateway: RequestGateway) {
     fun getInfoByBookingId(auth: Authentication, bookingId: Long) = gateway.getInfoByBookingId(auth, bookingId)
 
     @Put("/{id}/visitor")
-    fun updateVisitorGroup(auth: Authentication, id: Long, @Body request: VisitorGroupChangeRequest) = gateway.updateVisitorGroup(auth, id, request)
+    fun updateVisitor(auth: Authentication, id: Long, @Body request: VisitorChangeRequest) = gateway.updateVisitor(auth, id, request)
 
     @Patch("/{id}/comment")
     fun setComment(auth: Authentication, id: Long, @Body value: PatchRequest<String>) = gateway.setComment(auth, id, value)

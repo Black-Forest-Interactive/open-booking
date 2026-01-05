@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.audit
 
-import de.sambalmueslie.openbooking.core.audit.api.AuditLogEntryChangeRequest
+import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication

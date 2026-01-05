@@ -2,10 +2,6 @@ package de.sambalmueslie.openbooking.core.notification.processor
 
 
 import de.sambalmueslie.openbooking.config.MailConfig
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
-import de.sambalmueslie.openbooking.core.mail.MailService
-import de.sambalmueslie.openbooking.core.mail.api.Mail
-import de.sambalmueslie.openbooking.core.mail.api.MailParticipant
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateEvaluator
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEventType
@@ -15,16 +11,18 @@ import de.sambalmueslie.openbooking.core.request.BookingRequestService
 import de.sambalmueslie.openbooking.core.request.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestInfo
-import de.sambalmueslie.openbooking.core.settings.SettingsService
-import de.sambalmueslie.openbooking.core.settings.api.SettingsAPI
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
+import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingsAPI
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestEventProcessor(
     private val service: BookingRequestService,
     private val evaluator: NotificationTemplateEvaluator,
-    private val mailService: MailService,
+    private val mailService: de.sambalmueslie.openbooking.infrastructure.mail.MailService,
     private val settingsService: SettingsService,
     private val config: MailConfig
 ) : NotificationEventProcessor {
@@ -56,7 +54,7 @@ class BookingRequestEventProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = service.info(event.sourceId) ?: return
-        val url = if (info.visitorGroup.status == VisitorGroupStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
+        val url = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
 
         val properties = mapOf(
             Pair("info", info),
@@ -69,8 +67,8 @@ class BookingRequestEventProcessor(
 
     private fun notifyAdminsOnCreated(properties: Map<String, Any>) {
         val mails = evaluator.evaluate(NotificationTemplateType.BOOKING_REQUEST_CREATED_ADMIN, properties)
-        val from = MailParticipant("", getFromAddress())
-        val to = listOf(MailParticipant("", getDefaultAdminAddress()))
+        val from = _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant("", getFromAddress())
+        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant("", getDefaultAdminAddress()))
         mails.forEach { mailService.send(it, from, to) }
 
     }
@@ -81,21 +79,21 @@ class BookingRequestEventProcessor(
     }
 
     private fun notifyContactOnConfirmed(info: BookingRequestInfo, content: BookingConfirmationContent) {
-        val mails = listOf(Mail(content.subject, content.content, null))
+        val mails = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.Mail(content.subject, content.content, null))
         notifyContact(mails, info)
     }
 
     private fun notifyContactOnDenied(info: BookingRequestInfo, content: BookingConfirmationContent) {
-        val mails = listOf(Mail(content.subject, content.content, null))
+        val mails = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.Mail(content.subject, content.content, null))
         notifyContact(mails, info)
     }
 
-    private fun notifyContact(mails: List<Mail>, info: BookingRequestInfo) {
-        val visitorGroup = info.visitorGroup
-        if (visitorGroup.email.isBlank()) return
+    private fun notifyContact(mails: List<de.sambalmueslie.openbooking.infrastructure.mail.api.Mail>, info: BookingRequestInfo) {
+        val visitor = info.visitor
+        if (visitor.email.isBlank()) return
 
-        val from = MailParticipant("", getFromAddress())
-        val to = listOf(MailParticipant(visitorGroup.contact, visitorGroup.email))
+        val from = _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant("", getFromAddress())
+        val to = listOf(_root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant(visitor.name, visitor.email))
         mails.forEach { mailService.send(it, from, to) }
     }
 

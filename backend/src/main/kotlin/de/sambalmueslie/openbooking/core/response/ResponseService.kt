@@ -3,7 +3,6 @@ package de.sambalmueslie.openbooking.core.response
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
-import de.sambalmueslie.openbooking.core.cache.CacheService
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.core.response.api.Response
 import de.sambalmueslie.openbooking.core.response.api.ResponseChangeRequest
@@ -12,6 +11,7 @@ import de.sambalmueslie.openbooking.core.response.db.ResponseData
 import de.sambalmueslie.openbooking.core.response.db.ResponseRepository
 import de.sambalmueslie.openbooking.core.response.resolve.ResponseResolver
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

@@ -4,8 +4,9 @@ import de.sambalmueslie.openbooking.common.BusinessObject
 
 data class Booking(
     override val id: Long,
-    val offerId: Long,
-    val visitorGroupId: Long,
-    val size: Int,
     val status: BookingStatus,
+    val size: Int,
+    val comment: String,
+    val offerId: Long,
+    val visitorId: Long,
 ) : BusinessObject<Long>

@@ -14,9 +14,9 @@
           <mat-label>{{ 'REQUEST.Filter.VisitorStatus' | translate }}</mat-label>
           <mat-select formControlName="visitorGroupStatus">
             <mat-option>--</mat-option>
-            @for (status of visitorGroupStatus; track status) {
+            @for (status of visitorStatus; track status) {
               <mat-option [value]="status">
-                <app-group-status [status]="status"/>
+                <app-visitor-status [status]="status"/>
               </mat-option>
             }
           </mat-select>
@@ -51,13 +51,13 @@
     <ng-container matColumnDef="visitorGroup">
       <th mat-header-cell *matHeaderCellDef>
         <div class="flex items-center">
-          <div>{{ 'REQUEST.Table.VisitorGroup' | translate }}</div>
+          <div>{{ 'REQUEST.Table.Visitor' | translate }}</div>
           <div class="flex-1"></div>
-          <mat-slide-toggle [checked]="showVisitorGroupDetails()" (change)="showVisitorGroupDetailsChanged($event)"/>
+          <mat-slide-toggle [checked]="showVisitorDetails()" (change)="showVisitorDetailsChanged($event)"/>
         </div>
       </th>
       <td mat-cell *matCellDef="let row">
-        <app-request-visitor-group-entry [data]="row.visitorGroup" [showDetails]="showVisitorGroupDetails()"/>
+        <app-request-visitor-entry [data]="row.visitorGroup" [showDetails]="showVisitorDetails()"/>
       </td>
     </ng-container>
 

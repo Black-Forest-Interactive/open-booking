@@ -4,8 +4,6 @@ import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.info.InfoService
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
 import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectRequest
-import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectResultEntry
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 

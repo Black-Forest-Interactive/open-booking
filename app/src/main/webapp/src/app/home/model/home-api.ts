@@ -10,7 +10,7 @@ export interface TextResponse {
 
 export class CreateBookingRequest {
   constructor(
-    public visitorGroupChangeRequest: VisitorGroupChangeRequest,
+    public visitorChangeRequest: VisitorGroupChangeRequest,
     public offerIds: number[],
     public comment: string,
     public termsAndConditions: boolean

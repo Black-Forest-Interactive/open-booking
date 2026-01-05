@@ -14,7 +14,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {DatePipe} from "@angular/common";
 import {
-  Address,
+  AddressChangeRequest,
   BookingRequest,
   BookingRequestChangeRequest,
   DateRangeSelectionRequest,
@@ -22,7 +22,8 @@ import {
   DayInfoHelper,
   DayInfoOffer,
   Offer,
-  VisitorGroupChangeRequest
+  VisitorChangeRequest,
+  VisitorType
 } from "@open-booking/core";
 import {Router} from "@angular/router";
 import {navigateToBookingDetails} from "../../booking/booking.routes";
@@ -125,14 +126,15 @@ export class RequestCreateComponent {
     let size = +value.size!!
     if (!size) return;
 
-    let visitorGroupRequest = new VisitorGroupChangeRequest(
+    let visitorGroupRequest = new VisitorChangeRequest(
+      VisitorType.GROUP,
       value.title!!,
+      "",
       size,
-      value.group!!,
       +value.minAge!!,
       +value.maxAge!!,
       value.contact!!,
-      new Address(value.street!!, value.city!!, value.zip!!),
+      new AddressChangeRequest(value.street!!, value.city!!, value.zip!!),
       value.phone!!,
       value.mail!!
     )

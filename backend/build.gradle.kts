@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:4.16.0")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:4.16.1")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -94,7 +94,7 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.8.3")
     // jsoup
-    implementation("org.jsoup:jsoup:1.21.2")
+    implementation("org.jsoup:jsoup:1.22.1")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
@@ -121,6 +121,9 @@ dependencies {
     implementation("org.simplejavamail:simple-java-mail:8.12.6")
     implementation("org.simplejavamail:batch-module:8.12.6")
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
+
+    // opensearch
+    implementation("com.jillesvangurp:search-client:2.8.3")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
@@ -220,14 +223,14 @@ sonar {
 
 
 jib {
-    from.image = "eclipse-temurin:25-jre-ubi10-minimal"
+    from.image = "eclipse-temurin:25-jre-alpine"
     to {
-        image = "open-event-backend"
+        image = "open-booking-backend"
         tags = setOf(version.toString(), "latest")
     }
     container {
         creationTime.set("USE_CURRENT_TIMESTAMP")
-
+        mainClass = application.mainClass.get()
         jvmFlags = listOf(
             "-server",
             "-XX:+UseContainerSupport",

@@ -6,9 +6,7 @@ import {RequestService} from "@open-booking/admin";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import {
-  BookingDetailsVisitorGroupComponent
-} from "../booking-details-visitor-group/booking-details-visitor-group.component";
+import {BookingDetailsVisitorComponent} from "../booking-details-visitor-group/booking-details-visitor-group.component";
 import {BookingDetailsHeaderComponent} from "../booking-details-header/booking-details-header.component";
 import {BookingDetailsCommentComponent} from "../booking-details-comment/booking-details-comment.component";
 import {BookingDetailsContentComponent} from "../booking-details-content/booking-details-content.component";
@@ -20,7 +18,7 @@ import {navigateToBooking} from "../../../app/app.navigation";
     MatButtonModule,
     MatIconModule,
     LoadingBarComponent,
-    BookingDetailsVisitorGroupComponent,
+    BookingDetailsVisitorComponent,
     BookingDetailsHeaderComponent,
     BookingDetailsCommentComponent,
     BookingDetailsContentComponent

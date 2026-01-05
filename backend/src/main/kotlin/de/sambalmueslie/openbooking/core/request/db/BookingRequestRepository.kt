@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.request.db
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jdbc.annotation.JdbcRepository
@@ -13,6 +13,7 @@ import java.time.LocalDate
 
 @Repository
 @JdbcRepository(dialect = Dialect.POSTGRES)
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 interface BookingRequestRepository : PageableRepository<BookingRequestData, Long> {
 
     @Query(
@@ -67,17 +68,17 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
             SELECT br.*
             FROM booking_request br
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and br.status IN (:status)
         """,
         countQuery = """
             SELECT COUNT(br.*)
             FROM booking_request br
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and br.status IN (:status)
         """,
         nativeQuery = true
     )
-    fun findByVisitorGroupStatus(visitorGroupStatus: VisitorGroupStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByVisitorStatus(visitorStatus: VerificationStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
     @Query(
         value = """
@@ -104,7 +105,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
                      INNER JOIN booking b ON rel.booking_id = b.id
                      INNER JOIN offer o ON o.id = b.offer_id
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and o.start::date = :offerDate and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and o.start::date = :offerDate and br.status IN (:status)
         """,
         countQuery = """
             SELECT COUNT(br.*)
@@ -113,11 +114,11 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
                      INNER JOIN booking b ON rel.booking_id = b.id
                      INNER JOIN offer o ON o.id = b.offer_id
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and o.start::date = :offerDate and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and o.start::date = :offerDate and br.status IN (:status)
         """,
         nativeQuery = true
     )
-    fun findByOfferDateAndVisitorGroupStatus(offerDate: LocalDate, visitorGroupStatus: VisitorGroupStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByOfferDateAndVisitorStatus(offerDate: LocalDate, visitorStatus: VerificationStatus, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
     @Query(
         value = """
@@ -148,17 +149,17 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
             SELECT br.*
             FROM booking_request br
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and br.status IN (:status)
         """,
         countQuery = """
             SELECT COUNT(br.*)
             FROM booking_request br
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and br.status IN (:status)
         """,
         nativeQuery = true
     )
-    fun findByVisitorGroupStatusAndQuery(visitorGroupStatus: VisitorGroupStatus, query: String, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
+    fun findByVisitorStatusAndQuery(visitorStatus: VerificationStatus, query: String, status: List<BookingRequestStatus>, pageable: Pageable): Page<BookingRequestData>
 
 
     @Query(
@@ -169,7 +170,7 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
                      INNER JOIN booking b ON rel.booking_id = b.id
                      INNER JOIN offer o ON o.id = b.offer_id
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and o.start::date = :offerDate and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and o.start::date = :offerDate and br.status IN (:status)
         """,
         countQuery = """
             SELECT COUNT(br.*)
@@ -178,13 +179,13 @@ interface BookingRequestRepository : PageableRepository<BookingRequestData, Long
                      INNER JOIN booking b ON rel.booking_id = b.id
                      INNER JOIN offer o ON o.id = b.offer_id
                      INNER JOIN visitor_group vg on br.visitor_group_id = vg.id
-            WHERE vg.status = :visitorGroupStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and o.start::date = :offerDate and br.status IN (:status)
+            WHERE vg.status = :visitorStatus and ((vg.title ILIKE :query) OR (vg.contact ILIKE  :query)) and o.start::date = :offerDate and br.status IN (:status)
         """,
         nativeQuery = true
     )
-    fun findByOfferDateAndVisitorGroupStatusAndQuery(
+    fun findByOfferDateAndVisitorStatusAndQuery(
         offerDate: LocalDate,
-        visitorGroupStatus: VisitorGroupStatus,
+        visitorStatus: VerificationStatus,
         query: String,
         status: List<BookingRequestStatus>,
         pageable: Pageable

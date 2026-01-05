@@ -8,7 +8,9 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {AppService} from "../app.service";
 import {SettingsService} from "@open-booking/admin";
 import {ThemeToggleButtonComponent} from "@open-booking/shared";
-import {BookingToolbarEntryComponent} from "../../core/booking/booking-toolbar-entry/booking-toolbar-entry.component";
+import {
+  ReservationToolbarEntryComponent
+} from "../../core/reservation/reservation-toolbar-entry/reservation-toolbar-entry.component";
 
 @Component({
   selector: 'app-portal-toolbar',
@@ -23,7 +25,7 @@ import {BookingToolbarEntryComponent} from "../../core/booking/booking-toolbar-e
     TranslatePipe,
     MatMenuTrigger,
     ThemeToggleButtonComponent,
-    BookingToolbarEntryComponent
+    ReservationToolbarEntryComponent
   ],
   templateUrl: './portal-toolbar.component.html',
   styleUrl: './portal-toolbar.component.scss',

@@ -6,10 +6,14 @@ import {DayInfoHelper, DayInfoOffer} from "../../offer/model/offer-api";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 import {Address, VisitorGroupChangeRequest} from "../../visitor-group/model/visitor-group-api";
 import {MatDialog} from '@angular/material/dialog';
-import {CreateBookingConfirmationDialogComponent} from "../create-booking-confirmation-dialog/create-booking-confirmation-dialog.component";
+import {
+  CreateBookingConfirmationDialogComponent
+} from "../create-booking-confirmation-dialog/create-booking-confirmation-dialog.component";
 import {Location} from "@angular/common";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
-import {CreateBookingFailedDialogComponent} from "../create-booking-failed-dialog/create-booking-failed-dialog.component";
+import {
+  CreateBookingFailedDialogComponent
+} from "../create-booking-failed-dialog/create-booking-failed-dialog.component";
 import {BookingRequest} from "../../backoffice/request/model/booking-request-api";
 import {CreateBookingRequest} from "../model/home-api";
 
@@ -103,7 +107,7 @@ export class CreateBookingRequestComponent {
     let size = ((value.group) ? this.offer?.offer.maxPersons : +value.size!!)
     if (!size) return;
 
-    let visitorGroupRequest = new VisitorGroupChangeRequest(
+    let visitorRequest = new VisitorGroupChangeRequest(
       value.title!!,
       size,
       value.group!!,
@@ -120,7 +124,7 @@ export class CreateBookingRequestComponent {
     let offerIds: number[] = [offer.id]
 
     let request = new CreateBookingRequest(
-      visitorGroupRequest,
+      visitorRequest,
       offerIds,
       value.comment!!,
       value.termsAndConditions!!

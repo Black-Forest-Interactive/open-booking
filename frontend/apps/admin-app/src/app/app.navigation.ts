@@ -16,6 +16,10 @@ export function navigateToRequest(router: Router) {
   router.navigate(['request']).then()
 }
 
+export function navigateToReservation(router: Router) {
+  router.navigate(['reservation']).then()
+}
+
 export function navigateToSearch(router: Router) {
   router.navigate(['search']).then()
 }
@@ -44,10 +48,14 @@ export function navigateToMail(router: Router) {
   router.navigate(['mail']).then()
 }
 
-export function navigateToGroup(router: Router) {
-  router.navigate(['group']).then()
+export function navigateToVisitor(router: Router) {
+  router.navigate(['visitor']).then()
 }
 
-export function navigateToStaff(router: Router) {
-  router.navigate(['staff']).then()
+export function navigateToGuide(router: Router) {
+  router.navigate(['guide']).then()
+}
+
+export function navigateToLabel(router: Router) {
+  router.navigate(['label']).then()
 }

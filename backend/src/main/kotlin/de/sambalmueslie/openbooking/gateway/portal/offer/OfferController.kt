@@ -1,6 +1,5 @@
 package de.sambalmueslie.openbooking.gateway.portal.offer
 
-import de.sambalmueslie.openbooking.frontend.user.api.OfferInfoSelectRequest
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get

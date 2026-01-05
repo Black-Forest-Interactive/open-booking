@@ -4,7 +4,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {map} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {GenericRequestResult, toPromise} from "@open-booking/shared";
-import {BookingService} from "@open-booking/portal";
+import {ReservationService} from "@open-booking/portal";
 import {AppService} from "../../app/app.service";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
@@ -32,7 +32,7 @@ export class ConfirmMailComponent {
   status = computed(() => this.getStatus(this.result()))
   reloading = this.confirmMailResource.isLoading
 
-  constructor(private service: BookingService, protected app: AppService) {
+  constructor(private service: ReservationService, protected app: AppService) {
 
   }
 

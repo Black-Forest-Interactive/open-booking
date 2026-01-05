@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.core.booking.api
 
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroup
+import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 
 data class BookingDetails(
     val booking: Booking,
-    val visitorGroup: VisitorGroup
+    val visitor: Visitor
 )

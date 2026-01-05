@@ -6,7 +6,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {MatButtonModule} from "@angular/material/button";
-import {DateTime, Duration} from "luxon";
+import {Duration} from "luxon";
 import {OfferRangeRequest} from "@open-booking/core";
 import {GenericRequestResult, LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {navigateToOffer} from "../../../app/app.navigation";
@@ -112,8 +112,8 @@ export class OfferCreateRangeComponent {
 
     if (!date.dateFrom || !date.dateTo) return null
 
-    const dateFrom = DateTime.fromJSDate(date.dateFrom).toFormat("yyyy-MM-dd")
-    const dateTo = DateTime.fromJSDate(date.dateTo).toFormat("yyyy-MM-dd")
+    const dateFrom = date.dateFrom.toFormat("yyyy-MM-dd")
+    const dateTo = date.dateTo.toFormat("yyyy-MM-dd")
     const duration = Duration.fromObject({minutes: value.duration}).toISO()
     const interval = Duration.fromObject({minutes: value.interval}).toISO()
 

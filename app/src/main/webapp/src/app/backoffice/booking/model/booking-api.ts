@@ -5,7 +5,7 @@ import {defaultVisitorGroup} from "../../../visitor-group/model/visitor-group-ap
 export interface Booking {
   id: number,
   offerId: number,
-  visitorGroupId: number,
+  visitorId: number,
   size: number,
   status: string,
 }
@@ -13,7 +13,7 @@ export interface Booking {
 export const defaultBooking: Booking = {
   id: -1,
   offerId: -1,
-  visitorGroupId: -1,
+  visitorId: -1,
   size: -1,
   status: ""
 }
@@ -21,7 +21,7 @@ export const defaultBooking: Booking = {
 export class BookingChangeRequest {
   constructor(
     public offerId: number,
-    public visitorGroupId: number,
+    public visitorId: number,
   ) {
   }
 }
@@ -29,12 +29,12 @@ export class BookingChangeRequest {
 
 export interface BookingDetails {
   booking: Booking,
-  visitorGroup: VisitorGroup
+  visitor: VisitorGroup
 }
 
 export const defaultBookingDetails: BookingDetails = {
   booking: defaultBooking,
-  visitorGroup: defaultVisitorGroup
+  visitor: defaultVisitorGroup
 }
 
 export class BookingSearchRequest {
@@ -47,13 +47,13 @@ export class BookingSearchRequest {
 export interface BookingSearchResult {
   offer: Offer,
   booking: Booking,
-  visitorGroup: VisitorGroup
+  visitor: VisitorGroup
 }
 
 export const defaultBookingSearchResult: BookingSearchResult = {
   offer: defaultOffer,
   booking: defaultBooking,
-  visitorGroup: defaultVisitorGroup
+  visitor: defaultVisitorGroup
 }
 
 
@@ -65,6 +65,7 @@ export interface BookingInfo {
   status: string,
   timestamp: string
 }
+
 export interface DayInfoBooking {
   size: number,
   status: string,

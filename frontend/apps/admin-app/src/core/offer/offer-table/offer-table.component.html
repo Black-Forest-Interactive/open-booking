@@ -1,0 +1,99 @@
+<table mat-table [dataSource]="entries()" class="w-full">-->
+  <!-- Start column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef class="!font-semibold !text-base">
+      {{ 'OFFER.Field.Start' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let offer" class="!py-4">
+      <div class="flex items-center gap-3">
+        <mat-icon class="!text-base">event</mat-icon>
+        <span class="text-sm">{{ offer.start | date:'short' }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Finish column -->
+  <ng-container matColumnDef="finish">
+    <th mat-header-cell *matHeaderCellDef class="!font-semibold !text-base">
+      {{ 'OFFER.Field.Finish' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let offer" class="!py-4">
+      <div class="flex items-center gap-3">
+        <mat-icon class="!text-base">event_available</mat-icon>
+        <span class="text-sm">{{ offer.finish | date:'short' }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Max Persons column -->
+  <ng-container matColumnDef="maxPersons">
+    <th mat-header-cell *matHeaderCellDef class="!font-semibold !text-base">
+      {{ 'OFFER.Field.MaxPersons' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let offer" class="!py-4">
+      <div class="flex items-center gap-3">
+        <mat-icon class="!text-base">people</mat-icon>
+        <mat-chip highlighted>
+          {{ offer.maxPersons }}
+        </mat-chip>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Active column -->
+  <ng-container matColumnDef="active">
+    <th mat-header-cell *matHeaderCellDef class="!font-semibold !text-base">
+      {{ 'OFFER.Field.Active' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let offer" class="!py-4">
+      <div
+        (click)="toggleActive.emit(offer)"
+        class="cursor-pointer inline-block"
+        [class.opacity-50]="reloading()">
+        <mat-slide-toggle
+          [checked]="offer.active"
+          [disabled]="reloading()"
+          color="primary">
+        </mat-slide-toggle>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Actions column -->
+  <ng-container matColumnDef="cmd">
+    <th mat-header-cell *matHeaderCellDef class="!font-semibold !text-base !w-36">
+      {{ 'OFFER.Field.Actions' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let offer" class="!py-4">
+      <div class="flex items-center gap-1">
+        <button
+          matIconButton (click)="edit.emit(offer)" [disabled]="reloading()"
+          matTooltip="{{ 'OFFER.Action.Edit' | translate }}">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          matIconButton
+          (click)="delete.emit(offer)" [disabled]="reloading()"
+          matTooltip="{{ 'OFFER.Action.Delete' | translate }}"
+          color="warn">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          matIconButton
+          routerLink="./details/{{ offer.id }}"
+          matTooltip="{{ 'OFFER.Action.Details' | translate }}">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns;"
+    class="hover:opacity-80 transition-opacity">
+  </tr>
+</table>
+
+

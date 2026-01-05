@@ -1,8 +1,19 @@
 package de.sambalmueslie.openbooking.core.response.api
 
 enum class ResponseType {
+    @Deprecated("use RESERVATION_RECEIVED")
     BOOKING_REQUEST_RECEIVED,
-    BOOKING_REQUEST_FAILED,
+
+    @Deprecated("use RESERVATION_RECEIVED")
     BOOKING_CONFIRMED,
-    BOOKING_DENIED
+
+    @Deprecated("use RESERVATION_RECEIVED")
+    BOOKING_DENIED,
+
+    RESERVATION_RECEIVED,
+    RESERVATION_FAILED,
+
+    RESERVATION_CONFIRMED,
+    RESERVATION_DENIED,
+
 }

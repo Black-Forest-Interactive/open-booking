@@ -2,9 +2,9 @@ package de.sambalmueslie.openbooking.gateway.admin.offer
 
 import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferFilterRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
@@ -18,8 +18,14 @@ class OfferController(private val gateway: OfferGateway) {
     @Get()
     fun getAll(auth: Authentication, pageable: Pageable) = gateway.getAll(auth, pageable)
 
+    @Get("info")
+    fun getAllInfo(auth: Authentication, pageable: Pageable) = gateway.getAllInfo(auth, pageable)
+
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
+
+    @Post("search")
+    fun search(auth: Authentication, @Body request: OfferSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
 
     @Get("/find/{date}")
     fun findByDate(auth: Authentication, date: LocalDate) = gateway.findByDate(auth, date)
@@ -43,8 +49,6 @@ class OfferController(private val gateway: OfferGateway) {
     fun createSeries(auth: Authentication, @Body request: OfferSeriesRequest) = gateway.createSeries(auth, request)
 
     @Post("/range")
-    fun createRange(auth: Authentication, request: OfferRangeRequest) = gateway.createRange(auth, request)
+    fun createRange(auth: Authentication, @Body request: OfferRangeRequest) = gateway.createRange(auth, request)
 
-    @Post("/filter")
-    fun filter(auth: Authentication, @Body request: OfferFilterRequest, pageable: Pageable) = gateway.filter(auth, request, pageable)
 }

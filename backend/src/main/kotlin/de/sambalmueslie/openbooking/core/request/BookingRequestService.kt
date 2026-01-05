@@ -7,10 +7,6 @@ import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.cache.CacheService
-import de.sambalmueslie.openbooking.core.group.VisitorGroupService
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupChangeRequest
-import de.sambalmueslie.openbooking.core.group.api.VisitorGroupStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.api.*
@@ -18,7 +14,11 @@ import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelation
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
+import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -27,9 +27,10 @@ import java.util.*
 
 
 @Singleton
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 class BookingRequestService(
     private val bookingService: BookingService,
-    private val visitorGroupService: VisitorGroupService,
+    private val visitorService: VisitorService,
     private val offerService: OfferService,
     private val repository: BookingRequestRepository,
     private val relationRepository: BookingRequestRelationRepository,
@@ -75,8 +76,8 @@ class BookingRequestService(
 
     override fun create(request: BookingRequestChangeRequest): BookingRequest {
         val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getBookingsByOfferId(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getOffer(offerIds).filter {
+        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+        val suitableOffers = offerService.getByIds(offerIds).filter {
             isEnoughSpaceAvailable(request, it, existingBookings[it.id] ?: emptyList())
         }
         if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
@@ -84,7 +85,7 @@ class BookingRequestService(
         isValid(request)
         val data = repository.save(createData(request))
 
-        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorGroupId)) }
+        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorId, "")) }
         val relations = bookings.map { BookingRequestRelation(it.id, data.id) }
         relationRepository.saveAll(relations)
 
@@ -100,17 +101,17 @@ class BookingRequestService(
         val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
         val spaceAvailable = offer.maxPersons - spaceConfirmed
 
-        return spaceAvailable >= request.visitorGroupChangeRequest.size
+        return spaceAvailable >= request.visitorChangeRequest.size
     }
 
     override fun createData(request: BookingRequestChangeRequest): BookingRequestData {
-        val visitorGroup = visitorGroupService.create(request.visitorGroupChangeRequest)
+        val visitor = visitorService.create(request.visitorChangeRequest)
         if (request.autoConfirm) {
-            visitorGroupService.confirm(visitorGroup.id)
+            visitorService.confirm(visitor.id)
         }
 
         val key = UUID.randomUUID().toString().uppercase(Locale.getDefault())
-        return BookingRequestData(0, key, BookingRequestStatus.UNCONFIRMED, visitorGroup.id, request.comment, timeProvider.now())
+        return BookingRequestData(0, key, BookingRequestStatus.UNCONFIRMED, visitor.id, request.comment, timeProvider.now())
     }
 
 
@@ -123,14 +124,14 @@ class BookingRequestService(
     }
 
     override fun isValid(request: BookingRequestChangeRequest) {
-        visitorGroupService.isValid(request.visitorGroupChangeRequest)
+        visitorService.isValid(request.visitorChangeRequest)
     }
 
     override fun deleteDependencies(data: BookingRequestData) {
         val relations = relationRepository.getByBookingRequestId(data.id)
         relations.forEach { bookingService.delete(it.bookingId) }
 
-        visitorGroupService.delete(data.visitorGroupId)
+        visitorService.delete(data.visitorId)
 
         relationRepository.deleteByBookingRequestId(data.id)
     }
@@ -142,14 +143,13 @@ class BookingRequestService(
 
     fun confirmEmail(key: String): GenericRequestResult {
         val request = repository.findOneByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        val visitorGroupId = request.visitorGroupId
-        val result = visitorGroupService.confirm(visitorGroupId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        val visitorId = request.visitorId
+        val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
-        return when (result.status == VisitorGroupStatus.CONFIRMED) {
+        return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
             true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
             else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
         }
-
     }
 
     fun confirm(id: Long, bookingId: Long, content: BookingConfirmationContent): GenericRequestResult {
@@ -198,7 +198,7 @@ class BookingRequestService(
         return converter.data { repository.findByIdOrNull(requestId) }
     }
 
-    fun updateVisitorGroup(id: Long, request: VisitorGroupChangeRequest) = changeService.updateVisitorGroup(id, request)
+    fun updateVisitor(id: Long, request: VisitorChangeRequest) = changeService.updateVisitor(id, request)
 
     fun info(id: Long) = converter.data { repository.findByIdOrNull(id) }
     fun setComment(id: Long, value: String): BookingRequest? {
@@ -206,7 +206,7 @@ class BookingRequestService(
     }
 
     fun findByOfferId(offerId: Long): List<BookingRequestInfo> {
-        val bookings = bookingService.getBookingsByOfferId(setOf(offerId)).associateBy { it.id }
+        val bookings = bookingService.getByOfferId(offerId).associateBy { it.id }
         val relations = relationRepository.getByBookingIdIn(bookings.keys)
         return converter.list { repository.findByIdIn(relations.map { it.bookingRequestId }.toSet()) }
     }

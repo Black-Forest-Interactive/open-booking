@@ -19,10 +19,10 @@
     "Title": "Open Booking",
     "Welcome": "Welcome"
   },
-  "BOOKING": {
+  "RESERVATION": {
     "Action": {
-      "Create": "Create Booking",
-      "Search": "Search Booking"
+      "Create": "Create Reservation",
+      "Search": "Search Reservation"
     },
     "Create": {
       "Action": {
@@ -36,7 +36,7 @@
         "Offer": {
           "Header": "Offer"
         },
-        "VisitorGroup": {
+        "Visitor": {
           "City": "City",
           "Contact": "Contact",
           "Header": "Visitor Group",
@@ -50,13 +50,13 @@
           "Zip": "Zip Code"
         }
       },
-      "Title": "Create a new booking"
+      "Title": "Create a new reservation"
     },
     "Details": {
-      "Title": "Booking Details"
+      "Title": "Reservation Details"
     },
     "Dialog": {
-      "InfoTitle": "Booking Info"
+      "InfoTitle": "Reservation Info"
     },
     "Entry": {
       "Empty": "No values found",
@@ -64,7 +64,7 @@
     },
     "Status": {
       "CONFIRMED": "Confirmed",
-      "Title": "Booking Status",
+      "Title": "Reservation Status",
       "UNCONFIRMED": "Unconfirmed",
       "DENIED": "Denied",
       "UNKNOWN": "Unknown"
@@ -89,9 +89,9 @@
     }
   },
   "ERROR": {
-    "NoDaySelectedForBooking": "You must select at least one day to start the booking",
-    "NoSpaceLeftForBooking": "There is no space left for booking",
-    "OfferIsDeactivated": "Offer is deactivated and therefore no booking possible"
+    "NoDaySelectedForReservation": "You must select at least one day to start the reservation",
+    "NoSpaceLeftForReservation": "There is no space left for reservation",
+    "OfferIsDeactivated": "Offer is deactivated and therefore no reservation possible"
   },
   "LANG": {
     "English": "English",
@@ -122,7 +122,7 @@
       "Print": "Print",
       "Search": "Search offer",
       "Select": "Select Offer",
-      "ShowBookings": "Bookings",
+      "ShowReservations": "Reservations",
       "Filter": "Filter",
       "ProceedToCheckout": "Checkout"
     },
@@ -171,8 +171,8 @@
   },
   "REQUEST": {
     "Action": {
-      "Confirm": "Confirm booking",
-      "Deny": "Deny booking",
+      "Confirm": "Confirm reservation",
+      "Deny": "Deny reservation",
       "MailConfirm": "Confirm Mail",
       "RequestConfirm": "Confirm Offer",
       "RequestDenial": "Denial Offer",
@@ -195,14 +195,18 @@
           "Space": "Available space",
           "Start": "Start Time"
         },
-        "Title": "Confirm Booking Request"
+        "Title": "Confirm Reservation Request"
       },
       "Failed": {
         "Message": "We are sorry, but something went wrong with your request. Please try again or choose a different date.",
-        "Title": "Booking Request Failed"
+        "Title": "Reservation Request Failed"
       }
     },
     "Form": {
+      "ReservationType": {
+        "Single": "Single visitor",
+        "Group": "Group visitor"
+      },
       "City": {
         "Label": "City"
       },
@@ -224,6 +228,10 @@
       "MinAge": {
         "Hint": "The age of the youngest person in the group",
         "Label": "Minimum Age"
+      },
+      "Age": {
+        "Hint": "The age of the participant",
+        "Label": "Age"
       },
       "Phone": {
         "Label": "Phone"
@@ -257,6 +265,10 @@
         "Hint": "Some title for the Group",
         "Label": "Title"
       },
+      "Name": {
+        "Hint": "Name of the visitor",
+        "Label": "Name"
+      },
       "Zip": {
         "Label": "Zip Code"
       }
@@ -268,11 +280,11 @@
       "UNKNOWN": "Unknown"
     },
     "Table": {
-      "Bookings": "Bookings",
+      "Reservations": "Reservations",
       "Timestamp": "Timestamp",
-      "VisitorGroup": "Visitor Group"
+      "Visitor": "Visitor Group"
     },
-    "Title": "Booking Request"
+    "Title": "Reservation Request"
   },
   "RESPONSE": {
     "Action": {
@@ -303,9 +315,9 @@
         "Title": "Title"
       },
       "Type": {
-        "BOOKING_CONFIRMED": "Booking Request Confirmed (EMail)",
-        "BOOKING_DENIED": "Booking Request Denied (EMail)",
-        "BOOKING_REQUEST_RECEIVED": "Booking Request Received (Dialog)",
+        "RESERVATION_CONFIRMED": "Reservation Request Confirmed (EMail)",
+        "RESERVATION_DENIED": "Reservation Request Denied (EMail)",
+        "RESERVATION_REQUEST_RECEIVED": "Reservation Request Received (Dialog)",
         "Hint": "",
         "Title": "Type"
       }
@@ -376,13 +388,13 @@
     "Action": {
       "Close": "Close",
       "Remove": "Remove",
-      "Checkout": "Proceed to Booking",
+      "Checkout": "Proceed to Reservation",
       "AddMore": "Add alternative offer"
     }
   },
   "SUMMARY": {
-    "Title": "Booking Summary",
-    "Subtitle": "Please review your booking details",
+    "Title": "Reservation Summary",
+    "Subtitle": "Please review your reservation details",
     "TimeSlots": {
       "Title": "Selected Time Slots",
       "MaxPersons": "Max {{count}} persons"
@@ -391,9 +403,10 @@
       "Title": "Visitor Information",
       "PersonCount": "{{count}} person(s)",
       "Type": "Type",
-      "GroupBooking": "Group Booking",
-      "IndividualBooking": "Individual Booking",
+      "GroupReservation": "Group Reservation",
+      "IndividualReservation": "Individual Reservation",
       "AgeRange": "Age Range",
+      "Age": "Age",
       "Years": "years",
       "Address": "Address"
     },
@@ -403,7 +416,7 @@
     },
     "Action": {
       "Edit": "Edit",
-      "Confirm": "Confirm Booking"
+      "Confirm": "Confirm Reservation"
     }
   }
 }

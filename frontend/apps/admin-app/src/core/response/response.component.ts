@@ -12,6 +12,7 @@ import {RouterLink} from "@angular/router";
 import {MatTableModule} from "@angular/material/table";
 import {Response} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
+import {ResponseDeleteDialogComponent} from "./response-delete-dialog/response-delete-dialog.component";
 
 @Component({
   selector: 'app-response',
@@ -35,22 +36,22 @@ export class ResponseComponent {
   pageNumber = signal(0)
   pageSize = signal(25)
 
-  private settingsCriteria = computed(() => ({
+  private response = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize()
   }))
 
-  private settingsResource = resource({
-    params: this.settingsCriteria,
+  private responseResource = resource({
+    params: this.response,
     loader: (param) => {
       return toPromise(this.service.getAllResponse(param.params.page, param.params.size), param.abortSignal)
     }
   })
 
-  private page = computed(() => this.settingsResource.value())
+  private page = computed(() => this.responseResource.value())
   entries = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
-  reloading = this.settingsResource.isLoading
+  reloading = this.responseResource.isLoading
 
   constructor(private service: ResponseService, private toast: HotToastService, private translate: TranslateService, private dialog: MatDialog) {
   }
@@ -65,6 +66,10 @@ export class ResponseComponent {
   }
 
   protected delete(response: Response) {
+    let dialogRef = this.dialog.open(ResponseDeleteDialogComponent, {data: response})
 
+    dialogRef.afterClosed().subscribe((value) => {
+      if (value) this.service.deleteResponse(response.id).subscribe(() => this.responseResource.reload())
+    })
   }
 }

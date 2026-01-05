@@ -43,7 +43,7 @@ class DashboardService(
     }
 
     private fun getDailyVisitorStats(date: LocalDate): DailyVisitorStats? {
-        val offer = offerService.getOffer(date)
+        val offer = offerService.getByDate(date)
         if (offer.isEmpty()) return null
 
         val activeOffer = offer.filter { it.active }
@@ -51,7 +51,7 @@ class DashboardService(
         val activeOfferAmount = activeOffer.size
         val totalSpace = activeOffer.sumOf { it.maxPersons }
 
-        val bookings = bookingService.getBookings(offer).groupBy { it.status }.mapValues { it.value.sumOf { b -> b.size } }.toMutableMap()
+        val bookings = bookingService.getByOffer(offer).groupBy { it.status }.mapValues { it.value.sumOf { b -> b.size } }.toMutableMap()
         BookingStatus.entries.forEach { status -> if (!bookings.containsKey(status)) bookings[status] = 0 }
 
         return DailyVisitorStats(date, offerAmount, activeOfferAmount, totalSpace, bookings)

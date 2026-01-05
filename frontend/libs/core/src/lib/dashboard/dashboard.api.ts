@@ -1,5 +1,5 @@
-import {VisitorGroup} from "../group/group.api";
-import {StaffMember} from "../staff/staff.api";
+import {Visitor} from "../visitor/visitor.api";
+import {Guide} from "../guide/guide.api";
 
 
 export interface WeekSummary {
@@ -25,13 +25,13 @@ export interface OfferEntry {
   confirmedSeats: number,
   pendingSeats: number,
   active: boolean,
-  guide: StaffMember | undefined,
+  guide: Guide | undefined,
   bookings: BookingEntry[]
 }
 
 export interface BookingEntry {
   id: number,
-  visitorGroup: VisitorGroup,
+  visitorGroup: Visitor,
   confirmed: boolean,
   status: string,
   comment: string,

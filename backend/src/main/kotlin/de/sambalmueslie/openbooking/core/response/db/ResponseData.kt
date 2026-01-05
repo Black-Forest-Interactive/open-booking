@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 @Entity(name = "Response")
 @Table(name = "response")
 data class ResponseData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var lang: String,
     @Column @Enumerated(EnumType.STRING) var type: ResponseType,
     @Column var title: String,

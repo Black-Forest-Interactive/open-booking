@@ -8,12 +8,13 @@ import java.time.LocalDateTime
 
 @Entity(name = "BookingRequest")
 @Table(name = "booking_request")
+@Deprecated("use reservation instead.", ReplaceWith("reservation"))
 data class BookingRequestData(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long,
+    @Id @GeneratedValue var id: Long,
     @Column var key: String,
 
     @Column @Enumerated(EnumType.STRING) var status: BookingRequestStatus,
-    @Column var visitorGroupId: Long,
+    @Column var visitorId: Long,
     @Column var comment: String,
 
     @Column var created: LocalDateTime,

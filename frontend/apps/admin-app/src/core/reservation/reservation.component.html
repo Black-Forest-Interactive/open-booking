@@ -1,0 +1,154 @@
+<div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
+  <app-loading-bar [reloading]="reloading()"/>
+
+  <!-- Search and Filters Toolbar -->
+  <div class="flex flex-col gap-3 px-2 pt-2 pb-4">
+    <!-- Filters Row -->
+    <div class="flex flex-wrap items-center gap-3">
+      <!-- Search Bar -->
+      <lib-search
+        label="RESERVATION.Action.Search"
+        (search)="handleSearch($event)"
+        class="min-w-[500px]"/>
+
+      <!-- Status Filter -->
+      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="min-w-[200px]">
+        <mat-label>{{ 'RESERVATION.Status.Title' | translate }}</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" multiple>
+          <mat-option value="{{ReservationStatus.CONFIRMED}}">
+            {{ 'RESERVATION.Status.CONFIRMED' | translate }}
+          </mat-option>
+          <mat-option value="{{ReservationStatus.UNCONFIRMED}}">
+            {{ 'RESERVATION.Status.UNCONFIRMED' | translate }}
+          </mat-option>
+          <mat-option value="{{ReservationStatus.DENIED}}">
+            {{ 'RESERVATION.Status.DENIED' | translate }}
+          </mat-option>
+          <mat-option value="{{ReservationStatus.EXPIRED}}">
+            {{ 'RESERVATION.Status.EXPIRED' | translate }}
+          </mat-option>
+          <mat-option value="{{ReservationStatus.UNKNOWN}}">
+            {{ 'RESERVATION.Status.UNKNOWN' | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Date Range Filter -->
+      <mat-form-field class="flex-1 min-w-[300px]" subscriptSizing="dynamic" appearance="fill">
+        <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="start"
+                 placeholder="{{ 'DAY_INFO.SelectRange.StartDate' | translate }}">
+          <input matEndDate formControlName="end" placeholder="{{ 'DAY_INFO.SelectRange.EndDate' | translate }}">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        @if (range.controls.start.hasError('matStartDateInvalid')) {
+          <mat-error>Invalid start date</mat-error>
+        }
+        @if (range.controls.end.hasError('matEndDateInvalid')) {
+          <mat-error>Invalid end date</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Clear Filters Button -->
+      @if (hasActiveFilters()) {
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear Filters
+        </button>
+      }
+    </div>
+
+    <!-- Active Filters Display -->
+    @if (hasActiveFilters()) {
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm text-gray-600 font-medium">Active Filters:</span>
+
+        <mat-chip-grid>
+          @for (status of selectedStatus(); track status) {
+            <mat-chip-row (removed)="removeStatusFilter(status)" class="!bg-blue-100 !text-blue-800 ">
+              {{ 'RESERVATION.Status.' + status | translate }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+
+        @if (dateFrom() || dateTo()) {
+          <mat-chip-grid>
+            @if (dateFrom()) {
+              <mat-chip-row (removed)="clearDateFrom()" class="!bg-green-100 !text-green-800 ">
+                From: {{ dateFrom() | date:'shortDate' }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+
+            @if (dateTo()) {
+              <mat-chip-row (removed)="clearDateTo()" class="!bg-green-100 !text-green-800 ">
+                To: {{ dateTo() | date:'shortDate' }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+        }
+      </div>
+    }
+  </div>
+
+
+  <!-- ✅ SCROLL AREA -->
+  <div class="flex-1 overflow-auto min-h-0">
+    <div class="container mx-auto py-4">
+      <app-reservation-content
+        [entries]="entries()"
+        [reloading]="reloading()">
+      </app-reservation-content>
+
+      <!-- Results Summary -->
+      @if (entries().length > 0) {
+        <div class="text-center text-sm text-gray-600 py-4">
+          Showing {{ entries().length }}
+          of {{ totalElements() }} {{ 'RESERVATION.Table.Reservations' | translate | lowercase }}
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (entries().length === 0 && !reloading()) {
+        <div class="text-center py-12">
+          <mat-icon class="w-16 h-16 text-gray-300 mb-4" style="width: 64px; height: 64px; font-size: 64px;">
+            search
+          </mat-icon>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">
+            No {{ 'RESERVATION.Table.Reservations' | translate | lowercase }} found
+          </h3>
+          <p class="text-gray-600">Try adjusting your search criteria</p>
+        </div>
+      }
+    </div>
+  </div>
+
+
+  <!-- Paginator -->
+  <div class="border-t">
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageNumber()"
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [showFirstLastButtons]="true"
+      [disabled]="reloading()"
+      (page)="handlePageChange($event)">
+    </mat-paginator>
+  </div>
+
+</div>
