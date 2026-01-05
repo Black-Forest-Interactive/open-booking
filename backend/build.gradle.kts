@@ -223,7 +223,7 @@ sonar {
 
 
 jib {
-    from.image = "eclipse-temurin:25-jre-ubi10-minimal"
+    from.image = "eclipse-temurin:25-jre-alpine"
     to {
         image = "open-booking-backend"
         tags = setOf(version.toString(), "latest")
