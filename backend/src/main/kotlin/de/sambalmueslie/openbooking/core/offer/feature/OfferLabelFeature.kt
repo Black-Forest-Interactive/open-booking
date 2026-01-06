@@ -33,7 +33,7 @@ class OfferLabelFeature(
             val result = page.content.map { offer ->
                 offer.updateLabel(labelIterator.next(), timeProvider.now())
             }
-            service.update(result)
+            service.updateBlock(result)
         }
         return GenericRequestResult(true, MSG_SUCCESS)
     }

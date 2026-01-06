@@ -46,7 +46,7 @@ class OfferCreateRangeFeature(
                 finishTime = startTime.plus(request.duration)
             }
 
-            service.create(createRequests)
+            service.createBlock(createRequests)
 
             date = date.plusDays(1)
         }

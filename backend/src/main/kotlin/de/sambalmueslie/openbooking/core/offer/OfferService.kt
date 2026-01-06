@@ -99,7 +99,7 @@ class OfferService(
         return patchData(data, patch)
     }
 
-    internal fun create(request: List<OfferChangeRequest>): List<Offer> {
+    internal fun createBlock(request: List<OfferChangeRequest>): List<Offer> {
         if (request.isEmpty()) return emptyList()
         val data = request.map { createData(it) }
         val result = repository.saveAll(data).map { it.convert() }
@@ -107,14 +107,7 @@ class OfferService(
         return result
     }
 
-    internal fun create(data: List<OfferData>): List<Offer> {
-        if (data.isEmpty()) return emptyList()
-        val result = repository.saveAll(data).map { it.convert() }
-        notify { it.handleBlockCreated(result) }
-        return result
-    }
-
-    internal fun update(data: List<OfferData>): List<Offer> {
+    internal fun updateBlock(data: List<OfferData>): List<Offer> {
         if (data.isEmpty()) return emptyList()
         val result = repository.updateAll(data).map { it.convert() }
         notify { it.handleBlockUpdated(result) }

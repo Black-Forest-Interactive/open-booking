@@ -45,7 +45,7 @@ class OfferCreateSeriesFeature(
                 start = start.with(request.minTime).plusDays(1)
             }
         }
-        service.create(createRequests)
+        service.createBlock(createRequests)
         return GenericRequestResult(true, MSG_SUCCESS)
     }
 }
