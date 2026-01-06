@@ -92,7 +92,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.3")
+    implementation("com.jillesvangurp:search-client:2.8.4")
     // jsoup
     implementation("org.jsoup:jsoup:1.22.1")
 
@@ -123,7 +123,7 @@ dependencies {
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.3")
+    implementation("com.jillesvangurp:search-client:2.8.4")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
