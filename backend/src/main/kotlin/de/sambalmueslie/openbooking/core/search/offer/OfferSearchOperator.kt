@@ -70,6 +70,14 @@ open class OfferSearchOperator(
                 processChange(obj)
             }
 
+            override fun handleBlockCreated(offers: List<Offer>) {
+                processChange(offers)
+            }
+
+            override fun handleBlockUpdated(offers: List<Offer>) {
+                processChange(offers)
+            }
+
             override fun handleDeleted(obj: Offer) {
                 deleteDocument(obj.id.toString())
             }
@@ -139,6 +147,15 @@ open class OfferSearchOperator(
 
     private fun processChange(offer: Offer) {
         updateOffer(offer.id)
+    }
+
+    private fun processChange(offers: List<Offer>) {
+        val offerIds = offers.map { it.id }.toSet()
+        val details = detailsAssembler.getByIds(offerIds)
+        val duration = measureTimeMillis {
+            details.forEach { detail -> updateDocument(convert(detail), false) }
+        }
+        logger.debug("Update offer ${offers.size} took $duration ms")
     }
 
     private fun updateOffer(offerId: Long) {
@@ -237,7 +254,7 @@ open class OfferSearchOperator(
 
     fun searchGroupedByDay(request: OfferSearchRequest): List<OfferGroupedSearchResult> {
         val from = request.from ?: service.getFirstOffer()?.start ?: LocalDateTime.now()
-        val to = request.to ?: from.plusDays(4)
+        val to = request.to ?: from.plusDays(7)
 
         val response = search(OfferSearchRequest(request.fullTextSearch, from, to), Pageable.from(0, 10000))
         val content = response.result.groupBy { it.info.offer.start.toLocalDate() }

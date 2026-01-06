@@ -41,8 +41,8 @@ class OfferGateway(
     fun update(auth: Authentication, id: Long, request: OfferChangeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.update(id, request) }
     fun delete(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.delete(id) }
 
-    fun createSeries(auth: Authentication, request: OfferSeriesRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.createSeries(request) }
-    fun createRange(auth: Authentication, request: OfferRangeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.createRange(request) }
+    fun createSeries(auth: Authentication, request: OfferSeriesRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.createSeries(request) }
+    fun createRange(auth: Authentication, request: OfferRangeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.createRange(request) }
     fun redistribute(auth: Authentication, request: OfferRedistributeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.redistribute(request) }
     fun relabel(auth: Authentication, date: LocalDate) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.relabel(date) }
 }

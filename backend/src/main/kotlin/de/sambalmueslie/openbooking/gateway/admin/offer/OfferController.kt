@@ -64,6 +64,6 @@ class OfferController(private val gateway: OfferGateway) {
     @Post("/redistribute")
     fun redistribute(auth: Authentication, @Body request: OfferRedistributeRequest) = gateway.redistribute(auth, request)
 
-    @Post("/relabel")
+    @Post("/relabel/{date}")
     fun relabel(auth: Authentication, date: LocalDate) = gateway.relabel(auth, date)
 }

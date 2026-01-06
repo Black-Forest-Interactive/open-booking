@@ -95,7 +95,7 @@ export class OfferService extends BaseService {
   }
 
   relabelOffer(date: string): Observable<GenericRequestResult> {
-    return this.post('redistribute/' + date, {})
+    return this.post('relabel/' + date, {})
   }
 
 

@@ -156,4 +156,8 @@ export class OfferComponent {
   protected reload() {
     this.offerResource.reload()
   }
+
+  protected handleToggleActive(entry: OfferSearchEntry) {
+    this.service.setOfferActive(entry.info.offer.id, !entry.info.offer.active).subscribe(value => this.offerResource.reload())
+  }
 }

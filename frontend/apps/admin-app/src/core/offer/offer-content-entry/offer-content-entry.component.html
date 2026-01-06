@@ -1,63 +1,76 @@
-<div class="flex gap-3 border-l-4 border rounded-lg px-4 py-3 transition-all duration-200 h-32"
-     [class]="active()
+<div
+  class="flex items-center content-between gap-10 border-l-4 border rounded-lg px-4 py-2.5 transition-all duration-200"
+  [class]="active()
        ? 'bg-white border-gray-200 hover:border-gray-400 hover:shadow-sm'
        : 'bg-gray-50 border-gray-300 opacity-70'"
 >
-  <!-- Main Content -->
-  <div class="flex flex-col gap-2 flex-auto justify-between min-w-0">
+
+  <!-- Left Section: ID + Time + Status -->
+  <div class="flex items-center gap-3">
+    <!-- Offer ID Badge -->
+    <div class="flex px-2 py-1 border-gray-200 border bg-gray-100 rounded w-14">
+      <div class="flex-1"></div>
+      <span class="text-xs font-semibold text-gray-700">{{ entry().info.offer.id }}</span>
+    </div>
     <!-- Time -->
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1.5">
       <mat-icon class="text-gray-600" inline>schedule</mat-icon>
-      <div class="font-semibold text-gray-900 text-base">
+      <div class="font-semibold text-gray-900 text-sm whitespace-nowrap">
         {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
       </div>
     </div>
-
-    <!-- Guide Info -->
-    @if (entry().info.guide) {
-      <div class="flex items-center gap-2 rounded bg-gray-100 border border-gray-300 px-3 py-1">
-        <mat-icon class="text-gray-600" inline>follow_the_signs</mat-icon>
-        <div class="text-sm text-gray-800 font-medium truncate">{{ guide() }}</div>
-      </div>
-    }
-
-    <!-- Label (if exists) -->
-    @if (entry().info.label) {
-      <div class="flex items-center gap-2 rounded px-3 py-1 border border-gray-300"
-           [style.background-color]="color() + '15'">
-        <mat-icon class="text-gray-600" inline>label</mat-icon>
-        <div class="flex gap-2 items-center justify-between flex-auto">
-          <div class="text-sm font-medium truncate text-gray-800">
-            {{ label() }}
-          </div>
-          <span class="w-4 h-4 rounded-full flex-shrink-0" [style.background-color]="color()"></span>
-        </div>
-      </div>
-    }
+    <!-- Assignment -->
+    <app-offer-assignment [assignment]="entry().assignment" class="w-40"/>
   </div>
 
-  <!-- Right Side: Capacity & Actions -->
-  <div class="flex flex-col items-end justify-between gap-2">
-    <div class="flex items-center gap-2 px-3 border-gray-100 border bg-gray-300">
-      <span class="text-sm font-semibold text-gray-700">{{ entry().info.offer.id }}</span>
-    </div>
-    <!-- Max Persons -->
-    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 border border-gray-300 rounded-full">
-      <mat-icon class="text-gray-600" inline>groups</mat-icon>
-      <span class="text-sm font-semibold text-gray-700">{{ maxPersons() }}</span>
+  <!-- Middle Section: Guide + Label (Fixed Width) -->
+  <div class="flex flex-row items-center gap-2 flex-1 min-w-0">
+
+    <!-- Guide Info with Quick Edit (Fixed Width) -->
+    <div class="w-48">
+      @if (entry().info.guide) {
+        <div class="flex items-center gap-1 rounded bg-gray-100 border border-gray-300 px-2 py-1">
+          <mat-icon class="text-gray-600" inline>follow_the_signs</mat-icon>
+          <div class="text-xs text-gray-800 font-medium truncate flex-1">{{ guide() }}</div>
+        </div>
+      }
     </div>
 
+    <!-- Label with Quick Edit (Fixed Width) -->
+    <div class="w-48">
+      @if (entry().info.label) {
+        <div class="flex items-center gap-1 rounded px-2 py-1 border border-gray-300 h-9"
+             [style.background-color]="color() + '15'">
+          <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" [style.background-color]="color()"></span>
+          <div class="text-xs font-medium truncate text-gray-800 flex-1">
+            {{ label() }}
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Right Section: Toggle + Actions -->
+  <div class="flex items-center gap-2">
+    <!-- Active Toggle -->
+    <mat-slide-toggle
+      [checked]="active()"
+      (change)="toggleActive.emit(entry())"
+      [disabled]="reloading()"
+      [matTooltip]="(active() ? 'OFFER.Status.Active' : 'OFFER.Status.Inactive') | translate">
+    </mat-slide-toggle>
+
     <!-- Action Buttons -->
-    <div class="flex items-center gap-1">
+    <div class="flex items-center">
       <button
-        mat-icon-button
+        matIconButton
         [matTooltip]="'OFFER.Action.Edit' | translate"
         (click)="edit.emit(entry())"
         [disabled]="reloading()">
         <mat-icon class="text-gray-600">edit</mat-icon>
       </button>
       <button
-        mat-icon-button
+        matIconButton
         [matTooltip]="'OFFER.Action.Delete' | translate"
         (click)="delete.emit(entry())"
         [disabled]="reloading()">

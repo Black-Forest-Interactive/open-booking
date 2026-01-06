@@ -3,4 +3,13 @@ package de.sambalmueslie.openbooking.core.offer
 import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 
-interface OfferChangeListener : BusinessObjectChangeListener<Long, Offer> {}
+interface OfferChangeListener : BusinessObjectChangeListener<Long, Offer> {
+    fun handleBlockCreated(offers: List<Offer>) {
+        // intentionally left empty
+    }
+
+    fun handleBlockUpdated(offers: List<Offer>) {
+        // intentionally left empty
+    }
+
+}

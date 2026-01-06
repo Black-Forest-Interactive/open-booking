@@ -24,7 +24,7 @@ interface OfferRepository : PageableRepository<OfferData, Long>, JpaSpecificatio
     fun findAllByActiveOrderByStart(active: Boolean, pageable: Pageable): Page<OfferData>
 
     fun findAllByStartGreaterThanEqualsAndFinishLessThanOrderByStart(from: LocalDateTime, to: LocalDateTime, pageable: Pageable): Page<OfferData>
-    fun findAllByStartGreaterThanEqualsAndFinishLessThanOrderByStart(from: LocalDateTime, to: LocalDateTime): List<OfferData>
+    fun findAllByStartGreaterThanEqualsAndStartLessThanOrderByStart(from: LocalDateTime, to: LocalDateTime): List<OfferData>
     fun findOneOrderByStart(): OfferData?
     fun findOneOrderByStartDesc(): OfferData?
 

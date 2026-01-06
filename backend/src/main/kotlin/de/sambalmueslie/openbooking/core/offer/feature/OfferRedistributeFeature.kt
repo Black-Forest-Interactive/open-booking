@@ -12,7 +12,6 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import kotlin.system.measureTimeMillis
 
 @Singleton
 class OfferRedistributeFeature(
@@ -29,20 +28,17 @@ class OfferRedistributeFeature(
     fun process(request: OfferRedistributeRequest): GenericRequestResult {
         if (!request.duration.isPositive) return GenericRequestResult(false, MSG_FAIL)
         if (request.timeTo.isBefore(request.timeFrom)) return GenericRequestResult(false, MSG_FAIL)
-        val duration = measureTimeMillis {
-            val firstHour = request.timeFrom.withMinute(0).withSecond(0).withNano(0)
-            val lastHour = request.timeTo.withMinute(0).withSecond(0).withNano(0)
+        val firstHour = request.timeFrom.withMinute(0).withSecond(0).withNano(0)
+        val lastHour = request.timeTo.withMinute(0).withSecond(0).withNano(0)
 
-            val hours: Sequence<LocalTime> = generateSequence(firstHour) { current ->
-                val next = current.plusHours(1)
-                if (next.isBefore(lastHour) || next == lastHour) next else null
-            }.takeWhile { it.isBefore(lastHour) }
+        val hours: Sequence<LocalTime> = generateSequence(firstHour) { current ->
+            val next = current.plusHours(1)
+            if (next.isBefore(lastHour) || next == lastHour) next else null
+        }.takeWhile { it.isBefore(lastHour) }
 
-            hours.forEach { hour ->
-                processHour(request.date, request.duration, hour)
-            }
+        hours.forEach { hour ->
+            processHour(request.date, request.duration, hour)
         }
-        logger.info("[{}] Process redistribution done within {} ms", request.date, duration)
         return GenericRequestResult(true, MSG_SUCCESS)
     }
 
@@ -53,19 +49,20 @@ class OfferRedistributeFeature(
         val to = LocalDateTime.of(date, hour.plusMinutes(59))
         logger.debug("[{} {}] search for offers between {} and {} ", date, hour, from, to)
 
-        val offers = repository.findAllByStartGreaterThanEqualsAndFinishLessThanOrderByStart(from, to)
+        val offers = repository.findAllByStartGreaterThanEqualsAndStartLessThanOrderByStart(from, to)
         logger.debug("[{} {}] found {} offers", date, hour, offers.size)
         if (offers.isEmpty()) return
 
-        val newIntervalMinutes = (60 / offers.size + 1).toLong()
+        val newIntervalMinutes = (60 / (offers.size + 1)).toLong()
         logger.debug("[{} {}] apply new interval {} minutes ", date, hour, newIntervalMinutes)
 
         val firstOffer = offers.first()
         val newOfferStart = from.plusMinutes(newIntervalMinutes)
-        service.create(OfferChangeRequest(newOfferStart, newOfferStart.plus(duration), firstOffer.maxPersons, true, null, null))
+        val newOfferFinish = newOfferStart.plus(duration)
+        service.create(OfferChangeRequest(newOfferStart, newOfferFinish, firstOffer.maxPersons, true, null, null))
 
         offers.drop(1).forEachIndexed { index, data ->
-            val expectedStart = from.plusMinutes((index + 1) * newIntervalMinutes)
+            val expectedStart = from.plusMinutes((index + 2) * newIntervalMinutes)
             if (expectedStart == data.start) return@forEachIndexed
 
             val offset = Duration.between(data.start, expectedStart)

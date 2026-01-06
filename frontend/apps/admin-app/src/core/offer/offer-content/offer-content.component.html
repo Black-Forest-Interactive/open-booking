@@ -1,29 +1,58 @@
-<div class="flex flex-row gap-4 overflow-x-auto pb-4">
-  @for (group of entries(); track group.day) {
+<div class="flex flex-col gap-4 overflow-x-auto py-4">
+  <div class="flex gap-2 justify-between">
+    @for (group of entries(); track group.day) {
+      <div class="flex items-center gap-4 px-3 py-2 border-gray-200 border hover:bg-gray-300 rounded-lg"
+           [ngClass]="group.day ===  selectedEntry()?.day ? 'bg-blue-300' : 'bg-gray-200'"
+           (click)="selectedDay.set(group.day)">
+        <div class="flex items-center gap-1">
+          <mat-icon class="text-gray-600">calendar_today</mat-icon>
+          <span class="text-sm font-semibold">{{ group.day | date:'shortDate' }}</span>
+        </div>
+        <span class="px-2 py-1 bg-gray-700 text-white text-xs font-medium rounded">{{ group.entries.length }}</span>
+      </div>
+    }
+  </div>
+  @if (selectedEntry()) {
     <div
-      class="flex flex-col gap-0 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow w-80 flex-shrink-0">
+      class="flex flex-col gap-0 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow flex-shrink-0">
       <!-- Day Header -->
       <div class="flex items-center justify-between px-4 py-3 bg-gray-100 border-b border-gray-300 rounded-t-lg">
         <div class="flex items-center gap-2">
           <mat-icon class="text-gray-600" inline>calendar_today</mat-icon>
-          <div class="font-semibold text-gray-800">{{ group.day | date: 'mediumDate' }}</div>
+          <div class="font-semibold text-gray-800">{{ selectedEntry()!!.day | date: 'mediumDate' }}</div>
         </div>
-        <span class="px-2 py-1 bg-gray-700 text-white text-xs font-medium rounded">
-          {{ group.entries.length }}
-        </span>
+        <div class="flex gap-3">
+          <button matButton="tonal" class="dense-1" (click)="handleRelable(selectedEntry()!!)">
+            @if (relabeling()) {
+              <mat-spinner diameter="18"></mat-spinner>
+            } @else {
+              <mat-icon>new_label</mat-icon>
+            }
+            <span>{{ 'OFFER.Action.Relabel' }}</span>
+          </button>
+          <button matButton="tonal" class="dense-1" (click)="handleRedistribute(selectedEntry()!!)">
+            <mat-icon>expand</mat-icon>
+            <span>{{ 'OFFER.Action.Redistribute' }}</span>
+          </button>
+
+          <span class="px-2 py-1 bg-gray-700 text-white text-xs font-medium rounded">
+            {{ selectedEntry()!!.entries.length }}
+          </span>
+        </div>
       </div>
 
       <!-- Offers List -->
       <div class="flex flex-col gap-3 p-3">
-        @for (entry of group.entries; track entry.info.offer.id) {
+        @for (entry of selectedEntry()!!.entries; track entry.info.offer.id) {
           <app-offer-content-entry
             [entry]="entry"
             [reloading]="reloading()"
             (edit)="edit.emit($event)"
             (delete)="delete.emit($event)"
+            (toggleActive)="toggleActive.emit($event)"
           />
         }
-        @if (group.entries.length === 0) {
+        @if (selectedEntry()!!.entries.length === 0) {
           <div class="flex flex-col items-center justify-center py-8 text-gray-400">
             <mat-icon class="text-4xl mb-2">event_busy</mat-icon>
             <span class="text-sm">No offers for this day</span>

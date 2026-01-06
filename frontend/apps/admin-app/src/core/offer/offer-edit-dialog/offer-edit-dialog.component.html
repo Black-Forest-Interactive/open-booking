@@ -70,7 +70,7 @@
       @if (form.get('label')?.value) {
         <span
           class="w-10 h-14 rounded border border-gray-400"
-          [style.backgroundColor]="form.get('label')?.value?.color">
+          [style.backgroundColor]="getSelectedLabelColor()">
         </span>
       }
     </div>
