@@ -1,0 +1,8 @@
+/* styles.css or component SCSS */
+.menu-link {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:border-gray-700 border transition-colors cursor-pointer;
+}
+
+.menu-link span {
+  @apply text-sm font-medium;
+}

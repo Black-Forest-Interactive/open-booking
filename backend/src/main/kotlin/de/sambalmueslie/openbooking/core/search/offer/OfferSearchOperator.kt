@@ -24,6 +24,7 @@ import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferGroupedSearchResult
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchResponse
@@ -34,11 +35,12 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 import kotlin.system.measureTimeMillis
 
 @Singleton
 open class OfferSearchOperator(
-    service: OfferService,
+    private val service: OfferService,
     private val reservationService: ReservationService,
     bookingService: BookingService,
 
@@ -231,6 +233,17 @@ open class OfferSearchOperator(
         }
 
         return OfferSearchResponse(Page.of(content, pageable, response.total))
+    }
+
+    fun searchGroupedByDay(request: OfferSearchRequest): List<OfferGroupedSearchResult> {
+        val from = request.from ?: service.getFirstOffer()?.start ?: LocalDateTime.now()
+        val to = request.to ?: from.plusDays(4)
+
+        val response = search(OfferSearchRequest(request.fullTextSearch, from, to), Pageable.from(0, 10000))
+        val content = response.result.groupBy { it.info.offer.start.toLocalDate() }
+            .map { OfferGroupedSearchResult(it.key, it.value.sortedBy { v -> v.info.offer.start }) }
+            .sortedBy { it.day }
+        return content
     }
 
 }

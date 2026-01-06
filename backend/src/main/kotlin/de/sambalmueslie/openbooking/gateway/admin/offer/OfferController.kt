@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.gateway.admin.offer
 import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
+import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import io.micronaut.data.model.Pageable
@@ -27,6 +28,9 @@ class OfferController(private val gateway: OfferGateway) {
     @Post("search")
     fun search(auth: Authentication, @Body request: OfferSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
 
+    @Post("search/by/day")
+    fun searchGroupedByDay(auth: Authentication, @Body request: OfferSearchRequest) = gateway.searchGroupedByDay(auth, request)
+
     @Get("/find/{date}")
     fun findByDate(auth: Authentication, date: LocalDate) = gateway.findByDate(auth, date)
 
@@ -35,6 +39,12 @@ class OfferController(private val gateway: OfferGateway) {
 
     @Patch("/{id}/max_persons")
     fun setMaxPersons(auth: Authentication, id: Long, @Body value: PatchRequest<Int>) = gateway.setMaxPersons(auth, id, value)
+
+    @Patch("/{id}/label")
+    fun setLabel(auth: Authentication, id: Long, @Body value: PatchRequest<Long>) = gateway.setLabel(auth, id, value)
+
+    @Patch("/{id}/guide")
+    fun setGuide(auth: Authentication, id: Long, @Body value: PatchRequest<Long>) = gateway.setGuide(auth, id, value)
 
     @Post()
     fun create(auth: Authentication, @Body request: OfferChangeRequest) = gateway.create(auth, request)
@@ -51,4 +61,9 @@ class OfferController(private val gateway: OfferGateway) {
     @Post("/range")
     fun createRange(auth: Authentication, @Body request: OfferRangeRequest) = gateway.createRange(auth, request)
 
+    @Post("/redistribute")
+    fun redistribute(auth: Authentication, @Body request: OfferRedistributeRequest) = gateway.redistribute(auth, request)
+
+    @Post("/relabel")
+    fun relabel(auth: Authentication, date: LocalDate) = gateway.relabel(auth, date)
 }

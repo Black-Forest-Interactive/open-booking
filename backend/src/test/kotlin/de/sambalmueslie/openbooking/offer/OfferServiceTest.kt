@@ -26,7 +26,7 @@ internal class OfferServiceTest : BaseServiceTest() {
         val s1 = LocalDateTime.of(2022, 12, 17, 8, 0, 0)
         val f1 = LocalDateTime.of(2022, 12, 17, 8, 30, 0)
         // create
-        val createRequest = OfferChangeRequest(s1, f1, 20, true)
+        val createRequest = OfferChangeRequest(s1, f1, 20, true, null, null)
         var result = service.create(createRequest)
 
         var reference = Offer(result.id, createRequest.start, createRequest.finish, createRequest.maxPersons, createRequest.active)
@@ -39,7 +39,7 @@ internal class OfferServiceTest : BaseServiceTest() {
         // update
         val s2 = LocalDateTime.of(2022, 12, 17, 9, 0, 0)
         val f2 = LocalDateTime.of(2022, 12, 17, 9, 30, 0)
-        val updateRequest = OfferChangeRequest(s2, f2, 40, false)
+        val updateRequest = OfferChangeRequest(s2, f2, 40, false, null, null)
         result = service.update(reference.id, updateRequest)
 
         reference = Offer(

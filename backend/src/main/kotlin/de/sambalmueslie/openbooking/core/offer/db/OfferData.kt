@@ -37,4 +37,35 @@ data class OfferData(
         updated = timestamp
         return this
     }
+
+    fun update(start: LocalDateTime, finish: LocalDateTime, timestamp: LocalDateTime): OfferData {
+        this.start = start
+        this.finish = finish
+        updated = timestamp
+        return this
+    }
+
+    fun updateLabel(label: Label?, timestamp: LocalDateTime): OfferData {
+        labelId = label?.id
+        updated = timestamp
+        return this
+    }
+
+    fun updateGuide(guide: Guide?, timestamp: LocalDateTime): OfferData {
+        guideId = guide?.id
+        updated = timestamp
+        return this
+    }
+
+    fun updateMaxPersons(maxPersons: Int, timestamp: LocalDateTime): OfferData {
+        this.maxPersons = maxPersons
+        updated = timestamp
+        return this
+    }
+
+    fun updateActive(active: Boolean, timestamp: LocalDateTime): OfferData {
+        this.active = active
+        updated = timestamp
+        return this
+    }
 }

@@ -30,6 +30,7 @@ class OfferService(
     private val labelService: LabelService,
     private val guideService: GuideService,
 
+
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferChangeListener, OfferData>(repository, cacheService, Offer::class, logger) {
@@ -37,10 +38,10 @@ class OfferService(
 
     companion object {
         private val logger = LoggerFactory.getLogger(OfferService::class.java)
-        private const val MSG_OFFER_SERIES_FAIL = "REQUEST.OFFER.SERIES.FAIL"
-        private const val MSG_OFFER_SERIES_SUCCESS = "REQUEST.OFFER.SERIES.SUCCESS"
-        private const val MSG_OFFER_RANGE_FAIL = "REQUEST.OFFER.RANGE.FAIL"
-        private const val MSG_OFFER_RANGE_SUCCESS = "REQUEST.OFFER.RANGE.SUCCESS"
+        const val MSG_OFFER_SERIES_FAIL = "REQUEST.OFFER.SERIES.FAIL"
+        const val MSG_OFFER_SERIES_SUCCESS = "REQUEST.OFFER.SERIES.SUCCESS"
+        const val MSG_OFFER_RANGE_FAIL = "REQUEST.OFFER.RANGE.FAIL"
+        const val MSG_OFFER_RANGE_SUCCESS = "REQUEST.OFFER.RANGE.SUCCESS"
     }
 
     override fun getAll(pageable: Pageable): Page<Offer> {
@@ -99,9 +100,10 @@ class OfferService(
     }
 
 
-    fun setActive(id: Long, value: Boolean) = patchData(id) { it.active = value }
-
-    fun setMaxPersons(id: Long, value: Int) = patchData(id) { if (value >= 0) it.maxPersons = value }
+    fun setActive(id: Long, value: Boolean) = patchData(id) { it.updateActive(value, timeProvider.now()) }
+    fun setMaxPersons(id: Long, value: Int) = patchData(id) { if (value >= 0) it.updateMaxPersons(value, timeProvider.now()) }
+    fun setLabel(id: Long, labelId: Long) = patchData(id) { it.updateLabel(labelService.get(labelId), timeProvider.now()) }
+    fun setGuide(id: Long, guideId: Long) = patchData(id) { it.updateGuide(guideService.get(guideId), timeProvider.now()) }
 
     fun createSeries(request: OfferSeriesRequest): GenericRequestResult {
         if (!request.duration.isPositive) return GenericRequestResult(false, MSG_OFFER_SERIES_FAIL)
@@ -159,4 +161,7 @@ class OfferService(
     }
 
 
+    internal fun patch(data: OfferData, patch: (OfferData) -> Unit): Offer {
+        return patchData(data, patch)
+    }
 }

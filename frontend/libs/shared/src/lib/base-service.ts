@@ -1,6 +1,6 @@
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {retry, tap} from "rxjs/operators";
+import {tap} from "rxjs/operators";
 import {LoggingService} from "./logging/logging.service";
 import {inject} from "@angular/core";
 import {Page} from "./shared.api";
@@ -8,7 +8,6 @@ import {Page} from "./shared.api";
 
 export abstract class BaseService {
   api = 'api/';
-  protected retryCount: number = 3;
   private http = inject(HttpClient)
   private logger = inject(LoggingService)
 
@@ -96,7 +95,6 @@ export abstract class BaseService {
     const log = this.logger;
     // @ts-ignore
     return observable.pipe(
-      retry(this.retryCount),
       tap(
         function (next) {
           log.debug(message, next)

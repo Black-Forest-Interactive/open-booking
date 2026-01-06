@@ -71,6 +71,15 @@ export class OfferRangeRequest {
   }
 }
 
+export class OfferRedistributeRequest {
+  constructor(
+    public date: string,
+    public timeFrom: string,
+    public timeTo: string,
+    public duration: string
+  ) {
+  }
+}
 
 export class OfferSearchRequest {
   constructor(
@@ -84,6 +93,12 @@ export class OfferSearchRequest {
 export interface OfferSearchResponse {
   result: Page<OfferSearchEntry>
 }
+
+export interface OfferGroupedSearchResult {
+  day: string,
+  entries: OfferSearchEntry[]
+}
+
 
 export interface OfferSearchEntry {
   info: OfferInfo,

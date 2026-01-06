@@ -210,6 +210,11 @@ tasks.jacocoTestReport {
         csv.required.set(false)
     }
 }
+
+tasks.named("internalStartTestResourcesService") {
+    setProperty("useClassDataSharing", false)
+}
+
 jacoco {
     toolVersion = "0.8.13"
 }

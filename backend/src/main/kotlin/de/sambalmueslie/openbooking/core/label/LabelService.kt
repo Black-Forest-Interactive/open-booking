@@ -44,7 +44,7 @@ class LabelService(
         return repository.findAll(Sort.of(Sort.Order.asc(Label::priority.name))).map { it.convert() }
     }
 
-    fun getLabelIterator() = InfiniteLabelIterator(getSortedLabels())
+    fun getLabelIterator() = LabelIterator(getSortedLabels())
 
     fun getNext(previousLabelId: Long?): Label? {
         val label = previousLabelId?.let { repository.findByIdOrNull(it) }

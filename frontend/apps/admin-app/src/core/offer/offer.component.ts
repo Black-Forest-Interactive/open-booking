@@ -7,8 +7,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ExportService, OfferService} from "@open-booking/admin";
-import {HotToastService} from "@ngxpert/hot-toast";
+import {OfferService} from "@open-booking/admin";
 import {MatDialog} from "@angular/material/dialog";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -25,6 +24,13 @@ import {MatInputModule} from "@angular/material/input";
 import {OfferDeleteDialogComponent} from "./offer-delete-dialog/offer-delete-dialog.component";
 import {OfferContentComponent} from "./offer-content/offer-content.component";
 import {OfferEditDialogComponent} from "./offer-edit-dialog/offer-edit-dialog.component";
+import {
+  OfferFeatureCreateSeriesDialogComponent
+} from "./offer-feature-create-series-dialog/offer-feature-create-series-dialog.component";
+import {
+  OfferFeatureCreateRangeDialogComponent
+} from "./offer-feature-create-range-dialog/offer-feature-create-range-dialog.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-offer',
@@ -48,7 +54,8 @@ import {OfferEditDialogComponent} from "./offer-edit-dialog/offer-edit-dialog.co
     RouterLink,
     TranslatePipe,
     LoadingBarComponent,
-    OfferContentComponent
+    OfferContentComponent,
+    MatProgressSpinner
   ],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.scss',
@@ -76,19 +83,15 @@ export class OfferComponent {
 
   private offerResource = resource({
     params: this.offerCriteria,
-    loader: (param) => toPromise(this.service.searchOffer(param.params.request, param.params.page, param.params.size), param.abortSignal)
+    loader: (param) => toPromise(this.service.searchOfferGroupedByDay(param.params.request), param.abortSignal)
   })
 
-  private page = computed(() => this.offerResource.value()?.result)
-  offer = computed(() => this.page()?.content ?? [])
-  totalElements = computed(() => this.page()?.totalSize ?? 0)
+  offer = computed(() => this.offerResource.value() ?? [])
   reloading = this.offerResource.isLoading
 
 
   constructor(
     private service: OfferService,
-    private exportService: ExportService,
-    private toastService: HotToastService,
     private dialog: MatDialog
   ) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
@@ -108,8 +111,8 @@ export class OfferComponent {
 
   protected applyFilter() {
     let filter = this.range.value
-    this.dateFrom.set(filter.start?.toISODate())
-    this.dateTo.set(filter.end?.toISODate())
+    this.dateFrom.set(filter.start?.toISO({includeOffset: false}))
+    this.dateTo.set(filter.end?.toISO({includeOffset: false}))
   }
 
   protected handleSelectionChange() {
@@ -136,5 +139,21 @@ export class OfferComponent {
     dialogRef.afterClosed().subscribe((value) => {
       if (value) this.service.deleteOffer(entry.info.offer.id).subscribe(() => this.offerResource.reload())
     })
+  }
+
+  protected handleCreateSeries() {
+    this.dialog.open(OfferFeatureCreateSeriesDialogComponent, {
+      disableClose: true,
+    })
+  }
+
+  protected handleCreateRange() {
+    this.dialog.open(OfferFeatureCreateRangeDialogComponent, {
+      disableClose: true,
+    })
+  }
+
+  protected reload() {
+    this.offerResource.reload()
   }
 }
