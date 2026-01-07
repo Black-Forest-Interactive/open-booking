@@ -6,6 +6,6 @@ import java.time.LocalDateTime
 data class ReservationDetails(
     val reservation: Reservation,
     val visitor: Visitor,
-    val offers: List<ReservationOfferEntry>,
+    val offer: ReservationOffer,
     val timestamp: LocalDateTime
 )

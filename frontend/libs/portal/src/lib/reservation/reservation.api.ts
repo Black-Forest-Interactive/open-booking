@@ -3,7 +3,7 @@ import {VisitorChangeRequest} from "@open-booking/core";
 export class CreateReservationRequest {
   constructor(
     public visitor: VisitorChangeRequest,
-    public offerIds: number[],
+    public offerId: number,
     public comment: string,
     public termsAndConditions: boolean
   ) {

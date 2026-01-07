@@ -3,6 +3,7 @@
     <app-reservation-content-entry
       [data]="entry"
       [reloading]="reloading()"
+      (reload)="reload.emit($event)"
     />
   }
 </div>

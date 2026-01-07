@@ -14,7 +14,7 @@ class ReservationGateway(
 ) {
     fun create(request: CreateReservationRequest): Reservation {
         if (!request.termsAndConditions) throw InvalidRequestException("You must accept the terms and conditions")
-        return service.create(ReservationChangeRequest(request.visitor, request.comment, request.offerIds, false, false))
+        return service.create(ReservationChangeRequest(request.visitor, request.comment, request.offerId, false, false))
     }
 
     fun getRequestReceivedMessage(requestId: Long, lang: String): ResolvedResponse? {

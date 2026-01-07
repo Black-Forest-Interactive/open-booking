@@ -17,20 +17,6 @@
           <div class="text-xs text-red-600 font-medium">{{ 'RESERVATION.Offer.Inactive' | translate }}
           </div>
         }
-
-        @if (isPreferred()) {
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-md text-sm font-semibold border border-gray-400">
-            <mat-icon class="text-amber-500" [matTooltip]="'RESERVATION.Offer.Priority.Preferred' | translate">
-              star
-            </mat-icon>
-          </div>
-        } @else {
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-md text-sm font-semibold border border-gray-400">
-            {{ entry().priority }}
-          </div>
-        }
       </div>
     </div>
   </div>
@@ -44,7 +30,7 @@
         <span>{{ usedCapacity() }} / {{ maxPersons() }}</span>
       </div>
 
-      <div class="relative h-6 bg-gray-200 rounded-lg overflow-hidden border border-gray-300">
+      <div class="relative h-6 bg-green-500 rounded-lg overflow-hidden border border-gray-300">
         <!-- Booked Space (Blue) -->
         <div class="absolute h-full bg-blue-500 transition-all"
              [style.width.%]="bookedPercentage()">
@@ -97,7 +83,7 @@
           </div>
         }
         <div class="flex items-center gap-1">
-          <div class="w-4 h-4 bg-gray-200 rounded border border-gray-300"></div>
+          <div class="w-4 h-4 bg-green-200 rounded border border-green-300"></div>
           <span class="text-gray-700">
                 {{ 'RESERVATION.Offer.Stats.Available' | translate }} ({{ availableSpace() }})
               </span>

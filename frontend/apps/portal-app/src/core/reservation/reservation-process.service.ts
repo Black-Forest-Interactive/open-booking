@@ -11,18 +11,13 @@ export class ReservationProcessService {
   preferredEntry = signal<DayInfoOffer | undefined>(undefined)
   maxGroupSize = computed(() => this.calcMaxGroupSize(this.entries()))
 
-  mode = signal<'offer' | 'checkout' | 'summary'>('offer')
+  mode = signal<'checkout' | 'summary'>('checkout')
 
   request = signal<CreateReservationRequest | undefined>(undefined)
 
   offerAdd(offer: DayInfoOffer) {
-    this.entries.update(entries =>
-      entries.includes(offer) ? entries : [...entries, offer]
-    )
-
-    if (!this.preferredEntry()) {
-      this.preferredEntry.set(offer)
-    }
+    this.entries.update(entries => [offer])
+    this.preferredEntry.set(offer)
   }
 
   offerRemove(offer: DayInfoOffer) {
@@ -52,19 +47,12 @@ export class ReservationProcessService {
     this.entries.set([])
     this.preferredEntry.set(undefined)
     this.request.set(undefined)
-    this.mode.set('offer')
+    this.mode.set('checkout')
   }
 
-  proceedToOffer() {
-    this.mode.set('offer')
-  }
 
   proceedToCheckout() {
-    if (this.entries().length > 0) {
-      this.mode.set('checkout')
-    } else {
-      this.mode.set('offer')
-    }
+    this.mode.set('checkout')
   }
 
   proceedToSummary(request: CreateReservationRequest) {

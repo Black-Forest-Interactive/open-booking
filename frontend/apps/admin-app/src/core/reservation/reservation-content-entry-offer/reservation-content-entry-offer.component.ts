@@ -1,5 +1,5 @@
 import {Component, computed, input, output} from '@angular/core';
-import {Reservation, ReservationOfferEntry, ReservationStatus, Visitor} from "@open-booking/core";
+import {Reservation, ReservationOffer, ReservationStatus, Visitor} from "@open-booking/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -21,12 +21,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 export class ReservationContentEntryOfferComponent {
 
   // Inputs
-  entry = input.required<ReservationOfferEntry>()
+  entry = input.required<ReservationOffer>()
   visitor = input.required<Visitor>()
   reservation = input.required<Reservation>()
 
   // Output
-  confirm = output<ReservationOfferEntry>()
+  confirm = output<ReservationOffer>()
 
   // Computed properties
   active = computed(() => this.entry().offer.active)
@@ -61,11 +61,8 @@ export class ReservationContentEntryOfferComponent {
 
   hasCapacity = computed(() => this.availableSpace() >= this.visitor().size)
 
-  isPreferred = computed(() => this.entry().priority === 0)
-
   canConfirmOffer = computed(() =>
     this.active() &&
-    this.hasCapacity() &&
     this.reservation().status !== ReservationStatus.CONFIRMED
   )
 

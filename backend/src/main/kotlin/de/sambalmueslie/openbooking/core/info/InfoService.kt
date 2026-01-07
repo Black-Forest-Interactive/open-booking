@@ -9,6 +9,9 @@ import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
+import de.sambalmueslie.openbooking.core.reservation.ReservationService
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -20,6 +23,7 @@ import java.time.temporal.ChronoUnit
 class InfoService(
     private val offerService: OfferService,
     bookingService: BookingService,
+    reservationService: ReservationService,
     private val cache: InfoCache
 ) {
 
@@ -56,11 +60,32 @@ class InfoService(
                 updateCache(obj)
             }
         })
+
+
+        reservationService.register(object : ReservationChangeListener {
+            override fun handleCreated(obj: Reservation) {
+                updateCache(obj)
+            }
+
+            override fun handleUpdated(obj: Reservation) {
+                updateCache(obj)
+            }
+
+            override fun handleDeleted(obj: Reservation) {
+                updateCache(obj)
+            }
+        })
     }
 
     private fun updateCache(booking: Booking) {
         logger.info("Update cache for booking ${booking.id}")
         val offer = offerService.get(booking.offerId) ?: return
+        updateCache(offer)
+    }
+
+    private fun updateCache(registration: Reservation) {
+        logger.info("Update cache for registration ${registration.id}")
+        val offer = offerService.get(registration.offerId) ?: return
         updateCache(offer)
     }
 
@@ -70,6 +95,7 @@ class InfoService(
         cache.refresh(key)
         addCacheKey(key)
     }
+
 
     private val cacheKeysToRefresh = mutableSetOf<LocalDate>()
 

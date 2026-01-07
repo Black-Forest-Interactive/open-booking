@@ -1,7 +1,7 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col flex-1 min-h-0">
 
   <!-- Scrollable List -->
-  <div class="flex-1 overflow-y-auto pb-24">
+  <div class="flex-1 overflow-y-auto pb-24 min-h-0">
     <div class="flex flex-col gap-2">
       @for (offer of offers(); track offer.offer.id) {
         <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>

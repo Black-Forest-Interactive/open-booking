@@ -1,10 +1,10 @@
-<mat-sidenav-container class="h-screen w-full">
+<mat-sidenav-container class="h-full w-full">
   <!-- Side Navigation -->
   <mat-sidenav #drawer
                [attr.role]="service.isHandset() ? 'dialog' : 'navigation'"
                [mode]="service.isHandset() ? 'over' : 'side'"
                [opened]="!service.isHandset()"
-               class="w-64 !bg-gray-200 mb-1.5 flex flex-col h-[calc(100vh-120px)] min-h-0">
+               class="w-64 !bg-gray-200 mb-1.5 flex flex-col">
     <app-admin-menu/>
   </mat-sidenav>
 

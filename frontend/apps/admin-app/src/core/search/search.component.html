@@ -1,4 +1,4 @@
-<div class="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900">
+<div class="flex-1 overflow-auto bg-gray-50 ">
   <div class="container mx-auto p-4 md:p-6 lg:p-8">
     <div class="grid gap-4 md:gap-6">
       @for (info of entries(); track info.key) {
@@ -7,7 +7,7 @@
             <div class="hidden md:flex md:items-center md:gap-6">
               <!-- Title Section -->
               <div class="min-w-48 flex-shrink-0">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">
                   {{ 'SEARCH.key.' + info.name | translate }}
                 </h3>
               </div>
@@ -29,26 +29,26 @@
                   class="rounded-full h-2"/>
 
                 <div class="flex items-center justify-between gap-4 text-sm">
-                  <div class="flex items-center gap-1.5 text-gray-700 dark:text-gray-300">
+                  <div class="flex items-center gap-1.5 text-gray-700 ">
                     <mat-icon inline>data_usage</mat-icon>
                     <span class="font-medium">{{ info.statistics.total }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">
+                    <span class="text-gray-500 ">
                       {{ 'SEARCH.statistics.total' | translate }}
                     </span>
                   </div>
 
-                  <div class="flex items-center gap-1.5 text-green-700 dark:text-green-400">
+                  <div class="flex items-center gap-1.5 text-green-700">
                     <mat-icon inline>check_circle</mat-icon>
                     <span class="font-medium">{{ info.statistics.successful }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">
+                    <span class="text-gray-500 ">
                       {{ 'SEARCH.statistics.successfully' | translate }}
                     </span>
                   </div>
 
-                  <div class="flex items-center gap-1.5 text-red-700 dark:text-red-400">
+                  <div class="flex items-center gap-1.5 text-red-700 ">
                     <mat-icon inline>error</mat-icon>
                     <span class="font-medium">{{ info.statistics.failed }}</span>
-                    <span class="text-gray-500 dark:text-gray-400">
+                    <span class="text-gray-500 ">
                       {{ 'SEARCH.statistics.failed' | translate }}
                     </span>
                   </div>
@@ -76,10 +76,10 @@
         <mat-icon class="!w-16 !h-16 !text-6xl text-gray-400 mb-4">
           search_off
         </mat-icon>
-        <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">
           No search entries found
         </h3>
-        <p class="text-gray-500 dark:text-gray-400">
+        <p class="text-gray-500 ">
           Search entries will appear here when available
         </p>
       </div>

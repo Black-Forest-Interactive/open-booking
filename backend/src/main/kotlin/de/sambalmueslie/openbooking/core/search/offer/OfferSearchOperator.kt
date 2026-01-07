@@ -122,8 +122,7 @@ open class OfferSearchOperator(
     }
 
     private fun processChange(reservation: Reservation) {
-        val offerIds = reservationService.getRelatedOffers(reservation)
-        offerIds.forEach { offerId -> updateOffer(offerId) }
+        updateOffer(reservation.offerId)
     }
 
     private fun processDelete(reservation: Reservation) {

@@ -1,0 +1,8 @@
+<button matButton="outlined" color="warn" [disabled]="disabled()" (click)="confirmMail()" class="w-full">
+  @if (processing()) {
+    <mat-spinner diameter="18"></mat-spinner>
+  } @else {
+    <mat-icon>mail</mat-icon>
+  }
+  {{ 'RESERVATION.Action.MailConfirm' | translate }}
+</button>

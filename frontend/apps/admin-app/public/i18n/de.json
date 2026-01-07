@@ -25,7 +25,7 @@
     "Reservation": "Reservierungen",
     "BookingRequest": "Buchungsanfrage",
     "Label": "Etikett",
-    "Guide": "Anleitung",
+    "Guide": "Guide",
     "Offer": "Angebot",
     "Settings": "Einstellungen",
     "Notification": "Benachrichtigungen",
@@ -494,6 +494,30 @@
     "HOME_PAGE": "Startseite",
     "NEED_HELP": "Benötigen Sie Hilfe?",
     "CONTACT_SUPPORT": "Support kontaktieren"
+  },
+  "SEARCH": {
+    "type": "Suchindex",
+    "title": "Suchindex-Verwaltung",
+    "key": {
+      "guide": "Guide",
+      "offer": "Angebot",
+      "reservation": "Reservierung"
+    },
+    "status": {
+      "UNKNOWN": "Unbekannt",
+      "CREATE_INDEX": "Index erstellen",
+      "INITIAL_LOAD": "Erstinitialisierung",
+      "READY": "Bereit",
+      "IDLE": "Inaktiv"
+    },
+    "statistics": {
+      "total": "Gesamteinträge",
+      "successfully": "Erfolgreich",
+      "failed": "Fehlgeschlagen"
+    },
+    "action": {
+      "setup": "Einrichten"
+    }
   },
   "LABEL": {
     "Title": "Label-Verwaltung",

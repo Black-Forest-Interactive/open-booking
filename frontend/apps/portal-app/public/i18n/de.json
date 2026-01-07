@@ -204,7 +204,7 @@
     },
     "Form": {
       "ReservationType": {
-        "Single": "Einzelperson",
+        "Single": "Privatperson",
         "Group": "Gruppe oder Schulklasse"
       },
       "City": {
@@ -248,7 +248,7 @@
           "Min": "Es muss mindestens eine Person angemeldet werden."
         },
         "Hint": "Anzahl Personen, die angemeldet werden sollen",
-        "Label": "Gruppengröße"
+        "Label": "Anzahl Personen"
       },
       "IgnoreSize": {
         "Label": "Gruppengröße nicht prüfen"

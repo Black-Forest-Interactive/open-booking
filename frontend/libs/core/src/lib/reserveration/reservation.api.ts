@@ -1,17 +1,19 @@
-import {Assignment, Offer, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {Assignment, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
 import {Page} from "@open-booking/shared";
 
 export interface Reservation {
   id: number,
   key: string,
   comment: string,
-  status: ReservationStatus
+  status: ReservationStatus,
+  visitorId: number,
+  offerId: number
 }
 
 export interface ReservationInfo {
   id: number,
   visitor: Visitor,
-  offer: ReservationOfferReference[],
+  offer: OfferInfo,
   status: string,
   comment: string,
   timestamp: string
@@ -20,26 +22,21 @@ export interface ReservationInfo {
 export interface ReservationDetails {
   reservation: Reservation,
   visitor: Visitor,
-  offers: ReservationOfferEntry[],
+  offer: ReservationOffer,
   timestamp: string
 }
 
-export interface ReservationOfferEntry {
+export interface ReservationOffer {
   offer: Offer,
   assignment: Assignment,
-  priority: number
 }
 
-export interface ReservationOfferReference {
-  offerId: number,
-  priority: number
-}
 
 export class ReservationChangeRequest {
   constructor(
     public visitor: VisitorChangeRequest,
     public comment: string,
-    public offerIds: number[],
+    public offerId: number,
     public autoConfirm: Boolean,
     public ignoreSizeCheck: Boolean
   ) {

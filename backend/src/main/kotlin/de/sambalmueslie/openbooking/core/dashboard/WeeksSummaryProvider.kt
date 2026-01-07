@@ -32,9 +32,10 @@ class WeeksSummaryProvider(
         val reservationSequence = PageableSequence() { searchService.search(reservationRequest, it).result }
         val unconfirmedByOfferId = mutableMapOf<Long, Int>()
         reservationSequence.forEach {
-            it.offers.forEach { o ->
-                val current = unconfirmedByOfferId.getOrPut(o.offer.id) { 0 }
-                unconfirmedByOfferId[o.offer.id] = current + 1
+            if (it.reservation.status == ReservationStatus.UNCONFIRMED) {
+                val offerId = it.offer.offer.id
+                val current = unconfirmedByOfferId.getOrPut(offerId) { 0 }
+                unconfirmedByOfferId[offerId] = current + 1
             }
         }
 

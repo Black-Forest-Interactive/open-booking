@@ -1,6 +1,6 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {ReservationService} from "@open-booking/admin";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {SearchComponent, toPromise} from "@open-booking/shared";
 import {ReservationSearchRequest, ReservationStatus} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
@@ -18,6 +18,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {DateTime} from "luxon";
+import {interval} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-reservation',
@@ -33,7 +35,6 @@ import {DateTime} from "luxon";
     MatSelectModule,
     MatDatepickerModule,
     MatInputModule,
-    LoadingBarComponent,
     SearchComponent,
     TranslatePipe,
     LowerCasePipe,
@@ -84,6 +85,10 @@ export class ReservationComponent {
 
   constructor(private service: ReservationService) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
+
+    interval(5000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.reservationsResource.reload())
   }
 
   protected handleSearch(text: string) {
@@ -117,17 +122,21 @@ export class ReservationComponent {
     this.dateTo.set(null)
   }
 
-  removeStatusFilter(status: string) {
+  protected removeStatusFilter(status: string) {
     const current = this.selectedStatus();
     this.selectedStatus.set(current.filter(s => s !== status))
   }
 
-  clearDateFrom() {
+  protected clearDateFrom() {
     this.dateFrom.set(null)
   }
 
-  clearDateTo() {
+  protected clearDateTo() {
     this.dateTo.set(null)
+  }
+
+  protected reload() {
+    this.reservationsResource.reload()
   }
 
   protected readonly ReservationStatus = ReservationStatus;

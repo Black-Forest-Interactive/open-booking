@@ -64,9 +64,7 @@ class OfferDetailsAssembler(
     private fun details(data: List<OfferData>): List<OfferDetails> {
         val offerIds = data.map { it.id }.toSet()
         val bookings = bookingAssembler.getDetailByOfferIds(offerIds).groupBy { it.booking.offerId }
-        val reservations = reservationAssembler.getByOfferIds(offerIds)
-            .flatMap { infos -> infos.offer.map { offer -> offer.offerId to infos } }
-            .groupBy({ it.first }, { it.second })
+        val reservations = reservationAssembler.getByOfferIds(offerIds).groupBy { it.offer.offer.id }
         return data.map { details(it, bookings[it.id] ?: emptyList(), reservations[it.id] ?: emptyList()) }
     }
 

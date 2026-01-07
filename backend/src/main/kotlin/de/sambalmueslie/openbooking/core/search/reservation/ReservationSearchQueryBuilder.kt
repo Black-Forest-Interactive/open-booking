@@ -3,17 +3,12 @@ package de.sambalmueslie.openbooking.core.search.reservation
 import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
 import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
-import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationOfferEntryData
 import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
-import kotlin.reflect.KProperty
 
 @Singleton
 class ReservationSearchQueryBuilder : SearchQueryBuilder<ReservationSearchRequest> {
-
-    // Helper function to create nested field path
-    private fun nestedField(parent: KProperty<*>, child: KProperty<*>) = "${parent.name}.${child.name}"
 
     override fun buildSearchQuery(
         pageable: Pageable,
@@ -69,28 +64,21 @@ class ReservationSearchQueryBuilder : SearchQueryBuilder<ReservationSearchReques
 
             // Date range filters on nested offer fields
             if (request.from != null || request.to != null) {
-                must(
-                    nested {
-                        path = ReservationSearchEntryData::offers.name
-                        query = bool {
-                            request.from?.let { fromDate ->
-                                must(
-                                    range(nestedField(ReservationSearchEntryData::offers, ReservationOfferEntryData::finish)) {
-                                        gte = fromDate.toString()
-                                    }
-                                )
-                            }
-
-                            request.to?.let { toDate ->
-                                must(
-                                    range(nestedField(ReservationSearchEntryData::offers, ReservationOfferEntryData::start)) {
-                                        lte = toDate.toString()
-                                    }
-                                )
-                            }
+                request.from?.let { fromDate ->
+                    must(
+                        range(ReservationSearchEntryData::start) {
+                            gte = fromDate.toString()
                         }
-                    }
-                )
+                    )
+                }
+
+                request.to?.let { toDate ->
+                    must(
+                        range(ReservationSearchEntryData::start) {
+                            lte = toDate.toString()
+                        }
+                    )
+                }
             }
 
             // If no search criteria, match all

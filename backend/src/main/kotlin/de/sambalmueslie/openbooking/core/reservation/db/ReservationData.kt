@@ -17,12 +17,13 @@ data class ReservationData(
     @Column var comment: String,
 
     @Column var visitorId: Long,
+    @Column var offerId: Long,
     @Column var bookingId: Long?,
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
 ) : DataObject<Reservation> {
-    override fun convert() = Reservation(id, key, comment, status)
+    override fun convert() = Reservation(id, key, comment, status, visitorId, offerId)
 
     fun update(request: ReservationChangeRequest, timestamp: LocalDateTime): ReservationData {
         comment = request.comment

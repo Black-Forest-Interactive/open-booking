@@ -6,7 +6,7 @@
   [class.opacity-50]="!hasAvailableSpace()"
   [class.cursor-not-allowed]="!hasAvailableSpace()"
   (click)="handleSelection()">
-  <div class="flex items-center gap-3 p-3">
+  <div class="flex items-center gap-3 md:gap-6 p-3">
 
     <!-- Selection Icon -->
     <mat-icon [class.text-blue-500]="isSelected()">
@@ -15,7 +15,8 @@
 
     <!-- Time -->
     <div class="font-medium min-w-[60px]">
-      {{ data().offer.start | date:'shortTime' }}
+      {{ data().offer.start | date:'shortTime' }} -
+      {{ data().offer.finish | date:'shortTime' }}
     </div>
 
     <!-- Content -->

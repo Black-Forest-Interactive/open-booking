@@ -2,7 +2,6 @@ package de.sambalmueslie.openbooking.core.search.reservation
 
 import com.jillesvangurp.searchdsls.mappingdsl.FieldMappings
 import de.sambalmueslie.openbooking.core.search.common.FieldMappingProvider
-import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationOfferEntryData
 import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearchEntryData
 import jakarta.inject.Singleton
 
@@ -36,19 +35,18 @@ class ReservationFieldMappingProvider : FieldMappingProvider {
             }
             keyword(ReservationSearchEntryData::verificationStatus)
             date(ReservationSearchEntryData::verificationTimestamp)
+
             // offer
-            nestedField(ReservationSearchEntryData::offers) {
-                number<Long>(ReservationOfferEntryData::offerId)
-                date(ReservationOfferEntryData::start)
-                date(ReservationOfferEntryData::finish)
-                number<Int>(ReservationOfferEntryData::maxPersons)
-                bool(ReservationOfferEntryData::active)
-                // stats
-                number<Int>(ReservationOfferEntryData::bookedSpace)
-                number<Int>(ReservationOfferEntryData::reservedSpace)
-                number<Int>(ReservationOfferEntryData::availableSpace)
-                number<Int>(ReservationOfferEntryData::priority)
-            }
+            number<Long>(ReservationSearchEntryData::offerId)
+            date(ReservationSearchEntryData::start)
+            date(ReservationSearchEntryData::finish)
+            number<Int>(ReservationSearchEntryData::maxPersons)
+            bool(ReservationSearchEntryData::active)
+            // stats
+            number<Int>(ReservationSearchEntryData::bookedSpace)
+            number<Int>(ReservationSearchEntryData::reservedSpace)
+            number<Int>(ReservationSearchEntryData::availableSpace)
+
         }
     }
 }

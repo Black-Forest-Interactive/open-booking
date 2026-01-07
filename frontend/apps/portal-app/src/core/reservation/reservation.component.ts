@@ -5,7 +5,6 @@ import {MatCardModule} from "@angular/material/card";
 import {ReservationProcessService} from "./reservation-process.service";
 import {Reservation} from "@open-booking/core";
 import {Router} from "@angular/router";
-import {ReservationOfferComponent} from "./reservation-offer/reservation-offer.component";
 import {ReservationCheckoutComponent} from "./reservation-checkout/reservation-checkout.component";
 import {ReservationSummaryComponent} from "./reservation-summary/reservation-summary.component";
 import {CreateReservationRequest, ReservationService} from "@open-booking/portal";
@@ -13,6 +12,7 @@ import {navigateToDashboard} from "../../app/app.navigation";
 import {ReservationFailedDialogComponent} from "./reservation-failed-dialog/reservation-failed-dialog.component";
 import {ReservationSuccessDialogComponent} from "./reservation-success-dialog/reservation-success-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-reservation',
@@ -20,9 +20,9 @@ import {MatDialog} from "@angular/material/dialog";
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    ReservationOfferComponent,
     ReservationCheckoutComponent,
-    ReservationSummaryComponent
+    ReservationSummaryComponent,
+    TranslatePipe
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',

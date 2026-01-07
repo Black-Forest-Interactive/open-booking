@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {ReservationDetails} from "@open-booking/core";
 import {ReservationContentEntryComponent} from "../reservation-content-entry/reservation-content-entry.component";
 
@@ -13,5 +13,6 @@ import {ReservationContentEntryComponent} from "../reservation-content-entry/res
 export class ReservationContentComponent {
   reloading = input(false)
   entries = input.required<ReservationDetails[]>()
+  reload = output<boolean>()
 
 }

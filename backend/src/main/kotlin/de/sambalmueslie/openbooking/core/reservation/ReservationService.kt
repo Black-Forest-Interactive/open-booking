@@ -39,7 +39,6 @@ class ReservationService(
     private val visitorService: VisitorService,
 
     private val messageService: ReservationMessageService,
-    private val relationService: ReservationRelationService,
 
     private val timeProvider: TimeProvider,
     private val config: AppConfig,
@@ -57,21 +56,19 @@ class ReservationService(
     }
 
     fun getByOfferId(offerId: Long): List<Reservation> {
-        return repository.findByIdIn(relationService.getIdsByOfferId(offerId)).map { it.convert() }
+        return repository.findByOfferId(offerId).map { it.convert() }
     }
 
     fun getByOfferIds(offerIds: Set<Long>): List<Reservation> {
-        return repository.findByIdIn(relationService.getIdsByOfferIds(offerIds)).map { it.convert() }
+        return repository.findByOfferIdIn(offerIds).map { it.convert() }
     }
 
     override fun create(request: ReservationChangeRequest): Reservation {
-        val suitableOffers = getSuitableOffers(request)
-        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
+        val offer = offerService.get(request.offerId) ?: throw InvalidRequestException("REQUEST.Error.InvalidOffer")
+        if (!isSuitable(request, offer)) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
 
         isValid(request)
         val data = repository.save(createData(request))
-
-        relationService.create(data, request, suitableOffers)
 
         val result = data.convert()
         notifyCreated(result)
@@ -81,25 +78,20 @@ class ReservationService(
     override fun update(id: Long, request: ReservationChangeRequest): Reservation {
         val data = repository.findByIdOrNull(id) ?: return create(request)
 
-        val suitableOffers = getSuitableOffers(request)
-        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
-
         isValid(request)
 
-        relationService.update(data, request, suitableOffers)
+        val offer = offerService.get(request.offerId) ?: throw InvalidRequestException("REQUEST.Error.InvalidOffer")
+        if (!isSuitable(request, offer)) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
 
         val result = repository.update(updateData(data, request)).convert()
         notifyUpdated(result)
         return result
     }
 
-    private fun getSuitableOffers(request: ReservationChangeRequest): List<Offer> {
-        val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getByIds(offerIds).filter { offer ->
-            isSuitable(request, offer, existingBookings[offer.id] ?: emptyList())
-        }
-        return suitableOffers
+
+    private fun isSuitable(request: ReservationChangeRequest, offer: Offer): Boolean {
+        val existingBookings = bookingService.getByOfferId(offer.id)
+        return isSuitable(request, offer, existingBookings)
     }
 
     private fun isSuitable(request: ReservationChangeRequest, offer: Offer, bookings: List<Booking>): Boolean {
@@ -119,7 +111,7 @@ class ReservationService(
         }
 
         val key = UUID.randomUUID().toString().uppercase()
-        return ReservationData(0, key, ReservationStatus.UNCONFIRMED, request.comment, visitor.id, null, timeProvider.now())
+        return ReservationData(0, key, ReservationStatus.UNCONFIRMED, request.comment, visitor.id, request.offerId, null, timeProvider.now())
     }
 
     override fun updateData(data: ReservationData, request: ReservationChangeRequest): ReservationData {
@@ -131,17 +123,12 @@ class ReservationService(
         return data.update(request, timeProvider.now())
     }
 
-    override fun deleteDependencies(data: ReservationData) {
-        relationService.delete(data)
-    }
-
     override fun isValid(request: ReservationChangeRequest) {
-        if (request.offerIds.isEmpty()) throw InvalidRequestException("Offer list cannot be empty")
         visitorService.isValid(request.visitor)
     }
 
     fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
-    fun getConfirmationMessage(id: Long, offerId: Long, lang: String = "de") = messageService.getConfirmationMessage(id, offerId, lang)
+    fun getConfirmationMessage(id: Long, lang: String = "de") = messageService.getConfirmationMessage(id, lang)
     fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
 
 
@@ -156,16 +143,13 @@ class ReservationService(
         }
     }
 
-    fun confirm(id: Long, offerId: Long, content: ReservationConfirmationContent): GenericRequestResult {
+    fun confirm(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
         val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
         if (data.status == ReservationStatus.CONFIRMED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
 
-        val offer = offerService.get(offerId) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-        val relations = relationService.getOrderByPriority(data)
+        val offer = offerService.get(data.offerId) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
 
-        val confirmedRelation = relations.find { it.id.offerId == offer.id } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val booking = bookingService.create(BookingChangeRequest(confirmedRelation.id.offerId, data.visitorId, data.comment))
+        val booking = bookingService.create(BookingChangeRequest(offer.id, data.visitorId, data.comment))
 
         val result = patchData(data) {
             it.setBooking(booking, timeProvider.now())
@@ -198,7 +182,4 @@ class ReservationService(
         return "${config.baseUrl}/confirm/email/${data.key}"
     }
 
-    fun getRelatedOffers(reservation: Reservation): List<Long> {
-        return relationService.getOrderByPriority(reservation).map { it.id.offerId }
-    }
 }

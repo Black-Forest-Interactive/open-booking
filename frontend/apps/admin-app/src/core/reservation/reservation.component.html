@@ -1,6 +1,4 @@
 <div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
-  <app-loading-bar [reloading]="reloading()"/>
-
   <!-- Search and Filters Toolbar -->
   <div class="flex flex-col gap-3 px-2 pt-2 pb-4">
     <!-- Filters Row -->
@@ -111,7 +109,9 @@
     <div class="container mx-auto py-4">
       <app-reservation-content
         [entries]="entries()"
-        [reloading]="reloading()">
+        [reloading]="reloading()"
+        (reload)="reload()"
+      >
       </app-reservation-content>
 
       <!-- Results Summary -->

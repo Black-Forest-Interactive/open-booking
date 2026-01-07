@@ -30,12 +30,10 @@ class ReservationGateway(
     fun update(auth: Authentication, id: Long, request: ReservationChangeRequest) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.update(id, request) }
     fun delete(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.delete(id) }
 
-
     fun getRequestReceivedMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getRequestReceivedMessage(id, lang) }
-    fun getConfirmationMessage(auth: Authentication, id: Long, offerId: Long, lang: String) =
-        auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getConfirmationMessage(id, offerId, lang) }
+    fun getConfirmationMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getConfirmationMessage(id, lang) }
 
-    fun confirm(auth: Authentication, id: Long, offerId: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.confirm(id, offerId, content) }
+    fun confirm(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.confirm(id, content) }
     fun getDenialMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getDenialMessage(id, lang) }
     fun deny(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.deny(id, content) }
 }

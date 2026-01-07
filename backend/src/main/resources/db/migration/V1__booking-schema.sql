@@ -98,21 +98,11 @@ CREATE TABLE reservation
     comment    TEXT,
 
     visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
-    booking_id BIGINT       REFERENCES booking (id),
+    offer_id   BIGINT       NOT NULL REFERENCES offer (id),
+    booking_id BIGINT REFERENCES booking (id),
 
     created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated    TIMESTAMP WITHOUT TIME ZONE
-);
-
-
-CREATE TABLE reservation_offer_relation
-(
-    reservation_id BIGINT NOT NULL REFERENCES reservation (id),
-    offer_id       BIGINT NOT NULL REFERENCES offer (id),
-    priority       INT    NOT NULL,
-
-    PRIMARY KEY (reservation_id, offer_id),
-    UNIQUE (reservation_id, priority)
 );
 
 -- response
