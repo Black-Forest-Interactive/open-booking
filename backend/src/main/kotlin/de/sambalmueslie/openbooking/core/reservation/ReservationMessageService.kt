@@ -17,7 +17,7 @@ class ReservationMessageService(
     }
 
 
-    fun getRequestReceivedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
+    fun getReservationReceivedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
         val info = infoAssembler.get(id) ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),
@@ -27,7 +27,7 @@ class ReservationMessageService(
         return responseService.resolve(lang, ResponseType.RESERVATION_RECEIVED, properties)
     }
 
-    fun getRequestFailedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
+    fun getReservationFailedMessage(id: Long, lang: String = "de"): ResolvedResponse? {
         val info = infoAssembler.get(id) ?: return null
         val properties = mutableMapOf(
             Pair("status", info.status),

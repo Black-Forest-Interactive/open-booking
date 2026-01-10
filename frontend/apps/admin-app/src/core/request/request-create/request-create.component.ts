@@ -19,8 +19,6 @@ import {
   BookingRequestChangeRequest,
   DateRangeSelectionRequest,
   DayInfo,
-  DayInfoHelper,
-  DayInfoOffer,
   Offer,
   VisitorChangeRequest,
   VisitorType
@@ -106,9 +104,6 @@ export class RequestCreateComponent {
 
   }
 
-  getSpaceAvailable(info: DayInfoOffer) {
-    return DayInfoHelper.getSpaceAvailable(info)
-  }
 
   get selectedOffer(): Offer | null | undefined {
     return this.offerSelectForm.get('offer')?.value as Offer | null | undefined

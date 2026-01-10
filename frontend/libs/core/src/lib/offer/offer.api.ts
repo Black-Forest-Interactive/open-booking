@@ -31,6 +31,7 @@ export interface Assignment {
   bookedSpace: number,
   reservedSpace: number,
   availableSpace: number,
+  deactivatedSpace: number,
 }
 
 export class OfferChangeRequest {

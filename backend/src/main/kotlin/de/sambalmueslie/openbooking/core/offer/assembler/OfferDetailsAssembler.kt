@@ -85,8 +85,9 @@ class OfferDetailsAssembler(
         val bookedSpace = bookings.filter { it.booking.status == BookingStatus.CONFIRMED }.sumOf { it.booking.size }
         val reservedSpace = reservations.filter { it.status == ReservationStatus.UNCONFIRMED }.sumOf { it.visitor.size }
         val availableSpace = 0.coerceAtLeast(data.maxPersons - bookedSpace - reservedSpace)
+        val disabledSpace = if (data.active) 0 else data.maxPersons
 
-        val assignment = Assignment(bookedSpace, reservedSpace, availableSpace)
+        val assignment = Assignment(bookedSpace, reservedSpace, availableSpace, disabledSpace)
         val timestamp = data.updated ?: data.created
         return OfferDetails(data.convert(), assignment, bookings, reservations, timestamp)
     }

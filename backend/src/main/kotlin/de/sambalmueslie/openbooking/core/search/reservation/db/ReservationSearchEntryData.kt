@@ -56,7 +56,7 @@ data class ReservationSearchEntryData(
         Visitor(visitorId, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verificationTimestamp)),
         ReservationOffer(
             Offer(offerId, start, finish, maxPersons, active),
-            Assignment(bookedSpace, reservedSpace, availableSpace),
+            Assignment(bookedSpace, reservedSpace, availableSpace, if (active) 0 else maxPersons),
         ),
         timestamp
     )

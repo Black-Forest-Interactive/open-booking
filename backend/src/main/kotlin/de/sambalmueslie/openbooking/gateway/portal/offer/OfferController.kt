@@ -19,4 +19,5 @@ class OfferController(private val service: OfferGateway) {
     @Post("/info")
     fun getInfo(@Body request: OfferInfoSelectRequest) = service.getInfo(request)
 
+
 }

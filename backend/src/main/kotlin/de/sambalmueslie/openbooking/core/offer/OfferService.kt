@@ -25,7 +25,6 @@ class OfferService(
     private val labelService: LabelService,
     private val guideService: GuideService,
 
-
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferChangeListener, OfferData>(repository, cacheService, Offer::class, logger) {
@@ -113,4 +112,5 @@ class OfferService(
         notify { it.handleBlockUpdated(result) }
         return result
     }
+
 }

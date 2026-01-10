@@ -21,4 +21,5 @@
     <logger name="de.sambalmueslie.openbooking.common" level="DEBUG"/>
     <logger name="de.sambalmueslie.openbooking.backend.mail.external.MailSender" level="DEBUG"/>
     <logger name="de.sambalmueslie.openbooking.core.offer" level="DEBUG"/>
+    <logger name="de.sambalmueslie.openbooking.core.claim" level="DEBUG"/>
 </configuration>

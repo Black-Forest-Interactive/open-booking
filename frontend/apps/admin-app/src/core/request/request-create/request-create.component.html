@@ -25,7 +25,7 @@
                       <mat-chip-option [value]="info.offer" color="accent" class="w-full">
                         <div class="flex flex-1 gap-3 justify-between">
                           <div>{{ info.offer.start | date:'short' }}</div>
-                          <div>{{ getSpaceAvailable(info) }} Plätze frei</div>
+                          <div>{{ info.assignment.availableSpace }} Plätze frei</div>
                         </div>
                       </mat-chip-option>
                     }

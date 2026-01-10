@@ -166,7 +166,8 @@
     },
     "Summary": {
       "Selected": "{{count}} selected",
-      "MaxGroupSize": "Max group size: {{size}}"
+      "MaxGroupSize": "Max group size: {{size}}",
+      "Expires": "Expires at {{time}}"
     }
   },
   "REQUEST": {

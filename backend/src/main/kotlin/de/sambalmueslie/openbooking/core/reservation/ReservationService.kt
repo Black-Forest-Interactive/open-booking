@@ -127,7 +127,8 @@ class ReservationService(
         visitorService.isValid(request.visitor)
     }
 
-    fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
+    fun getReservationReceivedMessage(id: Long, lang: String = "de") = messageService.getReservationReceivedMessage(id, lang)
+    fun getReservationFailedMessage(id: Long, lang: String = "de") = messageService.getReservationFailedMessage(id, lang)
     fun getConfirmationMessage(id: Long, lang: String = "de") = messageService.getConfirmationMessage(id, lang)
     fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
 

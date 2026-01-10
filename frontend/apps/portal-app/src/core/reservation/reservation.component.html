@@ -2,15 +2,14 @@
   <mat-card>
     @switch (service.mode()) {
       @case ('checkout') {
-        @if (service.entries().length <= 0) {
+        @if (!service.selectedOffer()) {
           <div class="text-center py-12">
             <mat-icon class="!text-6xl opacity-20">shopping_cart</mat-icon>
             <p class="mt-4 text-sm opacity-70">{{ 'CART.Empty' | translate }}</p>
           </div>
         } @else {
           <app-reservation-checkout
-            [offer]="service.entries()[0]"
-            [spaceAvailable]="service.maxGroupSize()"
+            [offer]="service.selectedOffer()!!"
             [data]="service.request()"
             (request)="service.proceedToSummary($event)"
           />
@@ -18,9 +17,7 @@
       }
       @case ('summary') {
         <app-reservation-summary
-          [entries]="service.entries()"
-          [preferredEntry]="service.preferredEntry()!!"
-          [spaceAvailable]="service.maxGroupSize()"
+          [data]="service.selectedOffer()!!"
           [request]="service.request()!!"
           (edit)="this.service.proceedToCheckout()"
           (confirm)="handleConfirm($event)"

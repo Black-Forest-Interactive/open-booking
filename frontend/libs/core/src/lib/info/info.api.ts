@@ -1,4 +1,4 @@
-import {Offer} from "@open-booking/core";
+import {Assignment, Offer} from "@open-booking/core";
 
 export interface DayInfo {
   date: string,
@@ -24,7 +24,7 @@ export class DateRangeSelectionRequest {
 
 export interface DayInfoOffer {
   offer: Offer,
-  space: any,
+  assignment: Assignment,
   bookings: DayInfoBooking[]
 }
 

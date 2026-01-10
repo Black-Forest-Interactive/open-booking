@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.gateway.portal.reservation
 import io.micronaut.http.annotation.*
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import io.micronaut.session.Session
 import io.swagger.v3.oas.annotations.tags.Tag
 
 @Controller("/api/portal/reservation")
@@ -10,12 +11,20 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Secured(SecurityRule.IS_ANONYMOUS)
 class ReservationController(private val gateway: ReservationGateway) {
     @Post()
-    fun create(@Body request: CreateReservationRequest) = gateway.create(request)
+    fun create(session: Session, @Body request: CreateReservationRequest) = gateway.create(session, request)
 
-    @Get("/request/{requestId}/received/message")
-    fun getRequestReceivedMessage(requestId: Long, @QueryValue(defaultValue = "en") lang: String) =
-        gateway.getRequestReceivedMessage(requestId, lang)
+    @Get("/{id}/received/message")
+    fun getReservationReceivedMessage(id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getReservationReceivedMessage(id, lang)
 
+
+    @Get("/{id}/failed/message")
+    fun getReservationFailedMessage(id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getReservationFailedMessage(id, lang)
+
+    @Post("offer/{offerId}/claim")
+    fun offerClaim(session: Session, offerId: Long) = gateway.offerClaim(session, offerId)
+
+    @Delete("offer/{offerId}/claim")
+    fun offerRelease(session: Session, offerId: Long) = gateway.offerRelease(session, offerId)
 
     @Post("confirm/email/{key}")
     fun confirmEmail(key: String) = gateway.confirmEmail(key)

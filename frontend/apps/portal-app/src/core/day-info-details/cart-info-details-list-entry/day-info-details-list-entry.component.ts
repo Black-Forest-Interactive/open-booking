@@ -20,21 +20,21 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class DayInfoDetailsListEntryComponent {
   data = input.required<DayInfoOffer>()
 
-  isSelected = computed(() => !!this.service.entries().find(o => o.offer.id === this.data().offer.id))
-  confirmedSpace = computed(() => this.data().space.CONFIRMED || 0)
-  unconfirmedSpace = computed(() => this.data().space.UNCONFIRMED || 0)
-  availableSpace = computed(() => this.data().offer.maxPersons - this.confirmedSpace() - this.unconfirmedSpace())
+  isSelected = computed(() => this.service.selectedOffer()?.offer?.id === this.data().offer.id)
+  reservedSpace = computed(() => this.data().assignment.reservedSpace)
+  availableSpace = computed(() => this.data().assignment.availableSpace)
   hasAvailableSpace = computed(() => this.availableSpace() > 0)
-  hasUnconfirmedBookings = computed(() => this.unconfirmedSpace() > 0)
+  hasUnconfirmedBookings = computed(() => this.reservedSpace() > 0)
+
 
   constructor(private service: ReservationProcessService) {
   }
 
   protected handleSelection() {
     if (this.isSelected()) {
-      this.service.offerRemove(this.data())
+      this.service.unselect()
     } else {
-      this.service.offerAdd(this.data())
+      this.service.select(this.data())
     }
   }
 }

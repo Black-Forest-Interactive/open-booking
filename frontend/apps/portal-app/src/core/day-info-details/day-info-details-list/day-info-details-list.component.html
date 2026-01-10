@@ -17,15 +17,15 @@
   </div>
 
   <!-- Fixed Selection Summary at Bottom -->
-  @if (selectedCount() > 0) {
+  @if (selectedOffer()) {
     <div class="fixed bottom-14 left-0 right-0 p-4 bg-white border-t shadow-lg z-50">
       <div class="container mx-auto">
         <div class="flex flex-col gap-2 p-4 rounded-lg bg-blue-600 text-white">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-medium">{{ 'OFFER.Summary.Selected' | translate:{count: selectedCount()} }}</div>
+              <app-claim-info [data]="claim()"/>
               <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
-                <mat-icon class="!text-base !w-4 !h-4">group</mat-icon>
+                <mat-icon inline>group</mat-icon>
                 <span>{{ 'OFFER.Summary.MaxGroupSize' | translate:{size: maxGroupSize()} }}</span>
               </div>
             </div>

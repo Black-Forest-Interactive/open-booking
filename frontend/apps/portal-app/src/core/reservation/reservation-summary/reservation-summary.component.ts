@@ -24,10 +24,12 @@ import {CreateReservationRequest} from "@open-booking/portal";
   styleUrl: './reservation-summary.component.scss',
 })
 export class ReservationSummaryComponent {
-  spaceAvailable = input.required<number>()
-  entries = input.required<DayInfoOffer[]>()
-  preferredEntry = input.required<DayInfoOffer>()
+  data = input.required<DayInfoOffer>()
   request = input.required<CreateReservationRequest>()
+
+  start = computed(() => this.data().offer.start)
+  finish = computed(() => this.data().offer.finish)
+  maxPersons = computed(() => this.data().assignment.availableSpace)
 
   visitorGroup = computed(() => this.request().visitor)
   address = computed(() => this.visitorGroup().address.zip + " " + this.visitorGroup().address.city + " " + this.visitorGroup().address.street + " ")
@@ -37,9 +39,5 @@ export class ReservationSummaryComponent {
 
   confirm = output<CreateReservationRequest>()
   edit = output<CreateReservationRequest>()
-
-  isPreferred(info: DayInfoOffer): boolean {
-    return info.offer.id === this.preferredEntry().offer.id;
-  }
 
 }

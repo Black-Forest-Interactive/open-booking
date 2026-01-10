@@ -9,43 +9,26 @@
 </h3>
 
 <div class="space-y-3  p-4">
-  @for (info of entries(); track info.offer.id) {
-    <mat-card
-      appearance="outlined"
-      class="!p-3">
-      <div class="flex items-start gap-3">
-        <!-- Priority Indicator -->
-        <div class="flex-shrink-0 pt-1">
-          @if (isPreferred(info)) {
-            <mat-icon class="text-amber-500">star</mat-icon>
-          } @else {
-            <mat-icon class="opacity-30">star_outline</mat-icon>
-          }
-        </div>
-        <!-- Content -->
-        <div class="flex-1 min-w-0">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="font-medium">{{ info.offer.start | date:'fullDate' }}</div>
-              <div class="text-sm opacity-70 mt-1">
-                {{ info.offer.start | date:'shortTime' }} - {{ info.offer.finish | date:'shortTime' }}
-              </div>
-              @if (isPreferred(info)) {
-                <div class="text-xs text-amber-600 mt-1">
-                  {{ 'CART.PreferredLabel' | translate }}
-                </div>
-              }
+  <mat-card appearance="outlined" class="!p-3">
+    <div class="flex items-start gap-3">
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1">
+            <div class="font-medium">{{ start() | date:'fullDate' }}</div>
+            <div class="text-sm opacity-70 mt-1">
+              {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
             </div>
           </div>
-          <!-- Max Persons Info -->
-          <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
-            <mat-icon class="text-base" inline>people</mat-icon>
-            <span>{{ 'SUMMARY.TimeSlots.MaxPersons' | translate: {count: info.offer.maxPersons} }}</span>
-          </div>
+        </div>
+        <!-- Max Persons Info -->
+        <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
+          <mat-icon class="text-base" inline>people</mat-icon>
+          <span>{{ 'SUMMARY.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
         </div>
       </div>
-    </mat-card>
-  }
+    </div>
+  </mat-card>
 </div>
 
 <mat-divider></mat-divider>

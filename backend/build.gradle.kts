@@ -90,7 +90,8 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     runtimeOnly("org.postgresql:postgresql")
-
+    // session
+    implementation("io.micronaut.session:micronaut-session")
     // opensearch
     implementation("com.jillesvangurp:search-client:2.8.4")
     // jsoup

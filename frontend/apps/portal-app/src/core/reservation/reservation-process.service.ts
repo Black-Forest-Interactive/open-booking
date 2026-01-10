@@ -1,51 +1,37 @@
 import {computed, Injectable, signal} from "@angular/core";
-import {DayInfoHelper, DayInfoOffer} from "@open-booking/core";
-import {CreateReservationRequest} from "@open-booking/portal";
+import {Claim, DayInfoOffer} from "@open-booking/core";
+import {CreateReservationRequest, ReservationService} from "@open-booking/portal";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationProcessService {
 
-  entries = signal<DayInfoOffer[]>([])
-  preferredEntry = signal<DayInfoOffer | undefined>(undefined)
-  maxGroupSize = computed(() => this.calcMaxGroupSize(this.entries()))
+  selectedOffer = signal<DayInfoOffer | undefined>(undefined)
+  maxGroupSize = computed(() => this.selectedOffer()?.assignment.availableSpace)
+  claim = signal<Claim | undefined>(undefined)
 
   mode = signal<'checkout' | 'summary'>('checkout')
 
   request = signal<CreateReservationRequest | undefined>(undefined)
 
-  offerAdd(offer: DayInfoOffer) {
-    this.entries.update(entries => [offer])
-    this.preferredEntry.set(offer)
+  constructor(private service: ReservationService) {
   }
 
-  offerRemove(offer: DayInfoOffer) {
-    this.entries.update(entries =>
-      entries.filter(o => o.offer.id !== offer.offer.id)
-    )
-
-    if (this.preferredEntry() === offer) {
-      this.preferredEntry.set(this.entries()[0])
-    }
+  select(offer: DayInfoOffer) {
+    this.selectedOffer.set(offer)
+    this.service.claim(offer.offer.id).subscribe(value => this.claim.set(value))
   }
 
-  setPreferred(offer: DayInfoOffer) {
-    this.offerAdd(offer)
-    this.preferredEntry.set(offer)
-  }
-
-
-  private calcMaxGroupSize(offers: DayInfoOffer[]) {
-    if (offers.length === 0) return 0
-
-    let availableSizes = offers.map(o => DayInfoHelper.getSpaceAvailable(o))
-    return Math.min(...availableSizes)
+  unselect() {
+    this.selectedOffer.set(undefined)
+    let claim = this.claim()
+    if (claim) this.service.release(claim.id).subscribe()
   }
 
   clear() {
-    this.entries.set([])
-    this.preferredEntry.set(undefined)
+    this.selectedOffer.set(undefined)
+    this.claim.set(undefined)
     this.request.set(undefined)
     this.mode.set('checkout')
   }

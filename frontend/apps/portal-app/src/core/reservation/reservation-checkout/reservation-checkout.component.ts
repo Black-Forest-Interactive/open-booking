@@ -30,7 +30,7 @@ export class ReservationCheckoutComponent {
 
   offer = input.required<DayInfoOffer>()
 
-  spaceAvailable = input.required<number>()
+  spaceAvailable = computed(() => this.offer().assignment.availableSpace)
   spacePlaceholder = computed(() => (this.spaceAvailable() > 0) ? "1 - " + this.spaceAvailable() : "")
   hasBookings = computed(() => this.offer().bookings.length > 0)
 

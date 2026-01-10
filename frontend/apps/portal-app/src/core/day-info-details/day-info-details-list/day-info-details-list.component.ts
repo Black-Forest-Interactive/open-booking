@@ -1,5 +1,5 @@
-import {Component, computed, input} from '@angular/core';
-import {DayInfo} from "@open-booking/core";
+import {Component, computed, input, Signal} from '@angular/core';
+import {Claim, DayInfo, DayInfoOffer} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -9,6 +9,7 @@ import {ReservationProcessService} from "../../reservation/reservation-process.s
 import {Router} from "@angular/router";
 import {navigateToReservation} from "../../../app/app.navigation";
 import {DayInfoDetailsListEntryComponent} from "../cart-info-details-list-entry/day-info-details-list-entry.component";
+import {ClaimInfoComponent} from "../../claim/claim-info/claim-info.component";
 
 @Component({
   selector: 'app-day-info-details-list',
@@ -18,19 +19,23 @@ import {DayInfoDetailsListEntryComponent} from "../cart-info-details-list-entry/
     MatIconModule,
     MatCheckboxModule,
     TranslatePipe,
-    DayInfoDetailsListEntryComponent
+    DayInfoDetailsListEntryComponent,
+    ClaimInfoComponent
   ],
   templateUrl: './day-info-details-list.component.html',
   styleUrl: './day-info-details-list.component.scss',
 })
 export class DayInfoDetailsListComponent {
   data = input.required<DayInfo>()
-
   offers = computed(() => this.data().offer)
-  selectedCount = computed(() => this.service.entries().length)
-  maxGroupSize = computed(() => this.service.maxGroupSize())
+  maxGroupSize: Signal<number | undefined>
+  selectedOffer: Signal<DayInfoOffer | undefined>
+  claim: Signal<Claim | undefined>
 
   constructor(private service: ReservationProcessService, private router: Router) {
+    this.maxGroupSize = this.service.maxGroupSize
+    this.selectedOffer = this.service.selectedOffer
+    this.claim = this.service.claim
   }
 
   protected proceedToBooking() {
