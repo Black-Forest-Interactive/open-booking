@@ -2,13 +2,12 @@ package de.sambalmueslie.openbooking.gateway.portal.reservation
 
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.core.claim.ClaimService
-import de.sambalmueslie.openbooking.core.claim.api.Claim
-import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.error.InvalidRequestException
+import de.sambalmueslie.openbooking.gateway.portal.claim.ClaimGateway.Companion.CLAIM_KEY
 import io.micronaut.session.Session
 import jakarta.inject.Singleton
 
@@ -18,9 +17,6 @@ class ReservationGateway(
     private val claimService: ClaimService,
 ) {
 
-    companion object {
-        private const val CLAIM_KEY = "CLAIM"
-    }
 
     fun create(session: Session, request: CreateReservationRequest): Reservation {
         if (!request.termsAndConditions) throw InvalidRequestException("You must accept the terms and conditions")
@@ -46,20 +42,4 @@ class ReservationGateway(
         return service.confirmEmail(key)
     }
 
-    fun offerClaim(session: Session, offerId: Long): Claim {
-        val existing = claimService.getByUserId(session.id)
-        existing.forEach { claim -> claimService.delete(claim.id) }
-
-        val claim = claimService.create(ClaimChangeRequest(offerId, session.id))
-        session.put(CLAIM_KEY, claim.id)
-        return claim
-    }
-
-    fun offerRelease(session: Session, offerId: Long) {
-        val claimId = session.get(CLAIM_KEY).orElse(null) as? Long ?: return
-        if (claimId == offerId) {
-            claimService.delete(claimId)
-            session.remove(CLAIM_KEY)
-        }
-    }
 }

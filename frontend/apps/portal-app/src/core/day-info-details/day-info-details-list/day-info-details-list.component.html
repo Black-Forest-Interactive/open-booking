@@ -4,7 +4,7 @@
   <div class="flex-1 overflow-y-auto pb-24 min-h-0">
     <div class="flex flex-col gap-2">
       @for (offer of offers(); track offer.offer.id) {
-        <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>
+        <app-day-info-details-list-entry [data]="offer" (refresh)="reload()"></app-day-info-details-list-entry>
       }
 
       @if (offers().length === 0) {
@@ -23,7 +23,7 @@
         <div class="flex flex-col gap-2 p-4 rounded-lg bg-blue-600 text-white">
           <div class="flex items-center justify-between">
             <div>
-              <app-claim-info [data]="claim()"/>
+              <app-claim-info/>
               <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
                 <mat-icon inline>group</mat-icon>
                 <span>{{ 'OFFER.Summary.MaxGroupSize' | translate:{size: maxGroupSize()} }}</span>

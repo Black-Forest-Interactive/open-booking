@@ -148,7 +148,8 @@
       "Pending": "pending",
       "Full": "Full",
       "LimitedSpaces": "Limited spaces",
-      "NoOffersAvailable": "No offers available"
+      "NoOffersAvailable": "No offers available",
+      "Claimed": "Offer claimed until"
     },
     "Operation": {
       "Create": "Create Offer",

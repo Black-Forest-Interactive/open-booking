@@ -1,5 +1,5 @@
-import {Component, computed, input, Signal} from '@angular/core';
-import {Claim, DayInfo, DayInfoOffer} from "@open-booking/core";
+import {Component, computed, input, output, Signal} from '@angular/core';
+import {DayInfo, DayInfoOffer} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -30,16 +30,19 @@ export class DayInfoDetailsListComponent {
   offers = computed(() => this.data().offer)
   maxGroupSize: Signal<number | undefined>
   selectedOffer: Signal<DayInfoOffer | undefined>
-  claim: Signal<Claim | undefined>
+
+  refresh = output<boolean>()
 
   constructor(private service: ReservationProcessService, private router: Router) {
     this.maxGroupSize = this.service.maxGroupSize
     this.selectedOffer = this.service.selectedOffer
-    this.claim = this.service.claim
   }
 
   protected proceedToBooking() {
     navigateToReservation(this.router)
   }
 
+  protected reload() {
+    this.refresh.emit(true)
+  }
 }

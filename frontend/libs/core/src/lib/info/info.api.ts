@@ -25,6 +25,7 @@ export class DateRangeSelectionRequest {
 export interface DayInfoOffer {
   offer: Offer,
   assignment: Assignment,
+  claimedUntil: string | undefined,
   bookings: DayInfoBooking[]
 }
 

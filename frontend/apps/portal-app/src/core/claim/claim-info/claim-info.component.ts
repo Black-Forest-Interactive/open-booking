@@ -1,8 +1,7 @@
-import {Component, computed, DestroyRef, input, signal} from '@angular/core';
-import {Claim} from "@open-booking/core";
-import {DateTime} from "luxon";
+import {Component, computed} from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
+import {PortalClaimService} from "../portal-claim.service";
 
 @Component({
   selector: 'app-claim-info',
@@ -11,32 +10,9 @@ import {TranslatePipe} from "@ngx-translate/core";
   styleUrl: './claim-info.component.scss',
 })
 export class ClaimInfoComponent {
-  data = input<Claim>()
-
-  expires = computed(() => this.data()?.expires)
-  currentTime = signal(DateTime.utc())
-
-  expirationDate = computed(() => {
-    const expiresValue = this.expires()
-    if (!expiresValue) return null
-
-    try {
-      return DateTime.fromISO(expiresValue, {zone: 'utc'})
-    } catch {
-      return null
-    }
-  })
-
-  timeRemaining = computed(() => {
-    const expiration = this.expirationDate()
-    if (!expiration || !expiration.isValid) return null
-
-    const now = this.currentTime()
-    return expiration.diff(now, ['days', 'hours', 'minutes', 'seconds'])
-  })
 
   timeRemainingText = computed(() => {
-    const diff = this.timeRemaining()
+    const diff = this.service.timeRemaining()
 
     if (!diff) {
       return '0s';
@@ -61,14 +37,7 @@ export class ClaimInfoComponent {
     }
   })
 
-  constructor(private destroyRef: DestroyRef) {
-    const interval = setInterval(() => {
-      this.currentTime.set(DateTime.utc())
-    }, 1000)
-
-    this.destroyRef.onDestroy(() => {
-      clearInterval(interval)
-    })
+  constructor(protected readonly service: PortalClaimService) {
   }
 
 

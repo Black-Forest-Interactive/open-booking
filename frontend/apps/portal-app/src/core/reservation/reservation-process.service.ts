@@ -1,6 +1,8 @@
-import {computed, Injectable, signal} from "@angular/core";
-import {Claim, DayInfoOffer} from "@open-booking/core";
-import {CreateReservationRequest, ReservationService} from "@open-booking/portal";
+import {computed, Injectable, Signal, signal} from "@angular/core";
+import {Claim, DayInfo, DayInfoOffer} from "@open-booking/core";
+import {CreateReservationRequest} from "@open-booking/portal";
+import {Observable, of} from "rxjs";
+import {PortalClaimService} from "../claim/portal-claim.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,29 +11,37 @@ export class ReservationProcessService {
 
   selectedOffer = signal<DayInfoOffer | undefined>(undefined)
   maxGroupSize = computed(() => this.selectedOffer()?.assignment.availableSpace)
-  claim = signal<Claim | undefined>(undefined)
+  claimedOfferId: Signal<number | undefined>
 
   mode = signal<'checkout' | 'summary'>('checkout')
 
   request = signal<CreateReservationRequest | undefined>(undefined)
 
-  constructor(private service: ReservationService) {
+  constructor(private service: PortalClaimService) {
+    this.claimedOfferId = service.claimedOfferId
   }
 
-  select(offer: DayInfoOffer) {
+  select(offer: DayInfoOffer): Observable<Claim> {
     this.selectedOffer.set(offer)
-    this.service.claim(offer.offer.id).subscribe(value => this.claim.set(value))
+    return this.service.createClaim(offer.offer.id)
   }
 
-  unselect() {
+  unselect(): Observable<Claim> {
+    let offer = this.selectedOffer()
     this.selectedOffer.set(undefined)
-    let claim = this.claim()
-    if (claim) this.service.release(claim.id).subscribe()
+    if (offer) {
+      return this.service.deleteClaim(offer.offer.id)
+    } else {
+      return of()
+    }
+  }
+
+  updateClaim(): Observable<Claim | undefined> {
+    return this.service.updateClaim()
   }
 
   clear() {
-    this.selectedOffer.set(undefined)
-    this.claim.set(undefined)
+    this.unselect().subscribe()
     this.request.set(undefined)
     this.mode.set('checkout')
   }
@@ -46,4 +56,11 @@ export class ReservationProcessService {
     this.mode.set('summary')
   }
 
+  validateSelection(data: DayInfo, claim: Claim) {
+    let selected = this.selectedOffer()
+    let claimSelected = data.offer.find(o => o.offer.id === claim.id)
+    if (!selected && claimSelected) {
+      this.selectedOffer.set(claimSelected)
+    }
+  }
 }

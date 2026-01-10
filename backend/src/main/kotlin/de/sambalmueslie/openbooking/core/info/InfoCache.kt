@@ -4,6 +4,7 @@ package de.sambalmueslie.openbooking.core.info
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
 import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
+import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.info.api.DayInfoBooking
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
@@ -16,8 +17,7 @@ import java.util.concurrent.TimeUnit
 
 @Singleton
 class InfoCache(
-    private val offerDetailsAssembler: OfferDetailsAssembler,
-    cacheService: CacheService
+    private val offerDetailsAssembler: OfferDetailsAssembler, private val claimService: ClaimService, cacheService: CacheService
 ) {
 
     companion object {
@@ -37,7 +37,8 @@ class InfoCache(
             val last = details.last()
 
             val offer = details.map {
-                DayInfoOffer(it.offer, it.assignment, it.bookings.map { b -> DayInfoBooking(b.booking.size, b.booking.status) })
+                val claim = claimService.get(it.offer.id)
+                DayInfoOffer(it.offer, it.assignment, claim?.expires, it.bookings.map { b -> DayInfoBooking(b.booking.size, b.booking.status) })
             }
             DayInfo(date, first.offer.start, last.offer.finish, offer)
         }

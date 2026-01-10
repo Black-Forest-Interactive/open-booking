@@ -4,6 +4,9 @@ package de.sambalmueslie.openbooking.core.info
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.claim.ClaimService
+import de.sambalmueslie.openbooking.core.claim.api.Claim
+import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeListener
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
@@ -24,6 +27,7 @@ class InfoService(
     private val offerService: OfferService,
     bookingService: BookingService,
     reservationService: ReservationService,
+    claimService: ClaimService,
     private val cache: InfoCache
 ) {
 
@@ -75,6 +79,20 @@ class InfoService(
                 updateCache(obj)
             }
         })
+
+        claimService.register(object : ClaimChangeListener {
+            override fun handleCreated(obj: Claim) {
+                updateCache(obj)
+            }
+
+            override fun handleUpdated(obj: Claim) {
+                updateCache(obj)
+            }
+
+            override fun handleDeleted(obj: Claim) {
+                updateCache(obj)
+            }
+        })
     }
 
     private fun updateCache(booking: Booking) {
@@ -86,6 +104,12 @@ class InfoService(
     private fun updateCache(registration: Reservation) {
         logger.info("Update cache for registration ${registration.id}")
         val offer = offerService.get(registration.offerId) ?: return
+        updateCache(offer)
+    }
+
+    private fun updateCache(claim: Claim) {
+        logger.info("Update cache for claim ${claim.id}")
+        val offer = offerService.get(claim.id) ?: return
         updateCache(offer)
     }
 

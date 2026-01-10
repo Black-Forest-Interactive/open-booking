@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult} from "@open-booking/shared";
-import {Claim, Reservation, ResolvedResponse} from "@open-booking/core";
+import {Reservation, ResolvedResponse} from "@open-booking/core";
 import {Observable} from "rxjs";
 import {HttpParams} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
@@ -31,13 +31,6 @@ export class ReservationService extends BaseService {
     return this.get(id + '/failed/message', queryParams)
   }
 
-  claim(offerId: number): Observable<Claim> {
-    return this.post('offer/' + offerId + '/claim', {})
-  }
-
-  release(offerId: number): Observable<any> {
-    return this.delete('offer/' + offerId + '/claim')
-  }
 
   confirmEmail(key: string): Observable<GenericRequestResult> {
     return this.post('confirm/email/' + key, {})

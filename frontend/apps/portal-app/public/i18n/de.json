@@ -148,7 +148,8 @@
       "Pending": "ausstehend",
       "Full": "Ausgebucht",
       "LimitedSpaces": "Wenige Plätze",
-      "NoOffersAvailable": "Keine Angebote verfügbar"
+      "NoOffersAvailable": "Keine Angebote verfügbar",
+      "Claimed": "Reserviert bis"
     },
     "Operation": {
       "Create": "Termin erstellen",
@@ -166,7 +167,8 @@
     },
     "Summary": {
       "Selected": "{{count}} ausgewählt",
-      "MaxGroupSize": "Max. Gruppengröße: {{size}}"
+      "MaxGroupSize": "Max. Gruppengröße: {{size}}",
+      "Expires": "Reserviert für {{time}}"
     }
   },
   "REQUEST": {

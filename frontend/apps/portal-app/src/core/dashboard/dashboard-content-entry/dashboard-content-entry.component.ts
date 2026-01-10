@@ -35,6 +35,7 @@ export class DashboardContentEntryComponent {
   labelConfirmed = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Confirmed'))
   labelUnconfirmed = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Unconfirmed'))
   labelAvailable = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Available'))
+  labelClaimed = toSignal(this.translate.get('DAY_INFO.Chart.Space.Series.Claimed'))
 
   data = input.required<DayInfo>()
   chartMerge = computed(() => this.createChartMerge(this.data()))
@@ -87,6 +88,13 @@ export class DashboardContentEntryComponent {
         stack: 'total',
         emphasis: {focus: 'series'},
         color: "#91cc75",
+      },
+      {
+        name: this.labelClaimed(),
+        type: 'bar',
+        stack: 'total',
+        emphasis: {focus: 'series'},
+        color: "#73c0de",
       }
     ]
   }));
@@ -101,7 +109,8 @@ export class DashboardContentEntryComponent {
         {data: info.offer.map(i => i.assignment.bookedSpace)},
         {data: info.offer.map(i => i.assignment.reservedSpace)},
         {data: info.offer.map(i => i.assignment.deactivatedSpace)},
-        {data: info.offer.map(i => i.assignment.availableSpace)}
+        {data: info.offer.map(i => i.claimedUntil ? 0 : i.assignment.availableSpace)},
+        {data: info.offer.map(i => i.claimedUntil ? i.assignment.availableSpace : 0)}
       ]
     }
   }
