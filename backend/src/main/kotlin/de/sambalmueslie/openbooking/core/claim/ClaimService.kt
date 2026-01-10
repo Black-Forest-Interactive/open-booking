@@ -15,6 +15,10 @@ import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 @Singleton
 class ClaimService(
@@ -26,13 +30,16 @@ class ClaimService(
         private const val DEFAULT_TTL = 300L
     }
 
-    private val claims = mutableMapOf<Long, Claim>()
+    private val claims = ConcurrentHashMap<Long, Claim>()
+    private val lock = ReentrantReadWriteLock()
 
     @Scheduled(cron = "0/10 * * * * *")
     fun cleanupExpiredClaims() {
         val timestamp = timeProvider.now()
-        val expired = claims.filterValues { claim ->
-            claim.expires.isBefore(timestamp)
+        val expired = lock.read {
+            claims.filterValues { claim ->
+                claim.expires.isBefore(timestamp)
+            }
         }
         expired.values.forEach { claim -> remove(claim) }
     }
@@ -46,7 +53,9 @@ class ClaimService(
     }
 
     fun getByUserId(userId: String): List<Claim> {
-        return claims.values.filter { it.userId == userId }
+        return lock.read {
+            claims.values.filter { it.userId == userId }
+        }
     }
 
     override fun getAll(pageable: Pageable): Page<Claim> {
@@ -54,10 +63,17 @@ class ClaimService(
     }
 
     override fun create(request: ClaimChangeRequest): Claim {
-        val offer = offerService.get(request.offerId) ?: throw InvalidRequestException("Cannot find offer ${request.offerId} to claim")
-        val existing = claims[offer.id] ?: return add(offer, request.userId)
-        if (existing.userId == request.userId) return existing
-        throw InvalidRequestException("Cannot create claim on already claimed offer")
+        val offer = offerService.get(request.offerId)
+            ?: throw InvalidRequestException("Cannot find offer ${request.offerId} to claim")
+
+        return lock.write {
+            val existing = claims[offer.id]
+            when {
+                existing == null -> add(offer, request.userId)
+                existing.userId == request.userId -> existing
+                else -> throw InvalidRequestException("Cannot create claim on already claimed offer")
+            }
+        }
     }
 
     override fun update(id: Long, request: ClaimChangeRequest): Claim {
@@ -79,7 +95,9 @@ class ClaimService(
     }
 
     private fun remove(claim: Claim): Claim {
-        claims.remove(claim.id)
+        lock.write {
+            claims.remove(claim.id)
+        }
         logger.debug("Claim {} removed", claim)
         notifyDeleted(claim)
         return claim
