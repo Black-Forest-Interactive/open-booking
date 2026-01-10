@@ -1,0 +1,6 @@
+@if (data()) {
+  <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
+    <mat-icon inline>timer</mat-icon>
+    <span>{{ 'OFFER.Summary.Expires' | translate: {time: timeRemainingText()} }}</span>
+  </div>
+}
