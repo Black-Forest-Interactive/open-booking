@@ -1,9 +1,10 @@
 import {Component, computed, input, output, signal} from '@angular/core';
 import {
   ReservationConfirmationContent,
-  ReservationOfferEntry,
-  ReservationSearchEntry,
+  ReservationDetails,
+  ReservationOffer,
   ReservationStatus,
+  VerificationStatus,
   VisitorType
 } from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
@@ -14,13 +15,14 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatDividerModule} from "@angular/material/divider";
 import {DatePipe} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {ReservationService} from "@open-booking/admin";
+import {ReservationService, VisitorService} from "@open-booking/admin";
 import {ReservationProcessDialogComponent} from "../reservation-process-dialog/reservation-process-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EMPTY, switchMap} from "rxjs";
 import {
   ReservationContentEntryOfferComponent
 } from "../reservation-content-entry-offer/reservation-content-entry-offer.component";
+import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -40,30 +42,30 @@ const classes: Record<string, string> = {
     MatTooltipModule,
     TranslatePipe,
     DatePipe,
-    ReservationContentEntryOfferComponent
+    ReservationContentEntryOfferComponent,
+    VisitorConfirmComponent
   ],
   templateUrl: './reservation-content-entry.component.html',
   styleUrl: './reservation-content-entry.component.scss',
 })
 export class ReservationContentEntryComponent {
-  data = input.required<ReservationSearchEntry>()
+  data = input.required<ReservationDetails>()
   reloading = input.required()
   reload = output<boolean>()
 
   updating = signal(false)
 
-  sortedOffers = computed(() => this.data().offers.sort((a, b) => a.priority - b.priority))
   statusClass = computed(() => classes[this.data().reservation.status] || 'bg-gray-100 text-gray-800')
   verificationIcon = computed(() => {
     const status = this.data().visitor.verification.status;
-    return status === 'verified' ? 'check_circle' :
-      status === 'pending' ? 'schedule' :
+    return status === VerificationStatus.CONFIRMED ? 'check_circle' :
+      status === VerificationStatus.UNCONFIRMED ? 'schedule' :
         'error';
   })
   verificationIconClass = computed(() => {
     const status = this.data().visitor.verification.status;
-    return status === 'verified' ? 'text-green-600' :
-      status === 'pending' ? 'text-yellow-600' :
+    return status === VerificationStatus.CONFIRMED ? 'text-green-600' :
+      status === VerificationStatus.UNCONFIRMED ? 'text-yellow-600' :
         'text-red-600';
   })
   visitorTypeIcon = computed(() => {
@@ -78,11 +80,15 @@ export class ReservationContentEntryComponent {
 
   protected readonly VisitorType = VisitorType;
 
-  constructor(private service: ReservationService, private dialog: MatDialog) {
+  constructor(
+    private service: ReservationService,
+    private visitorService: VisitorService,
+    private dialog: MatDialog
+  ) {
   }
 
 
-  protected confirmOffer(offer: ReservationOfferEntry) {
+  protected confirmOffer(offer: ReservationOffer) {
     this.updating.set(true)
     let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
       data: {info: this.data(), offer: offer, confirmation: true},
@@ -97,7 +103,7 @@ export class ReservationContentEntryComponent {
           return EMPTY
         }
         let content = result as ReservationConfirmationContent
-        return this.service.confirmReservation(this.data().reservation.id, offer.offer.id, content)
+        return this.service.confirmReservation(this.data().reservation.id, content)
       })
     ).subscribe({
       complete: () => {
@@ -131,10 +137,6 @@ export class ReservationContentEntryComponent {
         this.reload.emit(true)
       }
     })
-  }
-
-  protected confirmMail() {
-
   }
 
   protected readonly ReservationStatus = ReservationStatus;

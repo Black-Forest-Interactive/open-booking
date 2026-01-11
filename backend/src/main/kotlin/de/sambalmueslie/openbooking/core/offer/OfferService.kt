@@ -2,14 +2,11 @@ package de.sambalmueslie.openbooking.core.offer
 
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
-import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.label.LabelService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
@@ -19,8 +16,6 @@ import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 
 @Singleton
@@ -32,15 +27,11 @@ class OfferService(
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferData>(repository, cacheService, Offer::class, logger) {
+) : GenericCrudService<Long, Offer, OfferChangeRequest, OfferChangeListener, OfferData>(repository, cacheService, Offer::class, logger) {
 
 
     companion object {
         private val logger = LoggerFactory.getLogger(OfferService::class.java)
-        private const val MSG_OFFER_SERIES_FAIL = "REQUEST.OFFER.SERIES.FAIL"
-        private const val MSG_OFFER_SERIES_SUCCESS = "REQUEST.OFFER.SERIES.SUCCESS"
-        private const val MSG_OFFER_RANGE_FAIL = "REQUEST.OFFER.RANGE.FAIL"
-        private const val MSG_OFFER_RANGE_SUCCESS = "REQUEST.OFFER.RANGE.SUCCESS"
     }
 
     override fun getAll(pageable: Pageable): Page<Offer> {
@@ -98,65 +89,28 @@ class OfferService(
         if (request.maxPersons <= 0) throw InvalidRequestException("Max Person for offer cannot be below or equals 0")
     }
 
+    fun setActive(id: Long, value: Boolean) = patchData(id) { it.updateActive(value, timeProvider.now()) }
+    fun setMaxPersons(id: Long, value: Int) = patchData(id) { if (value >= 0) it.updateMaxPersons(value, timeProvider.now()) }
+    fun setLabel(id: Long, labelId: Long) = patchData(id) { it.updateLabel(labelService.get(labelId), timeProvider.now()) }
+    fun setGuide(id: Long, guideId: Long) = patchData(id) { it.updateGuide(guideService.get(guideId), timeProvider.now()) }
 
-    fun setActive(id: Long, value: Boolean) = patchData(id) { it.active = value }
-
-    fun setMaxPersons(id: Long, value: Int) = patchData(id) { if (value >= 0) it.maxPersons = value }
-
-    fun createSeries(request: OfferSeriesRequest): GenericRequestResult {
-        if (!request.duration.isPositive) return GenericRequestResult(false, MSG_OFFER_SERIES_FAIL)
-        if (!request.interval.isPositive) return GenericRequestResult(false, MSG_OFFER_SERIES_FAIL)
-        if (request.quantity <= 0) return GenericRequestResult(false, MSG_OFFER_SERIES_FAIL)
-        val labels = labelService.getLabelIterator()
-
-        var start = request.start
-        (0 until request.quantity).forEach { _ ->
-            val finish = start.plus(request.duration)
-            val finishTime = finish.toLocalTime()
-            if (finishTime.isAfter(request.maxTime)) {
-                start = start.with(request.minTime).plusDays(1)
-                labels.reset()
-                create(OfferChangeRequest(start, start.plus(request.duration), request.maxPersons, true, labels.next()?.id, null))
-            } else {
-                create(OfferChangeRequest(start, finish, request.maxPersons, true, labels.next()?.id, null))
-            }
-
-            start = start.plus(request.interval)
-            val startTime = start.toLocalTime()
-            if (startTime.isAfter(request.maxTime)) {
-                start = start.with(request.minTime).plusDays(1)
-            }
-        }
-        return GenericRequestResult(true, MSG_OFFER_SERIES_SUCCESS)
+    internal fun patch(data: OfferData, patch: (OfferData) -> Unit): Offer {
+        return patchData(data, patch)
     }
 
-    fun createRange(request: OfferRangeRequest): GenericRequestResult {
-        if (!request.duration.isPositive) return GenericRequestResult(false, MSG_OFFER_RANGE_FAIL)
-        if (!request.interval.isPositive) return GenericRequestResult(false, MSG_OFFER_RANGE_FAIL)
-        if (request.dateTo.isBefore(request.dateFrom)) return GenericRequestResult(false, MSG_OFFER_RANGE_FAIL)
-        if (request.timeTo.isBefore(request.timeFrom)) return GenericRequestResult(false, MSG_OFFER_RANGE_FAIL)
-
-        var date = request.dateFrom
-        val days = ChronoUnit.DAYS.between(request.dateFrom, request.dateTo)
-        val labels = labelService.getLabelIterator()
-
-        (0..days).forEach {
-            var startTime = request.timeFrom
-            var finishTime = startTime.plus(request.duration)
-
-            while (!finishTime.isAfter(request.timeTo)) {
-                val start = LocalDateTime.of(date, startTime)
-                val finish = LocalDateTime.of(date, finishTime)
-                create(OfferChangeRequest(start, finish, request.maxPersons, true, labels.next()?.id, null))
-
-                startTime = startTime.plus(request.interval)
-                finishTime = startTime.plus(request.duration)
-            }
-
-            date = date.plusDays(1)
-        }
-        return GenericRequestResult(true, MSG_OFFER_RANGE_SUCCESS)
+    internal fun createBlock(request: List<OfferChangeRequest>): List<Offer> {
+        if (request.isEmpty()) return emptyList()
+        val data = request.map { createData(it) }
+        val result = repository.saveAll(data).map { it.convert() }
+        notify { it.handleBlockCreated(result) }
+        return result
     }
 
+    internal fun updateBlock(data: List<OfferData>): List<Offer> {
+        if (data.isEmpty()) return emptyList()
+        val result = repository.updateAll(data).map { it.convert() }
+        notify { it.handleBlockUpdated(result) }
+        return result
+    }
 
 }

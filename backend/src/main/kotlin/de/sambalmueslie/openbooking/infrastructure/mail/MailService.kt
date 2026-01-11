@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.infrastructure.mail.api.*
 import de.sambalmueslie.openbooking.infrastructure.mail.db.*
+import de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.scheduling.annotation.Scheduled
@@ -17,7 +18,7 @@ class MailService(
     private val jobRepository: MailJobRepository,
     private val jobContentRepository: MailJobContentRepository,
     private val jobHistoryRepository: MailJobHistoryRepository,
-    private val client: de.sambalmueslie.openbooking.infrastructure.mail.external.MailClient,
+    private val client: MailClient,
     private val timeProvider: TimeProvider,
 ) {
 

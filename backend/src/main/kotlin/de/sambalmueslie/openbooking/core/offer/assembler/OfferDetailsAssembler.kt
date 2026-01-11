@@ -64,9 +64,7 @@ class OfferDetailsAssembler(
     private fun details(data: List<OfferData>): List<OfferDetails> {
         val offerIds = data.map { it.id }.toSet()
         val bookings = bookingAssembler.getDetailByOfferIds(offerIds).groupBy { it.booking.offerId }
-        val reservations = reservationAssembler.getByOfferIds(offerIds)
-            .flatMap { infos -> infos.offer.map { offer -> offer.offerId to infos } }
-            .groupBy({ it.first }, { it.second })
+        val reservations = reservationAssembler.getByOfferIds(offerIds).groupBy { it.offer.offer.id }
         return data.map { details(it, bookings[it.id] ?: emptyList(), reservations[it.id] ?: emptyList()) }
     }
 
@@ -87,8 +85,9 @@ class OfferDetailsAssembler(
         val bookedSpace = bookings.filter { it.booking.status == BookingStatus.CONFIRMED }.sumOf { it.booking.size }
         val reservedSpace = reservations.filter { it.status == ReservationStatus.UNCONFIRMED }.sumOf { it.visitor.size }
         val availableSpace = 0.coerceAtLeast(data.maxPersons - bookedSpace - reservedSpace)
+        val disabledSpace = if (data.active) 0 else data.maxPersons
 
-        val assignment = Assignment(bookedSpace, reservedSpace, availableSpace)
+        val assignment = Assignment(bookedSpace, reservedSpace, availableSpace, disabledSpace)
         val timestamp = data.updated ?: data.created
         return OfferDetails(data.convert(), assignment, bookings, reservations, timestamp)
     }

@@ -1,4 +1,4 @@
-<div class="w-full p-4 bg-gray-50 min-h-screen">
+<div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
   <app-dashboard-summary
     [reloading]="summaryReloading()"
     [weekSummary]="summary()"
@@ -11,10 +11,11 @@
     [availableGuides]="availableGuides()"
     (filterChange)="handleFilterChanged($event)"
   />
-  <app-dashboard-content
-    [reloading]="contentReloading()"
-    [content]="content()"
-    (clearFilter)="clearFilter()"
-    (confirmBooking)="handleBookingConfirmation($event)"
-  />
+  <div class="flex-1 overflow-auto min-h-0">
+    <app-dashboard-content
+      [reloading]="contentReloading()"
+      [content]="content()"
+      (clearFilter)="clearFilter()"
+    />
+  </div>
 </div>

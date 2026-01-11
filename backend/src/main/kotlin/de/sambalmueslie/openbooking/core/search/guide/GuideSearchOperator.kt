@@ -3,8 +3,8 @@ package de.sambalmueslie.openbooking.core.search.guide
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.ids
 import com.jillesvangurp.ktsearch.total
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
+import de.sambalmueslie.openbooking.core.guide.GuideChangeListener
 import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.guide.api.Guide
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
@@ -32,7 +32,7 @@ open class GuideSearchOperator(
     }
 
     init {
-        service.register(object : BusinessObjectChangeListener<Long, Guide> {
+        service.register(object : GuideChangeListener {
             override fun handleCreated(obj: Guide) {
                 handleChanged(obj)
             }

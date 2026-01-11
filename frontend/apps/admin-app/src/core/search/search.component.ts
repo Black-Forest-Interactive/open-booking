@@ -63,19 +63,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     switch (status) {
       case 'IDLE':
-        return `${baseClasses} !bg-gray-100 !text-gray-700 dark:!bg-gray-700 dark:!text-gray-300`;
+        return `${baseClasses} !bg-gray-100 !text-gray-700`;
 
       case 'UNKNOWN':
-        return `${baseClasses} !bg-gray-200 !text-gray-800 dark:!bg-gray-600 dark:!text-gray-200`;
+        return `${baseClasses} !bg-gray-200 !text-gray-800`;
 
       case 'CREATE_INDEX':
-        return `${baseClasses} !bg-orange-100 !text-orange-700 dark:!bg-orange-900/30 dark:!text-orange-300`;
+        return `${baseClasses} !bg-orange-100 !text-orange-700`;
 
       case 'INITIAL_LOAD':
-        return `${baseClasses} !bg-yellow-100 !text-yellow-700 dark:!bg-yellow-900/30 dark:!text-yellow-300`;
+        return `${baseClasses} !bg-yellow-100 !text-yellow-700`;
 
       case 'READY':
-        return `${baseClasses} !bg-green-100 !text-green-700 dark:!bg-green-900/30 dark:!text-green-300`;
+        return `${baseClasses} !bg-green-100 !text-green-700`;
 
       default:
         return baseClasses;

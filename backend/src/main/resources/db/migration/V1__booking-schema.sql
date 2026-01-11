@@ -71,32 +71,6 @@ CREATE TABLE offer
     updated     TIMESTAMP WITHOUT TIME ZONE
 );
 
--- reservation
-CREATE SEQUENCE reservation_seq;
-CREATE TABLE reservation
-(
-    id         BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('reservation_seq'::regclass),
-    key        VARCHAR(255) NOT NULL,
-    status     VARCHAR(50)  NOT NULL,
-    comment    TEXT,
-
-    visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
-
-    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated    TIMESTAMP WITHOUT TIME ZONE
-);
-
-
-CREATE TABLE reservation_offer_relation
-(
-    reservation_id BIGINT NOT NULL REFERENCES reservation (id),
-    offer_id       BIGINT NOT NULL REFERENCES offer (id),
-    priority       INT    NOT NULL,
-
-    PRIMARY KEY (reservation_id, offer_id),
-    UNIQUE (reservation_id, priority)
-);
-
 -- booking
 CREATE SEQUENCE booking_seq;
 CREATE TABLE booking
@@ -114,6 +88,22 @@ CREATE TABLE booking
     updated    TIMESTAMP WITHOUT TIME ZONE
 );
 
+-- reservation
+CREATE SEQUENCE reservation_seq;
+CREATE TABLE reservation
+(
+    id         BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('reservation_seq'::regclass),
+    key        VARCHAR(255) NOT NULL,
+    status     VARCHAR(50)  NOT NULL,
+    comment    TEXT,
+
+    visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
+    offer_id   BIGINT       NOT NULL REFERENCES offer (id),
+    booking_id BIGINT REFERENCES booking (id),
+
+    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated    TIMESTAMP WITHOUT TIME ZONE
+);
 
 -- response
 CREATE SEQUENCE response_seq;

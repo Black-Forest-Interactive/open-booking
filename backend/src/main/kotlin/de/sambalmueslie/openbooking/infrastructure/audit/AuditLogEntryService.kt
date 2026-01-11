@@ -19,7 +19,7 @@ class AuditLogEntryService(
     private val repository: AuditLogEntryRepository,
     private val mapper: ObjectMapper,
     cacheService: CacheService,
-) : GenericCrudService<Long, AuditLogEntry, AuditLogEntryChangeRequest, AuditLogEntryData>(repository, cacheService, AuditLogEntry::class, logger) {
+) : GenericCrudService<Long, AuditLogEntry, AuditLogEntryChangeRequest, AuditLogEntryChangeListener, AuditLogEntryData>(repository, cacheService, AuditLogEntry::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(AuditLogEntryService::class.java)

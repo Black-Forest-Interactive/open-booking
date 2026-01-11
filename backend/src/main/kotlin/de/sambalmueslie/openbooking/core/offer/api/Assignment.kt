@@ -4,4 +4,5 @@ data class Assignment(
     val bookedSpace: Int,
     val reservedSpace: Int,
     val availableSpace: Int,
+    val deactivatedSpace: Int,
 )

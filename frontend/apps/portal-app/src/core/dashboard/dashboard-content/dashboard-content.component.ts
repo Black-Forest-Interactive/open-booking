@@ -1,10 +1,10 @@
 import {Component, input} from '@angular/core';
-import {DashboardEntry} from "@open-booking/portal";
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {DashboardContentEntryComponent} from "../dashboard-content-entry/dashboard-content-entry.component";
+import {DayInfo} from "@open-booking/core";
 
 @Component({
   selector: 'app-dashboard-content',
@@ -19,5 +19,5 @@ import {DashboardContentEntryComponent} from "../dashboard-content-entry/dashboa
   styleUrl: './dashboard-content.component.scss',
 })
 export class DashboardContentComponent {
-  content = input.required<DashboardEntry[]>()
+  content = input.required<DayInfo[]>()
 }

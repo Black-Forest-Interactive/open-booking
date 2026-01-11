@@ -17,9 +17,18 @@ export interface Visitor {
 }
 
 export interface Verification {
-  status: string,
+  status: VerificationStatus,
   timestamp: string | undefined,
 }
+
+export const VerificationStatus = {
+  UNKNOWN: 'UNKNOWN',
+  UNCONFIRMED: 'UNCONFIRMED',
+  CONFIRMED: 'CONFIRMED',
+  EXPIRED: 'EXPIRED',
+} as const;
+
+export type VerificationStatus = typeof VerificationStatus[keyof typeof VerificationStatus]
 
 export interface Address {
   street: string,

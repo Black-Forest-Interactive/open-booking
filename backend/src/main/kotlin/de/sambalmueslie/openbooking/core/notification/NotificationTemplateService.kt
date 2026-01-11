@@ -18,7 +18,9 @@ class NotificationTemplateService(
     private val repository: NotificationTemplateRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, NotificationTemplate, NotificationTemplateChangeRequest, NotificationTemplateData>(repository, cacheService, NotificationTemplate::class, logger) {
+) : GenericCrudService<Long, NotificationTemplate, NotificationTemplateChangeRequest, NotificationTemplateChangeListener, NotificationTemplateData>(
+    repository, cacheService, NotificationTemplate::class, logger
+) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(NotificationTemplateService::class.java)

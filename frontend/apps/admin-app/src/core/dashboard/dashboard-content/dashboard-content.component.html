@@ -1,11 +1,10 @@
 <app-loading-bar [reloading]="reloading()"/>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-  @for (offer of content(); track offer.id) {
+  @for (offer of content(); track offer.info.offer.id) {
     <app-dashboard-content-entry
       [data]="offer"
-      (confirmBooking)="handleConfirmBooking($event)"
       class="bg-white rounded-lg shadow-sm overflow-hidden border-l-8"
-      [style.border-color]="offer.color"
+      [style.border-color]="offer.info.label?.color ?? ''"
     />
   }
 </div>

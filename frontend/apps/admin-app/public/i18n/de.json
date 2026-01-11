@@ -11,28 +11,35 @@
     "Ok": "OK",
     "Save": "Speichern",
     "Submit": "Absenden",
-    "Yes": "Ja"
-  },
-  "MENU": {
-    "AuditLog": "Audit Log",
-    "Booking": "Buchungsverwaltung",
-    "BookingRequest": "Anfrageverwaltung",
-    "Cache": "Cache-Verwaltung",
-    "Dashboard": "Übersicht",
-    "Mail": "Mail-Status",
-    "Notification": "Benachrichtigungsverwaltung",
-    "Offer": "Angebotsverwaltung",
-    "Response": "Response Mgt",
-    "Settings": "Einstellungen",
-    "Guide": "Guide",
-    "Label": "Label",
-    "Search": "Search Index",
-    "Reservation": "Reservierungen",
+    "Yes": "Ja",
     "Help": "Hilfe",
     "Home": "Startseite",
     "Language": "Sprache",
     "Login": "Login",
     "Logout": "Logout"
+  },
+  "MENU": {
+    "Title": "Menü",
+    "Dashboard": "Dashboard",
+    "Booking": "Buchungen",
+    "Reservation": "Reservierungen",
+    "BookingRequest": "Buchungsanfrage",
+    "Label": "Etikett",
+    "Guide": "Guide",
+    "Offer": "Angebot",
+    "Settings": "Einstellungen",
+    "Notification": "Benachrichtigungen",
+    "Response": "Antworten",
+    "AuditLog": "Audit-Protokoll",
+    "Cache": "Cache",
+    "Mail": "E-Mail",
+    "Search": "Suche",
+    "Group": {
+      "DailyBusiness": "Tagesgeschäft",
+      "Offers": "Angebotsverwaltung",
+      "Settings": "Einstellungen & Vorlagen",
+      "Administration": "Verwaltung"
+    }
   },
   "APP": {
     "Title": "Open Booking",
@@ -487,6 +494,30 @@
     "HOME_PAGE": "Startseite",
     "NEED_HELP": "Benötigen Sie Hilfe?",
     "CONTACT_SUPPORT": "Support kontaktieren"
+  },
+  "SEARCH": {
+    "type": "Suchindex",
+    "title": "Suchindex-Verwaltung",
+    "key": {
+      "guide": "Guide",
+      "offer": "Angebot",
+      "reservation": "Reservierung"
+    },
+    "status": {
+      "UNKNOWN": "Unbekannt",
+      "CREATE_INDEX": "Index erstellen",
+      "INITIAL_LOAD": "Erstinitialisierung",
+      "READY": "Bereit",
+      "IDLE": "Inaktiv"
+    },
+    "statistics": {
+      "total": "Gesamteinträge",
+      "successfully": "Erfolgreich",
+      "failed": "Fehlgeschlagen"
+    },
+    "action": {
+      "setup": "Einrichten"
+    }
   },
   "LABEL": {
     "Title": "Label-Verwaltung",

@@ -1,0 +1,94 @@
+<div class="py-4 px-4 border-b border-gray-200">
+  <h3 class="text-lg font-semibold text-gray-800">
+    {{ 'MENU.Title' | translate }}
+  </h3>
+</div>
+
+<div class="p-4 space-y-6">
+
+  <!-- Group 1: Daily Business -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-500 mb-2">{{ 'MENU.Group.DailyBusiness' | translate }}</h4>
+    <div class="flex flex-col gap-2">
+      <a routerLink="./dashboard" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>dashboard</mat-icon>
+        <span>{{ 'MENU.Dashboard' | translate }}</span>
+      </a>
+      <a routerLink="./booking" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>bookmarks</mat-icon>
+        <span>{{ 'MENU.Booking' | translate }}</span>
+      </a>
+      <a routerLink="./reservation" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>thumb_up_alt</mat-icon>
+        <span>{{ 'MENU.Reservation' | translate }}</span>
+      </a>
+      <a routerLink="./request" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>thumb_up_alt</mat-icon>
+        <span>{{ 'MENU.BookingRequest' | translate }}</span>
+        <span class="text-xs px-2 py-1 rounded bg-red-200">Deprecated</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Group 2: Offers -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-500 mb-2">{{ 'MENU.Group.Offers' | translate }}</h4>
+    <div class="flex flex-col gap-2">
+      <a routerLink="./label" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>label</mat-icon>
+        <span>{{ 'MENU.Label' | translate }}</span>
+      </a>
+      <a routerLink="./guide" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>follow_the_signs</mat-icon>
+        <span>{{ 'MENU.Guide' | translate }}</span>
+      </a>
+      <a routerLink="./offer" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>local_offer</mat-icon>
+        <span>{{ 'MENU.Offer' | translate }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Group 3: Settings & Templates -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-500 mb-2">{{ 'MENU.Group.Settings' | translate }}</h4>
+    <div class="flex flex-col gap-2">
+      <a routerLink="./settings" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>settings</mat-icon>
+        <span>{{ 'MENU.Settings' | translate }}</span>
+      </a>
+      <a routerLink="./notification" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>notifications</mat-icon>
+        <span>{{ 'MENU.Notification' | translate }}</span>
+      </a>
+      <a routerLink="./response" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>chat_bubble</mat-icon>
+        <span>{{ 'MENU.Response' | translate }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Group 4: Administrative Tasks -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-500 mb-2">{{ 'MENU.Group.Administration' | translate }}</h4>
+    <div class="flex flex-col gap-2">
+      <a routerLink="./audit" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>history</mat-icon>
+        <span>{{ 'MENU.AuditLog' | translate }}</span>
+      </a>
+      <a routerLink="./cache" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>watch_later</mat-icon>
+        <span>{{ 'MENU.Cache' | translate }}</span>
+      </a>
+      <a routerLink="./mail" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>mail</mat-icon>
+        <span>{{ 'MENU.Mail' | translate }}</span>
+      </a>
+      <a routerLink="./search" routerLinkActive="active-nav-link" class="menu-link">
+        <mat-icon>search_insights</mat-icon>
+        <span>{{ 'MENU.Search' | translate }}</span>
+      </a>
+    </div>
+  </div>
+
+</div>

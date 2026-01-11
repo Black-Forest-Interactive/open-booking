@@ -8,7 +8,7 @@
     } @else {
       <button matButton="filled" routerLink="/" aria-label="Go to home page" class="flex-shrink-0">
         <mat-icon>home</mat-icon>
-        {{ 'MENU.Home' | translate }}
+        {{ 'ACTION.Home' | translate }}
       </button>
     }
 
@@ -27,7 +27,7 @@
     } @else {
       <button matButton="filled" [matMenuTriggerFor]="langmenu" aria-label="Change language" class="flex-shrink-0">
         <mat-icon>language</mat-icon>
-        {{ 'MENU.Language' | translate }}
+        {{ 'ACTION.Language' | translate }}
       </button>
     }
 
@@ -38,7 +38,7 @@
     } @else {
       <button matButton="filled" (click)="showHelp()" aria-label="Help" class="flex-shrink-0">
         <mat-icon>help</mat-icon>
-        {{ 'MENU.Help' | translate }}
+        {{ 'ACTION.Help' | translate }}
       </button>
     }
 

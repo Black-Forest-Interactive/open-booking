@@ -1,6 +1,5 @@
 package de.sambalmueslie.openbooking.gateway.portal.offer
 
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.info.InfoService
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
 import de.sambalmueslie.openbooking.core.offer.OfferService
@@ -38,9 +37,6 @@ class OfferGateway(
     }
 
     private fun isSpaceAvailable(offer: DayInfoOffer, request: OfferInfoSelectRequest): Boolean {
-        val confirmedSpace = offer.space[BookingStatus.CONFIRMED] ?: 0
-        val totalSpace = offer.offer.maxPersons
-        val availableSpace = totalSpace - confirmedSpace
-        return availableSpace >= request.groupSize
+        return offer.assignment.availableSpace >= request.groupSize
     }
 }

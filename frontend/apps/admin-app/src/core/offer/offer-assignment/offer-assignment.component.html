@@ -1,0 +1,35 @@
+<div class="relative h-6 bg-gray-200 rounded-lg overflow-hidden border border-gray-300 w-full">
+  <!-- Booked Space (Blue) -->
+  <div class="absolute h-full bg-blue-500 transition-all"
+       [style.width.%]="bookedPercentage()">
+  </div>
+
+  <!-- Other Reserved Space (Orange) - excluding current visitor -->
+  <div class="absolute h-full bg-orange-400 transition-all"
+       [style.left.%]="bookedPercentage()"
+       [style.width.%]="otherReservedPercentage()">
+  </div>
+
+  <!-- Current Visitor Group (Purple) - only if UNCONFIRMED -->
+  @if (isUnconfirmed()) {
+    <div class="absolute h-full bg-purple-500 transition-all border-l-2 border-r-2 border-purple-700"
+         [style.left.%]="bookedPercentage() + otherReservedPercentage()"
+         [style.width.%]="visitorPercentage()">
+    </div>
+  }
+
+  <!-- Available Space (Green) - excluding current visitor -->
+  <div class="absolute h-full bg-green-500 transition-all"
+       [style.left.%]="bookedPercentage() + otherReservedPercentage()"
+       [style.width.%]="availablePercentage()">
+  </div>
+
+  <!-- Capacity Numbers Overlay -->
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="flex gap-4 text-xs font-semibold text-white drop-shadow-md">
+      <span>{{ bookedSpace() }}</span>
+      <span>{{ reservedSpace() }}</span>
+      <span>{{ availableSpace() }}</span>
+    </div>
+  </div>
+</div>

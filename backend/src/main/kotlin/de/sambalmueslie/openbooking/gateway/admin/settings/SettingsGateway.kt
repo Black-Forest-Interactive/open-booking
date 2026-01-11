@@ -3,14 +3,14 @@ package de.sambalmueslie.openbooking.gateway.admin.settings
 import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.common.checkPermission
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_SETTINGS_ADMIN
-import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton
 
 @Singleton
-class SettingsGateway(private val service: SettingsService) {
+class SettingsGateway(private val service: SettingService) {
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_SETTINGS_ADMIN) {
         service.get(id)
     }

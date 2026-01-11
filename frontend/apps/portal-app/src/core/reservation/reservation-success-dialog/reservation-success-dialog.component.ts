@@ -25,7 +25,7 @@ export class ReservationSuccessDialogComponent {
     params: this.requestId,
     loader: (param) => {
       return toPromise(
-        this.service.getRequestReceivedMessage(param.params),
+        this.service.getReservationReceivedMessage(param.params),
         param.abortSignal
       );
     },

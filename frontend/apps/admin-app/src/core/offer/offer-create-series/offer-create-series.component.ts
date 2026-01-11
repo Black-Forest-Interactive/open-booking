@@ -1,4 +1,4 @@
-import {Component, computed, effect, resource, signal} from '@angular/core';
+import {Component, computed, effect, output, resource, signal} from '@angular/core';
 import {GenericRequestResult, LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {OfferSeriesRequest} from "@open-booking/core";
 import {Duration} from "luxon";
@@ -6,14 +6,12 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {OfferService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {Router} from "@angular/router";
 import {of} from "rxjs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import {navigateToOffer} from "../../../app/app.navigation";
 
 @Component({
   selector: 'app-offer-create-series',
@@ -43,13 +41,13 @@ export class OfferCreateSeriesComponent {
   })
 
   reloading = computed(() => this.offerSeriesResource.isLoading())
+  close = output<boolean>()
 
   constructor(
     private fb: FormBuilder,
     public service: OfferService,
     private toastService: HotToastService,
-    private translate: TranslateService,
-    private router: Router
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
         date: ['', Validators.required],
@@ -97,7 +95,7 @@ export class OfferCreateSeriesComponent {
   }
 
   cancel() {
-    navigateToOffer(this.router)
+    this.close.emit(true)
   }
 
   private get request(): OfferSeriesRequest | null {
@@ -127,12 +125,12 @@ export class OfferCreateSeriesComponent {
       this.translate.get(message).subscribe(
         msg => {
           this.toastService.error(msg)
-          navigateToOffer(this.router)
+          this.close.emit(true)
         }
       )
     } else {
       this.toastService.success("OFFER.Message.SeriesCreatedSuccessfully")
-      navigateToOffer(this.router)
+      this.close.emit(true)
     }
   }
 }

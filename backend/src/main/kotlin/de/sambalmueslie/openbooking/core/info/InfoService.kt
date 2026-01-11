@@ -1,13 +1,20 @@
 package de.sambalmueslie.openbooking.core.info
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
+import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.claim.ClaimService
+import de.sambalmueslie.openbooking.core.claim.api.Claim
+import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeListener
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
+import de.sambalmueslie.openbooking.core.reservation.ReservationService
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -19,6 +26,8 @@ import java.time.temporal.ChronoUnit
 class InfoService(
     private val offerService: OfferService,
     bookingService: BookingService,
+    reservationService: ReservationService,
+    claimService: ClaimService,
     private val cache: InfoCache
 ) {
 
@@ -28,7 +37,7 @@ class InfoService(
 
 
     init {
-        bookingService.register(object : BusinessObjectChangeListener<Long, Booking> {
+        bookingService.register(object : BookingChangeListener {
             override fun handleCreated(obj: Booking) {
                 updateCache(obj)
             }
@@ -42,7 +51,7 @@ class InfoService(
             }
         })
 
-        offerService.register(object : BusinessObjectChangeListener<Long, Offer> {
+        offerService.register(object : OfferChangeListener {
             override fun handleCreated(obj: Offer) {
                 updateCache(obj)
             }
@@ -55,11 +64,52 @@ class InfoService(
                 updateCache(obj)
             }
         })
+
+
+        reservationService.register(object : ReservationChangeListener {
+            override fun handleCreated(obj: Reservation) {
+                updateCache(obj)
+            }
+
+            override fun handleUpdated(obj: Reservation) {
+                updateCache(obj)
+            }
+
+            override fun handleDeleted(obj: Reservation) {
+                updateCache(obj)
+            }
+        })
+
+        claimService.register(object : ClaimChangeListener {
+            override fun handleCreated(obj: Claim) {
+                updateCache(obj)
+            }
+
+            override fun handleUpdated(obj: Claim) {
+                updateCache(obj)
+            }
+
+            override fun handleDeleted(obj: Claim) {
+                updateCache(obj)
+            }
+        })
     }
 
     private fun updateCache(booking: Booking) {
         logger.info("Update cache for booking ${booking.id}")
         val offer = offerService.get(booking.offerId) ?: return
+        updateCache(offer)
+    }
+
+    private fun updateCache(registration: Reservation) {
+        logger.info("Update cache for registration ${registration.id}")
+        val offer = offerService.get(registration.offerId) ?: return
+        updateCache(offer)
+    }
+
+    private fun updateCache(claim: Claim) {
+        logger.info("Update cache for claim ${claim.id}")
+        val offer = offerService.get(claim.id) ?: return
         updateCache(offer)
     }
 
@@ -69,6 +119,7 @@ class InfoService(
         cache.refresh(key)
         addCacheKey(key)
     }
+
 
     private val cacheKeysToRefresh = mutableSetOf<LocalDate>()
 

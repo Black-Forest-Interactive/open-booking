@@ -1,15 +1,20 @@
 package de.sambalmueslie.openbooking.core.booking
 
 
-import de.sambalmueslie.openbooking.common.*
+import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.PageableSequence
+import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.visitor.VisitorChangeListener
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.error.InvalidRequestException
@@ -27,21 +32,21 @@ class BookingService(
 
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingData>(repository, cacheService, Booking::class, logger) {
+) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingChangeListener, BookingData>(repository, cacheService, Booking::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(BookingService::class.java)
     }
 
     init {
-        offerService.register(object : BusinessObjectChangeListener<Long, Offer> {
+        offerService.register(object : OfferChangeListener {
             override fun handleDeleted(obj: Offer) {
                 val sequence = PageableSequence { repository.findByOfferId(obj.id, it) }
                 sequence.forEach { delete(it) }
             }
         })
 
-        visitorService.register(object : BusinessObjectChangeListener<Long, Visitor> {
+        visitorService.register(object : VisitorChangeListener {
 
             override fun handleCreated(obj: Visitor) {
                 handleVisitorChanged(obj)

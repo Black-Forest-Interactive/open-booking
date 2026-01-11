@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.infrastructure.cache
 
 
-import com.github.benmanes.caffeine.cache.LoadingCache
+import com.github.benmanes.caffeine.cache.Cache
 import de.sambalmueslie.openbooking.infrastructure.cache.api.CacheInfo
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -14,16 +14,16 @@ class CacheService {
         private val logger = LoggerFactory.getLogger(CacheService::class.java)
     }
 
-    private val caches = mutableMapOf<String, LoadingCache<*, *>>()
+    private val caches = mutableMapOf<String, Cache<*, *>>()
 
-    fun <T : Any, O : Any> register(key: String, builder: () -> LoadingCache<T, O?>): LoadingCache<T, O?> {
+    fun <T : Any, O : Any, C : Cache<T, O?>> register(key: String, builder: () -> C): C {
         logger.info("Register cache for $key")
         val cache = builder.invoke()
         caches[key] = cache
         return cache
     }
 
-    fun <T : Any, O : Any> register(type: KClass<O>, builder: () -> LoadingCache<T, O?>): LoadingCache<T, O?> {
+    fun <T : Any, O : Any, C : Cache<T, O?>> register(type: KClass<O>, builder: () -> C): C {
         return register(type.java.canonicalName, builder)
     }
 
@@ -36,7 +36,7 @@ class CacheService {
         return caches.entries.map { convert(it.key, it.value) }
     }
 
-    private fun convert(key: String, cache: LoadingCache<*, *>): CacheInfo {
+    private fun convert(key: String, cache: Cache<*, *>): CacheInfo {
         val name = key.substringAfterLast('.')
         val stats = cache.stats()
         return CacheInfo(key, name, stats.hitCount(), stats.missCount(), stats.loadSuccessCount(), stats.loadFailureCount(), stats.totalLoadTime(), stats.evictionCount(), stats.evictionWeight())

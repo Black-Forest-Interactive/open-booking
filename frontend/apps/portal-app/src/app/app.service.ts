@@ -27,7 +27,8 @@ export class AppService {
   })
 
   title = computed(() => this.titleResource.value()?.text ?? '')
-
+  private readonly STORAGE_KEY_LANG = 'userLang'
+  private readonly DEFAULT_LANG = 'en'
 
   constructor(
     private translate: TranslateService,
@@ -35,11 +36,15 @@ export class AppService {
     private pageTitle: Title,
     private breakpointObserver: BreakpointObserver,
   ) {
-    translate.setFallbackLang('en')
-    this.lang = toSignal(translate.onLangChange.pipe(
-        map(event => event.lang)
-      ),
-      {initialValue: this.translate.getCurrentLang()}
+    translate.setFallbackLang(this.DEFAULT_LANG)
+
+
+    translate.use(this.getDefaultLang())
+
+
+    this.lang = toSignal(
+      translate.onLangChange.pipe(map(event => event.lang)),
+      {initialValue: translate.getCurrentLang()}
     )
 
     this.isHandset = toSignal(
@@ -54,7 +59,23 @@ export class AppService {
   }
 
   setLanguage(language: string) {
-    this.translate.use(language)
+    if (this.isSupported(language)) {
+      this.translate.use(language)
+      localStorage.setItem(this.STORAGE_KEY_LANG, language)
+    }
   }
 
+  private getDefaultLang(): string {
+    const savedLang = localStorage.getItem(this.STORAGE_KEY_LANG)
+    if (savedLang && this.isSupported(savedLang)) return savedLang
+
+    const browserLang = this.translate.getBrowserLang()
+    if (browserLang && this.isSupported(browserLang)) return browserLang
+
+    return this.DEFAULT_LANG
+  }
+
+  private isSupported(lang: string) {
+    return this.languages.some(l => l.key === lang)
+  }
 }

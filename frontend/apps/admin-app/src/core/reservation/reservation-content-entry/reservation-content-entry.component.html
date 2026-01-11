@@ -136,15 +136,7 @@
 
         <!-- Actions -->
         <div class="flex gap-2">
-          <button
-            matButton="outlined"
-            color="warn"
-            [disabled]="data().visitor.verification.status === 'CONFIRMED'"
-            (click)="confirmMail()"
-            class="flex-1">
-            <mat-icon>mail</mat-icon>
-            {{ 'RESERVATION.Action.MailConfirm' | translate }}
-          </button>
+          <app-visitor-confirm [data]="data().visitor" (changed)="reload.emit($event)" class="flex-1"/>
           <button
             matButton="outlined"
             color="warn"
@@ -166,20 +158,15 @@
             <h4 class="font-semibold text-gray-900">
               {{ 'RESERVATION.Offer.Title' | translate }}
             </h4>
-            <div class="ml-auto px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-              {{ data().offers.length }} {{ (data().offers.length === 1 ? 'RESERVATION.Offer.Single' : 'RESERVATION.Offer.Multiple') | translate }}
-            </div>
           </div>
 
           <div class="flex flex-col gap-2">
-            @for (entry of sortedOffers(); track entry.offer.id) {
-              <app-reservation-content-entry-offer
-                [entry]="entry"
-                [visitor]="data().visitor"
-                [reservation]="data().reservation"
-                (confirm)="confirmOffer($event)"
-              />
-            }
+            <app-reservation-content-entry-offer
+              [entry]="data().offer"
+              [visitor]="data().visitor"
+              [reservation]="data().reservation"
+              (confirm)="confirmOffer($event)"
+            />
           </div>
         </div>
       </div>

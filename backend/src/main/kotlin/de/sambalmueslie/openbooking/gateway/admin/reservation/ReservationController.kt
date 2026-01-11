@@ -17,6 +17,12 @@ class ReservationController(private val gateway: ReservationGateway) {
     @Get("/{id}")
     fun get(auth: Authentication, id: Long) = gateway.get(auth, id)
 
+    @Get("/{id}/info")
+    fun getInfo(auth: Authentication, id: Long) = gateway.getInfo(auth, id)
+
+    @Get("/{id}/details")
+    fun getDetails(auth: Authentication, id: Long) = gateway.getDetails(auth, id)
+
     @Post("search")
     fun search(auth: Authentication, @Body request: ReservationSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
 
@@ -33,11 +39,11 @@ class ReservationController(private val gateway: ReservationGateway) {
     @Get("/{id}/received/message")
     fun getRequestReceivedMessage(auth: Authentication, id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getRequestReceivedMessage(auth, id, lang)
 
-    @Get("/{id}/confirm/{offerId}/message")
-    fun getConfirmationMessage(auth: Authentication, id: Long, offerId: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getConfirmationMessage(auth, id, offerId, lang)
+    @Get("/{id}/confirm/message")
+    fun getConfirmationMessage(auth: Authentication, id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getConfirmationMessage(auth, id, lang)
 
-    @Put("/{id}/confirm/{offerId}")
-    fun confirm(auth: Authentication, id: Long, offerId: Long, @Body content: ReservationConfirmationContent) = gateway.confirm(auth, id, offerId, content)
+    @Put("/{id}/confirm")
+    fun confirm(auth: Authentication, id: Long, @Body content: ReservationConfirmationContent) = gateway.confirm(auth, id, content)
 
     @Get("/{id}/deny/message")
     fun getDenialMessage(auth: Authentication, id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getDenialMessage(auth, id, lang)

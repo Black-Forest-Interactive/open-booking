@@ -88,7 +88,7 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             request.to?.let { toDate ->
                 must(
                     range(OfferSearchEntryData::start) {
-                        lte = toDate.toString()
+                        lte = toDate.plusDays(1).minusSeconds(1).toString()
                     }
                 )
             }

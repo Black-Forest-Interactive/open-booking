@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, resource} from '@angular/core';
-import {ReservationConfirmationContent, ReservationOfferEntry, ReservationSearchEntry} from "@open-booking/core";
+import {ReservationConfirmationContent, ReservationDetails, ReservationOffer} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {ReservationService} from "@open-booking/admin";
@@ -37,7 +37,7 @@ export class ReservationProcessDialogComponent {
 
   private resource = resource({
     loader: param =>
-      toPromise((this.data.confirmation) ? this.service.getConfirmationMessage(this.data.info.reservation.id, this.data.offer.offer.id) : this.service.getDenialMessage(this.data.info.reservation.id), param.abortSignal)
+      toPromise((this.data.confirmation) ? this.service.getConfirmationMessage(this.data.info.reservation.id) : this.service.getDenialMessage(this.data.info.reservation.id), param.abortSignal)
   })
 
   loading = this.resource.isLoading
@@ -86,7 +86,7 @@ export class ReservationProcessDialogComponent {
 }
 
 export interface ReservationProcessDialogData {
-  info: ReservationSearchEntry,
-  offer: ReservationOfferEntry,
+  info: ReservationDetails,
+  offer: ReservationOffer,
   confirmation: boolean
 }

@@ -5,6 +5,7 @@ import {
   Reservation,
   ReservationChangeRequest,
   ReservationConfirmationContent,
+  ReservationDetails,
   ReservationInfo,
   ReservationSearchRequest,
   ReservationSearchResponse,
@@ -30,6 +31,14 @@ export class ReservationService extends BaseService {
     return this.get('' + id)
   }
 
+  getReservationDetails(id: number): Observable<ReservationDetails> {
+    return this.get('' + id + '/details')
+  }
+
+  getReservationInfo(id: number): Observable<ReservationInfo> {
+    return this.get('' + id + '/info')
+  }
+
   searchReservation(request: ReservationSearchRequest, page: number, size: number): Observable<ReservationSearchResponse> {
     let params = new HttpParams()
       .set('page', page)
@@ -53,13 +62,12 @@ export class ReservationService extends BaseService {
     return this.getPaged('unconfirmed/info', page, size)
   }
 
-
-  getConfirmationMessage(id: number, bookingId: number): Observable<ResolvedResponse> {
-    return this.get('' + id + '/confirm/' + bookingId + '/message')
+  getConfirmationMessage(id: number): Observable<ResolvedResponse> {
+    return this.get('' + id + '/confirm/message')
   }
 
-  confirmReservation(id: number, bookingId: number, content: ReservationConfirmationContent): Observable<GenericRequestResult> {
-    return this.put('' + id + '/confirm/' + bookingId, content)
+  confirmReservation(id: number, content: ReservationConfirmationContent): Observable<GenericRequestResult> {
+    return this.put('' + id + '/confirm', content)
   }
 
   getDenialMessage(id: number): Observable<ResolvedResponse> {
@@ -69,11 +77,6 @@ export class ReservationService extends BaseService {
   denyReservation(id: number, content: ReservationConfirmationContent): Observable<GenericRequestResult> {
     return this.put('' + id + '/deny', content)
   }
-
-  getInfoByBookingId(bookingId: number): Observable<ReservationInfo> {
-    return this.get('info/by/booking/' + bookingId)
-  }
-
 
   updateVisitor(id: number, request: VisitorChangeRequest): Observable<GenericRequestResult> {
     return this.put(id + '/visitor', request)

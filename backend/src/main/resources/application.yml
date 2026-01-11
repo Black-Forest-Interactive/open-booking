@@ -54,6 +54,10 @@ micronaut:
       - pattern: /**
         access:
           - isAnonymous()
+  session:
+    http:
+      cookie: true
+      max-inactive-interval: 5m
 
 jackson:
   serialization-inclusion: always

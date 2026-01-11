@@ -20,7 +20,7 @@ class VisitorService(
     private val repository: VisitorRepository,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
-) : GenericCrudService<Long, Visitor, VisitorChangeRequest, VisitorData>(repository, cacheService, Visitor::class, logger) {
+) : GenericCrudService<Long, Visitor, VisitorChangeRequest, VisitorChangeListener, VisitorData>(repository, cacheService, Visitor::class, logger) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(VisitorService::class.java)
@@ -42,7 +42,6 @@ class VisitorService(
 
 
     override fun isValid(request: VisitorChangeRequest) {
-        if (request.title.isEmpty()) throw InvalidRequestException("Title cannot be empty")
         if (request.size <= 0) throw InvalidRequestException("Size must be a positive number")
         if (request.name.isEmpty()) throw InvalidRequestException("Contact cannot be empty")
         if (request.email.isEmpty() && request.phone.isEmpty()) throw InvalidRequestException("Either mail or phone contact must be provided")

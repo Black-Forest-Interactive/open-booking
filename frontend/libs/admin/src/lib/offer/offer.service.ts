@@ -2,10 +2,14 @@ import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
 import {
+  Guide,
+  Label,
   Offer,
   OfferChangeRequest,
+  OfferGroupedSearchResult,
   OfferInfo,
   OfferRangeRequest,
+  OfferRedistributeRequest,
   OfferSearchRequest,
   OfferSearchResponse,
   OfferSeriesRequest
@@ -41,6 +45,29 @@ export class OfferService extends BaseService {
     return this.post('search', request, params)
   }
 
+  searchOfferGroupedByDay(request: OfferSearchRequest): Observable<OfferGroupedSearchResult[]> {
+    return this.post('search/by/day', request)
+  }
+
+  findOfferByDate(date: string): Observable<Offer[]> {
+    return this.get('find/' + date)
+  }
+
+  setOfferActive(id: number, active: boolean): Observable<Offer> {
+    return this.patch('' + id + '/active', {value: active})
+  }
+
+  setOfferMaxPersons(id: number, value: number): Observable<Offer> {
+    return this.patch('' + id + '/max_persons', {value: value})
+  }
+
+  setOfferLabel(id: number, label: Label | undefined): Observable<Offer> {
+    return this.patch('' + id + '/label', {value: label?.id ?? -1})
+  }
+
+  setOfferGuide(id: number, guide: Guide | undefined): Observable<Offer> {
+    return this.patch('' + id + '/guide', {value: guide?.id ?? -1})
+  }
 
   createOffer(request: OfferChangeRequest): Observable<Offer> {
     return this.post('', request)
@@ -54,7 +81,6 @@ export class OfferService extends BaseService {
     return this.delete('' + id)
   }
 
-
   createOfferSeries(request: OfferSeriesRequest): Observable<GenericRequestResult> {
     return this.post('series', request)
   }
@@ -64,18 +90,12 @@ export class OfferService extends BaseService {
     return this.post('range', request)
   }
 
-
-  findOfferByDate(date: string): Observable<Offer[]> {
-    return this.get('find/' + date)
+  redistributeOffer(request: OfferRedistributeRequest): Observable<GenericRequestResult> {
+    return this.post('redistribute', request)
   }
 
-
-  setOfferActive(id: number, active: boolean): Observable<Offer> {
-    return this.patch('' + id + '/active', {value: active})
-  }
-
-  setOfferMaxPersons(id: number, value: number): Observable<Offer> {
-    return this.patch('' + id + '/max_persons', {value: value})
+  relabelOffer(date: string): Observable<GenericRequestResult> {
+    return this.post('relabel/' + date, {})
   }
 
 

@@ -23,19 +23,12 @@ export class ReservationEntryComponent {
   data = input.required<DayInfoOffer>()
 
 
-  confirmedSpace = computed(() => this.data().space.CONFIRMED || 0)
-  unconfirmedSpace = computed(() => this.data().space.UNCONFIRMED || 0)
-  availableSpace = computed(() => this.data().offer.maxPersons - this.confirmedSpace() - this.unconfirmedSpace())
-  isPreferred = computed(() => this.service.preferredEntry()?.offer?.id === this.data().offer.id)
+  confirmedSpace = computed(() => this.data().assignment.bookedSpace)
+  unconfirmedSpace = computed(() => this.data().assignment.reservedSpace)
+  availableSpace = computed(() => this.data().assignment.availableSpace)
 
   constructor(private service: ReservationProcessService) {
   }
 
-  protected setPreferred() {
-    this.service.setPreferred(this.data())
-  }
 
-  protected removeFromCart() {
-    this.service.offerRemove(this.data())
-  }
 }

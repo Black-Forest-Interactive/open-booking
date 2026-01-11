@@ -3,23 +3,21 @@ import {CommonModule} from "@angular/common";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {TranslatePipe} from "@ngx-translate/core";
 import {RouterModule} from "@angular/router";
 import {MatCardModule} from "@angular/material/card";
-import {MatDivider} from "@angular/material/list";
 import {AppService} from "../app.service";
+import {AdminMenuComponent} from "../admin-menu/admin-menu.component";
 
 @Component({
   selector: 'app-admin-content',
   imports: [
     CommonModule,
-    TranslatePipe,
     RouterModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatDivider
+    AdminMenuComponent
   ],
   templateUrl: './admin-content.component.html',
   styleUrl: './admin-content.component.scss',

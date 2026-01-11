@@ -1,19 +1,7 @@
 <mat-card
   appearance="outlined"
-  class="!p-3 cursor-pointer hover:shadow-md transition-shadow"
-  [class.!border-2]="isPreferred()"
-  [class.!border-amber-500]="isPreferred()"
-  (click)="setPreferred()">
+  class="!p-3 cursor-pointer hover:shadow-md transition-shadow">
   <div class="flex items-start gap-3">
-
-    <!-- Priority Indicator -->
-    <div class="flex-shrink-0 pt-1">
-      @if (isPreferred()) {
-        <mat-icon class="text-amber-500">star</mat-icon>
-      } @else {
-        <mat-icon class="opacity-30">star_outline</mat-icon>
-      }
-    </div>
 
     <!-- Content -->
     <div class="flex-1 min-w-0">
@@ -23,21 +11,7 @@
           <div class="text-sm opacity-70 mt-1">
             {{ data().offer.start | date:'shortTime' }} - {{ data().offer.finish | date:'shortTime' }}
           </div>
-          @if (isPreferred()) {
-            <div class="text-xs text-amber-600 mt-1">
-              {{ 'CART.PreferredLabel' | translate }}
-            </div>
-          }
         </div>
-
-        <!-- Delete Button -->
-        <button
-          matButton="outlined"
-          color="warn"
-          (click)="removeFromCart(); $event.stopPropagation()"
-          class="!text-xs !py-1 !px-2 !min-w-0">
-          {{ 'CART.Action.Remove' | translate }}
-        </button>
       </div>
 
       <!-- Availability Info -->

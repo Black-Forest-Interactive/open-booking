@@ -1,4 +1,4 @@
-import {Component, computed, effect, resource, signal} from '@angular/core';
+import {Component, computed, effect, output, resource, signal} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -9,8 +9,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {Duration} from "luxon";
 import {OfferRangeRequest} from "@open-booking/core";
 import {GenericRequestResult, LoadingBarComponent, toPromise} from "@open-booking/shared";
-import {navigateToOffer} from "../../../app/app.navigation";
-import {Router} from "@angular/router";
 import {OfferService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {of} from "rxjs";
@@ -46,13 +44,14 @@ export class OfferCreateRangeComponent {
 
   reloading = computed(() => this.offerRangeResource.isLoading())
 
+  close = output<boolean>()
+
 
   constructor(
     private fb: FormBuilder,
     public service: OfferService,
     private toastService: HotToastService,
-    private translate: TranslateService,
-    private router: Router
+    private translate: TranslateService
   ) {
     this.date = this.fb.group({
         dateFrom: new FormControl<Date | null>(null, Validators.required),
@@ -103,7 +102,7 @@ export class OfferCreateRangeComponent {
   }
 
   cancel() {
-    navigateToOffer(this.router)
+    this.close.emit(true)
   }
 
   private get request(): OfferRangeRequest | null {
@@ -134,12 +133,12 @@ export class OfferCreateRangeComponent {
       this.translate.get(message).subscribe(
         msg => {
           this.toastService.error(msg)
-          navigateToOffer(this.router)
+          this.close.emit(true)
         }
       )
     } else {
       this.toastService.success("OFFER.Message.RangeCreatedSuccessfully")
-      navigateToOffer(this.router)
+      this.close.emit(true)
     }
   }
 }

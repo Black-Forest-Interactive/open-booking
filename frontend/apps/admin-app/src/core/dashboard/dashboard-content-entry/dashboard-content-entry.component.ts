@@ -1,14 +1,14 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, computed, input, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {
-  DashboardContentEntryBookingComponent
-} from "../dashboard-content-entry-booking/dashboard-content-entry-booking.component";
-import {BookingEntry, OfferEntry} from "@open-booking/core";
+import {OfferSearchEntry, ReservationStatus} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
+import {
+  DashboardContentEntryReservationComponent
+} from "../dashboard-content-entry-reservation/dashboard-content-entry-reservation.component";
 
 @Component({
   selector: 'app-dashboard-content-entry',
@@ -17,22 +17,22 @@ import {DatePipe} from "@angular/common";
     MatIconButton,
     MatFormFieldModule,
     MatSelectModule,
-    DashboardContentEntryBookingComponent,
-    DatePipe
+    DatePipe,
+    DashboardContentEntryReservationComponent
   ],
   templateUrl: './dashboard-content-entry.component.html',
   styleUrl: './dashboard-content-entry.component.scss',
 })
 export class DashboardContentEntryComponent {
-  data = input.required<OfferEntry>()
+  data = input.required<OfferSearchEntry>()
 
-  availableSeats = computed(() => this.data().totalSeats)
-  confirmedSeats = computed(() => this.data().confirmedSeats)
-  pendingSeats = computed(() => this.data().pendingSeats)
+  availableSpace = computed(() => this.data().assignment.availableSpace)
+  bookedSpace = computed(() => this.data().assignment.bookedSpace)
+  reservedSpace = computed(() => this.data().assignment.reservedSpace)
+
+  reservations = computed(() => this.data().reservations.filter(r => r.status === ReservationStatus.UNCONFIRMED))
 
   collapsed = signal<boolean>(false)
-
-  confirmBooking = output<BookingEntry>()
 
   constructor(private toast: HotToastService) {
   }
@@ -51,7 +51,4 @@ export class DashboardContentEntryComponent {
     this.toast.error("Select guide is not implemented yet")
   }
 
-  protected handleConfirmBooking(booking: BookingEntry) {
-    this.confirmBooking.emit(booking)
-  }
 }

@@ -32,11 +32,11 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.23")
+    implementation("ch.qos.logback:logback-classic:1.5.24")
     runtimeOnly("org.yaml:snakeyaml")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.2")
     testImplementation("io.mockk:mockk:1.14.7")
 
     // jackson
@@ -90,9 +90,10 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     runtimeOnly("org.postgresql:postgresql")
-
+    // session
+    implementation("io.micronaut.session:micronaut-session")
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.3")
+    implementation("com.jillesvangurp:search-client:2.8.4")
     // jsoup
     implementation("org.jsoup:jsoup:1.22.1")
 
@@ -123,7 +124,7 @@ dependencies {
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.3")
+    implementation("com.jillesvangurp:search-client:2.8.4")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
@@ -210,6 +211,11 @@ tasks.jacocoTestReport {
         csv.required.set(false)
     }
 }
+
+tasks.named("internalStartTestResourcesService") {
+    setProperty("useClassDataSharing", false)
+}
+
 jacoco {
     toolVersion = "0.8.13"
 }

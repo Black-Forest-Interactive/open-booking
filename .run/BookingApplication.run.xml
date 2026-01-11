@@ -6,11 +6,12 @@
       <env name="mail.from-address" value="from@localhost" />
       <env name="mail.password" value="test" />
       <env name="mail.reply-to-address" value="reply@localhost" />
-      <env name="mail.server" value="http://localhost:1025" />
+      <env name="mail.server" value="localhost" />
       <env name="mail.username" value="test" />
-      <env name="opensearch.user" value="test" />
       <env name="opensearch.password" value="test" />
       <env name="opensearch.prefix" value="dev" />
+      <env name="opensearch.user" value="test" />
+      <env name="mail.port" value="1025" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="de.sambalmueslie.openbooking.BookingApplication" />
     <module name="open-booking-backend.main" />

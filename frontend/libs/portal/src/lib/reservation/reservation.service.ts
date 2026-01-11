@@ -19,17 +19,18 @@ export class ReservationService extends BaseService {
     return super.post('', request)
   }
 
-  getRequestReceivedMessage(requestId: number): Observable<ResolvedResponse> {
+  getReservationReceivedMessage(id: number): Observable<ResolvedResponse> {
     let queryParams = new HttpParams()
     queryParams = queryParams.append("lang", this.translate.getCurrentLang())
-    return this.get('request/' + requestId + '/received/message', queryParams)
+    return this.get(id + '/received/message', queryParams)
   }
 
-  getRequestFailedMessage(requestId: number): Observable<ResolvedResponse> {
+  getReservationFailedMessage(id: number): Observable<ResolvedResponse> {
     let queryParams = new HttpParams()
     queryParams = queryParams.append("lang", this.translate.getCurrentLang())
-    return this.get('request/' + requestId + '/failed/message', queryParams)
+    return this.get(id + '/failed/message', queryParams)
   }
+
 
   confirmEmail(key: string): Observable<GenericRequestResult> {
     return this.post('confirm/email/' + key, {})

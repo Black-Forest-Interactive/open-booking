@@ -44,3 +44,5 @@ bin/
 
 deployment/
 app/src/main/resources/static/
+
+test/

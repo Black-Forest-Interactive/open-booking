@@ -1,8 +1,8 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.handler
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
 import de.sambalmueslie.openbooking.common.TimeProvider
+import de.sambalmueslie.openbooking.core.notification.NotificationTemplateChangeListener
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
@@ -15,7 +15,7 @@ class NotificationTemplateChangeHandler(
     source: NotificationTemplateService,
     private val service: AuditLogEntryService,
     private val timeProvider: TimeProvider
-) : BusinessObjectChangeListener<Long, NotificationTemplate> {
+) : NotificationTemplateChangeListener {
 
     init {
         source.register(this)

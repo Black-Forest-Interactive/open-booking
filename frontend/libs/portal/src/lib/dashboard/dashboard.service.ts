@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "@open-booking/shared"
 import {Observable} from "rxjs";
-import {DashboardEntry} from "./dashboard.api";
 import {DateRangeSelectionRequest, DayInfo} from "@open-booking/core";
 
 @Injectable({
@@ -13,7 +12,7 @@ export class DashboardService extends BaseService {
     super('portal/dashboard')
   }
 
-  selectDayInfo(request: DateRangeSelectionRequest): Observable<DashboardEntry[]> {
+  selectDayInfo(request: DateRangeSelectionRequest): Observable<DayInfo[]> {
     return super.post('', request)
   }
 

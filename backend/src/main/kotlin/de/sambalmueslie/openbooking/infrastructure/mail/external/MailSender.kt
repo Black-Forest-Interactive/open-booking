@@ -4,7 +4,7 @@ package de.sambalmueslie.openbooking.infrastructure.mail.external
 import de.sambalmueslie.openbooking.config.MailConfig
 import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
-import de.sambalmueslie.openbooking.infrastructure.settings.SettingsService
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingsAPI
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory
 @Requires(notEnv = [Environment.TEST])
 class MailSender(
     private val config: MailConfig,
-    private val settingsService: SettingsService
+    private val settingService: SettingService
 ) : MailClient {
 
     companion object {
@@ -57,7 +57,7 @@ class MailSender(
     }
 
     private fun getReplyToAddress(): String {
-        val settings = settingsService.findByKey(SettingsAPI.SETTINGS_MAIL_REPLY_TO_ADDRESS)
+        val settings = settingService.findByKey(SettingsAPI.SETTINGS_MAIL_REPLY_TO_ADDRESS)
 
         val value = settings?.value as? String
         if (value.isNullOrBlank()) return config.replyToAddress

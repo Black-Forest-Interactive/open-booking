@@ -4,18 +4,27 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.ids
 import com.jillesvangurp.ktsearch.total
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
+import com.jillesvangurp.searchdsls.querydsl.term
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
+import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
+import de.sambalmueslie.openbooking.core.booking.BookingService
+import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
+import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
+import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
+import de.sambalmueslie.openbooking.core.reservation.ReservationService
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferGroupedSearchResult
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchResponse
@@ -26,10 +35,15 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
+import kotlin.system.measureTimeMillis
 
 @Singleton
 open class OfferSearchOperator(
-    service: OfferService,
+    private val service: OfferService,
+    private val reservationService: ReservationService,
+    bookingService: BookingService,
+
     private val infoAssembler: OfferInfoAssembler,
     private val detailsAssembler: OfferDetailsAssembler,
 
@@ -47,25 +61,109 @@ open class OfferSearchOperator(
 
 
     init {
-        service.register(object : BusinessObjectChangeListener<Long, Offer> {
+        service.register(object : OfferChangeListener {
             override fun handleCreated(obj: Offer) {
-                handleChanged(obj)
+                processChange(obj)
             }
 
             override fun handleUpdated(obj: Offer) {
-                handleChanged(obj)
+                processChange(obj)
+            }
+
+            override fun handleBlockCreated(offers: List<Offer>) {
+                processChange(offers)
+            }
+
+            override fun handleBlockUpdated(offers: List<Offer>) {
+                processChange(offers)
             }
 
             override fun handleDeleted(obj: Offer) {
                 deleteDocument(obj.id.toString())
             }
         })
+
+        reservationService.register(object : ReservationChangeListener {
+            override fun handleCreated(obj: Reservation) {
+                processChange(obj)
+            }
+
+            override fun handleUpdated(obj: Reservation) {
+                processChange(obj)
+            }
+
+            override fun handleDeleted(obj: Reservation) {
+                processDelete(obj)
+            }
+
+            override fun confirmed(reservation: Reservation, content: ReservationConfirmationContent) {
+                processChange(reservation)
+            }
+
+            override fun denied(reservation: Reservation, content: ReservationConfirmationContent) {
+                processChange(reservation)
+            }
+        })
+
+        bookingService.register(object : BookingChangeListener {
+            override fun handleCreated(obj: Booking) {
+                processChange(obj)
+            }
+
+            override fun handleUpdated(obj: Booking) {
+                processChange(obj)
+            }
+
+            override fun handleDeleted(obj: Booking) {
+                processDelete(obj)
+            }
+        }
+        )
     }
 
-    private fun handleChanged(offer: Offer) {
-        val details = detailsAssembler.get(offer.id) ?: return
-        val data = convert(details)
-        updateDocument(data)
+    private fun processChange(reservation: Reservation) {
+        updateOffer(reservation.offerId)
+    }
+
+    private fun processDelete(reservation: Reservation) {
+        val result = search {
+            query = term(
+                "${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::reservationId.name}",
+                reservation.id.toString()
+            )
+        }
+        val offerIds = result.ids.toSet()
+        offerIds.forEach { offerId -> updateOffer(offerId.toLong()) }
+    }
+
+    private fun processChange(booking: Booking) {
+        updateOffer(booking.offerId)
+    }
+
+    private fun processDelete(booking: Booking) {
+        updateOffer(booking.offerId)
+    }
+
+    private fun processChange(offer: Offer) {
+        updateOffer(offer.id)
+    }
+
+    private fun processChange(offers: List<Offer>) {
+        val offerIds = offers.map { it.id }.toSet()
+        val details = detailsAssembler.getByIds(offerIds)
+        val duration = measureTimeMillis {
+            details.forEach { detail -> updateDocument(convert(detail), false) }
+        }
+        logger.debug("Update offer ${offers.size} took $duration ms")
+    }
+
+    private fun updateOffer(offerId: Long) {
+        val details = detailsAssembler.get(offerId) ?: return
+        val duration = measureTimeMillis {
+            val data = convert(details)
+            updateDocument(data)
+        }
+        logger.debug("Update offer $offerId took $duration ms")
     }
 
     override fun initialLoadPage(pageable: Pageable): Page<Pair<String, String>> {
@@ -152,4 +250,16 @@ open class OfferSearchOperator(
 
         return OfferSearchResponse(Page.of(content, pageable, response.total))
     }
+
+    fun searchGroupedByDay(request: OfferSearchRequest): List<OfferGroupedSearchResult> {
+        val from = request.from ?: service.getFirstOffer()?.start ?: LocalDateTime.now()
+        val to = request.to ?: from.plusDays(7)
+
+        val response = search(OfferSearchRequest(request.fullTextSearch, from, to), Pageable.from(0, 10000))
+        val content = response.result.groupBy { it.info.offer.start.toLocalDate() }
+            .map { OfferGroupedSearchResult(it.key, it.value.sortedBy { v -> v.info.offer.start }) }
+            .sortedBy { it.day }
+        return content
+    }
+
 }

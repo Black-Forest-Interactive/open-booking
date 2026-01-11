@@ -3,10 +3,10 @@
   class="cursor-pointer hover:shadow-md transition-shadow"
   [class.!border-2]="isSelected()"
   [class.!border-blue-500]="isSelected()"
-  [class.opacity-50]="!hasAvailableSpace()"
-  [class.cursor-not-allowed]="!hasAvailableSpace()"
+  [class.opacity-50]="!hasAvailableSpace() || isClaimed()"
+  [class.cursor-not-allowed]="!hasAvailableSpace() || isClaimed()"
   (click)="handleSelection()">
-  <div class="flex items-center gap-3 p-3">
+  <div class="flex items-center gap-3 md:gap-6 p-3">
 
     <!-- Selection Icon -->
     <mat-icon [class.text-blue-500]="isSelected()">
@@ -15,7 +15,8 @@
 
     <!-- Time -->
     <div class="font-medium min-w-[60px]">
-      {{ data().offer.start | date:'shortTime' }}
+      {{ data().offer.start | date:'shortTime' }} -
+      {{ data().offer.finish | date:'shortTime' }}
     </div>
 
     <!-- Content -->
@@ -27,10 +28,16 @@
       <!-- Status breakdown (optional, for more detail) -->
       @if (hasUnconfirmedBookings()) {
         <div class="text-xs opacity-70 mt-1">
-          {{ unconfirmedSpace() }} {{ 'OFFER.Info.Pending' | translate }}
+          {{ reservedSpace() }} {{ 'OFFER.Info.Pending' | translate }}
         </div>
       }
     </div>
+
+    @if (isClaimed()) {
+      <div class="text-xs px-2 py-1 rounded bg-purple-100 text-purple-700">
+        {{ 'OFFER.Info.Claimed' | translate }} {{ claimedUntil() | date:'mediumTime' }}
+      </div>
+    }
 
     <!-- Availability indicator -->
     @if (!hasAvailableSpace()) {

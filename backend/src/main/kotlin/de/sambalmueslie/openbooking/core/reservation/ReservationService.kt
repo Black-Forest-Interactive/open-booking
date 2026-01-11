@@ -4,13 +4,18 @@ import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
+import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_FAILED
 import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
+import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_REQUEST_FAILED
+import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_REQUEST_SUCCESS
+import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_DENIAL_REQUEST_SUCCESS
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
@@ -34,11 +39,11 @@ class ReservationService(
     private val visitorService: VisitorService,
 
     private val messageService: ReservationMessageService,
-    private val relationService: ReservationRelationService,
 
     private val timeProvider: TimeProvider,
+    private val config: AppConfig,
     cacheService: CacheService,
-) : GenericCrudService<Long, Reservation, ReservationChangeRequest, ReservationData>(repository, cacheService, Reservation::class, logger) {
+) : GenericCrudService<Long, Reservation, ReservationChangeRequest, ReservationChangeListener, ReservationData>(repository, cacheService, Reservation::class, logger) {
 
 
     companion object {
@@ -51,21 +56,19 @@ class ReservationService(
     }
 
     fun getByOfferId(offerId: Long): List<Reservation> {
-        return repository.findByIdIn(relationService.getIdsByOfferId(offerId)).map { it.convert() }
+        return repository.findByOfferId(offerId).map { it.convert() }
     }
 
     fun getByOfferIds(offerIds: Set<Long>): List<Reservation> {
-        return repository.findByIdIn(relationService.getIdsByOfferIds(offerIds)).map { it.convert() }
+        return repository.findByOfferIdIn(offerIds).map { it.convert() }
     }
 
     override fun create(request: ReservationChangeRequest): Reservation {
-        val suitableOffers = getSuitableOffers(request)
-        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
+        val offer = offerService.get(request.offerId) ?: throw InvalidRequestException("REQUEST.Error.InvalidOffer")
+        if (!isSuitable(request, offer)) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
 
         isValid(request)
         val data = repository.save(createData(request))
-
-        relationService.create(data, request, suitableOffers)
 
         val result = data.convert()
         notifyCreated(result)
@@ -75,25 +78,20 @@ class ReservationService(
     override fun update(id: Long, request: ReservationChangeRequest): Reservation {
         val data = repository.findByIdOrNull(id) ?: return create(request)
 
-        val suitableOffers = getSuitableOffers(request)
-        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
-
         isValid(request)
 
-        relationService.update(data, request, suitableOffers)
+        val offer = offerService.get(request.offerId) ?: throw InvalidRequestException("REQUEST.Error.InvalidOffer")
+        if (!isSuitable(request, offer)) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
 
         val result = repository.update(updateData(data, request)).convert()
         notifyUpdated(result)
         return result
     }
 
-    private fun getSuitableOffers(request: ReservationChangeRequest): List<Offer> {
-        val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getByIds(offerIds).filter { offer ->
-            isSuitable(request, offer, existingBookings[offer.id] ?: emptyList())
-        }
-        return suitableOffers
+
+    private fun isSuitable(request: ReservationChangeRequest, offer: Offer): Boolean {
+        val existingBookings = bookingService.getByOfferId(offer.id)
+        return isSuitable(request, offer, existingBookings)
     }
 
     private fun isSuitable(request: ReservationChangeRequest, offer: Offer, bookings: List<Booking>): Boolean {
@@ -113,7 +111,7 @@ class ReservationService(
         }
 
         val key = UUID.randomUUID().toString().uppercase()
-        return ReservationData(0, key, ReservationStatus.UNCONFIRMED, request.comment, visitor.id, timeProvider.now())
+        return ReservationData(0, key, ReservationStatus.UNCONFIRMED, request.comment, visitor.id, request.offerId, null, timeProvider.now())
     }
 
     override fun updateData(data: ReservationData, request: ReservationChangeRequest): ReservationData {
@@ -125,17 +123,13 @@ class ReservationService(
         return data.update(request, timeProvider.now())
     }
 
-    override fun deleteDependencies(data: ReservationData) {
-        relationService.delete(data)
-    }
-
     override fun isValid(request: ReservationChangeRequest) {
-        if (request.offerIds.isEmpty()) throw InvalidRequestException("Offer list cannot be empty")
         visitorService.isValid(request.visitor)
     }
 
-    fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
-    fun getConfirmationMessage(id: Long, offerId: Long, lang: String = "de") = messageService.getConfirmationMessage(id, offerId, lang)
+    fun getReservationReceivedMessage(id: Long, lang: String = "de") = messageService.getReservationReceivedMessage(id, lang)
+    fun getReservationFailedMessage(id: Long, lang: String = "de") = messageService.getReservationFailedMessage(id, lang)
+    fun getConfirmationMessage(id: Long, lang: String = "de") = messageService.getConfirmationMessage(id, lang)
     fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
 
 
@@ -150,37 +144,43 @@ class ReservationService(
         }
     }
 
-    fun confirm(id: Long, bookingId: Long, content: ReservationConfirmationContent): GenericRequestResult {
-//        val relations = relationRepository.getByBookingRequestId(id)
-//        if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-//
-//        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) }
-//            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-//
-//        relations.forEach {
-//            if (it.bookingId == bookingId) {
-//                bookingService.confirm(it.bookingId)
-//            } else {
-//                bookingService.denial(it.bookingId)
-//            }
-//        }
-//
-//
-//        listeners.forEachWithTryCatch { it.confirmed(result, content) }
-//        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
-        TODO("not implemented yet")
+    fun confirm(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
+        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+        if (data.status == ReservationStatus.CONFIRMED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+
+        val offer = offerService.get(data.offerId) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+
+        val booking = bookingService.create(BookingChangeRequest(offer.id, data.visitorId, data.comment))
+
+        val result = patchData(data) {
+            it.setBooking(booking, timeProvider.now())
+        }
+
+        bookingService.confirm(booking.id)
+
+        notify { it.confirmed(result, content) }
+        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
     }
 
     fun deny(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
-//        val result = patchData(id) { it.setStatus(BookingRequestStatus.DENIED, timeProvider.now()) }
-//            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-//
-//        val relations = relationRepository.getByBookingRequestId(id)
-//        relations.forEach { bookingService.denial(it.bookingId) }
-//
-//        listeners.forEachWithTryCatch { it.denied(result, content) }
-//        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
-        TODO("not implemented yet")
+        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+        if (data.status == ReservationStatus.DENIED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+
+        val booking = data.bookingId?.let { bookingService.get(it) }
+        if (booking != null) {
+            bookingService.denial(booking.id)
+        }
+
+        val result = patchData(id) { it.setStatus(ReservationStatus.DENIED, timeProvider.now()) }
+            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+
+        notify { it.denied(result, content) }
+        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
+    }
+
+    fun getConfirmationUrl(id: Long): String {
+        val data = repository.findByIdOrNull(id) ?: return ""
+        return "${config.baseUrl}/confirm/email/${data.key}"
     }
 
 }

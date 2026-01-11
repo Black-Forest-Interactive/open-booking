@@ -5,9 +5,9 @@ import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DailyVisitorStats
-import de.sambalmueslie.openbooking.core.dashboard.api.OfferEntry
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
 import de.sambalmueslie.openbooking.gateway.admin.dashboard.DailyOffersFilterRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -66,7 +66,7 @@ class DashboardService(
         return data
     }
 
-    fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferEntry> {
+    fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferSearchEntry> {
         val (duration, data) = measureTimeMillisWithReturn {
             offerEntryProvider.getDailyOffers(day, request)
         }

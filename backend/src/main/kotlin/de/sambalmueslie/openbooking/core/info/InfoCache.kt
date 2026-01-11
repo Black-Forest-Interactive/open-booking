@@ -4,17 +4,11 @@ package de.sambalmueslie.openbooking.core.info
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
 import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
-import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.info.api.DayInfoBooking
 import de.sambalmueslie.openbooking.core.info.api.DayInfoOffer
-import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
-import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
+import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -23,16 +17,12 @@ import java.util.concurrent.TimeUnit
 
 @Singleton
 class InfoCache(
-    private val offerService: OfferService,
-    private val bookingService: BookingService,
-    private val reservationService: ReservationDetailsAssembler,
-    cacheService: CacheService
+    private val offerDetailsAssembler: OfferDetailsAssembler, private val claimService: ClaimService, cacheService: CacheService
 ) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(InfoCache::class.java)
     }
-
 
     private val cache: LoadingCache<LocalDate, DayInfo?> = cacheService.register(DayInfo::class) {
         Caffeine.newBuilder().maximumSize(100).expireAfterWrite(1, TimeUnit.HOURS).refreshAfterWrite(15, TimeUnit.MINUTES).build { date -> createDayInfo(date) }
@@ -40,39 +30,20 @@ class InfoCache(
 
     private fun createDayInfo(date: LocalDate): DayInfo? {
         val (duration, data) = measureTimeMillisWithReturn {
-            val offer = offerService.getByDate(date)
-            if (offer.isEmpty()) return null
+            val details = offerDetailsAssembler.getByDate(date)
+            if (details.isEmpty()) return null
 
-            val first = offer.first()
-            val last = offer.last()
+            val first = details.first()
+            val last = details.last()
 
-            val offerIds = offer.map { it.id }.toSet()
-            val bookingsByOffer = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
-            val reservationsByOffer = reservationService.getByOfferIds(offerIds)
-                .flatMap { details -> details.offers.map { entry -> entry.offer.id to details } }
-                .groupBy({ it.first }, { it.second })
-
-            val offerInfo = offer.map { createOfferInfo(it, bookingsByOffer, reservationsByOffer) }
-
-            DayInfo(date, first.start, last.finish, offerInfo)
+            val offer = details.map {
+                val claim = claimService.get(it.offer.id)
+                DayInfoOffer(it.offer, it.assignment, claim?.expires, it.bookings.map { b -> DayInfoBooking(b.booking.size, b.booking.status) })
+            }
+            DayInfo(date, first.offer.start, last.offer.finish, offer)
         }
         logger.info("Cache refresh for $date done within $duration ms.")
         return data
-    }
-
-    private fun createOfferInfo(offer: Offer, bookingsByOffer: Map<Long, List<Booking>>, reservationsByOffer: Map<Long, List<ReservationDetails>>): DayInfoOffer {
-        val bookings = bookingsByOffer[offer.id] ?: emptyList()
-        val reservations = reservationsByOffer[offer.id] ?: emptyList()
-
-        val bookingInfo = bookings.map { DayInfoBooking(it.size, it.status) }
-        val reservationInfo = reservations.filter { it.reservation.status == ReservationStatus.UNCONFIRMED }
-            .map { DayInfoBooking(it.visitor.size, BookingStatus.UNCONFIRMED) }
-
-        val bookingSpace = bookingInfo.groupBy { it.status }.mapValues { it.value.sumOf { b -> b.size } }.toMutableMap()
-        BookingStatus.entries.forEach { status -> if (!bookingSpace.containsKey(status)) bookingSpace[status] = 0 }
-        bookingSpace[BookingStatus.UNCONFIRMED] = reservationInfo.sumOf { it.size }
-
-        return DayInfoOffer(offer, bookingSpace, bookingInfo + reservationInfo)
     }
 
     operator fun get(date: LocalDate): DayInfo? {

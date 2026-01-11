@@ -1,10 +1,10 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col flex-1 min-h-0">
 
   <!-- Scrollable List -->
-  <div class="flex-1 overflow-y-auto pb-24">
+  <div class="flex-1 overflow-y-auto pb-24 min-h-0">
     <div class="flex flex-col gap-2">
       @for (offer of offers(); track offer.offer.id) {
-        <app-day-info-details-list-entry [data]="offer"></app-day-info-details-list-entry>
+        <app-day-info-details-list-entry [data]="offer" (refresh)="reload()"></app-day-info-details-list-entry>
       }
 
       @if (offers().length === 0) {
@@ -17,15 +17,15 @@
   </div>
 
   <!-- Fixed Selection Summary at Bottom -->
-  @if (selectedCount() > 0) {
+  @if (selectedOffer()) {
     <div class="fixed bottom-14 left-0 right-0 p-4 bg-white border-t shadow-lg z-50">
       <div class="container mx-auto">
         <div class="flex flex-col gap-2 p-4 rounded-lg bg-blue-600 text-white">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-medium">{{ 'OFFER.Summary.Selected' | translate:{count: selectedCount()} }}</div>
+              <app-claim-info/>
               <div class="text-sm opacity-90 flex items-center gap-1 mt-1">
-                <mat-icon class="!text-base !w-4 !h-4">group</mat-icon>
+                <mat-icon inline>group</mat-icon>
                 <span>{{ 'OFFER.Summary.MaxGroupSize' | translate:{size: maxGroupSize()} }}</span>
               </div>
             </div>

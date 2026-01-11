@@ -11,13 +11,13 @@ import org.slf4j.Logger
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
-abstract class GenericCrudService<T : Any, O : BusinessObject<T>, R : BusinessObjectChangeRequest, D : DataObject<O>>(
+abstract class GenericCrudService<T : Any, O : BusinessObject<T>, R : BusinessObjectChangeRequest, L : BusinessObjectChangeListener<T, O>, D : DataObject<O>>(
     private val repository: PageableRepository<D, T>,
     cacheService: CacheService,
     type: KClass<O>,
     logger: Logger,
     cacheSize: Long = 100,
-) : BaseCrudService<T, O, R>(logger) {
+) : BaseCrudService<T, O, R, L>(logger) {
 
     private val cache: LoadingCache<T, O?> = cacheService.register(type) {
         Caffeine.newBuilder()

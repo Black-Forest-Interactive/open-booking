@@ -25,7 +25,7 @@ data class OfferSearchEntryData(
 ) {
     fun convert(info: OfferInfo) = OfferSearchEntry(
         info,
-        Assignment(bookedSpace, reservedSpace, availableSpace),
+        Assignment(bookedSpace, reservedSpace, availableSpace, if (active) 0 else maxPersons),
         reservations.map { it.convert() },
         bookings.map { it.convert() }
     )
