@@ -36,4 +36,5 @@ class ReservationGateway(
     fun confirm(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.confirm(id, content) }
     fun getDenialMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getDenialMessage(id, lang) }
     fun deny(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.deny(id, content) }
+    fun getUnconfirmedAmount(auth: Authentication) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { searchOperator.getUnconfirmedAmount() }
 }

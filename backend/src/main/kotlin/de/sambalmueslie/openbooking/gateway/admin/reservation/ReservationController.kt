@@ -51,4 +51,7 @@ class ReservationController(private val gateway: ReservationGateway) {
     @Put("/{id}/deny")
     fun deny(auth: Authentication, id: Long, @Body content: ReservationConfirmationContent) = gateway.deny(auth, id, content)
 
+    @Get("unconfirmed/amount")
+    fun getUnconfirmedAmount(auth: Authentication) = gateway.getUnconfirmedAmount(auth)
+
 }

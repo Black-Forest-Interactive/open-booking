@@ -3,11 +3,14 @@ package de.sambalmueslie.openbooking.core.search.reservation
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.total
+import com.jillesvangurp.searchdsls.querydsl.bool
+import com.jillesvangurp.searchdsls.querydsl.terms
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
@@ -131,6 +134,17 @@ open class ReservationSearchOperator(
         } ?: emptyList()
 
         return ReservationSearchResponse(Page.of(result, pageable, response.total))
+    }
+
+    fun getUnconfirmedAmount(): Long {
+        val result = search {
+            query = bool {
+                must(
+                    terms(ReservationSearchEntryData::status, ReservationStatus.UNCONFIRMED.toString())
+                )
+            }
+        }
+        return result.total
     }
 
 }

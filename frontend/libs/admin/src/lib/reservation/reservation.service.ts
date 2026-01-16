@@ -85,4 +85,8 @@ export class ReservationService extends BaseService {
   setComment(id: number, comment: string): Observable<Reservation> {
     return this.patch(id + '/comment', {value: comment})
   }
+
+  getUnconfirmedReservationAmount(): Observable<number> {
+    return this.get('unconfirmed/amount')
+  }
 }

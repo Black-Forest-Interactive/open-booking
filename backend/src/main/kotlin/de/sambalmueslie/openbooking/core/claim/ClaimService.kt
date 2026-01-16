@@ -22,9 +22,11 @@ import kotlin.concurrent.write
 
 @Singleton
 class ClaimService(
-    private val offerService: OfferService, private val settingService: SettingService, private val timeProvider: TimeProvider
+    private val offerService: OfferService,
+    private val settingService: SettingService,
+    private val timeProvider: TimeProvider
 ) : BaseCrudService<Long, Claim, ClaimChangeRequest, ClaimChangeListener>(logger) {
-
+    
     companion object {
         private val logger = LoggerFactory.getLogger(ClaimService::class.java)
         private const val DEFAULT_TTL = 300L
