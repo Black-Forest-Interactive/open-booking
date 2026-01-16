@@ -3,7 +3,13 @@
   <div class="flex-1 overflow-auto min-h-0">
     <div class="container mx-auto py-4">
       @if (data()) {
-        <app-reservation-content-entry [reloading]="reloading()" [data]="data()!!" (reload)="reload()"/>
+        <app-reservation-content-entry
+          [reloading]="reloading()"
+          [data]="data()!!"
+          (reload)="reload()"
+          [showBackButton]="!!routeId()"
+          (back)="navigateToReservation(router)"
+        />
       } @else if (!reloading()) {
         <h3 class="text-lg font-medium text-gray-900 mb-2">
           No {{ 'RESERVATION.Table.Reservations' | translate | lowercase }} found

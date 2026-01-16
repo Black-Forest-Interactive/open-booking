@@ -21,7 +21,6 @@ import {DatePipe} from "@angular/common";
 import {VisitorInfoDialogComponent} from "../visitor/visitor-info-dialog/visitor-info-dialog.component";
 import {RequestCommentDialogComponent} from "./request-comment-dialog/request-comment-dialog.component";
 import {RequestBookingEntryComponent} from "./request-booking-entry/request-booking-entry.component";
-import {VisitorStatusComponent} from "../visitor/visitor-status/visitor-status.component";
 import {RequestVisitorEntryComponent} from "./request-visitor-entry/request-visitor-entry.component";
 
 @Component({
@@ -44,7 +43,6 @@ import {RequestVisitorEntryComponent} from "./request-visitor-entry/request-visi
     LoadingBarComponent,
     SearchComponent,
     RequestBookingEntryComponent,
-    VisitorStatusComponent,
     RequestVisitorEntryComponent
   ],
   templateUrl: './request.component.html',

@@ -1,7 +1,13 @@
 package de.sambalmueslie.openbooking.gateway.admin.reservation
 
 import de.sambalmueslie.openbooking.common.checkPermission
+import de.sambalmueslie.openbooking.common.getEmail
+import de.sambalmueslie.openbooking.common.getExternalId
+import de.sambalmueslie.openbooking.common.getUsername
+import de.sambalmueslie.openbooking.core.editor.EditorService
+import de.sambalmueslie.openbooking.core.editor.api.EditorChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
 import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
@@ -19,6 +25,7 @@ class ReservationGateway(
     private val infoAssembler: ReservationInfoAssembler,
     private val detailsAssembler: ReservationDetailsAssembler,
     private val searchOperator: ReservationSearchOperator,
+    private val editorService: EditorService,
 ) {
     fun getAll(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getAll(pageable) }
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.get(id) }
@@ -36,4 +43,17 @@ class ReservationGateway(
     fun confirm(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.confirm(id, content) }
     fun getDenialMessage(auth: Authentication, id: Long, lang: String) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.getDenialMessage(id, lang) }
     fun deny(auth: Authentication, id: Long, content: ReservationConfirmationContent) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { service.deny(id, content) }
+    fun getUnconfirmedAmount(auth: Authentication) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { searchOperator.getUnconfirmedAmount() }
+
+    fun createEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) {
+        editorService.create(EditorChangeRequest(id, Reservation::class, auth.getExternalId(), auth.getUsername().ifBlank { auth.getEmail() }))
+    }
+
+    fun refreshEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) {
+        editorService.refresh(id, Reservation::class) ?: editorService.create(EditorChangeRequest(id, Reservation::class, auth.getExternalId(), auth.getUsername().ifBlank { auth.getEmail() }))
+    }
+
+    fun deleteEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { editorService.deleteByResource(id, Reservation::class) }
+    fun getEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_RESERVATION_ADMIN) { editorService.getByResource(id, Reservation::class) }
+
 }

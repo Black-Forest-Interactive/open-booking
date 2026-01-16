@@ -1,4 +1,4 @@
-import {Assignment, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {Assignment, Editor, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
 import {Page} from "@open-booking/shared";
 
 export interface Reservation {
@@ -23,7 +23,8 @@ export interface ReservationDetails {
   reservation: Reservation,
   visitor: Visitor,
   offer: ReservationOffer,
-  timestamp: string
+  timestamp: string,
+  editor?: Editor
 }
 
 export interface ReservationOffer {
@@ -63,9 +64,11 @@ export class ReservationSearchRequest {
 }
 
 export interface ReservationSearchResponse {
-  result: Page<ReservationDetails>
+  result: Page<ReservationDetails>,
+  status: ReservationStatusCount
 }
 
+export type ReservationStatusCount = Partial<Record<ReservationStatus, number>>
 
 export const ReservationStatus = {
   UNKNOWN: 'UNKNOWN',

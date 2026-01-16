@@ -5,6 +5,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {
+  ReservationOfferCapacityVisualizationComponent
+} from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
 
 @Component({
   selector: 'app-reservation-content-entry-offer',
@@ -13,7 +16,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatButtonModule,
     MatTooltipModule,
     TranslatePipe,
-    DatePipe
+    DatePipe,
+    ReservationOfferCapacityVisualizationComponent
   ],
   templateUrl: './reservation-content-entry-offer.component.html',
   styleUrl: './reservation-content-entry-offer.component.scss',

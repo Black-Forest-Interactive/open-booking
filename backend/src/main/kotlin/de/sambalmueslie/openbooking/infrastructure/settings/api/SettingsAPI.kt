@@ -13,6 +13,7 @@ interface SettingsAPI : AuthCrudAPI<Long, Setting, SettingChangeRequest> {
         const val SETTINGS_MAIL_REPLY_TO_ADDRESS = "mail.reply-to-address"
         const val SETTINGS_MAIL_DEFAULT_ADMIN_ADDRESS = "mail.default-admin-address"
         const val SETTINGS_CLAIM_TTL = "claim.ttl"
+        const val SETTINGS_EDITOR_TTL = "editor.ttl"
     }
 
     fun setValue(auth: Authentication, id: Long, value: PatchRequest<Any>): Setting?

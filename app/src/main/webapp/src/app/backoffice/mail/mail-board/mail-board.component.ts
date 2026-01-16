@@ -7,7 +7,6 @@ import {MailService} from "../model/mail.service";
 import {debounceTime, distinctUntilChanged, Subject, switchMap, takeUntil, timer} from "rxjs";
 import {Page} from "../../../shared/page/page";
 import {PageEvent} from "@angular/material/paginator";
-import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-mail-board',
@@ -39,15 +38,14 @@ export class MailBoardComponent {
 
   ngOnInit(): void {
     timer(0, 15000).pipe(
-      tap((x) => console.log(x)),
       takeUntil(this.unsub),
       switchMap(async () => this.reload())
-    ).subscribe();
+    ).subscribe()
 
     this.keyUp.pipe(
       debounceTime(500),
       distinctUntilChanged()
-    ).subscribe(data => this.search(data))
+    ).subscribe((data: string) => this.search(data))
   }
 
   ngOnDestroy(): void {

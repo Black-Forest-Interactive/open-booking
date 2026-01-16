@@ -22,7 +22,9 @@ import kotlin.concurrent.write
 
 @Singleton
 class ClaimService(
-    private val offerService: OfferService, private val settingService: SettingService, private val timeProvider: TimeProvider
+    private val offerService: OfferService,
+    private val settingService: SettingService,
+    private val timeProvider: TimeProvider
 ) : BaseCrudService<Long, Claim, ClaimChangeRequest, ClaimChangeListener>(logger) {
 
     companion object {
@@ -104,7 +106,7 @@ class ClaimService(
     }
 
     private fun getExpires(): LocalDateTime {
-        return timeProvider.now().plusSeconds(settingService.getOfferClaimTTL().value ?: DEFAULT_TTL)
+        return timeProvider.now().plusSeconds(settingService.getClaimTTL().value ?: DEFAULT_TTL)
     }
 
 }

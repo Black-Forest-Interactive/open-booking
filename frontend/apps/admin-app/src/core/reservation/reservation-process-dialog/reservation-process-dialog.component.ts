@@ -87,6 +87,6 @@ export class ReservationProcessDialogComponent {
 
 export interface ReservationProcessDialogData {
   info: ReservationDetails,
-  offer: ReservationOffer,
+  offer: ReservationOffer | undefined,
   confirmation: boolean
 }

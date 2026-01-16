@@ -86,5 +86,6 @@ class ReservationSearchQueryBuilder : SearchQueryBuilder<ReservationSearchReques
                 must(matchAll())
             }
         }
+        agg(ReservationSearchEntryData::status.name, TermsAgg(ReservationSearchEntryData::status))
     }
 }

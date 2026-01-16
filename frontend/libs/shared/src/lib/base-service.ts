@@ -110,7 +110,14 @@ export abstract class BaseService {
   }
 
 
-  private createUrl(suffix: string): string {
+  protected stream(suffix: string): EventSource {
+    const url = this.createUrl(suffix);
+    console.debug("Stream '" + url + "'")
+    return new EventSource(url, {withCredentials: true})
+  }
+
+
+  protected createUrl(suffix: string): string {
     if (suffix.length === 0) {
       return (this.urlPrefix.length === 0) ? `${this.api}` : `${this.api}${this.urlPrefix}`
     } else {

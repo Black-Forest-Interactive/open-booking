@@ -1,8 +1,10 @@
 package de.sambalmueslie.openbooking.core.reservation.assembler
 
 import de.sambalmueslie.openbooking.common.findByIdOrNull
+import de.sambalmueslie.openbooking.core.editor.EditorService
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
+import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationOffer
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
@@ -17,7 +19,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 class ReservationDetailsAssembler(
     private val repository: ReservationRepository,
-
+    private val editorService: EditorService,
     private val offerService: OfferDetailsAssembler,
     private val visitorService: VisitorService,
 ) {
@@ -97,15 +99,14 @@ class ReservationDetailsAssembler(
 
 
     private fun details(data: ReservationData, visitor: Visitor, offers: Map<Long, OfferDetails>): ReservationDetails? {
-        val timestamp = data.updated ?: data.created
         val offer = offers[data.offerId] ?: return null
         return details(data, visitor, offer)
     }
 
-    private fun details(data: ReservationData, visitor: Visitor, offer: OfferDetails): ReservationDetails? {
+    private fun details(data: ReservationData, visitor: Visitor, offer: OfferDetails): ReservationDetails {
         val timestamp = data.updated ?: data.created
         val o = ReservationOffer(offer.offer, offer.assignment)
-        return ReservationDetails(data.convert(), visitor, o, timestamp)
+        return ReservationDetails(data.convert(), visitor, o, timestamp, editorService.getByResource(data.id, Reservation::class).firstOrNull())
     }
 
 }

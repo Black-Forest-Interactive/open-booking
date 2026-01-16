@@ -75,11 +75,17 @@ class SettingService(
         return UrlResponse(getValue(SettingsAPI.SETTINGS_URL_TERMS_AND_CONDITIONS))
     }
 
-    fun getOfferClaimTTL(): NumberResponse {
+    fun getClaimTTL(): NumberResponse {
         return NumberResponse(getValue(SettingsAPI.SETTINGS_CLAIM_TTL).toLongOrNull())
+    }
+
+    fun getEditorTTL(): NumberResponse {
+        return NumberResponse(getValue(SettingsAPI.SETTINGS_EDITOR_TTL).toLongOrNull())
     }
 
     fun getValue(key: String): String {
         return findByKey(key)?.value as? String ?: ""
     }
+
+
 }

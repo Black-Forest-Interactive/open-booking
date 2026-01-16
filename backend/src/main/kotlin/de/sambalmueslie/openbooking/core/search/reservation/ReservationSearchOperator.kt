@@ -1,13 +1,16 @@
 package de.sambalmueslie.openbooking.core.search.reservation
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.jillesvangurp.ktsearch.SearchResponse
-import com.jillesvangurp.ktsearch.total
+import com.jillesvangurp.ktsearch.*
+import com.jillesvangurp.searchdsls.querydsl.TermsAgg
+import com.jillesvangurp.searchdsls.querydsl.agg
+import com.jillesvangurp.searchdsls.querydsl.bool
+import com.jillesvangurp.searchdsls.querydsl.terms
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationDetails
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationDetailsAssembler
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
@@ -25,7 +28,9 @@ import org.slf4j.LoggerFactory
 
 @Singleton
 open class ReservationSearchOperator(
-    private val service: ReservationService, private val visitorService: VisitorService, private val detailAssembler: ReservationDetailsAssembler,
+    private val service: ReservationService,
+    private val visitorService: VisitorService,
+    private val detailAssembler: ReservationDetailsAssembler,
 
     private val fieldMapping: ReservationFieldMappingProvider, private val queryBuilder: ReservationSearchQueryBuilder, config: OpenSearchConfig, openSearch: SearchClientFactory
 
@@ -41,11 +46,11 @@ open class ReservationSearchOperator(
     init {
         service.register(object : ReservationChangeListener {
             override fun handleCreated(obj: Reservation) {
-                handleChanged(obj)
+                handleChanged(obj, true)
             }
 
             override fun handleUpdated(obj: Reservation) {
-                handleChanged(obj)
+                handleChanged(obj, true)
             }
 
             override fun handleDeleted(obj: Reservation) {
@@ -73,9 +78,9 @@ open class ReservationSearchOperator(
         details.forEach { handleChanged(it) }
     }
 
-    private fun handleChanged(reservation: Reservation) {
+    private fun handleChanged(reservation: Reservation, blocking: Boolean = false) {
         val details = detailAssembler.get(reservation.id) ?: return
-        handleChanged(details)
+        handleChanged(details, blocking)
     }
 
     private fun handleChanged(details: ReservationDetails, blocking: Boolean = false) {
@@ -124,13 +129,38 @@ open class ReservationSearchOperator(
     }
 
     override fun processSearchResponse(request: SearchRequest, response: SearchResponse, pageable: Pageable): ReservationSearchResponse {
-        val result = response.hits?.hits?.mapNotNull { hit ->
-            hit.source?.let { source ->
-                mapper.readValue<ReservationSearchEntryData>(source.toString()).convert()
-            }
-        } ?: emptyList()
+        val ids = response.ids.mapNotNull { it.toLongOrNull() }.toSet()
+        val result = detailAssembler.getByIds(ids)
+        return ReservationSearchResponse(Page.of(result, pageable, response.total), getStatusMap())
+    }
 
-        return ReservationSearchResponse(Page.of(result, pageable, response.total))
+    fun getStatusMap(): Map<ReservationStatus, Long> {
+        val response = search {
+            resultSize = 0
+            agg(ReservationSearchEntryData::status.name, TermsAgg(ReservationSearchEntryData::status))
+        }
+        return response.aggregations.termsResult(ReservationSearchEntryData::status.name)
+            .parsedBuckets.mapNotNull { tagBucket ->
+                val parsed = tagBucket.parsed
+                val status = try {
+                    ReservationStatus.valueOf(tagBucket.parsed.key)
+                } catch (e: Exception) {
+                    logger.error("Cannot parse status ${tagBucket.parsed.key}", e)
+                    return@mapNotNull null
+                }
+                Pair(status, tagBucket.parsed.docCount)
+            }.toMap()
+    }
+
+    fun getUnconfirmedAmount(): Long {
+        val result = search {
+            query = bool {
+                must(
+                    terms(ReservationSearchEntryData::status, ReservationStatus.UNCONFIRMED.toString())
+                )
+            }
+        }
+        return result.total
     }
 
 }

@@ -21,10 +21,24 @@
       <a routerLink="./reservation" routerLinkActive="active-nav-link" class="menu-link">
         <mat-icon>thumb_up_alt</mat-icon>
         <span>{{ 'MENU.Reservation' | translate }}</span>
+        <div class="flex-auto"></div>
+        <div class="flex gap-1">
+          @if (unconfirmed()) {
+            <div
+              class="text-xs font-medium px-2 py-1 rounded bg-yellow-200 border-yellow-600 border">{{ unconfirmed() }}
+            </div>
+          }
+          @if (newReservations()) {
+            <div
+              class="text-xs font-medium px-2 py-1 rounded bg-green-200 border-green-400 border">{{ newReservations() }}
+            </div>
+          }
+        </div>
       </a>
       <a routerLink="./request" routerLinkActive="active-nav-link" class="menu-link">
         <mat-icon>thumb_up_alt</mat-icon>
         <span>{{ 'MENU.BookingRequest' | translate }}</span>
+        <div class="flex-auto"></div>
         <span class="text-xs px-2 py-1 rounded bg-red-200">Deprecated</span>
       </a>
     </div>

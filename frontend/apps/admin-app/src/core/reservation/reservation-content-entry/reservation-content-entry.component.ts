@@ -1,11 +1,9 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {
   ReservationConfirmationContent,
   ReservationDetails,
   ReservationOffer,
-  ReservationStatus,
-  VerificationStatus,
-  VisitorType
+  ReservationStatus
 } from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
@@ -15,7 +13,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatDividerModule} from "@angular/material/divider";
 import {DatePipe} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {ReservationService, VisitorService} from "@open-booking/admin";
+import {ReservationService} from "@open-booking/admin";
 import {ReservationProcessDialogComponent} from "../reservation-process-dialog/reservation-process-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EMPTY, switchMap} from "rxjs";
@@ -23,13 +21,11 @@ import {
   ReservationContentEntryOfferComponent
 } from "../reservation-content-entry-offer/reservation-content-entry-offer.component";
 import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
-
-const classes: Record<string, string> = {
-  CONFIRMED: 'bg-green-100 text-green-800',
-  UNCONFIRMED: 'bg-yellow-100 text-yellow-800',
-  CANCELLED: 'bg-red-100 text-red-800',
-  UNKNOWN: 'bg-gray-100 text-gray-800'
-}
+import {ReservationStatusComponent} from "../reservation-status/reservation-status.component";
+import {VisitorTypeComponent} from "../../visitor/visitor-type/visitor-type.component";
+import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
+import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
+import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
 
 @Component({
   selector: 'app-reservation-content-entry',
@@ -43,7 +39,12 @@ const classes: Record<string, string> = {
     TranslatePipe,
     DatePipe,
     ReservationContentEntryOfferComponent,
-    VisitorConfirmComponent
+    VisitorConfirmComponent,
+    ReservationStatusComponent,
+    VisitorTypeComponent,
+    VisitorStatusComponent,
+    VisitorTitleComponent,
+    VisitorSizeComponent
   ],
   templateUrl: './reservation-content-entry.component.html',
   styleUrl: './reservation-content-entry.component.scss',
@@ -52,37 +53,14 @@ export class ReservationContentEntryComponent {
   data = input.required<ReservationDetails>()
   reloading = input.required()
   reload = output<boolean>()
+  back = output<boolean>()
+
+  showBackButton = input(false)
 
   updating = signal(false)
 
-  statusClass = computed(() => classes[this.data().reservation.status] || 'bg-gray-100 text-gray-800')
-  verificationIcon = computed(() => {
-    const status = this.data().visitor.verification.status;
-    return status === VerificationStatus.CONFIRMED ? 'check_circle' :
-      status === VerificationStatus.UNCONFIRMED ? 'schedule' :
-        'error';
-  })
-  verificationIconClass = computed(() => {
-    const status = this.data().visitor.verification.status;
-    return status === VerificationStatus.CONFIRMED ? 'text-green-600' :
-      status === VerificationStatus.UNCONFIRMED ? 'text-yellow-600' :
-        'text-red-600';
-  })
-  visitorTypeIcon = computed(() => {
-    const type = this.data().visitor.type;
-    const icons: Record<VisitorType, string> = {
-      GROUP: 'groups',
-      SINGLE: 'person'
-    };
-    return icons[type] || 'person';
-  });
-
-
-  protected readonly VisitorType = VisitorType;
-
   constructor(
     private service: ReservationService,
-    private visitorService: VisitorService,
     private dialog: MatDialog
   ) {
   }
@@ -117,7 +95,7 @@ export class ReservationContentEntryComponent {
   protected denyReservation() {
     this.updating.set(true)
     let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
-      data: {info: this.data(), offerId: 0, confirmation: false},
+      data: {info: this.data(), confirmation: false},
       height: '800px',
       width: '800px',
     })
@@ -140,4 +118,5 @@ export class ReservationContentEntryComponent {
   }
 
   protected readonly ReservationStatus = ReservationStatus;
+
 }

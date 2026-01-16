@@ -1,3 +1,4 @@
-<mat-chip [highlighted]="true" [color]="getColor(status())">
-  {{ text() | translate }}
-</mat-chip>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium" [class]="statusClass()">
+  <mat-icon class="w-4 h-4">{{ statusIcon() }}</mat-icon>
+  <span class="capitalize">{{ text() | translate }}</span>
+</div>

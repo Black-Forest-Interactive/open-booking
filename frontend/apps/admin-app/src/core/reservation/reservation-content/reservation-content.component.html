@@ -1,9 +1,117 @@
-<div class="flex flex-col gap-4 overflow-x-auto pb-4 pe-4">
-  @for (entry of entries(); track entry.reservation.id) {
-    <app-reservation-content-entry
-      [data]="entry"
-      [reloading]="reloading()"
-      (reload)="reload.emit($event)"
-    />
+<div class="flex flex-col gap-6 pb-4 pe-4">
+  @for (group of groupedEntries(); track group.date + '-' + group.offerId) {
+    <div class="bg-white rounded-lg shadow-sm border border-gray-300">
+      <!-- Group Header -->
+      <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 rounded-t-lg">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-gray-600">event</mat-icon>
+              <span class="font-semibold text-gray-800">{{ group.date | date:'fullDate' }}</span>
+            </div>
+            <div class="text-sm text-gray-600">
+              {{ group.timeRange }}
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200">
+              <span class="font-medium">{{ group.totalReservations }}</span>
+              <span class="text-gray-600 ml-1">{{ 'RESERVATION.Total' | translate }}</span>
+            </div>
+            <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-orange-200">
+              <span class="font-medium text-orange-600">{{ group.openCount }}</span>
+              <span class="text-gray-600 ml-1">{{ 'RESERVATION.Open' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reservations List -->
+      <div class="divide-y divide-gray-200">
+        @for (entry of group.entries; track entry.reservation.id) {
+          <div class="px-4 py-3 hover:bg-gray-50 transition-colors"
+               [class.bg-amber-50]="entry.editor"
+               [class.border-l-4]="entry.editor"
+               [class.border-l-amber-400]="entry.editor">
+            <div class="flex flex-col xl:flex-row lg:items-start lg:justify-between gap-6">
+
+              <!-- Left Section: Status & Visitor Info -->
+              <div class="flex flex-col items-stretch gap-4 min-w-0 flex-1">
+                <div class="flex gap-2">
+                  <app-reservation-status [data]="entry.reservation"/>
+                  <app-visitor-status [visitor]="entry.visitor"/>
+                  <app-visitor-type [data]="entry.visitor" class="flex-shrink-0"/>
+                </div>
+                <div class="flex gap-4 items-center">
+
+                  <app-visitor-title [data]="entry.visitor" class="font-semibold text-gray-900"/>
+                  <app-visitor-size [visitor]="entry.visitor"></app-visitor-size>
+                </div>
+                <div class="flex flew-wrap gap-2 text-sm text-gray-600">
+
+                  <div class="flex items-center gap-2">
+                    <mat-icon class="text-base text-gray-400" inline>email</mat-icon>
+                    <a [href]="'mailto:' + entry.visitor.email"
+                       class="hover:text-primary hover:underline">
+                      {{ entry.visitor.email }}
+                    </a>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <mat-icon class="text-base text-gray-400" inline>phone</mat-icon>
+                    <a [href]="'tel:' + entry.visitor.phone"
+                       class="hover:text-primary hover:underline">
+                      {{ entry.visitor.phone }}
+                    </a>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- Middle Section: Capacity & Timestamp -->
+              <app-reservation-offer-capacity-visualization
+                [reservation]="entry.reservation"
+                [visitor]="entry.visitor"
+                [entry]="entry.offer"
+                class="flex-1"
+              />
+
+              <!-- Right Section: Editor & Actions -->
+              <div
+                class="flex lg:flex-col items-center justify-between lg:justify-end gap-3 flex-shrink-0 min-w-[160px]">
+
+                <!-- Current Editor Badge -->
+                <app-editor-info [editor]="entry.editor"/>
+
+                <!-- Action Button -->
+                <button
+                  matButton="filled"
+                  routerLink="./details/{{entry.reservation.id}}"
+                  [disabled]="entry.editor && !isCurrentUser(entry.editor.userId)"
+                  class="lg:w-full"
+                  [matTooltip]="entry.editor && !isCurrentUser(entry.editor.userId) ?
+                                ('RESERVATION.EditingBy' | translate: {name: entry.editor.userName}) : ''">
+                  <mat-icon class="mr-1">edit</mat-icon>
+                  {{ 'RESERVATION.Edit' | translate }}
+                </button>
+
+
+                <div class="flex gap-2 text-xs text-gray-500 text-center">
+                  <div class="font-medium">{{ 'RESERVATION.Created' | translate }}</div>
+                  <div>{{ entry.timestamp | date:'short' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (groupedEntries().length === 0) {
+    <div class="text-center py-12 text-gray-500">
+      <mat-icon class="text-6xl mb-4">inbox</mat-icon>
+      <p>{{ 'RESERVATION.NoReservations' | translate }}</p>
+    </div>
   }
 </div>

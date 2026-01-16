@@ -416,6 +416,8 @@
       "Title": "Status",
       "UNCONFIRMED": "Unconfirmed",
       "CANCELLED": "Cancelled",
+      "DENIED": "Denied",
+      "EXPIRED": "Expired",
       "UNKNOWN": "Unknown"
     },
     "Table": {
@@ -423,7 +425,14 @@
       "Timestamp": "Timestamp",
       "Visitor": "Visitor Group"
     },
-    "Title": "Reservation"
+    "Title": "Reservation",
+    "Total": "Total",
+    "Open": "Open",
+    "Created": "Created",
+    "Edit": "Edit",
+    "EditorSince": "since",
+    "EditingBy": "Editing by {{name}}",
+    "NoReservations": "No reservations available"
   },
   "RESPONSE": {
     "Action": {
@@ -476,7 +485,7 @@
       "Value": "Value"
     }
   },
-  "VISITOR_GROUP": {
+  "VISITOR": {
     "MailConfirmation": {
       "Failed": {
         "Message": "Your Email was not confirmed, please contact support",
@@ -497,6 +506,10 @@
       "Title": "Status",
       "CONFIRMED": "Confirmed",
       "UNCONFIRMED": "Unconfirmed"
+    },
+    "Type": {
+      "SINGLE": "Single",
+      "GROUP": "Group"
     }
   },
   "DASHBOARD": {
