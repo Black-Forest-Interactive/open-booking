@@ -26,7 +26,7 @@ class ClaimService(
     private val settingService: SettingService,
     private val timeProvider: TimeProvider
 ) : BaseCrudService<Long, Claim, ClaimChangeRequest, ClaimChangeListener>(logger) {
-    
+
     companion object {
         private val logger = LoggerFactory.getLogger(ClaimService::class.java)
         private const val DEFAULT_TTL = 300L
@@ -106,7 +106,7 @@ class ClaimService(
     }
 
     private fun getExpires(): LocalDateTime {
-        return timeProvider.now().plusSeconds(settingService.getOfferClaimTTL().value ?: DEFAULT_TTL)
+        return timeProvider.now().plusSeconds(settingService.getClaimTTL().value ?: DEFAULT_TTL)
     }
 
 }

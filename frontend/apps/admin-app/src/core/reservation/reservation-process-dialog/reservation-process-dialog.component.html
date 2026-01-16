@@ -2,19 +2,24 @@
 <mat-dialog-content>
   SELECTED BOOKING INFO
   <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded mb-3">
+
     <div class="flex flex-col gap-3">
-      <div class="flex gap-3">
-        <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Start' | translate }}</div>
-        <div>{{ data.offer.offer.start | date:'medium' }}</div>
-      </div>
+      @if (data.offer) {
+        <div class="flex gap-3">
+          <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Start' | translate }}</div>
+          <div>{{ data.offer.offer.start | date:'medium' }}</div>
+        </div>
+      }
       <div class="flex gap-3">
         <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Size' | translate }}</div>
         <div>{{ data.info.visitor.size }}</div>
       </div>
-      <div class="flex gap-3">
-        <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Space' | translate }}</div>
-        <div>{{ data.offer.assignment.availableSpace }}</div>
-      </div>
+      @if (data.offer) {
+        <div class="flex gap-3">
+          <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Space' | translate }}</div>
+          <div>{{ data.offer.assignment.availableSpace }}</div>
+        </div>
+      }
     </div>
   </div>
   @if (data.info.reservation.comment.length > 0) {

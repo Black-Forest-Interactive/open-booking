@@ -114,6 +114,7 @@
         [entries]="entries()"
         [reloading]="reloading()"
         (reload)="reload()"
+        [currentUserId]="authService.getPrincipal()?.id ?? ''"
       >
       </app-reservation-content>
 

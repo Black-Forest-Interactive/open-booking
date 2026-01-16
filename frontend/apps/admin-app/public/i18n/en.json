@@ -506,6 +506,10 @@
       "Title": "Status",
       "CONFIRMED": "Confirmed",
       "UNCONFIRMED": "Unconfirmed"
+    },
+    "Type": {
+      "SINGLE": "Single",
+      "GROUP": "Group"
     }
   },
   "DASHBOARD": {

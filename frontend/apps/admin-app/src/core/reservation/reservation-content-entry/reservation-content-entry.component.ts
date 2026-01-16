@@ -1,10 +1,9 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {
   ReservationConfirmationContent,
   ReservationDetails,
   ReservationOffer,
-  ReservationStatus,
-  VerificationStatus
+  ReservationStatus
 } from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
@@ -24,7 +23,9 @@ import {
 import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
 import {ReservationStatusComponent} from "../reservation-status/reservation-status.component";
 import {VisitorTypeComponent} from "../../visitor/visitor-type/visitor-type.component";
+import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
+import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
 
 @Component({
   selector: 'app-reservation-content-entry',
@@ -41,7 +42,9 @@ import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.c
     VisitorConfirmComponent,
     ReservationStatusComponent,
     VisitorTypeComponent,
-    VisitorTitleComponent
+    VisitorStatusComponent,
+    VisitorTitleComponent,
+    VisitorSizeComponent
   ],
   templateUrl: './reservation-content-entry.component.html',
   styleUrl: './reservation-content-entry.component.scss',
@@ -50,21 +53,11 @@ export class ReservationContentEntryComponent {
   data = input.required<ReservationDetails>()
   reloading = input.required()
   reload = output<boolean>()
+  back = output<boolean>()
+
+  showBackButton = input(false)
 
   updating = signal(false)
-
-  verificationIcon = computed(() => {
-    const status = this.data().visitor.verification.status;
-    return status === VerificationStatus.CONFIRMED ? 'check_circle' :
-      status === VerificationStatus.UNCONFIRMED ? 'schedule' :
-        'error';
-  })
-  verificationIconClass = computed(() => {
-    const status = this.data().visitor.verification.status;
-    return status === VerificationStatus.CONFIRMED ? 'text-green-600' :
-      status === VerificationStatus.UNCONFIRMED ? 'text-yellow-600' :
-        'text-red-600';
-  })
 
   constructor(
     private service: ReservationService,
@@ -102,7 +95,7 @@ export class ReservationContentEntryComponent {
   protected denyReservation() {
     this.updating.set(true)
     let dialogRef = this.dialog.open(ReservationProcessDialogComponent, {
-      data: {info: this.data(), offerId: 0, confirmation: false},
+      data: {info: this.data(), confirmation: false},
       height: '800px',
       width: '800px',
     })
@@ -125,4 +118,5 @@ export class ReservationContentEntryComponent {
   }
 
   protected readonly ReservationStatus = ReservationStatus;
+
 }

@@ -54,4 +54,16 @@ class ReservationController(private val gateway: ReservationGateway) {
     @Get("unconfirmed/amount")
     fun getUnconfirmedAmount(auth: Authentication) = gateway.getUnconfirmedAmount(auth)
 
+    @Post("{id}/editor")
+    fun createEditor(auth: Authentication, id: Long) = gateway.createEditor(auth, id)
+
+    @Put("{id}/editor")
+    fun refreshEditor(auth: Authentication, id: Long) = gateway.refreshEditor(auth, id)
+
+    @Delete("{id}/editor")
+    fun deleteEditor(auth: Authentication, id: Long) = gateway.deleteEditor(auth, id)
+
+    @Get("{id}/editor")
+    fun getEditor(auth: Authentication, id: Long) = gateway.getEditor(auth, id)
+
 }

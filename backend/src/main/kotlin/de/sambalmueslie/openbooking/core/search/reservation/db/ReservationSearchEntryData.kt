@@ -58,6 +58,7 @@ data class ReservationSearchEntryData(
             Offer(offerId, start, finish, maxPersons, active),
             Assignment(bookedSpace, reservedSpace, availableSpace, if (active) 0 else maxPersons),
         ),
-        timestamp
+        timestamp,
+        null
     )
 }

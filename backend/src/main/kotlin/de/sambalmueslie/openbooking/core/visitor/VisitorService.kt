@@ -62,10 +62,7 @@ class VisitorService(
         if (data.verificationStatus == VerificationStatus.CONFIRMED) return data.convert()
         if (data.verificationStatus == VerificationStatus.EXPIRED) return null
 
-        data.update(VerificationStatus.CONFIRMED, timeProvider.now())
-        val result = repository.update(data).convert()
-        super.notifyUpdated(result)
-        return result
+        return patchData(data) { it.update(VerificationStatus.CONFIRMED, timeProvider.now()) }
     }
 
 

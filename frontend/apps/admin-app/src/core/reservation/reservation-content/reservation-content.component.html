@@ -81,18 +81,7 @@
                 class="flex lg:flex-col items-center justify-between lg:justify-end gap-3 flex-shrink-0 min-w-[160px]">
 
                 <!-- Current Editor Badge -->
-                @if (entry.editor) {
-                  <div
-                    class="flex items-center gap-2 bg-amber-100 border border-amber-300 rounded-lg px-3 py-2 w-full">
-                    <mat-icon class="text-amber-700 text-base">person</mat-icon>
-                    <div class="flex-1 min-w-0">
-                      <div class="text-xs font-medium text-amber-900 truncate">{{ entry.editor.userName }}</div>
-                      <div class="text-xs text-amber-700">
-                        {{ 'RESERVATION.EditorSince' | translate }} {{ getEditorDuration(entry.editor.startedAt) }}
-                      </div>
-                    </div>
-                  </div>
-                }
+                <app-editor-info [editor]="entry.editor"/>
 
                 <!-- Action Button -->
                 <button

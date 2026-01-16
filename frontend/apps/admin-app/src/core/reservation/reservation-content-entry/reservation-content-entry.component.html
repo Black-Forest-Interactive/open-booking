@@ -1,19 +1,17 @@
 <mat-card class="shadow-sm hover:shadow-md transition-shadow" appearance="outlined">
   <!-- Card Header -->
   <div class="bg-gray-200 px-6 py-4 border-b border-gray-200 rounded-t-xl">
-    <div class="flex items-start justify-between">
-      <div class="flex-1">
-        <div class="flex items-center gap-3 mb-2 flex-wrap">
-          <app-visitor-type [data]="data().visitor"/>
-          <app-visitor-title [data]="data().visitor"/>
-          <app-reservation-status [data]="data().reservation"/>
-        </div>
-      </div>
-      <div class="text-right ml-4">
-        <div class="text-xs text-gray-500 mb-1">
-          {{ 'RESERVATION.Table.Timestamp' | translate }}
-        </div>
-        <div class="text-sm font-medium text-gray-700">{{ data().timestamp | date:'short' }}</div>
+    <div class="flex justify-between">
+      @if (showBackButton()) {
+        <button matButton="outlined" (click)="back.emit(true)">
+          <mat-icon>arrow_back_ios</mat-icon>
+          {{ 'ACTION.Back' | translate }}
+        </button>
+      }
+      <div class="flex items-center gap-3 flex-wrap">
+        <app-reservation-status [data]="data().reservation"/>
+        <app-visitor-status [visitor]="data().visitor"/>
+        <app-visitor-type [data]="data().visitor" class="flex-shrink-0"/>
       </div>
     </div>
   </div>
@@ -23,45 +21,29 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Visitor Information -->
       <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-2 mb-4">
-          <mat-icon class="text-blue-600" inline>person</mat-icon>
-          <h4 class="font-semibold text-gray-900">
-            {{ 'RESERVATION.Table.Visitor' | translate }}
-          </h4>
-          <mat-icon inline [class]="verificationIconClass()" [matTooltip]="data().visitor.verification.status">
-            {{ verificationIcon() }}
-          </mat-icon>
-        </div>
-
         <div class="space-y-3">
-          <div class="flex items-start gap-3">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-1">
-                    <span class="font-medium text-gray-900">
-                      {{ data().visitor.title }} {{ data().visitor.name }}
-                    </span>
-              </div>
+          <div class="flex gap-4 items-center">
+
+            <app-visitor-title [data]="data().visitor" class="font-semibold text-gray-900"/>
+            <app-visitor-size [visitor]="data().visitor"></app-visitor-size>
+          </div>
+          @if (data().visitor.description) {
+            <div class="flex items-start gap-3">
               <div class="text-sm text-gray-600">{{ data().visitor.description }}</div>
             </div>
-          </div>
-
+          }
           <div class="grid grid-cols-2 gap-3 text-sm">
             <div>
               <span class="text-gray-500">{{ 'RESERVATION.Form.Title.Label' | translate }}:</span>
               <span class="ml-2 font-medium text-gray-900 capitalize">{{ data().visitor.type }}</span>
             </div>
             <div>
-              <span class="text-gray-500">{{ 'RESERVATION.Form.Size.Label' | translate }}:</span>
-              <span class="ml-2 font-medium text-gray-900">
-                    {{ data().visitor.size }} {{ data().visitor.size === 1 ? 'person' : 'people' }}
+                  <span class="text-gray-500">
+                    {{ 'RESERVATION.Form.MinAge.Label' | translate }}
+                    - {{ 'RESERVATION.Form.MaxAge.Label' | translate }}:
                   </span>
-            </div>
-            <div class="col-span-2">
-                  <span class="text-gray-500">{{ 'RESERVATION.Form.MinAge.Label' | translate }}
-                    - {{ 'RESERVATION.Form.MaxAge.Label' | translate }}:</span>
-              <span class="ml-2 font-medium text-gray-900">
-                    {{ data().visitor.minAge }}-{{ data().visitor.maxAge }} years
-                  </span>
+              <span class="ml-2 font-medium text-gray-900">                    {{ data().visitor.minAge }}
+                -{{ data().visitor.maxAge }}                   </span>
             </div>
           </div>
 
@@ -154,6 +136,10 @@
             />
           </div>
         </div>
+      </div>
+      <div class="flex gap-2 text-xs text-gray-500 text-center">
+        <div class="font-medium">{{ 'RESERVATION.Created' | translate }}</div>
+        <div>{{ data().timestamp | date:'short' }}</div>
       </div>
     </div>
   </div>

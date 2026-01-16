@@ -1,6 +1,6 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {ReservationService} from "@open-booking/admin";
-import {SearchComponent, toPromise} from "@open-booking/shared";
+import {AuthService, SearchComponent, toPromise} from "@open-booking/shared";
 import {ReservationSearchRequest, ReservationStatus} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
@@ -86,7 +86,7 @@ export class ReservationComponent {
     this.dateTo() !== null
   )
 
-  constructor(private service: ReservationService) {
+  constructor(private service: ReservationService, protected readonly authService: AuthService) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
 
     interval(5000)

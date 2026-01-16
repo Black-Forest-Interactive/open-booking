@@ -1,10 +1,6 @@
 package de.sambalmueslie.openbooking.core.search.reservation
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.jillesvangurp.ktsearch.SearchResponse
-import com.jillesvangurp.ktsearch.parsedBuckets
-import com.jillesvangurp.ktsearch.termsResult
-import com.jillesvangurp.ktsearch.total
+import com.jillesvangurp.ktsearch.*
 import com.jillesvangurp.searchdsls.querydsl.TermsAgg
 import com.jillesvangurp.searchdsls.querydsl.agg
 import com.jillesvangurp.searchdsls.querydsl.bool
@@ -32,7 +28,9 @@ import org.slf4j.LoggerFactory
 
 @Singleton
 open class ReservationSearchOperator(
-    private val service: ReservationService, private val visitorService: VisitorService, private val detailAssembler: ReservationDetailsAssembler,
+    private val service: ReservationService,
+    private val visitorService: VisitorService,
+    private val detailAssembler: ReservationDetailsAssembler,
 
     private val fieldMapping: ReservationFieldMappingProvider, private val queryBuilder: ReservationSearchQueryBuilder, config: OpenSearchConfig, openSearch: SearchClientFactory
 
@@ -131,11 +129,8 @@ open class ReservationSearchOperator(
     }
 
     override fun processSearchResponse(request: SearchRequest, response: SearchResponse, pageable: Pageable): ReservationSearchResponse {
-        val result = response.hits?.hits?.mapNotNull { hit ->
-            hit.source?.let { source ->
-                mapper.readValue<ReservationSearchEntryData>(source.toString()).convert()
-            }
-        } ?: emptyList()
+        val ids = response.ids.mapNotNull { it.toLongOrNull() }.toSet()
+        val result = detailAssembler.getByIds(ids)
         return ReservationSearchResponse(Page.of(result, pageable, response.total), getStatusMap())
     }
 

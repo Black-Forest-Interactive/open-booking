@@ -407,6 +407,7 @@
     "Created": "Erstellt",
     "Edit": "Bearbeiten",
     "EditorSince": "seit",
+    "EditorExpires": "Gültig noch",
     "EditingBy": "Wird bearbeitet von {{name}}",
     "NoReservations": "Keine Reservierungen vorhanden"
   },
@@ -489,6 +490,10 @@
       "UNCONFIRMED": "Verifizierung ausstehend",
       "CONFIRMED": "Verifiziert",
       "EXPIRED": "Verifizierung abgelaufen"
+    },
+    "Type": {
+      "SINGLE": "Privatperson",
+      "GROUP": "Gruppe oder Schulklasse"
     }
   },
   "DASHBOARD": {

@@ -15,6 +15,7 @@ import {ReservationStatusComponent} from "../reservation-status/reservation-stat
 import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
+import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
 
 interface GroupedReservations {
   date: string;
@@ -41,7 +42,8 @@ interface GroupedReservations {
     ReservationStatusComponent,
     VisitorStatusComponent,
     VisitorTitleComponent,
-    VisitorSizeComponent
+    VisitorSizeComponent,
+    EditorInfoComponent
   ],
   templateUrl: './reservation-content.component.html',
   styleUrl: './reservation-content.component.scss',
@@ -49,7 +51,7 @@ interface GroupedReservations {
 export class ReservationContentComponent {
   entries = input.required<ReservationDetails[]>();
   reloading = input<boolean>(false);
-  currentUserId = input<string>(''); // Pass the current user's ID
+  currentUserId = input<string>('')
 
   reload = output<number>();
 
@@ -134,32 +136,9 @@ export class ReservationContentComponent {
     return `${startTime} - ${finishTime}`;
   }
 
-  getEditorDuration(startedAt: string): string {
-    const now = new Date();
-    const started = new Date(startedAt);
-    const diffMs = now.getTime() - started.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-
-    if (diffMins < 1) return '< 1m';
-    if (diffMins < 60) return `${diffMins}m`;
-
-    const diffHours = Math.floor(diffMins / 60);
-    const remainingMins = diffMins % 60;
-    return `${diffHours}h ${remainingMins}m`;
-  }
 
   isCurrentUser(userId: string): boolean {
-    return userId === this.currentUserId();
+    return userId === this.currentUserId()
   }
 
-  getStatusClass(status: ReservationStatus): string {
-    const statusClasses: Record<string, string> = {
-      'UNKNOWN': 'bg-gray-100 text-gray-800 border border-gray-300',
-      'UNCONFIRMED': 'bg-orange-100 text-orange-800 border border-orange-300',
-      'CONFIRMED': 'bg-green-100 text-green-800 border border-green-300',
-      'DENIED': 'bg-red-100 text-red-800 border border-red-300',
-      'EXPIRED': 'bg-yellow-100 text-yellow-800 border border-yellow-300',
-    };
-    return statusClasses[status] || 'bg-gray-100 text-gray-800 border border-gray-300';
-  }
 }

@@ -1,4 +1,4 @@
-import {Assignment, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {Assignment, Editor, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
 import {Page} from "@open-booking/shared";
 
 export interface Reservation {
@@ -24,13 +24,7 @@ export interface ReservationDetails {
   visitor: Visitor,
   offer: ReservationOffer,
   timestamp: string,
-  editor?: ReservationEditor
-}
-
-export interface ReservationEditor {
-  userId: string,
-  userName: string,
-  startedAt: string
+  editor?: Editor
 }
 
 export interface ReservationOffer {

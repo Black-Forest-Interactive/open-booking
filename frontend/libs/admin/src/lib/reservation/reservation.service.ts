@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {BaseService, GenericRequestResult, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
 import {
+  Editor,
   Reservation,
   ReservationChangeRequest,
   ReservationConfirmationContent,
@@ -88,5 +89,21 @@ export class ReservationService extends BaseService {
 
   getUnconfirmedReservationAmount(): Observable<number> {
     return this.get('unconfirmed/amount')
+  }
+
+  createEditor(id: number): Observable<Editor> {
+    return this.post(id + '/editor', {})
+  }
+
+  deleteEditor(id: number): Observable<Editor> {
+    return this.delete(id + '/editor')
+  }
+
+  getEditor(id: number): Observable<Editor> {
+    return this.get(id + '/editor')
+  }
+
+  refreshEditor(id: number): Observable<Editor> {
+    return this.put(id + '/editor', {})
   }
 }
