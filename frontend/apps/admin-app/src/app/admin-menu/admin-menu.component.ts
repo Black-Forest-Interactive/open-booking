@@ -1,10 +1,10 @@
-import {Component, computed, resource} from '@angular/core';
+import {Component, computed, resource, signal} from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {EventChangeListener, EventService, ReservationService} from "@open-booking/admin";
-import {ChangeEvent} from "@open-booking/core";
+import {ChangeEvent, ChangeEventType} from "@open-booking/core";
 import {toPromise} from "@open-booking/shared";
 
 @Component({
@@ -27,6 +27,7 @@ export class AdminMenuComponent implements EventChangeListener {
   )
 
   unconfirmed = computed(() => this.unconfirmedResource.value() ?? 0)
+  newReservations = signal(0)
 
   constructor(
     private eventService: EventService,
@@ -45,7 +46,12 @@ export class AdminMenuComponent implements EventChangeListener {
 
 
   handleEvent(event: ChangeEvent) {
-    if (event.resourceType === 'Reservation') this.unconfirmedResource.reload()
+    if (event.resourceType === 'Reservation') {
+      this.unconfirmedResource.reload()
+      if (event.type === ChangeEventType.CREATE) {
+        this.newReservations.update(value => value + 1)
+      }
+    }
   }
 
 }

@@ -4,35 +4,37 @@
     <!-- Filters Row -->
     <div class="flex flex-wrap items-center gap-3">
       <!-- Search Bar -->
-      <lib-search
-        label="RESERVATION.Action.Search"
-        (search)="handleSearch($event)"
-        class="min-w-[500px]"/>
+      <lib-search class="flex-1" label="RESERVATION.Action.Search" (search)="handleSearch($event)"/>
 
       <!-- Status Filter -->
-      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="min-w-[200px]">
+      <mat-form-field class="flex-1" appearance="fill" subscriptSizing="dynamic">
         <mat-label>{{ 'RESERVATION.Status.Title' | translate }}</mat-label>
         <mat-select [(ngModel)]="selectedStatus" multiple>
-          <mat-option value="{{ReservationStatus.CONFIRMED}}">
-            {{ 'RESERVATION.Status.CONFIRMED' | translate }}
-          </mat-option>
-          <mat-option value="{{ReservationStatus.UNCONFIRMED}}">
-            {{ 'RESERVATION.Status.UNCONFIRMED' | translate }}
-          </mat-option>
-          <mat-option value="{{ReservationStatus.DENIED}}">
-            {{ 'RESERVATION.Status.DENIED' | translate }}
-          </mat-option>
-          <mat-option value="{{ReservationStatus.EXPIRED}}">
-            {{ 'RESERVATION.Status.EXPIRED' | translate }}
-          </mat-option>
-          <mat-option value="{{ReservationStatus.UNKNOWN}}">
-            {{ 'RESERVATION.Status.UNKNOWN' | translate }}
-          </mat-option>
+
+          <mat-select-trigger>
+            {{ selectedStatus()[0] || '' }}
+            @if ((selectedStatus().length || 0) > 1) {
+              <span class="example-additional-selection">
+          (+{{ (selectedStatus().length || 0) - 1 }} {{ selectedStatus()?.length === 2 ? 'other' : 'others' }})
+        </span>
+            }
+          </mat-select-trigger>
+
+          @for (option of availableStatusValues; track option) {
+            <mat-option [value]="option">
+              <div class="flex gap-2 items-center justify-between w-full">
+                <div class="flex-auto w-24">{{ 'RESERVATION.Status.' + option | translate }}</div>
+                @if (getStatusAmount(option)) {
+                  <div class="rounded-full bg-gray-700 text-gray-100 px-2 py-1">{{ getStatusAmount(option) }}</div>
+                }
+              </div>
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
 
       <!-- Date Range Filter -->
-      <mat-form-field class="flex-1 min-w-[300px]" subscriptSizing="dynamic" appearance="fill">
+      <mat-form-field class="flex-1" subscriptSizing="dynamic" appearance="fill">
         <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
         <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
           <input matStartDate formControlName="start"
@@ -67,38 +69,39 @@
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-sm text-gray-600 font-medium">Active Filters:</span>
 
-        <mat-chip-grid>
+        <mat-chip-grid class="flex-1">
           @for (status of selectedStatus(); track status) {
-            <mat-chip-row (removed)="removeStatusFilter(status)" class="!bg-blue-100 !text-blue-800 ">
+            <mat-chip-option (removed)="removeStatusFilter(status)" class="!bg-blue-100 !text-blue-800 ">
               {{ 'RESERVATION.Status.' + status | translate }}
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
-            </mat-chip-row>
+            </mat-chip-option>
           }
         </mat-chip-grid>
 
         @if (dateFrom() || dateTo()) {
-          <mat-chip-grid>
+          <mat-chip-grid class="flex-1">
             @if (dateFrom()) {
-              <mat-chip-row (removed)="clearDateFrom()" class="!bg-green-100 !text-green-800 ">
+              <mat-chip-option (removed)="clearDateFrom()" class="!bg-green-100 !text-green-800 ">
                 From: {{ dateFrom() | date:'shortDate' }}
                 <button matChipRemove>
                   <mat-icon>cancel</mat-icon>
                 </button>
-              </mat-chip-row>
+              </mat-chip-option>
             }
 
             @if (dateTo()) {
-              <mat-chip-row (removed)="clearDateTo()" class="!bg-green-100 !text-green-800 ">
+              <mat-chip-option (removed)="clearDateTo()" class="!bg-green-100 !text-green-800 ">
                 To: {{ dateTo() | date:'shortDate' }}
                 <button matChipRemove>
                   <mat-icon>cancel</mat-icon>
                 </button>
-              </mat-chip-row>
+              </mat-chip-option>
             }
           </mat-chip-grid>
         }
+        <div class="flex-auto"></div>
       </div>
     }
   </div>

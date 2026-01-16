@@ -4,24 +4,9 @@
     <div class="flex items-start justify-between">
       <div class="flex-1">
         <div class="flex items-center gap-3 mb-2 flex-wrap">
-          <!-- Visitor Type Indicator -->
-          <div class="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-            <mat-icon class="w-4 h-4">{{ visitorTypeIcon() }}</mat-icon>
-            <span class="capitalize">{{ data().visitor.type }}</span>
-          </div>
-
-          <h3 class="text-xl font-semibold text-gray-900">
-            @if (data().visitor.type === VisitorType.GROUP) {
-              {{ data().visitor.title }}
-            } @else {
-              {{ data().visitor.name }}
-            }
-          </h3>
-
-          <!-- Status Badge -->
-          <div [class]="statusClass()" class="px-3 py-1 rounded-full text-xs font-medium">
-            {{ 'RESERVATION.Status.' + data().reservation.status | translate }}
-          </div>
+          <app-visitor-type [data]="data().visitor"/>
+          <app-visitor-title [data]="data().visitor"/>
+          <app-reservation-status [data]="data().reservation"/>
         </div>
       </div>
       <div class="text-right ml-4">

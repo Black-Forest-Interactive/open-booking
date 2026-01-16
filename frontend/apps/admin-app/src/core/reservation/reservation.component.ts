@@ -49,6 +49,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
+  availableStatusValues = Object.values(ReservationStatus)
   selectedStatus = signal<ReservationStatus[]>([ReservationStatus.UNCONFIRMED])
   dateFrom = signal<string | null | undefined>(null)
   dateTo = signal<string | null | undefined>(null)
@@ -73,7 +74,9 @@ export class ReservationComponent {
     loader: param => toPromise(this.service.searchReservation(param.params.request, param.params.page, param.params.size), param.abortSignal)
   })
 
-  private page = computed(() => this.reservationsResource.value()?.result)
+  private response = computed(() => this.reservationsResource.value())
+  private status = computed(() => this.response()?.status)
+  private page = computed(() => this.response()?.result)
   entries = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.reservationsResource.isLoading
@@ -117,7 +120,7 @@ export class ReservationComponent {
   }
 
   protected clearFilters() {
-    this.selectedStatus.set([])
+    this.selectedStatus.set([ReservationStatus.UNCONFIRMED])
     this.dateFrom.set(null)
     this.dateTo.set(null)
   }
@@ -137,6 +140,14 @@ export class ReservationComponent {
 
   protected reload() {
     this.reservationsResource.reload()
+  }
+
+  protected getStatusAmount(status: ReservationStatus): number {
+    let result = this.status()
+    if (!result) return 0
+
+    let value = result[status] ?? 0
+    return value
   }
 
   protected readonly ReservationStatus = ReservationStatus;

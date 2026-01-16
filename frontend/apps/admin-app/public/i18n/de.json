@@ -392,6 +392,8 @@
       "Title": "Status",
       "UNCONFIRMED": "Unbestätigt",
       "CANCELLED": "Abgesagt",
+      "DENIED": "Abgelehnt",
+      "EXPIRED": "Abgelaufen",
       "UNKNOWN": "Unbekannt"
     },
     "Table": {
@@ -399,7 +401,14 @@
       "Timestamp": "Zeitstempel",
       "Visitor": "Besuchergruppe"
     },
-    "Title": "Reservierung"
+    "Title": "Reservierung",
+    "Total": "Gesamt",
+    "Open": "Offen",
+    "Created": "Erstellt",
+    "Edit": "Bearbeiten",
+    "EditorSince": "seit",
+    "EditingBy": "Wird bearbeitet von {{name}}",
+    "NoReservations": "Keine Reservierungen vorhanden"
   },
   "RESPONSE": {
     "Action": {
@@ -451,7 +460,7 @@
       "Value": "Wert"
     }
   },
-  "VISITOR_GROUP": {
+  "VISITOR": {
     "MailConfirmation": {
       "Failed": {
         "Message": "Ihre E-Mail-Adresse wurde nicht bestätigt. Bitte kontaktieren Sie uns.",
@@ -472,6 +481,14 @@
       "Title": "Status",
       "CONFIRMED": "Mail bestätigt",
       "UNCONFIRMED": "Mail unbestätigt"
+    },
+    "Person": "Person",
+    "Persons": "Personen",
+    "Verification": {
+      "UNKNOWN": "Verifizierung unbekannt",
+      "UNCONFIRMED": "Verifizierung ausstehend",
+      "CONFIRMED": "Verifiziert",
+      "EXPIRED": "Verifizierung abgelaufen"
     }
   },
   "DASHBOARD": {

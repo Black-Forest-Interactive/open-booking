@@ -23,7 +23,14 @@ export interface ReservationDetails {
   reservation: Reservation,
   visitor: Visitor,
   offer: ReservationOffer,
-  timestamp: string
+  timestamp: string,
+  editor?: ReservationEditor
+}
+
+export interface ReservationEditor {
+  userId: string,
+  userName: string,
+  startedAt: string
 }
 
 export interface ReservationOffer {
@@ -63,9 +70,11 @@ export class ReservationSearchRequest {
 }
 
 export interface ReservationSearchResponse {
-  result: Page<ReservationDetails>
+  result: Page<ReservationDetails>,
+  status: ReservationStatusCount
 }
 
+export type ReservationStatusCount = Partial<Record<ReservationStatus, number>>
 
 export const ReservationStatus = {
   UNKNOWN: 'UNKNOWN',

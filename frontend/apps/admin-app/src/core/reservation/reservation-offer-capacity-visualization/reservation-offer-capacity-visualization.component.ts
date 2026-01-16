@@ -1,36 +1,24 @@
-import {Component, computed, input, output} from '@angular/core';
-import {Reservation, ReservationOffer, ReservationStatus, Visitor} from "@open-booking/core";
-import {MatIconModule} from "@angular/material/icon";
+import {Component, computed, input} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DatePipe} from "@angular/common";
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {
-  ReservationOfferCapacityVisualizationComponent
-} from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
+import {Reservation, ReservationOffer, ReservationStatus, Visitor} from "@open-booking/core";
 
 @Component({
-  selector: 'app-reservation-content-entry-offer',
+  selector: 'app-reservation-offer-capacity-visualization',
   imports: [
-    MatIconModule,
     MatButtonModule,
-    MatTooltipModule,
-    TranslatePipe,
-    DatePipe,
-    ReservationOfferCapacityVisualizationComponent
+    MatIconModule,
+    TranslatePipe
   ],
-  templateUrl: './reservation-content-entry-offer.component.html',
-  styleUrl: './reservation-content-entry-offer.component.scss',
+  templateUrl: './reservation-offer-capacity-visualization.component.html',
+  styleUrl: './reservation-offer-capacity-visualization.component.scss',
 })
-export class ReservationContentEntryOfferComponent {
-
+export class ReservationOfferCapacityVisualizationComponent {
   // Inputs
   entry = input.required<ReservationOffer>()
   visitor = input.required<Visitor>()
   reservation = input.required<Reservation>()
-
-  // Output
-  confirm = output<ReservationOffer>()
 
   // Computed properties
   active = computed(() => this.entry().offer.active)
@@ -57,23 +45,9 @@ export class ReservationContentEntryOfferComponent {
 
   otherReservedPercentage = computed(() => (this.otherReservedSpace() / this.maxPersons()) * 100)
 
-  reservedPercentage = computed(() => (this.reservedSpace() / this.maxPersons()) * 100)
-
   visitorPercentage = computed(() => (this.visitor().size / this.maxPersons()) * 100)
 
   remainingAfterConfirmation = computed(() => this.availableSpace() - this.visitor().size)
 
   hasCapacity = computed(() => this.availableSpace() >= this.visitor().size)
-
-  canConfirmOffer = computed(() =>
-    this.active() &&
-    this.reservation().status !== ReservationStatus.CONFIRMED
-  )
-
-
-  protected onConfirm() {
-    this.confirm.emit(this.entry())
-  }
-
-  protected readonly ReservationStatus = ReservationStatus;
 }

@@ -1,16 +1,5 @@
-<mat-toolbar class="h-16 sm:h-20 px-3 sm:px-6" color="primary">
+<mat-toolbar class="h-16 sm:h-20 px-3 sm:px-6 ">
   <div class="flex w-full items-center gap-2 sm:gap-4">
-
-    @if (service.isHandset()) {
-      <button matIconButton routerLink="/" aria-label="Home" class="flex-shrink-0">
-        <mat-icon>home</mat-icon>
-      </button>
-    } @else {
-      <button matButton="filled" routerLink="/" aria-label="Go to home page" class="flex-shrink-0">
-        <mat-icon>home</mat-icon>
-        {{ 'ACTION.Home' | translate }}
-      </button>
-    }
 
     <div class="flex-1"></div>
 
