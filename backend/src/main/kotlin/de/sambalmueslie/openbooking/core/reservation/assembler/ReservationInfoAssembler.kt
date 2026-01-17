@@ -43,6 +43,10 @@ class ReservationInfoAssembler(
         return listToInfo { repository.findByOfferIdIn(offerIds) }
     }
 
+    fun getByKey(key: String): ReservationInfo? {
+        return dataToInfo { repository.findByKey(key) }
+    }
+
     private fun pageToInfo(provider: () -> Page<ReservationData>): Page<ReservationInfo> {
         return info(provider.invoke())
     }

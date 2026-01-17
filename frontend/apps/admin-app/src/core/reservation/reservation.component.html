@@ -15,7 +15,7 @@
             {{ selectedStatus()[0] || '' }}
             @if ((selectedStatus().length || 0) > 1) {
               <span class="example-additional-selection">
-          (+{{ (selectedStatus().length || 0) - 1 }} {{ selectedStatus()?.length === 2 ? 'other' : 'others' }})
+          (+{{ (selectedStatus().length || 0) - 1 }} {{ selectedStatus().length === 2 ? 'other' : 'others' }})
         </span>
             }
           </mat-select-trigger>

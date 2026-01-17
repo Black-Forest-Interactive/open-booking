@@ -21,11 +21,9 @@ import {
   ReservationContentEntryOfferComponent
 } from "../reservation-content-entry-offer/reservation-content-entry-offer.component";
 import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
-import {ReservationStatusComponent} from "../reservation-status/reservation-status.component";
-import {VisitorTypeComponent} from "../../visitor/visitor-type/visitor-type.component";
-import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
+import {ReservationStatusComponent, VerificationStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 
 @Component({
   selector: 'app-reservation-content-entry',
@@ -42,9 +40,11 @@ import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.comp
     VisitorConfirmComponent,
     ReservationStatusComponent,
     VisitorTypeComponent,
-    VisitorStatusComponent,
     VisitorTitleComponent,
-    VisitorSizeComponent
+    VisitorSizeComponent,
+    ReservationStatusComponent,
+    VerificationStatusComponent,
+    VisitorTypeComponent
   ],
   templateUrl: './reservation-content-entry.component.html',
   styleUrl: './reservation-content-entry.component.scss',

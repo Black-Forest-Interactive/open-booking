@@ -4,7 +4,7 @@ import {Reservation, ResolvedResponse} from "@open-booking/core";
 import {Observable} from "rxjs";
 import {HttpParams} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
-import {CreateReservationRequest} from "./reservation.api";
+import {CreateReservationRequest, PortalReservation} from "./reservation.api";
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +31,13 @@ export class ReservationService extends BaseService {
     return this.get(id + '/failed/message', queryParams)
   }
 
-
   confirmEmail(key: string): Observable<GenericRequestResult> {
-    return this.post('confirm/email/' + key, {})
+    let param = new HttpParams().append("key", key)
+    return this.post('confirm/email', {}, param)
+  }
+
+  getReservation(key: string): Observable<PortalReservation> {
+    let param = new HttpParams().append("key", key)
+    return this.get('', param)
   }
 }

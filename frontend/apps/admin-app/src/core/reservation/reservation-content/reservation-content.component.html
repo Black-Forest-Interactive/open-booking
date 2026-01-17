@@ -38,9 +38,9 @@
               <!-- Left Section: Status & Visitor Info -->
               <div class="flex flex-col items-stretch gap-4 min-w-0 flex-1">
                 <div class="flex gap-2">
-                  <app-reservation-status [data]="entry.reservation"/>
-                  <app-visitor-status [visitor]="entry.visitor"/>
-                  <app-visitor-type [data]="entry.visitor" class="flex-shrink-0"/>
+                  <lib-reservation-status [status]="entry.reservation.status"/>
+                  <lib-verification-status [data]="entry.visitor.verification"/>
+                  <lib-visitor-type [data]="entry.visitor.type" class="flex-shrink-0"/>
                 </div>
                 <div class="flex gap-4 items-center">
 

@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {DayInfoOffer, VisitorType} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
 import {CreateReservationRequest} from "@open-booking/portal";
+import {VisitorInfoComponent} from "../../visitor/visitor-info/visitor-info.component";
 
 @Component({
   selector: 'app-reservation-summary',
@@ -18,7 +19,8 @@ import {CreateReservationRequest} from "@open-booking/portal";
     MatDividerModule,
     MatButtonModule,
     TranslatePipe,
-    DatePipe
+    DatePipe,
+    VisitorInfoComponent
   ],
   templateUrl: './reservation-summary.component.html',
   styleUrl: './reservation-summary.component.scss',

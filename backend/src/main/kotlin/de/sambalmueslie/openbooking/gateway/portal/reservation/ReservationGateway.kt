@@ -5,6 +5,8 @@ import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.reservation.ReservationService
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
+import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
+import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationInfoAssembler
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.gateway.portal.claim.ClaimGateway.Companion.CLAIM_KEY
@@ -14,6 +16,7 @@ import jakarta.inject.Singleton
 @Singleton
 class ReservationGateway(
     private val service: ReservationService,
+    private val infoAssembler: ReservationInfoAssembler,
     private val claimService: ClaimService,
 ) {
 
@@ -42,4 +45,18 @@ class ReservationGateway(
         return service.confirmEmail(key)
     }
 
+    fun get(key: String): PortalReservation? {
+        return infoAssembler.getByKey(key).toPortal()
+    }
+
+    fun ReservationInfo?.toPortal(): PortalReservation? {
+        if (this == null) return null
+        return PortalReservation(
+            visitor,
+            offer.offer,
+            status,
+            comment,
+            timestamp
+        )
+    }
 }

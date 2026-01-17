@@ -3,7 +3,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatToolbar} from "@angular/material/toolbar";
-import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AppService} from "../app.service";
 import {SettingsService} from "@open-booking/admin";
@@ -18,7 +17,6 @@ import {ThemeToggleButtonComponent} from "@open-booking/shared";
     MatMenu,
     MatMenuItem,
     MatToolbar,
-    RouterLink,
     TranslatePipe,
     MatMenuTrigger,
     ThemeToggleButtonComponent

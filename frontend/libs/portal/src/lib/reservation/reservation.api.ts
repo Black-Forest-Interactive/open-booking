@@ -1,4 +1,4 @@
-import {VisitorChangeRequest} from "@open-booking/core";
+import {Offer, ReservationStatus, Visitor, VisitorChangeRequest} from "@open-booking/core";
 
 export class CreateReservationRequest {
   constructor(
@@ -8,4 +8,13 @@ export class CreateReservationRequest {
     public termsAndConditions: boolean
   ) {
   }
+}
+
+
+export interface PortalReservation {
+  visitor: Visitor,
+  offer: Offer,
+  status: ReservationStatus,
+  comment: string,
+  timestamp: string
 }

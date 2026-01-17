@@ -5,17 +5,15 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
-import {VisitorTypeComponent} from "../../visitor/visitor-type/visitor-type.component";
 import {
   ReservationOfferCapacityVisualizationComponent
 } from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
 import {RouterLink} from "@angular/router";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {ReservationStatusComponent} from "../reservation-status/reservation-status.component";
-import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
 import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
+import {ReservationStatusComponent, VerificationStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 
 interface GroupedReservations {
   date: string;
@@ -40,10 +38,12 @@ interface GroupedReservations {
     ReservationOfferCapacityVisualizationComponent,
     RouterLink,
     ReservationStatusComponent,
-    VisitorStatusComponent,
     VisitorTitleComponent,
     VisitorSizeComponent,
-    EditorInfoComponent
+    EditorInfoComponent,
+    ReservationStatusComponent,
+    VerificationStatusComponent,
+    VisitorTypeComponent
   ],
   templateUrl: './reservation-content.component.html',
   styleUrl: './reservation-content.component.scss',

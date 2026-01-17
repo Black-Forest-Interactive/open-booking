@@ -1,0 +1,11 @@
+<div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium" [class]="statusClass()">
+  <mat-icon class="w-4 h-4">{{ statusIcon() }}</mat-icon>
+  @if (isVerified()) {
+    <div class="flex gap-1 items-center">
+      <span>{{ text() | translate }}</span>
+      <span class="text-xs text-gray-500 px-2">{{ data().timestamp | date:'short' }}</span>
+    </div>
+  } @else {
+    <span>{{ text() | translate }}</span>
+  }
+</div>
