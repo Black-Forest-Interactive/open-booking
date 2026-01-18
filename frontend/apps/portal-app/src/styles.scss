@@ -62,8 +62,6 @@ html, body {
 }
 
 // The Tailwind directives MUST come AFTER Angular Material theming
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* You can add custom global styles below this line */

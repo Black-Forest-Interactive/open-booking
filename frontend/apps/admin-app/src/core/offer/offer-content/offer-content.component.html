@@ -2,7 +2,7 @@
   <div class="flex gap-2 justify-between">
     @for (group of entries(); track group.day) {
       <div class="flex items-center gap-4 px-3 py-2 border-gray-200 border hover:bg-gray-300 rounded-lg"
-           [ngClass]="group.day ===  selectedEntry()?.day ? 'bg-blue-300' : 'bg-gray-200'"
+           [ngClass]="group.day ===  selectedEntry().day ? 'bg-blue-300' : 'bg-gray-200'"
            (click)="selectedDay.set(group.day)">
         <div class="flex items-center gap-1">
           <mat-icon class="text-gray-600">calendar_today</mat-icon>

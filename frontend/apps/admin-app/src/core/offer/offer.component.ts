@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, resource, signal} from '@a
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {CommonModule} from "@angular/common";
+
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
@@ -35,7 +35,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 @Component({
   selector: 'app-offer',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatPaginatorModule,
     MatIconModule,
@@ -56,7 +55,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     LoadingBarComponent,
     OfferContentComponent,
     MatProgressSpinner
-  ],
+],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

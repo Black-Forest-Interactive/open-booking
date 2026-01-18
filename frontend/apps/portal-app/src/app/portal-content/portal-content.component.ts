@@ -1,5 +1,5 @@
 import {Component, signal} from '@angular/core';
-import {CommonModule} from "@angular/common";
+
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
@@ -10,13 +10,12 @@ import {AppService} from "../app.service";
 @Component({
   selector: 'app-portal-content',
   imports: [
-    CommonModule,
     RouterModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
   templateUrl: './portal-content.component.html',
   styleUrl: './portal-content.component.scss',
 })

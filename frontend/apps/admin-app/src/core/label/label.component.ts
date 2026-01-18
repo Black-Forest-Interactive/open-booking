@@ -13,14 +13,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {CdkDragDrop, DragDropModule, moveItemInArray} from "@angular/cdk/drag-drop";
 import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+
 import {Label, LabelChangeRequest} from "@open-booking/core";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-label',
   imports: [
-    CommonModule,
     FormsModule,
     DragDropModule,
     MatInputModule,
@@ -34,7 +33,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatIconModule,
     MatProgressSpinnerModule,
     TranslatePipe
-  ],
+],
   templateUrl: './label.component.html',
   styleUrl: './label.component.scss',
 })

@@ -2,15 +2,13 @@ import {Component, computed, effect, input, signal} from '@angular/core';
 import {Editor} from "@open-booking/core";
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DatePipe} from "@angular/common";
 import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-editor-info',
   imports: [
     MatIconModule,
-    TranslatePipe,
-    DatePipe
+    TranslatePipe
   ],
   templateUrl: './editor-info.component.html',
   styleUrl: './editor-info.component.scss',

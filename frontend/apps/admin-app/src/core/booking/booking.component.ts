@@ -1,5 +1,5 @@
 import {Component, computed, resource} from '@angular/core';
-import {CommonModule} from "@angular/common";
+
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatButtonModule} from "@angular/material/button";
@@ -18,7 +18,6 @@ import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
 @Component({
   selector: 'app-booking',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatButtonModule,
@@ -26,8 +25,8 @@ import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
     TranslatePipe,
     ReactiveFormsModule,
     LoadingBarComponent,
-    BookingEntryComponent,
-  ],
+    BookingEntryComponent
+],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })
