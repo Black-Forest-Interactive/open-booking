@@ -1,5 +1,5 @@
 package de.sambalmueslie.openbooking.core.claim.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeListener
+import de.sambalmueslie.openbooking.common.EntityChangeListener
 
-interface ClaimChangeListener : BusinessObjectChangeListener<Long, Claim> {}
+interface ClaimChangeListener : EntityChangeListener<Long, Claim> {}

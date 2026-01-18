@@ -92,7 +92,7 @@ class BookingRequestChangeService(
         requestBookings.forEach { (offerId, bookings) ->
             val offerSuitable = suitableOffers.containsKey(offerId)
             bookings.forEach {
-                val status = if (offerSuitable) it.status else BookingStatus.DENIED
+                val status = if (offerSuitable) it.status else BookingStatus.DECLINED
                 bookingService.update(it.id, visitor, status)
             }
         }
@@ -102,7 +102,7 @@ class BookingRequestChangeService(
     private fun isEnoughSpaceAvailable(request: VisitorChangeRequest, current: Visitor, offer: Offer, requestBookings: List<Booking>, offerBookings: List<Booking>): Boolean {
         if (offerBookings.isEmpty()) return request.size <= offer.maxPersons
 
-        val spaceConfirmed = offerBookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
+        val spaceConfirmed = offerBookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.PENDING }.sumOf { it.size }
         val spaceAvailable = offer.maxPersons - spaceConfirmed
 
         val additionalSpaceRequired = request.size - current.size

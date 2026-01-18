@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.visitor.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.visitor.api.*
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -29,7 +29,7 @@ data class VisitorData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Visitor> {
+) : EntityData<Visitor> {
     companion object {
         fun create(request: VisitorChangeRequest, timestamp: LocalDateTime): VisitorData {
             return VisitorData(

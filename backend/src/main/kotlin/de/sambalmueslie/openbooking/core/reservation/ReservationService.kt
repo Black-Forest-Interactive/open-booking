@@ -7,15 +7,9 @@ import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_FAILED
-import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_EMAIL_SUCCEED
-import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_REQUEST_FAILED
-import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_CONFIRM_REQUEST_SUCCESS
-import de.sambalmueslie.openbooking.core.request.BookingRequestService.Companion.MSG_DENIAL_REQUEST_SUCCESS
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
@@ -23,7 +17,6 @@ import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationData
 import de.sambalmueslie.openbooking.core.reservation.db.ReservationRepository
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
-import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
@@ -98,7 +91,7 @@ class ReservationService(
         if (bookings.isEmpty()) return true
         if (request.ignoreSizeCheck) return true
 
-        val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
+        val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.PENDING }.sumOf { it.size }
         val spaceAvailable = offer.maxPersons - spaceConfirmed
 
         return spaceAvailable >= request.visitor.size
@@ -133,49 +126,40 @@ class ReservationService(
     fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
 
 
-    fun confirmEmail(key: String): GenericRequestResult {
-        val request = repository.findByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        val visitorId = request.visitorId
-        val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-
-        return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
-            true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
-            else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        }
-    }
-
     fun confirm(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
-        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-        if (data.status == ReservationStatus.CONFIRMED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val offer = offerService.get(data.offerId) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val booking = bookingService.create(BookingChangeRequest(offer.id, data.visitorId, data.comment))
-
-        val result = patchData(data) {
-            it.setBooking(booking, timeProvider.now())
-        }
-
-        bookingService.confirm(booking.id)
-
-        notify { it.confirmed(result, content) }
-        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
+//        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//        if (data.status == ReservationStatus.CONFIRMED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val offer = offerService.get(data.offerId) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val booking = bookingService.create(BookingChangeRequest(offer.id, data.visitorId, data.comment))
+//
+//        val result = patchData(data) {
+//            it.setBooking(booking, timeProvider.now())
+//        }
+//
+//        bookingService.confirm(booking.id)
+//
+//        notify { it.confirmed(result, content) }
+//        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
+        TODO("refactoring")
     }
 
     fun deny(id: Long, content: ReservationConfirmationContent): GenericRequestResult {
-        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-        if (data.status == ReservationStatus.DENIED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val booking = data.bookingId?.let { bookingService.get(it) }
-        if (booking != null) {
-            bookingService.denial(booking.id)
-        }
-
-        val result = patchData(id) { it.setStatus(ReservationStatus.DENIED, timeProvider.now()) }
-            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        notify { it.denied(result, content) }
-        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
+//        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//        if (data.status == ReservationStatus.DENIED) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val booking = data.bookingId?.let { bookingService.get(it) }
+//        if (booking != null) {
+//            bookingService.denial(booking.id)
+//        }
+//
+//        val result = patchData(id) { it.setStatus(ReservationStatus.DENIED, timeProvider.now()) }
+//            ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        notify { it.denied(result, content) }
+//        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
+        TODO("refactoring")
     }
 
     fun getConfirmationUrl(id: Long): String {

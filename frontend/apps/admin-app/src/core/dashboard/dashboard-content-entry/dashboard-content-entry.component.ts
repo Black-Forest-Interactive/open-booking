@@ -27,8 +27,8 @@ export class DashboardContentEntryComponent {
   data = input.required<OfferSearchEntry>()
 
   availableSpace = computed(() => this.data().assignment.availableSpace)
-  bookedSpace = computed(() => this.data().assignment.bookedSpace)
-  reservedSpace = computed(() => this.data().assignment.reservedSpace)
+  bookedSpace = computed(() => this.data().assignment.confirmedSpace)
+  reservedSpace = computed(() => this.data().assignment.pendingSpace)
 
   reservations = computed(() => this.data().reservations.filter(r => r.status === ReservationStatus.UNCONFIRMED))
 

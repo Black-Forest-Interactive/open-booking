@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.editor
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import de.sambalmueslie.openbooking.common.CrudService
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.editor.api.Editor
@@ -14,7 +14,7 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 import kotlin.reflect.KClass
 
-class ResourceEditorService<O : BusinessObject<Long>>(
+class ResourceEditorService<O : Entity<Long>>(
     private val service: CrudService<Long, O, *, *>,
     private val idGenerator: EditorIdGenerator,
     private val resourceType: KClass<O>,
@@ -61,7 +61,7 @@ class ResourceEditorService<O : BusinessObject<Long>>(
         }
     }
 
-    internal fun create(resource: BusinessObject<Long>, request: EditorChangeRequest, expires: LocalDateTime): Editor {
+    internal fun create(resource: Entity<Long>, request: EditorChangeRequest, expires: LocalDateTime): Editor {
         return lock.write {
             val existing = editors.values.find { it.resourceId == resource.id }
             when {
@@ -72,7 +72,7 @@ class ResourceEditorService<O : BusinessObject<Long>>(
         }
     }
 
-    private fun add(resource: BusinessObject<Long>, request: EditorChangeRequest, expires: LocalDateTime): Editor {
+    private fun add(resource: Entity<Long>, request: EditorChangeRequest, expires: LocalDateTime): Editor {
         val id = idGenerator.getId()
         val editor = Editor(id, resource.id, resourceName, request.userId, request.userName, timeProvider.now(), expires)
         editors[id] = editor

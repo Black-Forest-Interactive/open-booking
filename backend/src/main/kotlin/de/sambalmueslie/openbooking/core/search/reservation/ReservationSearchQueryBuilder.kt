@@ -8,6 +8,7 @@ import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 
 @Singleton
+@Deprecated("use booking directly instead")
 class ReservationSearchQueryBuilder : SearchQueryBuilder<ReservationSearchRequest> {
 
     override fun buildSearchQuery(

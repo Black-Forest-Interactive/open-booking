@@ -13,7 +13,7 @@ import {DayInfoDetailsListComponent} from "./day-info-details-list/day-info-deta
 import {defaultDayInfo} from "@open-booking/core";
 import {MatCard} from "@angular/material/card";
 import {navigateToDashboard} from "../../app/app.navigation";
-import {ReservationProcessService} from "../reservation/reservation-process.service";
+import {BookingProcessService} from "../booking/booking-process.service";
 import {PortalClaimService} from "../claim/portal-claim.service";
 
 @Component({
@@ -48,7 +48,7 @@ export class DayInfoDetailsComponent {
 
   constructor(
     private service: DashboardService,
-    private reservationService: ReservationProcessService,
+    private processService: BookingProcessService,
     private claimService: PortalClaimService,
     protected app: AppService,
     private router: Router) {
@@ -62,7 +62,7 @@ export class DayInfoDetailsComponent {
       let data = this.data()
       let claim = this.claimService.claim()
       if (data && claim) {
-        this.reservationService.validateSelection(data, claim)
+        this.processService.validateSelection(data, claim)
       }
     });
 

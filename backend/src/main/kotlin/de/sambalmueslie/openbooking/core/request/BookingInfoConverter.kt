@@ -48,7 +48,7 @@ class BookingInfoConverter(
             .groupBy { it.bookingRequestId }
             .mapValues { it.value.map { it.bookingId } }
         val bookingIds = relations.values.flatten().toSet()
-        val bookings = bookingService.getInfoByIds(bookingIds).associateBy { it.id }
+        val bookings = bookingService.getByIds(bookingIds).associateBy { it.id }
 
         val visitorIds = data.map { it.visitorId }.toSet()
         val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
@@ -68,7 +68,7 @@ class BookingInfoConverter(
 
     private fun info(data: BookingRequestData): BookingRequestInfo? {
         val relations = relationRepository.getByBookingRequestId(data.id)
-        val bookings = bookingService.getInfoByIds(relations.map { it.bookingId }.toSet())
+        val bookings = bookingService.getByIds(relations.map { it.bookingId }.toSet())
         val visitor = visitorService.get(data.visitorId) ?: return null
 
         val timestamp = data.updated ?: data.created

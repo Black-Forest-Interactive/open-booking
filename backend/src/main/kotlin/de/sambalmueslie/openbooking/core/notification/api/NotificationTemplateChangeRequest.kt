@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.notification.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 
 data class NotificationTemplateChangeRequest(
     val lang: String,
@@ -8,4 +8,4 @@ data class NotificationTemplateChangeRequest(
     val subject: String,
     val contentType: ContentType = ContentType.HTML,
     val content: String
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

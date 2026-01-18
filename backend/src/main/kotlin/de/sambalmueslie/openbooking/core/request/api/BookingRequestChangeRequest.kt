@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.request.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 
 @Deprecated("use reservation instead.", ReplaceWith("reservation"))
@@ -10,4 +10,4 @@ data class BookingRequestChangeRequest(
     val comment: String,
     val autoConfirm: Boolean,
     val ignoreSizeCheck: Boolean
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

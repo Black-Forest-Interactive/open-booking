@@ -1,13 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BaseService, Page} from "@open-booking/shared";
 import {Observable} from "rxjs";
-import {
-  Booking,
-  BookingChangeRequest,
-  BookingDetails,
-  BookingSearchRequest,
-  BookingSearchResult
-} from "@open-booking/core";
+import {Booking, BookingChangeRequest, BookingDetails} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +38,6 @@ export class BookingService extends BaseService {
 
   findBookingDetailsByOffer(offerId: number): Observable<BookingDetails[]> {
     return this.get('by/offer/' + offerId + '/details')
-  }
-
-  searchBookingDetails(request: BookingSearchRequest, page: number, size: number): Observable<Page<BookingSearchResult>> {
-    return this.postPaged('search', request, page, size)
   }
 
 }

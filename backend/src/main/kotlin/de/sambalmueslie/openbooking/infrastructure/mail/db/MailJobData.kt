@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJob
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobStatus
 import jakarta.persistence.*
@@ -14,7 +14,7 @@ data class MailJobData(
     @Column var title: String,
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<MailJob> {
+) : EntityData<MailJob> {
 
     companion object {
         fun create(title: String, timestamp: LocalDateTime): MailJobData {

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class MailJobContent(
     override val id: Long,
@@ -8,4 +8,4 @@ data class MailJobContent(
     val from: MailParticipant,
     val to: List<MailParticipant>,
     val bcc: List<MailParticipant> = emptyList()
-) : BusinessObject<Long>
+) : Entity<Long>

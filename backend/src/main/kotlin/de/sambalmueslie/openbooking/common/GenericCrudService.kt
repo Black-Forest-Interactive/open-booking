@@ -11,7 +11,7 @@ import org.slf4j.Logger
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
-abstract class GenericCrudService<T : Any, O : BusinessObject<T>, R : BusinessObjectChangeRequest, L : BusinessObjectChangeListener<T, O>, D : DataObject<O>>(
+abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O>, D : EntityData<O>>(
     private val repository: PageableRepository<D, T>,
     cacheService: CacheService,
     type: KClass<O>,

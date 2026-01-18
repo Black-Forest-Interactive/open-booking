@@ -2,11 +2,11 @@ export * from './lib/auth/auth.guard'
 export * from './lib/auth/auth.service'
 export * from './lib/auth/principal'
 
+export * from './lib/booking-status/booking-status.component'
+
 export * from './lib/loading-bar/loading-bar.component'
 export * from './lib/logging/logging.api'
 export * from './lib/logging/logging.service'
-
-export * from './lib/reservation-status/reservation-status.component'
 
 export * from './lib/search/search.component'
 export * from './lib/status-badge/status-badge.component'

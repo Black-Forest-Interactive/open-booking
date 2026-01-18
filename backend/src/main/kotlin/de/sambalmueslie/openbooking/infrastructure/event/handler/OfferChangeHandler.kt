@@ -10,7 +10,7 @@ import io.micronaut.context.annotation.Context
 class OfferChangeHandler(
     service: OfferService,
     queue: EventService
-) : BusinessObjectChangeHandler<Long, Offer>(Offer::class, queue), OfferChangeListener {
+) : EntityChangeHandler<Long, Offer>(Offer::class, queue), OfferChangeListener {
 
     init {
         service.register(this)

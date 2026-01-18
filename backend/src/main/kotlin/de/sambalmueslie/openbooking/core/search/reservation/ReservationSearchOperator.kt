@@ -27,6 +27,7 @@ import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
 @Singleton
+@Deprecated("use booking directly instead")
 open class ReservationSearchOperator(
     private val service: ReservationService,
     private val visitorService: VisitorService,
@@ -120,8 +121,8 @@ open class ReservationSearchOperator(
             obj.offer.offer.finish,
             obj.offer.offer.maxPersons,
             obj.offer.offer.active,
-            obj.offer.assignment.bookedSpace,
-            obj.offer.assignment.reservedSpace,
+            obj.offer.assignment.confirmedSpace,
+            obj.offer.assignment.pendingSpace,
             obj.offer.assignment.availableSpace
 
         )

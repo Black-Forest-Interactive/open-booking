@@ -9,22 +9,16 @@ import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.request.api.*
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestData
-import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelation
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRelationRepository
 import de.sambalmueslie.openbooking.core.request.db.BookingRequestRepository
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
-import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
-import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
-import io.micronaut.data.model.Page
-import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -70,30 +64,31 @@ class BookingRequestService(
     }
 
     override fun create(request: BookingRequestChangeRequest): BookingRequest {
-        val offerIds = request.offerIds.toSet()
-        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
-        val suitableOffers = offerService.getByIds(offerIds).filter {
-            isEnoughSpaceAvailable(request, it, existingBookings[it.id] ?: emptyList())
-        }
-        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
-
-        isValid(request)
-        val data = repository.save(createData(request))
-
-        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorId, "")) }
-        val relations = bookings.map { BookingRequestRelation(it.id, data.id) }
-        relationRepository.saveAll(relations)
-
-        val result = data.convert()
-        notifyCreated(result)
-        return result
+//        val offerIds = request.offerIds.toSet()
+//        val existingBookings = bookingService.getByOfferIds(offerIds).groupBy { it.offerId }
+//        val suitableOffers = offerService.getByIds(offerIds).filter {
+//            isEnoughSpaceAvailable(request, it, existingBookings[it.id] ?: emptyList())
+//        }
+//        if (suitableOffers.isEmpty()) throw InvalidRequestException("REQUEST.Error.NoSuitableOffer")
+//
+//        isValid(request)
+//        val data = repository.save(createData(request))
+//
+//        val bookings = suitableOffers.map { bookingService.create(BookingChangeRequest(it.id, data.visitorId, "")) }
+//        val relations = bookings.map { BookingRequestRelation(it.id, data.id) }
+//        relationRepository.saveAll(relations)
+//
+//        val result = data.convert()
+//        notifyCreated(result)
+//        return result
+        TODO("not implemented yet")
     }
 
     private fun isEnoughSpaceAvailable(request: BookingRequestChangeRequest, offer: Offer, bookings: List<Booking>): Boolean {
         if (bookings.isEmpty()) return true
         if (request.ignoreSizeCheck) return true
 
-        val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.UNCONFIRMED }.sumOf { it.size }
+        val spaceConfirmed = bookings.filter { it.status == BookingStatus.CONFIRMED || it.status == BookingStatus.PENDING }.sumOf { it.size }
         val spaceAvailable = offer.maxPersons - spaceConfirmed
 
         return spaceAvailable >= request.visitorChangeRequest.size
@@ -131,71 +126,30 @@ class BookingRequestService(
         relationRepository.deleteByBookingRequestId(data.id)
     }
 
-    fun getUnconfirmed(pageable: Pageable): Page<BookingRequest> = filterService.getUnconfirmedData(pageable).map { it.convert() }
-    fun getInfoUnconfirmed(pageable: Pageable) = converter.page { filterService.getUnconfirmedData(pageable) }
-    fun filterInfoUnconfirmed(filter: BookingRequestFilterRequest, pageable: Pageable) = converter.page { filterService.filterInfoUnconfirmed(filter, pageable) }
-
-
-    fun confirmEmail(key: String): GenericRequestResult {
-        val request = repository.findOneByKey(key) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        val visitorId = request.visitorId
-        val visitor = visitorService.confirm(visitorId) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-
-        return when (visitor.verification.status == VerificationStatus.CONFIRMED) {
-            true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
-            else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
-        }
-    }
 
     fun confirm(id: Long, bookingId: Long, content: BookingConfirmationContent): GenericRequestResult {
-        val relations = relationRepository.getByBookingRequestId(id)
-        if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        relations.forEach {
-            if (it.bookingId == bookingId) {
-                bookingService.confirm(it.bookingId)
-            } else {
-                bookingService.denial(it.bookingId)
-            }
-        }
-
-        notify { it.confirmed(result, content) }
-        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
+//        val relations = relationRepository.getByBookingRequestId(id)
+//        if (!relations.any { it.bookingId == bookingId }) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        val result = patchData(id) { it.setStatus(BookingRequestStatus.CONFIRMED, timeProvider.now()) } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
+//
+//        relations.forEach {
+//            if (it.bookingId == bookingId) {
+//                bookingService.confirm(it.bookingId)
+//            } else {
+//                bookingService.denial(it.bookingId)
+//            }
+//        }
+//
+//        notify { it.confirmed(result, content) }
+//        return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
+        TODO("refactoring")
     }
 
-    fun deny(id: Long, content: BookingConfirmationContent): GenericRequestResult {
-        val result = patchData(id) { it.setStatus(BookingRequestStatus.DENIED, timeProvider.now()) } ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        val relations = relationRepository.getByBookingRequestId(id)
-        relations.forEach { bookingService.denial(it.bookingId) }
-
-        notify { it.denied(result, content) }
-        return GenericRequestResult(true, MSG_DENIAL_REQUEST_SUCCESS)
-    }
-
-    fun getConfirmationUrl(id: Long): String {
-        val data = repository.findByIdOrNull(id) ?: return ""
-        return "${config.baseUrl}/home/confirm/email/${data.key}"
-    }
-
-    fun getRequestReceivedMessage(id: Long, lang: String = "de") = messageService.getRequestReceivedMessage(id, lang)
-    fun getConfirmationMessage(id: Long, bookingId: Long, lang: String = "de") = messageService.getConfirmationMessage(id, bookingId, lang)
-    fun getDenialMessage(id: Long, lang: String = "de") = messageService.getDenialMessage(id, lang)
-
-    fun getInfoByBookingId(bookingId: Long): BookingRequestInfo? {
-        val relations = relationRepository.getByBookingId(bookingId)
-        val requestId = relations.map { it.bookingRequestId }.toSet().firstOrNull() ?: return null
-        return converter.data { repository.findByIdOrNull(requestId) }
-    }
 
     fun updateVisitor(id: Long, request: VisitorChangeRequest) = changeService.updateVisitor(id, request)
 
     fun info(id: Long) = converter.data { repository.findByIdOrNull(id) }
-    fun setComment(id: Long, value: String): BookingRequest? {
-        return patchData(id) { it.setComment(value, timeProvider.now()) }
-    }
 
     fun findByOfferId(offerId: Long): List<BookingRequestInfo> {
         val bookings = bookingService.getByOfferId(offerId).associateBy { it.id }

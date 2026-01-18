@@ -1,10 +1,10 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import java.time.LocalDateTime
 
 data class MailJobHistoryEntry(
     override val id: Long,
     val message: String,
     val timestamp: LocalDateTime,
-) : BusinessObject<Long>
+) : Entity<Long>

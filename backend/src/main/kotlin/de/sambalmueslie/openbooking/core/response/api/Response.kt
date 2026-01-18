@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.response.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class Response(
     override val id: Long,
@@ -8,4 +8,4 @@ data class Response(
     val type: ResponseType,
     val title: String,
     val content: String
-) : BusinessObject<Long>
+) : Entity<Long>

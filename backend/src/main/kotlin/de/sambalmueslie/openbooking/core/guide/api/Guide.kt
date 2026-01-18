@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.guide.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class Guide(
     override val id: Long,
@@ -9,4 +9,4 @@ data class Guide(
     val email: String,
     val phone: String,
     val mobile: String
-) : BusinessObject<Long>
+) : Entity<Long>

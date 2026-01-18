@@ -25,9 +25,9 @@ class BookingController(private val gateway: BookingGateway) {
     fun delete(auth: Authentication, id: Long) = gateway.delete(auth, id)
 
     @Get("/by/offer/{offerId}")
-    fun findByOffer(auth: Authentication, offerId: Long) = gateway.findByOffer(auth, offerId)
+    fun getByOfferId(auth: Authentication, offerId: Long) = gateway.getByOfferId(auth, offerId)
 
     @Get("/by/offer/{offerId}/details")
-    fun findDetailsByOffer(auth: Authentication, offerId: Long) = gateway.findDetailsByOffer(auth, offerId)
+    fun getDetailByOfferId(auth: Authentication, offerId: Long) = gateway.getDetailByOfferId(auth, offerId)
 
 }

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.visitor.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class Visitor(
     override val id: Long,
@@ -18,4 +18,4 @@ data class Visitor(
     val email: String,
 
     val verification: Verification
-) : BusinessObject<Long>
+) : Entity<Long>

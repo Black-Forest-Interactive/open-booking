@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.db
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntry
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -19,7 +19,7 @@ data class AuditLogEntryData(
     @Column var referenceId: String,
     @Column var reference: String,
     @Column var source: String,
-) : DataObject<AuditLogEntry> {
+) : EntityData<AuditLogEntry> {
 
     companion object {
         fun create(request: AuditLogEntryChangeRequest, mapper: ObjectMapper): AuditLogEntryData {

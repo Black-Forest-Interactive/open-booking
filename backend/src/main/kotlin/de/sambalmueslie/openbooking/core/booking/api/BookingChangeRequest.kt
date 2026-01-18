@@ -1,9 +1,12 @@
 package de.sambalmueslie.openbooking.core.booking.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 
 data class BookingChangeRequest(
+    val visitor: VisitorChangeRequest,
+    val comment: String,
     val offerId: Long,
-    val visitorId: Long,
-    val comment: String
-) : BusinessObjectChangeRequest
+    val autoConfirm: Boolean,
+    val ignoreSizeCheck: Boolean
+) : EntityChangeRequest

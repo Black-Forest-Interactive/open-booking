@@ -12,8 +12,8 @@ export class OfferAssignmentComponent {
 
   otherReservedSpace = input(0)
 
-  bookedSpace = computed(() => this.assignment().bookedSpace)
-  reservedSpace = computed(() => this.assignment().reservedSpace)
+  bookedSpace = computed(() => this.assignment().confirmedSpace)
+  reservedSpace = computed(() => this.assignment().pendingSpace)
   availableSpace = computed(() => this.assignment().availableSpace)
   totalSpace = computed(() => this.bookedSpace() + this.reservedSpace() + this.availableSpace())
 

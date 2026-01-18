@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.reservation.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class Reservation(
     override val id: Long,
@@ -9,4 +9,4 @@ data class Reservation(
     val status: ReservationStatus,
     val visitorId: Long,
     val offerId: Long,
-) : BusinessObject<Long>
+) : Entity<Long>

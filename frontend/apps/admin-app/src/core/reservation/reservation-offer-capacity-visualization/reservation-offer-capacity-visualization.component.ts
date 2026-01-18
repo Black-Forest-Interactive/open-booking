@@ -23,8 +23,8 @@ export class ReservationOfferCapacityVisualizationComponent {
   // Computed properties
   active = computed(() => this.entry().offer.active)
   maxPersons = computed(() => this.entry().offer.maxPersons)
-  bookedSpace = computed(() => this.entry().assignment.bookedSpace)
-  reservedSpace = computed(() => this.entry().assignment.reservedSpace)
+  bookedSpace = computed(() => this.entry().assignment.confirmedSpace)
+  reservedSpace = computed(() => this.entry().assignment.pendingSpace)
   availableSpace = computed(() => this.entry().assignment.availableSpace)
 
   isUnconfirmed = computed(() =>

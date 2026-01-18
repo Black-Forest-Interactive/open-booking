@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.label.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.label.api.Label
 import de.sambalmueslie.openbooking.core.label.api.LabelChangeRequest
 import jakarta.persistence.*
@@ -16,7 +16,7 @@ data class LabelData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Label> {
+) : EntityData<Label> {
 
     companion object {
         fun create(request: LabelChangeRequest, timestamp: LocalDateTime): LabelData {

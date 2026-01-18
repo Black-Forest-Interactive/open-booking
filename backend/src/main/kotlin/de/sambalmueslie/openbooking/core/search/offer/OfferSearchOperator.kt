@@ -178,8 +178,8 @@ open class OfferSearchOperator(
             obj.offer.finish,
             obj.offer.maxPersons,
             obj.offer.active,
-            obj.assignment.bookedSpace,
-            obj.assignment.reservedSpace,
+            obj.assignment.confirmedSpace,
+            obj.assignment.pendingSpace,
             obj.assignment.availableSpace,
             obj.reservations.map { convert(it) },
             obj.bookings.map { convert(it) }

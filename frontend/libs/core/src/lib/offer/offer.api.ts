@@ -27,9 +27,14 @@ export interface OfferDetails {
   timestamp: string
 }
 
+export interface OfferReference {
+  offer: Offer,
+  assignment: Assignment,
+}
+
 export interface Assignment {
-  bookedSpace: number,
-  reservedSpace: number,
+  confirmedSpace: number,
+  pendingSpace: number,
   availableSpace: number,
   deactivatedSpace: number,
 }

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.request.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.request.api.BookingRequest
 import de.sambalmueslie.openbooking.core.request.api.BookingRequestStatus
 import jakarta.persistence.*
@@ -19,7 +19,7 @@ data class BookingRequestData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<BookingRequest> {
+) : EntityData<BookingRequest> {
 
 
     override fun convert() = BookingRequest(id, key, comment, status)

@@ -6,6 +6,7 @@ import de.sambalmueslie.openbooking.core.search.reservation.db.ReservationSearch
 import jakarta.inject.Singleton
 
 @Singleton
+@Deprecated("use booking directly instead")
 class ReservationFieldMappingProvider : FieldMappingProvider {
     override fun createMappings(): FieldMappings.() -> Unit {
         return {

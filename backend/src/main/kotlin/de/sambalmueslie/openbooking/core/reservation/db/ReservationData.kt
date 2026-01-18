@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.reservation.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationChangeRequest
@@ -22,7 +22,7 @@ data class ReservationData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Reservation> {
+) : EntityData<Reservation> {
     override fun convert() = Reservation(id, key, comment, status, visitorId, offerId)
 
     fun update(request: ReservationChangeRequest, timestamp: LocalDateTime): ReservationData {

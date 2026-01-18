@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.offer.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import java.time.LocalDateTime
 
 data class Offer(
@@ -9,4 +9,4 @@ data class Offer(
     val finish: LocalDateTime,
     val maxPersons: Int,
     val active: Boolean
-) : BusinessObject<Long>
+) : Entity<Long>

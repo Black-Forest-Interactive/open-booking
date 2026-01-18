@@ -10,7 +10,7 @@ import io.micronaut.context.annotation.Context
 class BookingChangeHandler(
     service: BookingService,
     queue: EventService
-) : BusinessObjectChangeHandler<Long, Booking>(Booking::class, queue), BookingChangeListener {
+) : EntityChangeHandler<Long, Booking>(Booking::class, queue), BookingChangeListener {
 
     init {
         service.register(this)

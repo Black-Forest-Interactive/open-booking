@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.notification.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 data class NotificationTemplate(
     override val id: Long,
@@ -9,4 +9,4 @@ data class NotificationTemplate(
     val subject: String,
     val contentType: ContentType,
     val content: String
-) : BusinessObject<Long>
+) : Entity<Long>

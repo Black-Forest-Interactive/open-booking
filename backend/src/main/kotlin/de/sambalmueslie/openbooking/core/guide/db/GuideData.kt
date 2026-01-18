@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.guide.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.guide.api.Guide
 import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import jakarta.persistence.*
@@ -17,7 +17,7 @@ data class GuideData(
     @Column var mobile: String,
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Guide> {
+) : EntityData<Guide> {
     companion object {
         fun create(request: GuideChangeRequest, timestamp: LocalDateTime): GuideData {
             return GuideData(0, request.firstName, request.lastName, request.email, request.phone, request.mobile, timestamp)

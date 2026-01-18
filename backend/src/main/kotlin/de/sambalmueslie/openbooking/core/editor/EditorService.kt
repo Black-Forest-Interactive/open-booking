@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.editor
 
 import de.sambalmueslie.openbooking.common.BaseCrudService
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
@@ -100,7 +100,7 @@ class EditorService(
         return existing.map { remove(service, it) }.firstOrNull()
     }
 
-    private fun <O : BusinessObject<Long>> remove(service: ResourceEditorService<O>, editor: Editor): Editor {
+    private fun <O : Entity<Long>> remove(service: ResourceEditorService<O>, editor: Editor): Editor {
         val result = service.remove(editor)
         notifyDeleted(result)
         return result

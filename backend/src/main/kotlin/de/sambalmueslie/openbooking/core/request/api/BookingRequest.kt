@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.request.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 
 @Deprecated("use reservation instead.", ReplaceWith("reservation"))
 data class BookingRequest(
@@ -8,4 +8,4 @@ data class BookingRequest(
     val key: String,
     val comment: String,
     val status: BookingRequestStatus
-) : BusinessObject<Long>
+) : Entity<Long>
