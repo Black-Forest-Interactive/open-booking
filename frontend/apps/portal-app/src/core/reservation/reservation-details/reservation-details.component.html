@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+    <app-loading-bar [reloading]="reloading()"></app-loading-bar>
+
+    @if (error()) {
+      <mat-card class="bg-red-50 border-l-4 border-red-500">
+        <mat-card-content class="flex items-center gap-3">
+          <mat-icon class="text-red-500">error</mat-icon>
+          <div>
+            <h3 class="font-semibold text-red-900">{{ 'RESERVATION.Details.LoadingError' | translate }}</h3>
+            <p class="text-red-700">{{ error()?.message || 'Failed to load reservation' }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (data()) {
+      <mat-card>
+        <div class="p-4 border-b">
+          <h2 class="text-xl font-semibold">{{ 'RESERVATION.Details.Title' | translate }}</h2>
+        </div>
+        <div class="p-4 border-b flex justify-between gap-4">
+          <lib-visitor-type [data]="visitor()?.type!!"/>
+          <lib-verification-status [data]="verification()!!"/>
+          <lib-reservation-status [status]="status()"/>
+        </div>
+
+        @if (!isEditable()) {
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-yellow-600">info</mat-icon>
+              <p class="text-yellow-800">{{ 'RESERVATION.Details.NotEditable' | translate }}</p>
+            </div>
+          </div>
+        }
+
+
+        <div class="flex flex-col gap-4 p-4">
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <mat-icon class="text-primary">event</mat-icon>
+            {{ 'RESERVATION.Details.Offer' | translate }}
+          </h3>
+          <mat-card appearance="outlined" class="!p-3">
+            <div class="flex items-start gap-3">
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex-1">
+                    <div class="font-medium">{{ start() | date:'fullDate' }}</div>
+                    <div class="text-sm opacity-70 mt-1">
+                      {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
+                    </div>
+                  </div>
+                </div>
+                <!-- Max Persons Info -->
+                <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
+                  <mat-icon class="text-base" inline>people</mat-icon>
+                  <span>{{ 'SUMMARY.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <mat-divider></mat-divider>
+
+        <app-visitor-info [data]="visitor()!!"></app-visitor-info>
+
+        @if (comment()) {
+          <mat-divider></mat-divider>
+
+          <!-- Comment Section -->
+          <div class="p-4 flex flex-col gap-2">
+            <h3 class="text-lg font-semibold flex items-center gap-2">
+              <mat-icon class="text-primary">comment</mat-icon>
+              {{ 'REQUEST.Form.Comment.Label' | translate }}
+            </h3>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <p class="text-gray-800 whitespace-pre-wrap">{{ comment() }}</p>
+            </div>
+
+          </div>
+        }
+        <mat-divider></mat-divider>
+        <div class="p-4 flex  justify-center items-center gap-2">
+          <p class="text-sm text-gray-600">Last Updated</p>
+          <p class="text-sm text-gray-600">{{ timestamp() | date:'medium' }}</p>
+        </div>
+      </mat-card>
+
+
+    }
+  </div>
+</div>

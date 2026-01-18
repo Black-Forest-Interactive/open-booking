@@ -21,6 +21,9 @@ class ReservationController(private val gateway: ReservationGateway) {
     fun getReservationFailedMessage(id: Long, @QueryValue(defaultValue = "en") lang: String) = gateway.getReservationFailedMessage(id, lang)
 
 
-    @Post("confirm/email/{key}")
-    fun confirmEmail(key: String) = gateway.confirmEmail(key)
+    @Post("confirm/email")
+    fun confirmEmail(@QueryValue key: String) = gateway.confirmEmail(key)
+
+    @Get()
+    fun get(@QueryValue key: String) = gateway.get(key)
 }

@@ -86,6 +86,10 @@ class ReservationSearchQueryBuilder : SearchQueryBuilder<ReservationSearchReques
                 must(matchAll())
             }
         }
+        sort {
+            add(ReservationSearchEntryData::start, SortOrder.ASC)  // Group by start
+            add(ReservationSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
+        }
         agg(ReservationSearchEntryData::status.name, TermsAgg(ReservationSearchEntryData::status))
     }
 }

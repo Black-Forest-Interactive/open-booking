@@ -1,5 +1,4 @@
 import {Route} from '@angular/router';
-import {DayInfoDetailsComponent} from "../core/day-info-details/day-info-details.component";
 
 export const appRoutes: Route[] = [
 
@@ -8,13 +7,19 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('../core/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
+    path: 'confirm/email/:key',
+    loadComponent: () => import('../core/confirm-mail/confirm-mail.component').then(m => m.ConfirmMailComponent)
+  },
+  {
+    path: 'details/:date',
+    loadComponent: () => import('../core/day-info-details/day-info-details.component').then(m => m.DayInfoDetailsComponent)
+  },
+  {
     path: 'reservation',
     loadComponent: () => import('../core/reservation/reservation.component').then(m => m.ReservationComponent)
   },
   {
-    path: 'confirm/email/:key',
-    loadComponent: () => import('../core/confirm-mail/confirm-mail.component').then(m => m.ConfirmMailComponent)
+    path: 'reservation/:key',
+    loadComponent: () => import('../core/reservation/reservation-details/reservation-details.component').then(m => m.ReservationDetailsComponent)
   },
-
-  {path: 'details/:date', component: DayInfoDetailsComponent},
 ];

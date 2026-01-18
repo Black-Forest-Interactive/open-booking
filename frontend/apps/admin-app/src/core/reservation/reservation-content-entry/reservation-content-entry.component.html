@@ -9,9 +9,9 @@
         </button>
       }
       <div class="flex items-center gap-3 flex-wrap">
-        <app-reservation-status [data]="data().reservation"/>
-        <app-visitor-status [visitor]="data().visitor"/>
-        <app-visitor-type [data]="data().visitor" class="flex-shrink-0"/>
+        <lib-reservation-status [status]="data().reservation.status"/>
+        <lib-verification-status [data]="data().visitor.verification"/>
+        <lib-visitor-type [data]="data().visitor.type" class="flex-shrink-0"/>
       </div>
     </div>
   </div>

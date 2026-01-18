@@ -53,7 +53,9 @@
       "Title": "Create a new reservation"
     },
     "Details": {
-      "Title": "Reservation Details"
+      "Title": "Reservation Details",
+      "NotEditable": "This reservation can no longer be edited",
+      "LoadingError": "Error Loading Reservation"
     },
     "Dialog": {
       "InfoTitle": "Reservation Info"
@@ -331,7 +333,7 @@
       "FormInvalid": "Something went wrong with the form"
     }
   },
-  "VISITOR_GROUP": {
+  "VISITOR": {
     "MailConfirmation": {
       "Failed": {
         "Message": "Your Email was not confirmed, please contact support",
@@ -350,8 +352,12 @@
     "Title": "Visitor Group",
     "Status": {
       "Title": "Status",
-      "CONFIRMED": "Confirmed",
-      "UNCONFIRMED": "Unconfirmed"
+      "CONFIRMED": "Mail Confirmed",
+      "UNCONFIRMED": "Mail Unconfirmed"
+    },
+    "Type": {
+      "SINGLE": "Single",
+      "GROUP": "Group"
     }
   },
   "DASHBOARD": {

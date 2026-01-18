@@ -5,7 +5,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
-import {CommonModule, DatePipe} from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {EChartsOption} from "echarts";
 import {toSignal} from "@angular/core/rxjs-interop";

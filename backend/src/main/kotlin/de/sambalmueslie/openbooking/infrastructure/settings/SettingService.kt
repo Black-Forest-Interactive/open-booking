@@ -83,6 +83,14 @@ class SettingService(
         return NumberResponse(getValue(SettingsAPI.SETTINGS_EDITOR_TTL).toLongOrNull())
     }
 
+    fun getDateFormat(): TextResponse {
+        return TextResponse(getValue(SettingsAPI.SETTINGS_DATE_FORMAT))
+    }
+
+    fun getTimeFormat(): TextResponse {
+        return TextResponse(getValue(SettingsAPI.SETTINGS_TIME_FORMAT))
+    }
+
     fun getValue(key: String): String {
         return findByKey(key)?.value as? String ?: ""
     }

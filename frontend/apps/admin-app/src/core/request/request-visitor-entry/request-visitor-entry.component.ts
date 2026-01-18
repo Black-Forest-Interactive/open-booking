@@ -5,7 +5,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {VisitorStatusComponent} from "../../visitor/visitor-status/visitor-status.component";
 import {VisitorInfoDialogComponent} from "../../visitor/visitor-info-dialog/visitor-info-dialog.component";
 
 @Component({
@@ -13,8 +12,7 @@ import {VisitorInfoDialogComponent} from "../../visitor/visitor-info-dialog/visi
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatProgressBarModule,
-    VisitorStatusComponent
+    MatProgressBarModule
   ],
   templateUrl: './request-visitor-entry.component.html',
   styleUrl: './request-visitor-entry.component.scss',

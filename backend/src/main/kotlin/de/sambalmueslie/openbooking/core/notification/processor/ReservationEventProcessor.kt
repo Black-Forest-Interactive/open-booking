@@ -12,6 +12,7 @@ import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmation
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationInfoAssembler
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorType
 import de.sambalmueslie.openbooking.infrastructure.mail.MailService
 import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
@@ -19,6 +20,7 @@ import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingsAPI
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
+import java.time.format.DateTimeFormatter
 
 @Singleton
 class ReservationEventProcessor(
@@ -31,6 +33,8 @@ class ReservationEventProcessor(
 ) : NotificationEventProcessor {
     companion object {
         private val logger = LoggerFactory.getLogger(ReservationEventProcessor::class.java)
+        private const val DEFAULT_DATE_FORMAT = "dd-MM-yyyy"
+        private const val DEFAULT_TIME_FORMAT = "HH:mm"
     }
 
     override fun process(event: NotificationEvent) {
@@ -57,11 +61,23 @@ class ReservationEventProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = infoAssembler.get(event.sourceId) ?: return
-        val url = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
+        val confirmUrl = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
+        val detailsUrl = service.getDetailsUrl(event.sourceId)
+        val title = if (info.visitor.type == VisitorType.GROUP) info.visitor.title else info.visitor.name
+        val age = if (info.visitor.size > 1) "${info.visitor.minAge} - ${info.visitor.maxAge}" else "${info.visitor.minAge}"
+        val offer = info.offer.offer
+        val dateFormatter = DateTimeFormatter.ofPattern(settingService.getDateFormat().text.ifBlank { DEFAULT_DATE_FORMAT })
+        val timeFormatter = DateTimeFormatter.ofPattern(settingService.getTimeFormat().text.ifBlank { DEFAULT_TIME_FORMAT })
+        val timestamp = "${offer.start.format(dateFormatter)} ${offer.start.format(timeFormatter)} - ${offer.finish.format(timeFormatter)}"
 
         val properties = mapOf(
             Pair("info", info),
-            Pair("url", url)
+            Pair("title", title),
+            Pair("age", age),
+            Pair("timestamp", timestamp),
+            Pair("isGroup", info.visitor.type == VisitorType.GROUP),
+            Pair("confirmUrl", confirmUrl),
+            Pair("detailsUrl", detailsUrl),
         )
 
         notifyContactOnCreated(properties, info)

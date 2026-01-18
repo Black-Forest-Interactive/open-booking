@@ -35,76 +35,7 @@
 
 <!-- Visitor Group Information -->
 
-<h3 class="text-lg font-semibold flex items-center gap-2 p-4">
-  <mat-icon class="text-primary">groups</mat-icon>
-  {{ 'SUMMARY.VisitorInfo.Title' | translate }}
-</h3>
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-  <div class="space-y-3">
-    @if (isGroup()) {
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Title.Label' | translate }}</p>
-        <p class="font-medium">{{ visitorGroup().title }}</p>
-      </div>
-
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Size.Label' | translate }}</p>
-        <p
-          class="font-medium">{{ 'SUMMARY.VisitorInfo.PersonCount' | translate: {count: visitorGroup().size} }}</p>
-      </div>
-    }
-
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Type' | translate }}</p>
-      <p class="font-medium">
-        {{ (visitorGroup().type === 'GROUP' ? 'SUMMARY.VisitorInfo.GroupReservation' : 'SUMMARY.VisitorInfo.IndividualReservation') | translate }}
-      </p>
-    </div>
-
-    @if (isGroup()) {
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.AgeRange' | translate }}</p>
-        <p class="font-medium">{{ visitorGroup().minAge }}
-          - {{ visitorGroup().maxAge }} {{ 'SUMMARY.VisitorInfo.Years' | translate }}</p>
-      </div>
-    } @else {
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Age' | translate }}</p>
-        <p class="font-medium">{{ visitorGroup().minAge }} {{ 'SUMMARY.VisitorInfo.Years' | translate }}</p>
-      </div>
-    }
-
-  </div>
-
-  <div class="space-y-3">
-    @if (isGroup()) {
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Contact.Label' | translate }}</p>
-        <p class="font-medium">{{ visitorGroup().name }}</p>
-      </div>
-    } @else {
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Name.Label' | translate }}</p>
-        <p class="font-medium">{{ visitorGroup().name }}</p>
-      </div>
-    }
-
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Phone.Label' | translate }}</p>
-      <p class="font-medium">{{ visitorGroup().phone }}</p>
-    </div>
-
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Mail.Label' | translate }}</p>
-      <p class="font-medium">{{ visitorGroup().email }}</p>
-    </div>
-    <div>
-      <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Address' | translate }}</p>
-      <p class="font-medium">{{ address() }}</p>
-    </div>
-  </div>
-</div>
+<app-visitor-info [data]="visitorGroup()"></app-visitor-info>
 
 @if (comment()) {
   <mat-divider></mat-divider>

@@ -1,5 +1,5 @@
 import {Component, signal} from '@angular/core';
-import {CommonModule} from "@angular/common";
+
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
@@ -11,14 +11,13 @@ import {AdminMenuComponent} from "../admin-menu/admin-menu.component";
 @Component({
   selector: 'app-admin-content',
   imports: [
-    CommonModule,
     RouterModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
     AdminMenuComponent
-  ],
+],
   templateUrl: './admin-content.component.html',
   styleUrl: './admin-content.component.scss',
 })

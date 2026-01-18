@@ -4,7 +4,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {appRoutes} from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
 import {provideToastConfig} from "./hot-toast.config";
@@ -41,6 +41,6 @@ export const appConfig: ApplicationConfig = {
       lang: 'en'
     }),
     provideEChartsConfig(),
-    provideRouter(appRoutes),
+    provideRouter(appRoutes, withComponentInputBinding()),
   ],
 };

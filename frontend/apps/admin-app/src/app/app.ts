@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common';
+
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -10,7 +10,7 @@ import {AdminFooterComponent} from "./admin-footer/admin-footer.component";
 
 
 @Component({
-  imports: [RouterModule, CommonModule, MatCardModule, MatButtonModule, MatIconModule, AdminToolbarComponent, AdminContentComponent, AdminFooterComponent],
+  imports: [RouterModule, MatCardModule, MatButtonModule, MatIconModule, AdminToolbarComponent, AdminContentComponent, AdminFooterComponent],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',

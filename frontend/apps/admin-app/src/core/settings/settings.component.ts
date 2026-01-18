@@ -2,7 +2,7 @@ import {Component, computed, resource, signal} from '@angular/core';
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {SettingsService} from "@open-booking/admin";
 import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
-import {CommonModule} from "@angular/common";
+
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTableModule} from "@angular/material/table";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -15,7 +15,6 @@ import {MatIconButton} from "@angular/material/button";
 @Component({
   selector: 'app-settings',
   imports: [
-    CommonModule,
     TranslatePipe,
     MatTableModule,
     MatPaginatorModule,
@@ -26,7 +25,7 @@ import {MatIconButton} from "@angular/material/button";
     RouterLink,
     SearchComponent,
     MatIconButton
-  ],
+],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })

@@ -1,7 +1,7 @@
 import {Component, computed, input} from '@angular/core';
-import {Reservation} from "@open-booking/core";
-import {TranslatePipe} from "@ngx-translate/core";
+import {ReservationStatus} from '@open-booking/core'
 import {MatIconModule} from "@angular/material/icon";
+import {StatusBadgeComponent} from "../status-badge/status-badge.component";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -11,15 +11,16 @@ const classes: Record<string, string> = {
 }
 
 @Component({
-  selector: 'app-reservation-status',
+  selector: 'lib-reservation-status',
   imports: [
     MatIconModule,
-    TranslatePipe
+    StatusBadgeComponent
   ],
   templateUrl: './reservation-status.component.html',
   styleUrl: './reservation-status.component.scss',
 })
 export class ReservationStatusComponent {
-  data = input.required<Reservation>()
-  statusClass = computed(() => classes[this.data().status] || 'bg-gray-100 text-gray-800')
+  status = input.required<ReservationStatus>()
+  statusClass = computed(() => classes[this.status()] || 'bg-gray-100 text-gray-800')
+  text = computed(() => 'RESERVATION.Status.' + this.status())
 }

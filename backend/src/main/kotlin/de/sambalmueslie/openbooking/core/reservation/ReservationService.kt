@@ -183,4 +183,10 @@ class ReservationService(
         return "${config.baseUrl}/confirm/email/${data.key}"
     }
 
+    fun getDetailsUrl(id: Long): String {
+        val data = repository.findByIdOrNull(id) ?: return ""
+        return "${config.baseUrl}/reservation/${data.key}"
+    }
+
+
 }

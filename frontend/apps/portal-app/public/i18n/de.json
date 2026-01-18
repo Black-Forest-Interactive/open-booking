@@ -53,7 +53,10 @@
       "Title": "Eine neue Reservierung erstellen"
     },
     "Details": {
-      "Title": "Reservierungsdetails"
+      "Title": "Reservierungsdetails",
+      "NotEditable": "Diese Reservierung kann nicht mehr geändert werden",
+      "LoadingError": "Die Reservierung konnte nicht geladen werden",
+      "Offer": "Ausgewählter Termin"
     },
     "Dialog": {
       "InfoTitle": "Reservierungsinfo"
@@ -331,7 +334,7 @@
       "FormInvalid": "Leider hat etwas nicht richtig funktioniert"
     }
   },
-  "VISITOR_GROUP": {
+  "VISITOR": {
     "MailConfirmation": {
       "Failed": {
         "Message": "Ihre E-Mail-Adresse wurde nicht bestätigt. Bitte kontaktieren Sie uns.",
@@ -352,6 +355,10 @@
       "Title": "Status",
       "CONFIRMED": "Mail bestätigt",
       "UNCONFIRMED": "Mail unbestätigt"
+    },
+    "Type": {
+      "SINGLE": "Privatperson",
+      "GROUP": "Gruppe oder Schulklasse"
     }
   },
   "DASHBOARD": {
