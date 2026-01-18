@@ -23,9 +23,9 @@
         <span>{{ 'MENU.Reservation' | translate }}</span>
         <div class="flex-auto"></div>
         <div class="flex gap-1">
-          @if (unconfirmed()) {
+          @if (pending()) {
             <div
-              class="text-xs font-medium px-2 py-1 rounded bg-yellow-200 border-yellow-600 border">{{ unconfirmed() }}
+              class="text-xs font-medium px-2 py-1 rounded bg-yellow-200 border-yellow-600 border">{{ pending() }}
             </div>
           }
           @if (newReservations()) {

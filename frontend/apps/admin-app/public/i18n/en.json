@@ -539,7 +539,8 @@
     "key": {
       "guide": "Guide",
       "offer": "Offer",
-      "reservation": "Reservation"
+      "reservation": "Reservation",
+      "bookings": "Bookings"
     },
     "status": {
       "UNKNOWN": "Unknown",

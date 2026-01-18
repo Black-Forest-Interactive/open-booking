@@ -1,9 +1,9 @@
 import {Component, computed, input} from '@angular/core';
 import {BookingStatus} from "@open-booking/core";
 import {MatIconModule} from "@angular/material/icon";
-import {StatusBadgeComponent} from "@open-booking/shared";
+import {StatusBadgeComponent} from "../status-badge/status-badge.component";
 
-const classes: Record<string, string> = {
+const bookingClasses: Record<string, string> = {
   UNKNOWN: 'bg-gray-100 text-gray-800',
   PENDING: 'bg-blue-100 text-blue-800',
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -12,7 +12,7 @@ const classes: Record<string, string> = {
   EXPIRED: 'bg-gray-100 text-gray-800'
 }
 
-const icons: Record<string, string> = {
+const bookingIcons: Record<string, string> = {
   UNKNOWN: 'help_outline',
   PENDING: 'schedule',
   CONFIRMED: 'check_circle',
@@ -28,11 +28,11 @@ const icons: Record<string, string> = {
     StatusBadgeComponent
   ],
   templateUrl: './booking-status.component.html',
-  styleUrl: './booking-status.component.scss',
+  styleUrls: ['./booking-status.component.scss'],
 })
 export class BookingStatusComponent {
   status = input.required<BookingStatus>()
-  statusClass = computed(() => classes[this.status()] || 'bg-gray-100 text-gray-800')
+  statusClass = computed(() => bookingClasses[this.status()] || 'bg-gray-100 text-gray-800')
   text = computed(() => 'BOOKING.Status.' + this.status())
-  icon = computed(() => icons[this.status()] || 'flat')
+  icon = computed(() => bookingIcons[this.status()] || 'flat')
 }

@@ -1,7 +1,7 @@
 import {Component, computed, input} from '@angular/core';
 import {ReservationStatus} from '@open-booking/core'
 import {MatIconModule} from "@angular/material/icon";
-import {StatusBadgeComponent} from "../status-badge/status-badge.component";
+import {StatusBadgeComponent} from "@open-booking/shared";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',

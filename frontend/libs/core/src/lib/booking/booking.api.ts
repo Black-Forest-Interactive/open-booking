@@ -43,7 +43,7 @@ export class BookingChangeRequest {
 
 export class BookingSearchRequest {
   constructor(
-    public query: string,
+    public fullTextSearch: String,
     public status: BookingStatus[],
     public from: string | null | undefined,
     public to: string | null | undefined

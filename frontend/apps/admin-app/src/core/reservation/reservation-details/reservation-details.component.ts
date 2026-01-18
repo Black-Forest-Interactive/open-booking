@@ -3,7 +3,7 @@ import {navigateToReservation} from "../../../app/app.navigation";
 import {ActivatedRoute, Router} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {interval, map, of, Subject, switchMap, takeUntil} from "rxjs";
-import {ReservationService} from "@open-booking/admin";
+import {BookingService} from "@open-booking/admin";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {ReservationContentEntryComponent} from "../reservation-content-entry/reservation-content-entry.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -26,19 +26,19 @@ export class ReservationDetailsComponent implements OnInit, OnDestroy {
   inputId = input<number>()
 
 
-  private reservationCriteria = computed(() => this.routeId() || this.inputId())
-  private reservationResource = resource({
-    params: this.reservationCriteria,
+  private bookingCriteria = computed(() => this.routeId() || this.inputId())
+  private bookingResource = resource({
+    params: this.bookingCriteria,
     loader: param => toPromise(
       (param.params)
-        ? this.service.getReservationDetails(param.params)
+        ? this.service.getBookingDetails(param.params)
         : of(),
       param.abortSignal
     )
   })
 
   private editorResource = resource({
-    params: this.reservationCriteria,
+    params: this.bookingCriteria,
     loader: param => toPromise(
       (param.params)
         ? this.service.createEditor(param.params)
@@ -47,15 +47,15 @@ export class ReservationDetailsComponent implements OnInit, OnDestroy {
     )
   })
 
-  reloading = computed(() => this.reservationResource.isLoading())
-  data = computed(() => this.reservationResource.value())
+  reloading = computed(() => this.bookingResource.isLoading())
+  data = computed(() => this.bookingResource.value())
 
   editor = computed(() => this.editorResource.value())
 
   private unsub = new Subject<void>()
 
   constructor(
-    private service: ReservationService,
+    private service: BookingService,
     protected readonly router: Router
   ) {
 
@@ -77,7 +77,7 @@ export class ReservationDetailsComponent implements OnInit, OnDestroy {
     if (editor) {
       this.service.deleteEditor(editor.resourceId).subscribe()
     } else {
-      let resourceId = this.reservationCriteria()
+      let resourceId = this.bookingCriteria()
       if (resourceId) this.service.deleteEditor(resourceId).subscribe()
     }
 
@@ -88,7 +88,7 @@ export class ReservationDetailsComponent implements OnInit, OnDestroy {
   }
 
   reload() {
-    this.reservationResource.reload()
+    this.bookingResource.reload()
   }
 
   private refreshEditor() {

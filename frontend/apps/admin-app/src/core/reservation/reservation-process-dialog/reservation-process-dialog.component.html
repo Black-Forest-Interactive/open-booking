@@ -22,11 +22,11 @@
       }
     </div>
   </div>
-  @if (data.info.reservation.comment.length > 0) {
+  @if (data.info.booking.comment.length > 0) {
     <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded mb-3">
       <div class="flex gap-3">
         <div class="w-48 font-medium">{{ 'RESERVATION.Dialog.Confirm.Info.Comment' | translate }}</div>
-        <div>{{ data.info.reservation.comment }}</div>
+        <div>{{ data.info.booking.comment }}</div>
       </div>
     </div>
   }

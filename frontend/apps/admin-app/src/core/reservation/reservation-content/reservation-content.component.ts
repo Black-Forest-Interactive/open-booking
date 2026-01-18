@@ -1,26 +1,26 @@
 import {Component, computed, input, output} from '@angular/core';
-import {ReservationDetails, ReservationStatus} from "@open-booking/core";
+import {BookingDetails, VerificationStatus} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
-import {
-  ReservationOfferCapacityVisualizationComponent
-} from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
 import {RouterLink} from "@angular/router";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
 import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
-import {ReservationStatusComponent, VerificationStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
+import {
+  ReservationOfferCapacityVisualizationComponent
+} from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
+import {BookingStatusComponent, VerificationStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 
-interface GroupedReservations {
+interface GroupedBookings {
   date: string;
   offerId: number;
   timeRange: string;
-  entries: ReservationDetails[];
-  totalReservations: number;
+  entries: BookingDetails[];
+  totalEntries: number;
   openCount: number;
 }
 
@@ -34,23 +34,21 @@ interface GroupedReservations {
     MatTooltipModule,
     TranslatePipe,
     DatePipe,
-    VisitorTypeComponent,
-    ReservationOfferCapacityVisualizationComponent,
     RouterLink,
-    ReservationStatusComponent,
     VisitorTitleComponent,
     VisitorSizeComponent,
     EditorInfoComponent,
-    ReservationStatusComponent,
+    ReservationOfferCapacityVisualizationComponent,
+    VisitorTypeComponent,
     VerificationStatusComponent,
-    VisitorTypeComponent
+    BookingStatusComponent
   ],
   templateUrl: './reservation-content.component.html',
   styleUrl: './reservation-content.component.scss',
 })
 export class ReservationContentComponent {
-  entries = input.required<ReservationDetails[]>();
-  reloading = input<boolean>(false);
+  entries = input.required<BookingDetails[]>()
+  reloading = input<boolean>(false)
   currentUserId = input<string>('')
 
   reload = output<number>();
@@ -58,7 +56,7 @@ export class ReservationContentComponent {
   // Group reservations by date and offer
   groupedEntries = computed(() => {
     const entries = this.entries();
-    const groups = new Map<string, GroupedReservations>();
+    const groups = new Map<string, GroupedBookings>();
 
     entries.forEach(entry => {
       const date = new Date(entry.offer.offer.start).toDateString();
@@ -70,18 +68,14 @@ export class ReservationContentComponent {
           offerId: entry.offer.offer.id,
           timeRange: this.formatTimeRange(entry.offer.offer.start, entry.offer.offer.finish),
           entries: [],
-          totalReservations: 0,
+          totalEntries: 0,
           openCount: 0
         });
       }
 
       const group = groups.get(key)!;
       group.entries.push(entry);
-      group.totalReservations++;
-
-      if (this.isOpenStatus(entry.reservation.status)) {
-        group.openCount++;
-      }
+      group.totalEntries++;
     });
 
     // Sort groups by date and time
@@ -93,32 +87,23 @@ export class ReservationContentComponent {
     }));
   });
 
-  private sortEntriesWithinGroup(entries: ReservationDetails[]): ReservationDetails[] {
+  private sortEntriesWithinGroup(entries: BookingDetails[]): BookingDetails[] {
     return entries.sort((a, b) => {
-      // Priority 1: Open reservations first
-      const aOpen = this.isOpenStatus(a.reservation.status) ? 0 : 1;
-      const bOpen = this.isOpenStatus(b.reservation.status) ? 0 : 1;
-      if (aOpen !== bOpen) return aOpen - bOpen;
-
-      // Priority 2: Reservations being edited first
+      // Priority 1: Reservations being edited first
       const aEditing = a.editor ? 0 : 1;
       const bEditing = b.editor ? 0 : 1;
       if (aEditing !== bEditing) return aEditing - bEditing;
 
-      // Priority 3: Unconfirmed visitors
-      const aUnconfirmed = a.visitor.verification.status === 'UNCONFIRMED' ? 0 : 1;
-      const bUnconfirmed = b.visitor.verification.status === 'UNCONFIRMED' ? 0 : 1;
+      // Priority 2: Unconfirmed visitors
+      const aUnconfirmed = a.visitor.verification.status === VerificationStatus.UNCONFIRMED ? 0 : 1;
+      const bUnconfirmed = b.visitor.verification.status === VerificationStatus.UNCONFIRMED ? 0 : 1;
       if (aUnconfirmed !== bUnconfirmed) return aUnconfirmed - bUnconfirmed;
 
-      // Priority 4: Oldest first (by timestamp)
+      // Priority 3: Oldest first (by timestamp)
       return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
     });
   }
 
-  private isOpenStatus(status: ReservationStatus): boolean {
-    // Adjust these based on your actual status values
-    return status === 'UNKNOWN' || status === 'UNCONFIRMED';
-  }
 
   private formatTimeRange(start: string, finish: string): string {
     const startDate = new Date(start);

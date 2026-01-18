@@ -15,7 +15,7 @@
           </div>
           <div class="flex items-center gap-4">
             <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200">
-              <span class="font-medium">{{ group.totalReservations }}</span>
+              <span class="font-medium">{{ group.totalEntries }}</span>
               <span class="text-gray-600 ml-1">{{ 'RESERVATION.Total' | translate }}</span>
             </div>
             <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-orange-200">
@@ -28,7 +28,7 @@
 
       <!-- Reservations List -->
       <div class="divide-y divide-gray-200">
-        @for (entry of group.entries; track entry.reservation.id) {
+        @for (entry of group.entries; track entry.booking.id) {
           <div class="px-4 py-3 hover:bg-gray-50 transition-colors"
                [class.bg-amber-50]="entry.editor"
                [class.border-l-4]="entry.editor"
@@ -38,7 +38,7 @@
               <!-- Left Section: Status & Visitor Info -->
               <div class="flex flex-col items-stretch gap-4 min-w-0 flex-1">
                 <div class="flex gap-2">
-                  <lib-reservation-status [status]="entry.reservation.status"/>
+                  <lib-booking-status [status]="entry.booking.status"/>
                   <lib-verification-status [data]="entry.visitor.verification"/>
                   <lib-visitor-type [data]="entry.visitor.type" class="flex-shrink-0"/>
                 </div>
@@ -70,7 +70,7 @@
 
               <!-- Middle Section: Capacity & Timestamp -->
               <app-reservation-offer-capacity-visualization
-                [reservation]="entry.reservation"
+                [booking]="entry.booking"
                 [visitor]="entry.visitor"
                 [entry]="entry.offer"
                 class="flex-1"
@@ -86,11 +86,10 @@
                 <!-- Action Button -->
                 <button
                   matButton="filled"
-                  routerLink="./details/{{entry.reservation.id}}"
+                  routerLink="./details/{{entry.booking.id}}"
                   [disabled]="entry.editor && !isCurrentUser(entry.editor.userId)"
                   class="lg:w-full"
-                  [matTooltip]="entry.editor && !isCurrentUser(entry.editor.userId) ?
-                                ('RESERVATION.EditingBy' | translate: {name: entry.editor.userName}) : ''">
+                  [matTooltip]="entry.editor && !isCurrentUser(entry.editor.userId) ? ('RESERVATION.EditingBy' | translate: {name: entry.editor.userName}) : ''">
                   <mat-icon class="mr-1">edit</mat-icon>
                   {{ 'RESERVATION.Edit' | translate }}
                 </button>
