@@ -50,23 +50,9 @@ class BookingChangeProcessor(
     private fun handleCreated(event: NotificationEvent) {
         val info = infoAssembler.get(event.sourceId) ?: return
         val confirmUrl = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
-        val detailsUrl = service.getDetailsUrl(event.sourceId)
-        val title = if (info.visitor.type == VisitorType.GROUP) info.visitor.title else info.visitor.name
-        val age = if (info.visitor.size > 1) "${info.visitor.minAge} - ${info.visitor.maxAge}" else "${info.visitor.minAge}"
-        val offer = info.offer.offer
-        val dateFormatter = DateTimeFormatter.ofPattern(settingService.getDateFormat().text.ifBlank { DEFAULT_DATE_FORMAT })
-        val timeFormatter = DateTimeFormatter.ofPattern(settingService.getTimeFormat().text.ifBlank { DEFAULT_TIME_FORMAT })
-        val timestamp = "${offer.start.format(dateFormatter)} ${offer.start.format(timeFormatter)} - ${offer.finish.format(timeFormatter)}"
 
-        val properties = mapOf(
-            Pair("info", info),
-            Pair("title", title),
-            Pair("age", age),
-            Pair("timestamp", timestamp),
-            Pair("isGroup", info.visitor.type == VisitorType.GROUP),
-            Pair("confirmUrl", confirmUrl),
-            Pair("detailsUrl", detailsUrl),
-        )
+        val properties = createProperties(info)
+        properties["confirmUrl"] = confirmUrl
 
         notifyContactOnCreated(properties, info)
         notifyAdminsOnCreated(properties)
@@ -88,11 +74,32 @@ class BookingChangeProcessor(
     private fun handleCustom(event: NotificationEvent) {
         val info = infoAssembler.get(event.sourceId) ?: return
         val content = event.parameter[BookingChangeHandler.CONTENT] as? BookingConfirmationContent
-        val properties = mapOf(
-            Pair("content", content?.content ?: ""),
-            Pair("subject", content?.subject ?: "")
-        )
+
+        val properties = createProperties(info)
+        if (content != null) {
+            properties["subject"] = content.subject
+            properties["content"] = content.content
+        }
         notifyContactOnChanged(info, properties)
+    }
+
+    private fun createProperties(info: BookingInfo): MutableMap<String, Any> {
+        val detailsUrl = service.getDetailsUrl(info.id)
+        val title = if (info.visitor.type == VisitorType.GROUP) info.visitor.title else info.visitor.name
+        val age = if (info.visitor.size > 1) "${info.visitor.minAge} - ${info.visitor.maxAge}" else "${info.visitor.minAge}"
+        val offer = info.offer.offer
+        val dateFormatter = DateTimeFormatter.ofPattern(settingService.getDateFormat().text.ifBlank { DEFAULT_DATE_FORMAT })
+        val timeFormatter = DateTimeFormatter.ofPattern(settingService.getTimeFormat().text.ifBlank { DEFAULT_TIME_FORMAT })
+        val timestamp = "${offer.start.format(dateFormatter)} ${offer.start.format(timeFormatter)} - ${offer.finish.format(timeFormatter)}"
+
+        return mutableMapOf(
+            Pair("info", info),
+            Pair("title", title),
+            Pair("age", age),
+            Pair("timestamp", timestamp),
+            Pair("isGroup", info.visitor.type == VisitorType.GROUP),
+            Pair("detailsUrl", detailsUrl),
+        )
     }
 
     private fun notifyContactOnChanged(info: BookingInfo, properties: Map<String, Any>) {
