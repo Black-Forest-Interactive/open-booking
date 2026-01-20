@@ -40,6 +40,7 @@ class BookingConfirmFeature(
 
     fun confirm(data: BookingData, content: BookingConfirmationContent): Boolean {
         if (data.status != BookingStatus.PENDING) return false
-        TODO("Not yet implemented")
+        update(data, true)
+        return true
     }
 }
