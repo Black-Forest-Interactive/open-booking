@@ -78,4 +78,24 @@ data class VisitorData(
         updated = timestamp
         return this
     }
+
+    fun update(request: VisitorResizeRequest, timestamp: LocalDateTime): VisitorData {
+        this.size = request.size
+        this.minAge = request.minAge
+        this.maxAge = request.maxAge
+        updated = timestamp
+        return this
+    }
+
+    fun setPhone(phone: String, timestamp: LocalDateTime): VisitorData {
+        this.phone = phone
+        updated = timestamp
+        return this
+    }
+
+    fun setEmail(email: String, timestamp: LocalDateTime): VisitorData {
+        this.email = email
+        updated = timestamp
+        return this
+    }
 }

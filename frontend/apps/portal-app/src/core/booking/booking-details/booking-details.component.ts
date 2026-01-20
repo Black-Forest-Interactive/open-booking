@@ -15,6 +15,7 @@ import {BookingStatus, VisitorType} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
 import {VisitorInfoComponent} from "../../visitor/visitor-info/visitor-info.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-booking-details',
@@ -29,7 +30,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     TranslatePipe,
     VerificationStatusComponent,
     VisitorTypeComponent,
-    BookingStatusComponent
+    BookingStatusComponent,
+    MatButton
   ],
   templateUrl: './booking-details.component.html',
   styleUrl: './booking-details.component.scss',
@@ -74,4 +76,26 @@ export class BookingDetailsComponent {
   constructor(private service: BookingService) {
   }
 
+  protected updateComment() {
+
+  }
+
+
+  protected updateSize() {
+
+  }
+
+
+  protected updatePhone() {
+
+  }
+
+
+  protected updateEmail() {
+
+  }
+
+  protected cancel() {
+    
+  }
 }

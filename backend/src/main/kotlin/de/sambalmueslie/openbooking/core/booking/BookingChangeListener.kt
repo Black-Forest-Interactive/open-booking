@@ -12,4 +12,8 @@ interface BookingChangeListener : EntityChangeListener<Long, Booking> {
     fun denied(booking: Booking, content: BookingConfirmationContent) {
         // intentionally left empty
     }
+
+    fun canceled(booking: Booking) {
+        // intentionally left empty
+    }
 }

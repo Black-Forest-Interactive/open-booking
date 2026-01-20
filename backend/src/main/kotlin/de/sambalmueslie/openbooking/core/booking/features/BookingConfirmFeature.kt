@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.booking.features
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
+import de.sambalmueslie.openbooking.core.booking.api.BookingResizeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
@@ -23,8 +24,16 @@ class BookingConfirmFeature(
     }
 
     fun update(data: BookingData, request: BookingChangeRequest) {
+        update(data, request.autoConfirm)
+    }
+
+    fun update(data: BookingData, request: BookingResizeRequest) {
+        update(data, request.autoConfirm)
+    }
+
+    private fun update(data: BookingData, autoConfirm: Boolean) {
         val awaitConfirmation = data.status == BookingStatus.PENDING || data.status == BookingStatus.UNKNOWN
-        if (request.autoConfirm && awaitConfirmation) {
+        if (autoConfirm && awaitConfirmation) {
             data.update(BookingStatus.CONFIRMED, timeProvider.now())
         }
     }

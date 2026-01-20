@@ -83,10 +83,10 @@ export abstract class BaseService {
     return this.createPipe(observable, url, 'patch');
   }
 
-  protected delete<T>(suffix: string): Observable<T> {
+  protected delete<T>(suffix: string, params: HttpParams = new HttpParams()): Observable<T> {
     const url = this.createUrl(suffix);
     console.debug("Delete '" + url + "'")
-    const observable = this.http.delete<T>(url,);
+    const observable = this.http.delete<T>(url, {params: params})
     return this.createPipe(observable, url, 'delete');
   }
 

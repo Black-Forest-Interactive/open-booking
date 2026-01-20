@@ -50,4 +50,10 @@ data class BookingData(
         return this
     }
 
+    fun setSize(value: Int, timestamp: LocalDateTime): BookingData {
+        this.size = value
+        updated = timestamp
+        return this
+    }
+
 }

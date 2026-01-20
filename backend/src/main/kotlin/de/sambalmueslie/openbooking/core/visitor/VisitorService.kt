@@ -9,6 +9,7 @@ import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorResizeRequest
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorData
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
@@ -73,5 +74,16 @@ class VisitorService(
         }
     }
 
+    fun updateSize(id: Long, request: VisitorResizeRequest): Visitor? {
+        return patchData(id) { it.update(request, timeProvider.now()) }
+    }
+
+    fun updatePhone(id: Long, phone: String): Visitor? {
+        return patchData(id) { it.setPhone(phone, timeProvider.now()) }
+    }
+
+    fun updateEmail(id: Long, email: String): Visitor? {
+        return patchData(id) { it.setEmail(email, timeProvider.now()) }
+    }
 
 }

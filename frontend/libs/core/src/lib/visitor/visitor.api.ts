@@ -68,6 +68,15 @@ export class AddressChangeRequest {
   }
 }
 
+export class VisitorResizeRequest {
+  public constructor(
+    public size: number,
+    public minAge: number,
+    public maxAge: number,
+  ) {
+  }
+}
+
 export const VISITOR_GROUP_STATUS_UNKNOWN = 'UNKNOWN'
 export const VISITOR_GROUP_STATUS_UNCONFIRMED = 'UNCONFIRMED'
 export const VISITOR_GROUP_STATUS_CONFIRMED = 'CONFIRMED'

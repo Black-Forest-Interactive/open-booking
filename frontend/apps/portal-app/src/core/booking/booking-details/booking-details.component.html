@@ -16,10 +16,10 @@
 
     @if (data()) {
       <mat-card>
-        <div class="p-4 border-b">
+        <div class="p-4 border-b border-gray-300">
           <h2 class="text-xl font-semibold">{{ 'RESERVATION.Details.Title' | translate }}</h2>
         </div>
-        <div class="p-4 border-b flex justify-between gap-4">
+        <div class="p-4 border-b border-gray-300 flex justify-between gap-4">
           <lib-visitor-type [data]="visitor()?.type!!"/>
           <lib-verification-status [data]="verification()!!"/>
           <lib-booking-status [status]="status()"/>
@@ -35,7 +35,7 @@
         }
 
 
-        <div class="flex flex-col gap-4 p-4">
+        <div class="flex flex-col gap-4 p-4 border-b border-gray-300 ">
           <h3 class="text-lg font-semibold flex items-center gap-2">
             <mat-icon class="text-primary">event</mat-icon>
             {{ 'RESERVATION.Details.Offer' | translate }}
@@ -61,7 +61,6 @@
             </div>
           </mat-card>
         </div>
-        <mat-divider></mat-divider>
 
         <app-visitor-info [data]="visitor()!!"></app-visitor-info>
 
@@ -80,8 +79,23 @@
 
           </div>
         }
-        <mat-divider></mat-divider>
-        <div class="p-4 flex  justify-center items-center gap-2">
+
+        <div class="flex flex-wrap gap-4 p-4 border-t border-gray-300 ">
+          <button matButton="outlined" (click)="updateComment()">
+            <mat-icon>add_comment</mat-icon>
+            {{ 'BOOKING.Action.Comment' | translate }}
+          </button>
+          <button matButton="outlined" class="!text-red-600" (click)="cancel()">
+            <mat-icon>cancel</mat-icon>
+            {{ 'BOOKING.Action.Cancel' | translate }}
+          </button>
+          <button matButton="outlined" (click)="updateSize()">
+            <mat-icon>group</mat-icon>
+            {{ 'BOOKING.Action.Resize' | translate }}
+          </button>
+        </div>
+
+        <div class="p-4 flex  justify-center items-center gap-2 border-t border-gray-300 ">
           <p class="text-sm text-gray-600">Last Updated</p>
           <p class="text-sm text-gray-600">{{ timestamp() | date:'medium' }}</p>
         </div>

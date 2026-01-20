@@ -1,5 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.portal.booking
 
+import de.sambalmueslie.openbooking.common.PatchRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorResizeRequest
 import io.micronaut.http.annotation.*
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
@@ -16,6 +18,22 @@ class BookingController(private val gateway: BookingGateway) {
     @Post("confirm/email")
     fun confirmEmail(@QueryValue key: String) = gateway.confirmEmail(key)
 
+    @Put("comment")
+    fun updateComment(@QueryValue key: String, @Body value: PatchRequest<String>) = gateway.updateComment(key, value)
+
+    @Put("size")
+    fun updateSize(@QueryValue key: String, @Body value: VisitorResizeRequest) = gateway.updateSize(key, value)
+
+    @Put("phone")
+    fun updatePhone(@QueryValue key: String, @Body value: PatchRequest<String>) = gateway.updatePhone(key, value)
+
+    @Put("email")
+    fun updateEmail(@QueryValue key: String, @Body value: PatchRequest<String>) = gateway.updateEmail(key, value)
+
     @Get()
     fun get(@QueryValue key: String) = gateway.get(key)
+
+    @Delete()
+    fun cancel(@QueryValue key: String) = gateway.cancel(key)
+
 }

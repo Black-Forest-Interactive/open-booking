@@ -1,12 +1,14 @@
 package de.sambalmueslie.openbooking.gateway.portal.booking
 
 import de.sambalmueslie.openbooking.common.GenericRequestResult
+import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.core.booking.BookingResponseService
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingInfoAssembler
 import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.response.api.ResolvedResponse
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorResizeRequest
 import de.sambalmueslie.openbooking.gateway.portal.claim.ClaimGateway.Companion.CLAIM_KEY
 import io.micronaut.session.Session
 import jakarta.inject.Singleton
@@ -46,6 +48,28 @@ class BookingGateway(
     fun get(key: String): PortalBooking? {
         return infoAssembler.getByKey(key).toPortal()
     }
+
+
+    fun cancel(key: String): GenericRequestResult {
+        return service.cancel(key)
+    }
+
+    fun updateComment(key: String, value: PatchRequest<String>): Booking? {
+        return service.updateComment(key, value.value)
+    }
+
+    fun updateSize(key: String, request: VisitorResizeRequest): Booking? {
+        return service.updateSize(key, BookingResizeRequest(request, false, false))
+    }
+
+    fun updatePhone(key: String, value: PatchRequest<String>): Booking? {
+        return service.updatePhone(key, value.value)
+    }
+
+    fun updateEmail(key: String, value: PatchRequest<String>): Booking? {
+        return service.updateEmail(key, value.value)
+    }
+
 
     fun BookingInfo?.toPortal(): PortalBooking? {
         if (this == null) return null
