@@ -3,7 +3,7 @@
     <app-loading-bar [reloading]="reloading()"></app-loading-bar>
 
     @if (error()) {
-      <mat-card class="bg-red-50 border-l-4 border-red-500">
+      <mat-card class="bg-red-50 border-l-4 border-red-500 mb-6">
         <mat-card-content class="flex items-center gap-3">
           <mat-icon class="text-red-500">error</mat-icon>
           <div>
@@ -15,11 +15,14 @@
     }
 
     @if (data()) {
-      <mat-card>
-        <div class="p-4 border-b border-gray-300">
-          <h2 class="text-xl font-semibold">{{ 'RESERVATION.Details.Title' | translate }}</h2>
+      <mat-card class="shadow-lg">
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <h2 class="text-2xl font-semibold text-gray-800">{{ 'RESERVATION.Details.Title' | translate }}</h2>
         </div>
-        <div class="p-4 border-b border-gray-300 flex justify-between gap-4">
+
+        <!-- Status Bar -->
+        <div class="p-4 border-b border-gray-200 flex flex-wrap gap-4 justify-center md:justify-between">
           <lib-visitor-type [data]="visitor()?.type!!"/>
           <lib-verification-status [data]="verification()!!"/>
           <lib-booking-status [status]="status()"/>
@@ -34,27 +37,29 @@
           </div>
         }
 
-
-        <div class="flex flex-col gap-4 p-4 border-b border-gray-300 ">
+        <!-- Time Slot Section -->
+        <div class="flex flex-col gap-4 p-6 border-b border-gray-200">
           <h3 class="text-lg font-semibold flex items-center gap-2">
             <mat-icon class="text-primary">event</mat-icon>
             {{ 'RESERVATION.Details.Offer' | translate }}
           </h3>
-          <mat-card appearance="outlined" class="!p-3">
-            <div class="flex items-start gap-3">
-              <!-- Content -->
+          <mat-card appearance="outlined" class="!p-4 bg-gradient-to-br from-white to-gray-50">
+            <div class="flex items-start gap-4">
+              <div class="bg-primary/10 rounded-lg p-3 hidden sm:block">
+                <mat-icon class="text-primary text-3xl">calendar_today</mat-icon>
+              </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-2">
                   <div class="flex-1">
-                    <div class="font-medium">{{ start() | date:'fullDate' }}</div>
-                    <div class="text-sm opacity-70 mt-1">
+                    <div class="font-semibold text-lg text-gray-900">{{ start() | date:'fullDate' }}</div>
+                    <div class="text-sm text-gray-600 mt-1 flex items-center gap-1">
+                      <mat-icon class="text-base">schedule</mat-icon>
                       {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
                     </div>
                   </div>
                 </div>
-                <!-- Max Persons Info -->
-                <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
-                  <mat-icon class="text-base" inline>people</mat-icon>
+                <div class="flex items-center gap-2 text-sm mt-3 text-gray-600">
+                  <mat-icon class="text-base">people</mat-icon>
                   <span>{{ 'SUMMARY.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
                 </div>
               </div>
@@ -62,46 +67,186 @@
           </mat-card>
         </div>
 
-        <app-visitor-info [data]="visitor()!!"></app-visitor-info>
+        <!-- Visitor Information Section -->
+        <div class="p-6 border-b border-gray-200">
+          <!-- Use your existing visitor info component for non-editable fields -->
+          <app-visitor-info [data]="visitor()!!"></app-visitor-info>
 
-        @if (comment()) {
-          <mat-divider></mat-divider>
 
-          <!-- Comment Section -->
-          <div class="p-4 flex flex-col gap-2">
+          <!--          &lt;!&ndash; Editable Fields Section &ndash;&gt;-->
+          <!--          <div class="grid md:grid-cols-2 gap-4 mt-4">-->
+          <!--            &lt;!&ndash; Email - Editable &ndash;&gt;-->
+          <!--            <div class="bg-gray-50 rounded-lg p-4 group relative transition-all hover:bg-gray-100">-->
+          <!--              <div class="flex items-center justify-between mb-2">-->
+          <!--                <label class="text-sm font-medium text-gray-600">-->
+          <!--                  {{ 'RESERVATION.Create.Step.Visitor.Mail' | translate }}-->
+          <!--                </label>-->
+          <!--                @if (isEditable() && !emailField().isEditing) {-->
+          <!--                  <button-->
+          <!--                    matIconButton-->
+          <!--                    (click)="startEdit('email')"-->
+          <!--                    class="!w-8 !h-8"-->
+          <!--                    [matTooltip]="'ACTION.Edit' | translate">-->
+          <!--                    <mat-icon class="!text-gray-700">edit</mat-icon>-->
+          <!--                  </button>-->
+          <!--                }-->
+          <!--              </div>-->
+          <!--              @if (emailField().isEditing) {-->
+          <!--                <div class="flex gap-2 items-start">-->
+          <!--                  <mat-form-field class="flex-1 !text-sm" appearance="outline" subscriptSizing="dynamic">-->
+          <!--                    <input-->
+          <!--                      matInput-->
+          <!--                      type="email"-->
+          <!--                      [(ngModel)]="editingValue"-->
+          <!--                      (keydown.enter)="saveEdit('email')"-->
+          <!--                      (keydown.escape)="cancelEdit('email')"-->
+          <!--                      class="!text-sm">-->
+          <!--                  </mat-form-field>-->
+          <!--                  <button matIconButton color="primary" (click)="saveEdit('email')"-->
+          <!--                          [matTooltip]="'ACTION.Save' | translate" class="!w-8 !h-8 mt-1">-->
+          <!--                    <mat-icon class="!text-lg">check</mat-icon>-->
+          <!--                  </button>-->
+          <!--                  <button matIconButton (click)="cancelEdit('email')"-->
+          <!--                          [matTooltip]="'ACTION.Cancel' | translate" class="!w-8 !h-8 mt-1">-->
+          <!--                    <mat-icon class="!text-lg">close</mat-icon>-->
+          <!--                  </button>-->
+          <!--                </div>-->
+          <!--              } @else {-->
+          <!--                <div class="text-gray-900 flex items-center gap-2">-->
+          <!--                  <mat-icon class="text-base text-gray-400">email</mat-icon>-->
+          <!--                  <span class="break-all">{{ emailField().currentValue }}</span>-->
+          <!--                </div>-->
+          <!--              }-->
+          <!--            </div>-->
+
+          <!--            &lt;!&ndash; Phone - Editable &ndash;&gt;-->
+          <!--            <div class="bg-gray-50 rounded-lg p-4 group relative transition-all hover:bg-gray-100">-->
+          <!--              <div class="flex items-center justify-between mb-2">-->
+          <!--                <label class="text-sm font-medium text-gray-600">-->
+          <!--                  {{ 'VISITOR.Info.Phone' | translate }}-->
+          <!--                </label>-->
+          <!--                @if (isEditable() && !phoneField().isEditing) {-->
+          <!--                  <button-->
+          <!--                    matIconButton-->
+          <!--                    (click)="startEdit('phone')"-->
+          <!--                    class="!w-8 !h-8 opacity-0 group-hover:opacity-100 transition-opacity"-->
+          <!--                    [matTooltip]="'ACTION.Edit' | translate">-->
+          <!--                    <mat-icon class="text-gray-400 hover:text-primary !text-lg">edit</mat-icon>-->
+          <!--                  </button>-->
+          <!--                }-->
+          <!--              </div>-->
+          <!--              @if (phoneField().isEditing) {-->
+          <!--                <div class="flex gap-2 items-start">-->
+          <!--                  <mat-form-field class="flex-1" appearance="outline" subscriptSizing="dynamic">-->
+          <!--                    <input-->
+          <!--                      matInput-->
+          <!--                      type="tel"-->
+          <!--                      [(ngModel)]="editingValue"-->
+          <!--                      (keydown.enter)="saveEdit('phone')"-->
+          <!--                      (keydown.escape)="cancelEdit('phone')">-->
+          <!--                  </mat-form-field>-->
+          <!--                  <button matIconButton (click)="saveEdit('phone')"-->
+          <!--                          [matTooltip]="'ACTION.Save' | translate" class="!w-8 !h-8 mt-1">-->
+          <!--                    <mat-icon inline>check</mat-icon>-->
+          <!--                  </button>-->
+          <!--                  <button matIconButton (click)="cancelEdit('phone')"-->
+          <!--                          [matTooltip]="'ACTION.Cancel' | translate" class="!w-8 !h-8 mt-1">-->
+          <!--                    <mat-icon inline>close</mat-icon>-->
+          <!--                  </button>-->
+          <!--                </div>-->
+          <!--              } @else {-->
+          <!--                <div class="text-gray-900 flex items-center gap-2">-->
+          <!--                  <mat-icon inline>phone</mat-icon>-->
+          <!--                  <span>{{ phoneField().currentValue }}</span>-->
+          <!--                </div>-->
+          <!--              }-->
+          <!--            </div>-->
+          <!--          </div>-->
+        </div>
+
+        <!-- Comment Section - Editable -->
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold flex items-center gap-2">
               <mat-icon class="text-primary">comment</mat-icon>
               {{ 'REQUEST.Form.Comment.Label' | translate }}
             </h3>
-            <div class="bg-gray-50 rounded-lg p-4">
-              <p class="text-gray-800 whitespace-pre-wrap">{{ comment() }}</p>
-            </div>
-
+            @if (isEditable() && !commentField().isEditing && commentField().currentValue) {
+              <button
+                matIconButton
+                (click)="startEdit('comment')"
+                [matTooltip]="'ACTION.Edit' | translate">
+                <mat-icon class="!text-gray-700">edit</mat-icon>
+              </button>
+            }
           </div>
-        }
 
-        <div class="flex flex-wrap gap-4 p-4 border-t border-gray-300 ">
-          <button matButton="outlined" (click)="updateComment()">
-            <mat-icon>add_comment</mat-icon>
-            {{ 'BOOKING.Action.Comment' | translate }}
-          </button>
-          <button matButton="outlined" class="!text-red-600" (click)="cancel()">
-            <mat-icon>cancel</mat-icon>
-            {{ 'BOOKING.Action.Cancel' | translate }}
-          </button>
-          <button matButton="outlined" (click)="updateSize()">
-            <mat-icon>group</mat-icon>
-            {{ 'BOOKING.Action.Resize' | translate }}
-          </button>
+          @if (commentField().isEditing) {
+            <div class="space-y-3">
+              <mat-form-field class="w-full" appearance="outline">
+                    <textarea
+                      matInput
+                      [(ngModel)]="editingValue"
+                      rows="4"
+                      [placeholder]="'REQUEST.Form.Comment.Placeholder' | translate"
+                      (keydown.escape)="cancelEdit('comment')"></textarea>
+              </mat-form-field>
+              <div class="flex gap-2 justify-end">
+                <button mat-stroked-button (click)="cancelEdit('comment')">
+                  <mat-icon>close</mat-icon>
+                  {{ 'ACTION.Cancel' | translate }}
+                </button>
+                <button mat-flat-button color="primary" (click)="saveEdit('comment')">
+                  <mat-icon>check</mat-icon>
+                  {{ 'ACTION.Save' | translate }}
+                </button>
+              </div>
+            </div>
+          } @else {
+            @if (commentField().currentValue) {
+              <div class="bg-gray-50 rounded-lg p-4">
+                <p class="text-gray-800 whitespace-pre-wrap">{{ commentField().currentValue }}</p>
+              </div>
+            } @else if (isEditable()) {
+              <div class="bg-gray-50 rounded-lg p-4 border border-dashed border-gray-300 text-center">
+                <p class="text-gray-500 mb-3">{{ 'REQUEST.Form.Comment.Empty' | translate }}</p>
+                <button mat-stroked-button (click)="startEdit('comment')" [disabled]="reloading()">
+                  <mat-icon>add_comment</mat-icon>
+                  {{ 'BOOKING.Action.Comment' | translate }}
+                </button>
+              </div>
+            }
+          }
         </div>
 
-        <div class="p-4 flex  justify-center items-center gap-2 border-t border-gray-300 ">
-          <p class="text-sm text-gray-600">Last Updated</p>
-          <p class="text-sm text-gray-600">{{ timestamp() | date:'medium' }}</p>
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-3 p-6 bg-gray-50">
+          @if (!commentField().isEditing && isEditable()) {
+            @if (!commentField().currentValue) {
+              <button mat-stroked-button (click)="startEdit('comment')">
+                <mat-icon>add_comment</mat-icon>
+                {{ 'BOOKING.Action.Comment' | translate }}
+              </button>
+            }
+            <button mat-stroked-button (click)="updateSize()" [disabled]="reloading()">
+              <mat-icon>group</mat-icon>
+              {{ 'BOOKING.Action.Resize' | translate }}
+            </button>
+            <button mat-stroked-button class="!text-red-600 !border-red-300 hover:!bg-red-50" (click)="cancel()"
+                    [disabled]="reloading()">
+              <mat-icon>cancel</mat-icon>
+              {{ 'BOOKING.Action.Cancel' | translate }}
+            </button>
+          }
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 flex justify-center items-center gap-2 bg-gray-100 border-t border-gray-200">
+          <mat-icon class="text-gray-500 text-base">update</mat-icon>
+          <p class="text-sm text-gray-600">{{ 'COMMON.LastUpdated' | translate }}</p>
+          <p class="text-sm font-medium text-gray-800">{{ timestamp() | date:'medium' }}</p>
         </div>
       </mat-card>
-
-
     }
   </div>
 </div>

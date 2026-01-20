@@ -111,7 +111,7 @@ class BookingService(
 
     fun updateEmail(key: String, value: String): Booking? {
         val data = repository.findByKey(key) ?: return null
-        visitorService.updateEmail(data.visitorId, value)
+        visitorService.updateEmail(data.visitorId, value) ?: return null
         return data.convert()
     }
 

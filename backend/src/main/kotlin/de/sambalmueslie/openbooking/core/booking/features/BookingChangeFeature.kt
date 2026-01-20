@@ -54,7 +54,7 @@ class BookingChangeFeature(
 
         val requiresSizeValidation = data.size < request.visitor.size
         if (requiresSizeValidation) {
-            val offer = offerService.get(data.id) ?: throw BookingOfferInvalid(data.id)
+            val offer = offerService.get(data.offerId) ?: throw BookingOfferInvalid(data.id)
             val suitable = validateSizeFeature.validate(request, offer)
             if (!suitable) throw BookingOfferNotSuitable(offer.id)
         }

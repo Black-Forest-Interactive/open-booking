@@ -13,11 +13,47 @@
     "Submit": "Submit",
     "Yes": "Yes",
     "Select": "Select",
-    "Continue": "Continue"
+    "Continue": "Continue",
+    "Confirm": "Confirm"
   },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Welcome"
+  },
+  "COMMON": {
+    "LastUpdated": "Last upated"
+  },
+  "BOOKING": {
+    "Status": {
+      "Title": "Booking Status",
+      "UNKNOWN": "Unknown",
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "DECLINED": "Declined",
+      "CANCELLED": "Canceled",
+      "EXPIRED": "Expired"
+    },
+    "Action": {
+      "Resize": "Adjust size",
+      "Cancel": "Cancel"
+    },
+    "Dialog": {
+      "Resize": {
+        "Title": "Adjust Booking Size",
+        "Warning": {
+          "Increase": {
+            "Title": "Reconfirmation Required",
+            "MessagePending": "Increasing the group size will require a new confirmation from the host.",
+            "MessageConfirmed": "Increasing the group size will invalidate the current confirmation and require a new confirmation from the host."
+          }
+        }
+      },
+      "Cancel": {
+        "Title": "Cancel Booking",
+        "Message": "Are you sure you want to cancel this booking?",
+        "Warning": "This action cannot be undone. The booking will be permanently cancelled."
+      }
+    }
   },
   "RESERVATION": {
     "Action": {

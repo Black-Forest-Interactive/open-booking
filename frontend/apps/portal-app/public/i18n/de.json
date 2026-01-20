@@ -13,11 +13,47 @@
     "Submit": "Absenden",
     "Yes": "Ja",
     "Select": "Auswählen",
-    "Continue": "Weiter"
+    "Continue": "Weiter",
+    "Confirm": "Bestätigen"
   },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Willkommen"
+  },
+  "COMMON": {
+    "LastUpdated": "Letzte Änderung"
+  },
+  "BOOKING": {
+    "Status": {
+      "Title": "Buchungsstatus",
+      "UNKNOWN": "Unbekannt",
+      "PENDING": "Ausstehend",
+      "CONFIRMED": "Bestätigt",
+      "DECLINED": "Abgelehnt",
+      "CANCELLED": "Storniert",
+      "EXPIRED": "Abgelaufen"
+    },
+    "Action": {
+      "Resize": "Teilnehmer ändern",
+      "Cancel": "Buchung stornieren"
+    },
+    "Dialog": {
+      "Resize": {
+        "Title": "Buchungsgröße anpassen",
+        "Warning": {
+          "Increase": {
+            "Title": "Erneute Bestätigung erforderlich",
+            "MessagePending": "Eine Erhöhung der Gruppengröße erfordert eine neue Bestätigung durch den Gastgeber.",
+            "MessageConfirmed": "Eine Erhöhung der Gruppengröße macht die aktuelle Bestätigung ungültig und erfordert eine neue Bestätigung durch den Gastgeber."
+          }
+        }
+      },
+      "Cancel": {
+        "Title": "Buchung stornieren",
+        "Message": "Möchten Sie diese Buchung wirklich stornieren?",
+        "Warning": "Diese Aktion kann nicht rückgängig gemacht werden. Die Buchung wird endgültig storniert."
+      }
+    }
   },
   "RESERVATION": {
     "Action": {

@@ -83,7 +83,16 @@ class VisitorService(
     }
 
     fun updateEmail(id: Long, email: String): Visitor? {
-        return patchData(id) { it.setEmail(email, timeProvider.now()) }
+        return patchData(id) {
+            val unchanged = it.email == email
+            if (!unchanged) {
+                it.email = email
+                it.verificationStatus = VerificationStatus.UNCONFIRMED
+                it.verifiedAt = null
+                it.updated = timeProvider.now()
+            }
+            it
+        }
     }
 
 }

@@ -10,13 +10,12 @@
         <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Title.Label' | translate }}</p>
         <p class="font-medium">{{ title() }}</p>
       </div>
-
-      <div>
-        <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Size.Label' | translate }}</p>
-        <p
-          class="font-medium">{{ 'SUMMARY.VisitorInfo.PersonCount' | translate: {count: size()} }}</p>
-      </div>
     }
+    <div>
+      <p class="text-sm text-on-surface-variant">{{ 'REQUEST.Form.Size.Label' | translate }}</p>
+      <p
+        class="font-medium">{{ 'SUMMARY.VisitorInfo.PersonCount' | translate: {count: size()} }}</p>
+    </div>
 
     <div>
       <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.Type' | translate }}</p>
@@ -25,7 +24,7 @@
       </p>
     </div>
 
-    @if (isGroup()) {
+    @if (size() > 1) {
       <div>
         <p class="text-sm text-on-surface-variant">{{ 'SUMMARY.VisitorInfo.AgeRange' | translate }}</p>
         <p class="font-medium">{{ minAge() }}

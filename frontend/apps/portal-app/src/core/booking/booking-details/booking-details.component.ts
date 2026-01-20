@@ -1,7 +1,8 @@
-import {Component, computed, input, resource} from '@angular/core';
+import {Component, computed, input, resource, signal} from '@angular/core';
 import {BookingService} from "@open-booking/portal";
 import {
   BookingStatusComponent,
+  GenericRequestResult,
   LoadingBarComponent,
   toPromise,
   VerificationStatusComponent,
@@ -11,11 +12,28 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatDividerModule} from "@angular/material/divider";
-import {BookingStatus, VisitorType} from "@open-booking/core";
+import {Booking, BookingStatus, VisitorResizeRequest, VisitorType} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
-import {VisitorInfoComponent} from "../../visitor/visitor-info/visitor-info.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatButton} from "@angular/material/button";
+import {MatButtonModule} from "@angular/material/button";
+import {VisitorInfoComponent} from "../../visitor/visitor-info/visitor-info.component";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
+import {Observable} from "rxjs";
+import {HotToastService} from "@ngxpert/hot-toast";
+import {MatDialog} from "@angular/material/dialog";
+import {BookingResizeDialogComponent} from "../booking-resize-dialog/booking-resize-dialog.component";
+import {BookingCancelDialogComponent} from "../booking-cancel-dialog/booking-cancel-dialog.component";
+import {BookingSuccessDialogComponent} from "../booking-success-dialog/booking-success-dialog.component";
+import {BookingFailedDialogComponent} from "../booking-failed-dialog/booking-failed-dialog.component";
+
+interface EditableField {
+  isEditing: boolean;
+  originalValue: string;
+  currentValue: string;
+}
 
 @Component({
   selector: 'app-booking-details',
@@ -24,14 +42,18 @@ import {MatButton} from "@angular/material/button";
     MatIconModule,
     MatChipsModule,
     MatDividerModule,
-    LoadingBarComponent,
+    MatButtonModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     DatePipe,
-    VisitorInfoComponent,
     TranslatePipe,
-    VerificationStatusComponent,
+    LoadingBarComponent,
+    VisitorInfoComponent,
     VisitorTypeComponent,
-    BookingStatusComponent,
-    MatButton
+    VerificationStatusComponent,
+    BookingStatusComponent
   ],
   templateUrl: './booking-details.component.html',
   styleUrl: './booking-details.component.scss',
@@ -44,7 +66,8 @@ export class BookingDetailsComponent {
     loader: param => toPromise(this.service.getBooking(param.params), param.abortSignal)
   })
 
-  reloading = this.bookingResource.isLoading
+  processing = signal(false)
+  reloading = computed(() => this.bookingResource.isLoading() || this.processing())
   error = this.bookingResource.error
   data = computed(() => this.bookingResource.value())
   isEditable = computed(() => this.data()?.status === BookingStatus.PENDING)
@@ -73,29 +96,139 @@ export class BookingDetailsComponent {
   city = computed(() => this.data()?.visitor.address.city ?? '')
 
 
-  constructor(private service: BookingService) {
+  // Editable field signals - just track editing state and temp values
+  private editingField = signal<'email' | 'phone' | 'comment' | undefined>(undefined)
+  editingValue = signal('')
+
+  emailField = computed(() => ({
+    isEditing: this.editingField() === 'email',
+    currentValue: this.visitor()?.email || ''
+  }))
+
+  phoneField = computed(() => ({
+    isEditing: this.editingField() === 'phone',
+    currentValue: this.visitor()?.phone || ''
+  }))
+
+  commentField = computed(() => ({
+    isEditing: this.editingField() === 'comment',
+    currentValue: this.data()?.comment || ''
+  }))
+
+  constructor(
+    private service: BookingService,
+    private dialog: MatDialog,
+    private toast: HotToastService
+  ) {
   }
 
-  protected updateComment() {
 
+  // Edit functionality
+  startEdit(field: 'email' | 'phone' | 'comment') {
+    if (!this.isEditable()) return
+
+    this.editingField.set(field)
+
+    switch (field) {
+      case 'email':
+        this.editingValue.set(this.visitor()?.email || '')
+        break;
+      case 'phone':
+        this.editingValue.set(this.visitor()?.phone || '')
+        break;
+      case 'comment':
+        this.editingValue.set(this.data()?.comment || '')
+        break;
+    }
   }
 
+  saveEdit(field: 'email' | 'phone' | 'comment') {
+    let response = this.getResponse(field)
+    if (!response) return
 
-  protected updateSize() {
-
+    response.subscribe({
+      next: () => {
+        this.resetEditState(field)
+        this.bookingResource.reload()
+      },
+      error: (err) => {
+        console.error(`Failed to update ${field}:`, err);
+        this.toast.error('Update failed')
+      }
+    })
   }
 
-
-  protected updatePhone() {
-
+  private getResponse(field: 'email' | 'phone' | 'comment'): Observable<Booking> | undefined {
+    const value = this.editingValue()
+    let key = this.key()
+    if (!key) return
+    debugger
+    if (field === 'email') {
+      return this.service.updateEmail(key, value)
+    } else if (field === 'phone') {
+      return this.service.updatePhone(key, value)
+    } else if (field === 'comment') {
+      return this.service.updateComment(key, value)
+    }
+    return undefined
   }
 
-
-  protected updateEmail() {
-
+  cancelEdit(field: 'email' | 'phone' | 'comment') {
+    this.resetEditState(field);
   }
 
-  protected cancel() {
-    
+  private resetEditState(field: 'email' | 'phone' | 'comment') {
+    this.editingField.set(undefined)
+    this.editingValue.set('')
+  }
+
+  updateSize() {
+    let dialogRef = this.dialog.open(BookingResizeDialogComponent, {data: this.data()})
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) this.handleResize(value as VisitorResizeRequest)
+    })
+  }
+
+  private handleResize(request: VisitorResizeRequest) {
+    this.processing.set(true)
+    this.service.updateSize(this.key()!!, request).subscribe({
+      next: _ => this.bookingResource.reload(),
+      complete: () => this.processing.set(false)
+    })
+  }
+
+  cancel() {
+    let dialogRef = this.dialog.open(BookingCancelDialogComponent, {data: this.data()})
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) this.handleCancel(this.key()!!)
+    })
+  }
+
+  private handleCancel(key: string) {
+    this.processing.set(true)
+    this.service.cancelBooking(key).subscribe({
+      next: v => this.handleResult(v),
+      error: err => this.handleError(err),
+      complete: () => this.processing.set(false)
+    })
+  }
+
+  private handleResult(response: GenericRequestResult) {
+    if (response.success) {
+      let dialogRef = this.dialog.open(BookingSuccessDialogComponent, {data: response})
+      dialogRef.afterClosed().subscribe(() => {
+        this.bookingResource.reload()
+      })
+    } else {
+      let dialogRef = this.dialog.open(BookingFailedDialogComponent, {data: response})
+      dialogRef.afterClosed().subscribe(() => {
+        this.bookingResource.reload()
+      })
+    }
+  }
+
+  private handleError(err: any) {
+    let dialogRef = this.dialog.open(BookingFailedDialogComponent, {data: err})
+    dialogRef.afterClosed().subscribe(() => this.bookingResource.reload())
   }
 }

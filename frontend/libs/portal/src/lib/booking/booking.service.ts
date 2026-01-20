@@ -28,22 +28,22 @@ export class BookingService extends BaseService {
 
   updateComment(key: string, value: string): Observable<Booking> {
     let param = new HttpParams().append("key", key)
-    return this.post('comment', {value: value}, param)
+    return this.put('comment', {value: value}, param)
   }
 
   updateSize(key: string, request: VisitorResizeRequest): Observable<Booking> {
     let param = new HttpParams().append("key", key)
-    return this.post('size', request, param)
+    return this.put('size', request, param)
   }
 
-  updatePhone(key: string, size: number): Observable<Booking> {
+  updatePhone(key: string, value: string): Observable<Booking> {
     let param = new HttpParams().append("key", key)
-    return this.post('phone', {value: size}, param)
+    return this.put('phone', {value: value}, param)
   }
 
-  updateEmail(key: string, size: number): Observable<Booking> {
+  updateEmail(key: string, value: string): Observable<Booking> {
     let param = new HttpParams().append("key", key)
-    return this.post('email', {value: size}, param)
+    return this.put('email', {value: value}, param)
   }
 
   getBooking(key: string): Observable<PortalBooking> {

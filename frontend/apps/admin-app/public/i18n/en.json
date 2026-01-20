@@ -116,7 +116,8 @@
       "Title": "Booking Status",
       "UNCONFIRMED": "Unconfirmed",
       "DENIED": "Denied",
-      "UNKNOWN": "Unknown"
+      "UNKNOWN": "Unknown",
+      "PENDING": ""
     }
   },
   "CACHE": {
