@@ -13,15 +13,21 @@ abstract class EntityChangeHandler<T, O : Entity<T>>(
 
 
     final override fun handleCreated(obj: O) {
-        queue.publishEvent(ChangeEventType.CREATE, obj.id.toString(), type.simpleName ?: "unknown")
+        publishEvent(ChangeEventType.CREATE, obj)
     }
 
     final override fun handleUpdated(obj: O) {
-        queue.publishEvent(ChangeEventType.UPDATE, obj.id.toString(), type.simpleName ?: "unknown")
+        publishEvent(ChangeEventType.UPDATE, obj)
     }
 
     final override fun handleDeleted(obj: O) {
-        queue.publishEvent(ChangeEventType.DELETE, obj.id.toString(), type.simpleName ?: "unknown")
+        publishEvent(ChangeEventType.DELETE, obj)
     }
+
+    protected fun publishEvent(changeType: ChangeEventType, obj: O) {
+        queue.publishEvent(changeType, obj.id.toString(), type.simpleName ?: "unknown", getStatus(obj))
+    }
+
+    protected abstract fun getStatus(obj: O): String
 
 }

@@ -23,4 +23,8 @@ class OfferChangeHandler(
     override fun handleBlockUpdated(offers: List<Offer>) {
         offers.forEach { o -> handleUpdated(o) }
     }
+
+    override fun getStatus(obj: Offer): String {
+        return if (obj.active) "active" else "disabled"
+    }
 }

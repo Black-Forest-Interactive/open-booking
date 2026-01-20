@@ -11,19 +11,22 @@ import io.micronaut.context.annotation.Context
 @Context
 class ReservationChangeHandler(
     service: ReservationService,
-    private val queue: EventService
+    queue: EventService
 ) : EntityChangeHandler<Long, Reservation>(Reservation::class, queue), ReservationChangeListener {
 
     init {
         service.register(this)
     }
 
-
     override fun confirmed(reservation: Reservation, content: ReservationConfirmationContent) {
-        queue.publishEvent(ChangeEventType.OTHER, reservation.id.toString(), Reservation::class.simpleName!!)
+        publishEvent(ChangeEventType.OTHER, reservation)
     }
 
     override fun denied(reservation: Reservation, content: ReservationConfirmationContent) {
-        queue.publishEvent(ChangeEventType.OTHER, reservation.id.toString(), Reservation::class.simpleName!!)
+        publishEvent(ChangeEventType.OTHER, reservation)
+    }
+
+    override fun getStatus(obj: Reservation): String {
+        return obj.status.name
     }
 }
