@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.GenericCrudService
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
+import de.sambalmueslie.openbooking.config.AppConfig
 import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
@@ -30,6 +31,7 @@ class BookingService(
     private val declineFeature: BookingDeclineFeature,
     private val cancelFeature: BookingCancelFeature,
 
+    private val config: AppConfig,
     private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, Booking, BookingChangeRequest, BookingChangeListener, BookingData>(repository, cacheService, Booking::class, logger) {
@@ -150,6 +152,15 @@ class BookingService(
         return GenericRequestResult(true, MSG_CANCEL_REQUEST_SUCCESS)
     }
 
+    fun getConfirmationUrl(id: Long): String {
+        val data = repository.findByIdOrNull(id) ?: return ""
+        return "${config.baseUrl}/confirm/email/${data.key}"
+    }
+
+    fun getDetailsUrl(id: Long): String {
+        val data = repository.findByIdOrNull(id) ?: return ""
+        return "${config.baseUrl}/reservation/${data.key}"
+    }
 
     fun update(bookingId: Long, visitor: Visitor, status: BookingStatus) {
         TODO("refactor me")
