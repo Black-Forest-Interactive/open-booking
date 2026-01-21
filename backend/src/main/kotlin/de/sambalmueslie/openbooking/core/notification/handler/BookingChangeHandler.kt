@@ -7,10 +7,10 @@ import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.notification.NotificationService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEventType
-import jakarta.inject.Singleton
+import io.micronaut.context.annotation.Context
 import org.slf4j.LoggerFactory
 
-@Singleton
+@Context
 class BookingChangeHandler(
     source: BookingService,
     private val service: NotificationService,
@@ -25,6 +25,10 @@ class BookingChangeHandler(
         const val CONTENT = "content"
     }
 
+    init {
+        source.register(this)
+    }
+
     override fun handleCreated(obj: Booking) {
         createEvent(obj, NotificationEventType.OBJ_CREATED)
     }
@@ -34,7 +38,7 @@ class BookingChangeHandler(
         createEvent(booking, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_CONFIRMED), Pair(CONTENT, content)))
     }
 
-    override fun denied(booking: Booking, content: BookingConfirmationContent) {
+    override fun declined(booking: Booking, content: BookingConfirmationContent) {
         if (content.silent) return
         createEvent(booking, NotificationEventType.CUSTOM, mapOf(Pair(TYPE_KEY, TYPE_DENIED), Pair(CONTENT, content)))
     }

@@ -9,6 +9,7 @@ import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingDetailsAssembler
@@ -54,6 +55,18 @@ open class BookingSearchOperator(
 
             override fun handleDeleted(obj: Booking) {
                 deleteDocument(obj.id.toString())
+            }
+
+            override fun canceled(booking: Booking) {
+                handleChanged(booking, true)
+            }
+
+            override fun confirmed(booking: Booking, content: BookingConfirmationContent) {
+                handleChanged(booking, true)
+            }
+
+            override fun declined(booking: Booking, content: BookingConfirmationContent) {
+                handleChanged(booking, true)
             }
         })
 

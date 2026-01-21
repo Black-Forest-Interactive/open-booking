@@ -1,18 +1,21 @@
 import {Component, computed, effect, resource, signal} from '@angular/core';
 import {DashboardSummaryComponent} from "./dashboard-summary/dashboard-summary.component";
-import {DashboardFilterComponent} from "./dashboard-filter/dashboard-filter.component";
 import {DashboardContentComponent} from "./dashboard-content/dashboard-content.component";
 import {DailyOffersFilterRequest, DashboardService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {toPromise} from "@open-booking/shared";
-import {DaySummary, WeekSummary} from "@open-booking/core";
+import {DaySummary, OfferSearchRequest, WeekSummary} from "@open-booking/core";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {TranslatePipe} from "@ngx-translate/core";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     DashboardSummaryComponent,
-    DashboardFilterComponent,
-    DashboardContentComponent
+    DashboardContentComponent,
+    MainContentComponent,
+    TranslatePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -29,33 +32,19 @@ export class DashboardComponent {
   selectedWeek = signal<WeekSummary | undefined>(undefined)
   selectedDay = signal<DaySummary | undefined>(undefined)
 
-  filter = signal<DailyOffersFilterRequest>(new DailyOffersFilterRequest('', '', ''))
+  filter = signal(new OfferSearchRequest('', '', ''))
 
   private contentCriteria = computed(() => ({
-    date: this.selectedDay()?.date ?? '',
-    filter: this.filter()
+    filter: this.createSearchRequest(this.selectedDay())
   }))
 
   private contentResource = resource({
     params: this.contentCriteria,
-    loader: (param) => toPromise(this.service.getOfferEntries(param.params.date, param.params.filter), param.abortSignal)
+    loader: (param) => toPromise(this.service.getOfferEntries(param.params.filter), param.abortSignal)
   })
 
   contentReloading = computed(() => this.contentResource.isLoading())
   content = computed(() => this.contentResource.value() ?? [])
-
-
-  // DUMMY DATA
-  availableGuides = signal<string[]>([
-    'Sarah Johnson',
-    'Mike Chen',
-    'Emily Rodriguez',
-    'David Kim',
-    'Lisa Anderson',
-    'Tom Williams',
-    'Jessica Lee'
-  ])
-
 
   constructor(private service: DashboardService, private toast: HotToastService) {
     effect(() => {
@@ -76,7 +65,7 @@ export class DashboardComponent {
   }
 
   protected handleFilterChanged(request: DailyOffersFilterRequest) {
-    this.filter.set(request)
+    // this.filter.set(request)
   }
 
   protected clearFilter() {
@@ -84,4 +73,11 @@ export class DashboardComponent {
   }
 
 
+  private createSearchRequest(day: DaySummary | undefined): OfferSearchRequest {
+    let date = (day) ? DateTime.fromISO(day.date, {zone: 'utc'}) : DateTime.utc()
+    let from = date.startOf('day').toISO()
+    let to = date.endOf('day').toISO()
+
+    return new OfferSearchRequest('', from, to)
+  }
 }

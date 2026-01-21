@@ -16,6 +16,7 @@ import {FormsModule} from "@angular/forms";
 
 import {Label, LabelChangeRequest} from "@open-booking/core";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-label',
@@ -32,8 +33,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatPaginatorModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    TranslatePipe
-],
+    TranslatePipe,
+    MainContentComponent
+  ],
   templateUrl: './label.component.html',
   styleUrl: './label.component.scss',
 })

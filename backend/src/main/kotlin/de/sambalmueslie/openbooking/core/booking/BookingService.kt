@@ -121,8 +121,8 @@ class BookingService(
         val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
         val success = confirmFeature.confirm(data, content)
         if (!success) return GenericRequestResult(false, MSG_CONFIRM_REQUEST_FAILED)
-
-        notify { it.confirmed(data.convert(), content) }
+        val result = repository.update(data).convert()
+        notify { it.confirmed(result, content) }
         return GenericRequestResult(true, MSG_CONFIRM_REQUEST_SUCCESS)
     }
 
@@ -131,7 +131,8 @@ class BookingService(
         val success = declineFeature.decline(data, content)
         if (!success) return GenericRequestResult(false, MSG_DECLINE_REQUEST_FAILED)
 
-        notify { it.confirmed(data.convert(), content) }
+        val result = repository.update(data).convert()
+        notify { it.declined(result, content) }
         return GenericRequestResult(true, MSG_DECLINE_REQUEST_SUCCESS)
     }
 
@@ -148,7 +149,8 @@ class BookingService(
         val success = cancelFeature.cancel(data)
         if (!success) return GenericRequestResult(false, MSG_CANCEL_REQUEST_FAILED)
 
-        notify { it.canceled(data.convert()) }
+        val result = repository.update(data).convert()
+        notify { it.canceled(result) }
         return GenericRequestResult(true, MSG_CANCEL_REQUEST_SUCCESS)
     }
 
@@ -159,7 +161,7 @@ class BookingService(
 
     fun getDetailsUrl(id: Long): String {
         val data = repository.findByIdOrNull(id) ?: return ""
-        return "${config.baseUrl}/reservation/${data.key}"
+        return "${config.baseUrl}/booking/${data.key}"
     }
 
     fun update(bookingId: Long, visitor: Visitor, status: BookingStatus) {

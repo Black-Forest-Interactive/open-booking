@@ -19,14 +19,12 @@ data class OfferSearchEntryData(
     var reservedSpace: Int,
     var availableSpace: Int,
 
-    var reservations: List<OfferReservationEntryData>,
     var bookings: List<OfferBookingEntryData>
 
 ) {
     fun convert(info: OfferInfo) = OfferSearchEntry(
         info,
         Assignment(bookedSpace, reservedSpace, availableSpace, if (active) 0 else maxPersons),
-        reservations.map { it.convert() },
         bookings.map { it.convert() }
     )
 }

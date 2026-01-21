@@ -38,7 +38,7 @@ class BookingChangeHandler(
         handleChange(booking, "BOOKING Confirmed")
     }
 
-    override fun denied(booking: Booking, content: BookingConfirmationContent) {
+    override fun declined(booking: Booking, content: BookingConfirmationContent) {
         handleChange(booking, "BOOKING Denied")
     }
 

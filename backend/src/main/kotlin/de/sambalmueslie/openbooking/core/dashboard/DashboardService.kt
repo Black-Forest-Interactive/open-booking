@@ -8,7 +8,7 @@ import de.sambalmueslie.openbooking.core.dashboard.api.DailyVisitorStats
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
-import de.sambalmueslie.openbooking.gateway.admin.dashboard.DailyOffersFilterRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
@@ -66,9 +66,9 @@ class DashboardService(
         return data
     }
 
-    fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferSearchEntry> {
+    fun getDailyOffers(request: OfferSearchRequest): List<OfferSearchEntry> {
         val (duration, data) = measureTimeMillisWithReturn {
-            offerEntryProvider.getDailyOffers(day, request)
+            offerEntryProvider.getDailyOffers(request)
         }
         logger.info("Daily offers created within $duration ms.")
         return data

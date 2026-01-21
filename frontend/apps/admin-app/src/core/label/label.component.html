@@ -1,140 +1,137 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-  <div class="max-w-6xl mx-auto">
-    <div class="bg-white rounded-lg shadow-lg p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">{{ 'LABEL.Title' | translate }}</h1>
-        <div class="flex gap-2">
-          <button matButton="filled" color="primary" (click)="addLabel()" [disabled]="reloading() || saving()">
-            <mat-icon>add</mat-icon>
-            {{ 'LABEL.Action.Add' | translate }}
-          </button>
-          @if (entries().length < COLORS.length) {
-            <button matButton="filled" color="primary" (click)="autoGenerate()" [disabled]="reloading() || saving()">
-              <mat-icon>auto_awesome_motion</mat-icon>
-              {{ 'LABEL.Action.Auto' | translate }}
-            </button>
-          }
-        </div>
+<app-main-content [title]="'LABEL.Title' | translate">
+
+  <div actions>
+    <button matButton="outlined" color="primary" (click)="addLabel()" [disabled]="reloading() || saving()">
+      <mat-icon>add</mat-icon>
+      {{ 'LABEL.Action.Add' | translate }}
+    </button>
+    @if (entries().length < COLORS.length) {
+      <button matButton="filled" color="primary" (click)="autoGenerate()" [disabled]="reloading() || saving()">
+        <mat-icon>auto_awesome_motion</mat-icon>
+        {{ 'LABEL.Action.Auto' | translate }}
+      </button>
+    }
+  </div>
+
+  <div class="bg-white rounded-lg shadow-lg p-6">
+
+    @if (reloading()) {
+      <div class="flex justify-center items-center py-12">
+        <mat-spinner diameter="50"></mat-spinner>
       </div>
-
-      @if (reloading()) {
-        <div class="flex justify-center items-center py-12">
-          <mat-spinner diameter="50"></mat-spinner>
-        </div>
-      } @else {
-        <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-2">
-          @if (entries().length === 0) {
-            <div class="text-center py-12 text-slate-400">
-              {{ 'LABEL.Message.NoLabels' | translate }}
-            </div>
-          } @else {
-            @for (label of entries(); track label.id) {
-              <div
-                cdkDrag
-                [cdkDragDisabled]="editingId() === label.id || saving()"
-                class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border-2 border-transparent hover:border-slate-200 transition-all"
+    } @else {
+      <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-2">
+        @if (entries().length === 0) {
+          <div class="text-center py-12 text-slate-400">
+            {{ 'LABEL.Message.NoLabels' | translate }}
+          </div>
+        } @else {
+          @for (label of entries(); track label.id) {
+            <div
+              cdkDrag
+              [cdkDragDisabled]="editingId() === label.id || saving()"
+              class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border-2 border-transparent hover:border-slate-200 transition-all"
+            >
+              <mat-icon cdkDragHandle class="cursor-grab active:cursor-grabbing text-slate-400"
+                        [class.cursor-not-allowed]="editingId() === label.id || saving()"
               >
-                <mat-icon cdkDragHandle class="cursor-grab active:cursor-grabbing text-slate-400"
-                          [class.cursor-not-allowed]="editingId() === label.id || saving()"
-                >
-                  drag_indicator
-                </mat-icon>
+                drag_indicator
+              </mat-icon>
 
-                @if (editingId() === label.id) {
-                  <mat-form-field appearance="fill" class="flex-1">
-                    <mat-label>{{ 'LABEL.Field.Name' | translate }}</mat-label>
-                    <input matInput [(ngModel)]="editName" [placeholder]="'LABEL.Field.Name' | translate">
-                  </mat-form-field>
+              @if (editingId() === label.id) {
+                <mat-form-field appearance="fill" class="flex-1">
+                  <mat-label>{{ 'LABEL.Field.Name' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="editName" [placeholder]="'LABEL.Field.Name' | translate">
+                </mat-form-field>
 
-                  <div class="flex flex-col gap-2">
-                    <div class="grid grid-cols-5 gap-2">
-                      @for (color of COLORS; track color) {
-                        <button
-                          (click)="editColor = color"
-                          [class.scale-110]="editColor === color"
-                          [class.border-blue-500]="editColor === color"
-                          class="w-7 h-7 rounded border-2 border-slate-300 transition-all"
-                          [style.backgroundColor]="color"
-                          [matTooltip]="color"
-                          [disabled]="saving()"
-                        ></button>
-                      }
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <label class="text-sm text-slate-600">{{ 'LABEL.Field.CustomColor' | translate }}:</label>
-                      <input
-                        type="color"
-                        [(ngModel)]="editColor"
-                        class="w-12 h-8 rounded cursor-pointer border-2 border-slate-300"
-                        [title]="'LABEL.Action.PickColor' | translate"
+                <div class="flex flex-col gap-2">
+                  <div class="grid grid-cols-5 gap-2">
+                    @for (color of COLORS; track color) {
+                      <button
+                        (click)="editColor = color"
+                        [class.scale-110]="editColor === color"
+                        [class.border-blue-500]="editColor === color"
+                        class="w-7 h-7 rounded border-2 border-slate-300 transition-all"
+                        [style.backgroundColor]="color"
+                        [matTooltip]="color"
                         [disabled]="saving()"
-                      >
-                      <span class="text-xs text-slate-500 font-mono">{{ editColor }}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    matIconButton
-                    color="primary"
-                    (click)="saveEdit(label)"
-                    [matTooltip]="'LABEL.Action.Save' | translate"
-                    [disabled]="saving()"
-                  >
-                    @if (saving()) {
-                      <mat-spinner diameter="24"></mat-spinner>
-                    } @else {
-                      <mat-icon>check</mat-icon>
+                      ></button>
                     }
-                  </button>
-                  <button
-                    matIconButton
-                    color="warn"
-                    (click)="cancelEdit()"
-                    [matTooltip]="'LABEL.Action.Cancel' | translate"
-                    [disabled]="saving()"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
-                } @else {
-                  <div
-                    class="px-4 py-2 rounded font-medium flex-1 cursor-pointer"
-                    [style.backgroundColor]="label.color"
-                    [style.color]="getTextColor(label.color)"
-                    (click)="startEdit(label)"
-                    [matTooltip]="'LABEL.Action.ClickToEdit' | translate"
-                  >
-                    {{ label.name }}
                   </div>
+                  <div class="flex items-center gap-2">
+                    <label class="text-sm text-slate-600">{{ 'LABEL.Field.CustomColor' | translate }}:</label>
+                    <input
+                      type="color"
+                      [(ngModel)]="editColor"
+                      class="w-12 h-8 rounded cursor-pointer border-2 border-slate-300"
+                      [title]="'LABEL.Action.PickColor' | translate"
+                      [disabled]="saving()"
+                    >
+                    <span class="text-xs text-slate-500 font-mono">{{ editColor }}</span>
+                  </div>
+                </div>
 
-                  <span class="text-sm text-slate-500 w-20 text-center">
+                <button
+                  matIconButton
+                  color="primary"
+                  (click)="saveEdit(label)"
+                  [matTooltip]="'LABEL.Action.Save' | translate"
+                  [disabled]="saving()"
+                >
+                  @if (saving()) {
+                    <mat-spinner diameter="24"></mat-spinner>
+                  } @else {
+                    <mat-icon>check</mat-icon>
+                  }
+                </button>
+                <button
+                  matIconButton
+                  color="warn"
+                  (click)="cancelEdit()"
+                  [matTooltip]="'LABEL.Action.Cancel' | translate"
+                  [disabled]="saving()"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              } @else {
+                <div
+                  class="px-4 py-2 rounded font-medium flex-1 cursor-pointer"
+                  [style.backgroundColor]="label.color"
+                  [style.color]="getTextColor(label.color)"
+                  (click)="startEdit(label)"
+                  [matTooltip]="'LABEL.Action.ClickToEdit' | translate"
+                >
+                  {{ label.name }}
+                </div>
+
+                <span class="text-sm text-slate-500 w-20 text-center">
                         {{ 'LABEL.Field.Priority' | translate }}: {{ label.priority }}
                       </span>
 
-                  <button
-                    matIconButton
-                    color="warn"
-                    (click)="deleteLabel(label.id)"
-                    [matTooltip]="'LABEL.Action.Delete' | translate"
-                    [disabled]="saving()"
-                  >
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                }
-              </div>
-            }
+                <button
+                  matIconButton
+                  color="warn"
+                  (click)="deleteLabel(label.id)"
+                  [matTooltip]="'LABEL.Action.Delete' | translate"
+                  [disabled]="saving()"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              }
+            </div>
           }
-        </div>
-      }
-
-      <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <h3 class="font-semibold text-blue-900 mb-2">{{ 'LABEL.Help.Title' | translate }}</h3>
-        <ul class="text-sm text-blue-800 space-y-1">
-          <li>• {{ 'LABEL.Help.DragToReorder' | translate }}</li>
-          <li>• {{ 'LABEL.Help.ClickToEdit' | translate }}</li>
-          <li>• {{ 'LABEL.Help.ClickTrashToDelete' | translate }}</li>
-          <li>• {{ 'LABEL.Help.ClickAddToCreate' | translate }}</li>
-        </ul>
+        }
       </div>
+    }
+
+    <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <h3 class="font-semibold text-blue-900 mb-2">{{ 'LABEL.Help.Title' | translate }}</h3>
+      <ul class="text-sm text-blue-800 space-y-1">
+        <li>• {{ 'LABEL.Help.DragToReorder' | translate }}</li>
+        <li>• {{ 'LABEL.Help.ClickToEdit' | translate }}</li>
+        <li>• {{ 'LABEL.Help.ClickTrashToDelete' | translate }}</li>
+        <li>• {{ 'LABEL.Help.ClickAddToCreate' | translate }}</li>
+      </ul>
     </div>
   </div>
-</div>
+</app-main-content>

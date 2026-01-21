@@ -4,7 +4,6 @@ import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferBookingEntryData
-import de.sambalmueslie.openbooking.core.search.offer.db.OfferReservationEntryData
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferSearchEntryData
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -24,30 +23,6 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             val searchTerm = request.fullTextSearch.trim()
             if (searchTerm.isNotBlank()) {
                 should(
-                    // Search in nested reservation fields
-                    nested {
-                        path = OfferSearchEntryData::reservations.name
-                        query = bool {
-                            should(
-                                match("${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::name.name}", searchTerm) {
-                                    fuzziness = "AUTO"
-                                    boost = 2.0
-                                },
-                                match("${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::title.name}", searchTerm) {
-                                    fuzziness = "AUTO"
-                                    boost = 2.0
-                                },
-                                match("${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::description.name}", searchTerm) {
-                                    fuzziness = "AUTO"
-                                    boost = 1.5
-                                },
-                                match("${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::email.name}", searchTerm) {
-                                    fuzziness = "AUTO"
-                                    boost = 1.0
-                                }
-                            )
-                        }
-                    },
                     // Search in nested booking fields
                     nested {
                         path = OfferSearchEntryData::bookings.name

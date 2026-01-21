@@ -109,7 +109,6 @@ export interface OfferGroupedSearchResult {
 export interface OfferSearchEntry {
   info: OfferInfo,
   assignment: Assignment,
-  reservations: OfferReservationEntry[],
   bookings: OfferBookingEntry[]
 }
 

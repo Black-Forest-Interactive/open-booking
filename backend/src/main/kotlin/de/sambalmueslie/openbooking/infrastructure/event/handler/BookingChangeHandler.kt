@@ -26,7 +26,7 @@ class BookingChangeHandler(
         publishEvent(ChangeEventType.OTHER, booking)
     }
 
-    override fun denied(booking: Booking, content: BookingConfirmationContent) {
+    override fun declined(booking: Booking, content: BookingConfirmationContent) {
         publishEvent(ChangeEventType.OTHER, booking)
     }
 

@@ -2,12 +2,12 @@ package de.sambalmueslie.openbooking.core.dashboard
 
 
 import de.sambalmueslie.openbooking.common.PageableSequence
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DaySummary
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
-import de.sambalmueslie.openbooking.core.search.reservation.ReservationSearchOperator
-import de.sambalmueslie.openbooking.core.search.reservation.api.ReservationSearchRequest
+import de.sambalmueslie.openbooking.core.search.booking.BookingSearchOperator
+import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.DayOfWeek
@@ -18,7 +18,7 @@ import java.time.temporal.TemporalAdjusters
 @Singleton
 class WeeksSummaryProvider(
     private val offerService: OfferService,
-    private val searchService: ReservationSearchOperator
+    private val searchService: BookingSearchOperator
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(WeeksSummaryProvider::class.java)
@@ -28,11 +28,11 @@ class WeeksSummaryProvider(
         val firstOffer = offerService.getFirstOffer() ?: return emptyList()
         val lastOffer = offerService.getLastOffer() ?: return emptyList()
 
-        val reservationRequest = ReservationSearchRequest("", listOf(ReservationStatus.UNCONFIRMED), null, null)
+        val reservationRequest = BookingSearchRequest("", listOf(BookingStatus.PENDING, BookingStatus.CONFIRMED), null, null)
         val reservationSequence = PageableSequence() { searchService.search(reservationRequest, it).result }
         val unconfirmedByOfferId = mutableMapOf<Long, Int>()
         reservationSequence.forEach {
-            if (it.reservation.status == ReservationStatus.UNCONFIRMED) {
+            if (it.booking.status == BookingStatus.PENDING) {
                 val offerId = it.offer.offer.id
                 val current = unconfirmedByOfferId.getOrPut(offerId) { 0 }
                 unconfirmedByOfferId[offerId] = current + 1
@@ -47,10 +47,10 @@ class WeeksSummaryProvider(
         val from = firstOffer.start.toLocalDate()
         val to = lastOffer.start.toLocalDate()
 
-        return getWeeksBetween(from, to).mapIndexedNotNull { weekNumber, value -> getWeekSummary(weekNumber, value.first, value.second, unconfirmedByDate) }
+        return getWeeksBetween(from, to).mapIndexed { weekNumber, value -> getWeekSummary(weekNumber, value.first, value.second, unconfirmedByDate) }
     }
 
-    private fun getWeekSummary(weekIndex: Int, weekStart: LocalDate, weekEnd: LocalDate, unconfirmedByDate: Map<LocalDate, Int>): WeekSummary? {
+    private fun getWeekSummary(weekIndex: Int, weekStart: LocalDate, weekEnd: LocalDate, unconfirmedByDate: Map<LocalDate, Int>): WeekSummary {
         val days = ChronoUnit.DAYS.between(weekStart, weekEnd)
         val daySummary = (0..days).map { weekStart.plusDays(it) }
             .mapNotNull {

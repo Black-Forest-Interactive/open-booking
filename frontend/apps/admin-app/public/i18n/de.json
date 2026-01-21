@@ -68,6 +68,7 @@
     }
   },
   "BOOKING": {
+    "NoBookings": "Bisher keine Buchungen",
     "Action": {
       "Create": "Buchung erstellen",
       "Search": "Buchung suchen"
@@ -111,11 +112,13 @@
       "Select": "Tag auswählen"
     },
     "Status": {
-      "CONFIRMED": "Bestätigt",
       "Title": "Buchungsstatus",
-      "UNCONFIRMED": "Unbestätigt",
-      "DENIED": "Abgelehnt",
-      "UNKNOWN": "Unbekannt"
+      "UNKNOWN": "Unbekannt",
+      "PENDING": "Ausstehend",
+      "CONFIRMED": "Bestätigt",
+      "DECLINED": "Abgelehnt",
+      "CANCELLED": "Storniert",
+      "EXPIRED": "Abgelaufen"
     }
   },
   "CACHE": {
@@ -211,6 +214,10 @@
         "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
         "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
         "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
+        "BOOKING_CREATED_CONTACT": "Buchung erstellt (Kontakt)",
+        "BOOKING_CREATED_ADMIN": "Buchung erstellt (Administrator)",
+        "BOOKING_CHANGED_CONTACT": "Buchung geändert (Kontakt)",
+        "BOOKING_CHANGED_ADMIN": "Buchung geändert (Administrator)",
         "Hint": "",
         "Title": "Type"
       }
@@ -443,6 +450,10 @@
         "BOOKING_CONFIRMED": "Buchungsanfrage bestätigt (EMail)",
         "BOOKING_DENIED": "Buchungsanfrage abgelehnt (EMail)",
         "BOOKING_REQUEST_RECEIVED": "Buchungsanfrage erhalten (Dialog)",
+        "BOOKING_CONFIRM": "Buchung bestätigt",
+        "BOOKING_DECLINE": "Buchung abgelehnt",
+        "BOOKING_FAILED": "Buchung fehlgeschlagen",
+        "BOOKING_RECEIVED": "Buchung eingegangen",
         "Hint": "",
         "Title": "Typ"
       }

@@ -14,6 +14,8 @@ import {DateRangeSelectionRequest} from "@open-booking/core";
 import {DateTime} from "luxon";
 import {MatIconModule} from "@angular/material/icon";
 import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-booking',
@@ -25,8 +27,10 @@ import {BookingEntryComponent} from "./booking-entry/booking-entry.component";
     TranslatePipe,
     ReactiveFormsModule,
     LoadingBarComponent,
-    BookingEntryComponent
-],
+    BookingEntryComponent,
+    MainContentComponent,
+    MatTooltip
+  ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })

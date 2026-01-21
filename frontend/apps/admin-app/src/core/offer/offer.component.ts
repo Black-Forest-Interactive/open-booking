@@ -31,6 +31,7 @@ import {
   OfferFeatureCreateRangeDialogComponent
 } from "./offer-feature-create-range-dialog/offer-feature-create-range-dialog.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-offer',
@@ -54,8 +55,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     TranslatePipe,
     LoadingBarComponent,
     OfferContentComponent,
-    MatProgressSpinner
-],
+    MatProgressSpinner,
+    MainContentComponent
+  ],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

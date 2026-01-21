@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {map, of} from "rxjs";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NOTIFICATION_TEMPLATE_TYPES, NotificationTemplate, NotificationTemplateChangeRequest} from "@open-booking/core";
+import {NotificationTemplate, NotificationTemplateChangeRequest, NotificationTemplateType} from "@open-booking/core";
 import {NotificationService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
@@ -46,7 +46,7 @@ export class NotificationChangeComponent {
   data = model<NotificationTemplate | null>(null)
   title = signal('NOTIFICATION.CHANGE.Create')
   reloading = signal(false)
-  types: string[] = NOTIFICATION_TEMPLATE_TYPES
+  types: string[] = [NotificationTemplateType.BOOKING_CREATED_ADMIN, NotificationTemplateType.BOOKING_CREATED_CONTACT, NotificationTemplateType.BOOKING_CHANGED_ADMIN, NotificationTemplateType.BOOKING_CHANGED_CONTACT]
   languages: readonly string[]
 
   form: FormGroup

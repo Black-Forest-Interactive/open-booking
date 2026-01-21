@@ -1,6 +1,6 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {BookingService} from "@open-booking/admin";
-import {AuthService, SearchComponent, toPromise} from "@open-booking/shared";
+import {AuthService, toPromise} from "@open-booking/shared";
 import {BookingSearchRequest, BookingStatus} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
@@ -10,7 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDividerModule} from "@angular/material/divider";
-import {DatePipe, LowerCasePipe} from "@angular/common";
+import {LowerCasePipe} from "@angular/common";
 import {ReservationContentComponent} from "./reservation-content/reservation-content.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -20,6 +20,8 @@ import {MatInputModule} from "@angular/material/input";
 import {DateTime} from "luxon";
 import {interval} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-reservation',
@@ -35,13 +37,13 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     MatSelectModule,
     MatDatepickerModule,
     MatInputModule,
-    SearchComponent,
     TranslatePipe,
     LowerCasePipe,
     ReservationContentComponent,
     FormsModule,
-    DatePipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MainContentComponent,
+    MatProgressSpinner
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',

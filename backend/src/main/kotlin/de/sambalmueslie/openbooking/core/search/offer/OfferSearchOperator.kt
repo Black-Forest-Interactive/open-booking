@@ -4,11 +4,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.jillesvangurp.ktsearch.SearchResponse
 import com.jillesvangurp.ktsearch.ids
 import com.jillesvangurp.ktsearch.total
-import com.jillesvangurp.searchdsls.querydsl.term
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
@@ -16,10 +16,6 @@ import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
-import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
-import de.sambalmueslie.openbooking.core.reservation.ReservationService
-import de.sambalmueslie.openbooking.core.reservation.api.Reservation
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationConfirmationContent
 import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
@@ -41,7 +37,6 @@ import kotlin.system.measureTimeMillis
 @Singleton
 open class OfferSearchOperator(
     private val service: OfferService,
-    private val reservationService: ReservationService,
     bookingService: BookingService,
 
     private val infoAssembler: OfferInfoAssembler,
@@ -83,27 +78,6 @@ open class OfferSearchOperator(
             }
         })
 
-        reservationService.register(object : ReservationChangeListener {
-            override fun handleCreated(obj: Reservation) {
-                processChange(obj)
-            }
-
-            override fun handleUpdated(obj: Reservation) {
-                processChange(obj)
-            }
-
-            override fun handleDeleted(obj: Reservation) {
-                processDelete(obj)
-            }
-
-            override fun confirmed(reservation: Reservation, content: ReservationConfirmationContent) {
-                processChange(reservation)
-            }
-
-            override fun denied(reservation: Reservation, content: ReservationConfirmationContent) {
-                processChange(reservation)
-            }
-        })
 
         bookingService.register(object : BookingChangeListener {
             override fun handleCreated(obj: Booking) {
@@ -117,23 +91,19 @@ open class OfferSearchOperator(
             override fun handleDeleted(obj: Booking) {
                 processDelete(obj)
             }
-        }
-        )
-    }
 
-    private fun processChange(reservation: Reservation) {
-        updateOffer(reservation.offerId)
-    }
+            override fun canceled(booking: Booking) {
+                processChange(booking)
+            }
 
-    private fun processDelete(reservation: Reservation) {
-        val result = search {
-            query = term(
-                "${OfferSearchEntryData::reservations.name}.${OfferReservationEntryData::reservationId.name}",
-                reservation.id.toString()
-            )
-        }
-        val offerIds = result.ids.toSet()
-        offerIds.forEach { offerId -> updateOffer(offerId.toLong()) }
+            override fun confirmed(booking: Booking, content: BookingConfirmationContent) {
+                processChange(booking)
+            }
+
+            override fun declined(booking: Booking, content: BookingConfirmationContent) {
+                processChange(booking)
+            }
+        })
     }
 
     private fun processChange(booking: Booking) {
@@ -181,7 +151,6 @@ open class OfferSearchOperator(
             obj.assignment.confirmedSpace,
             obj.assignment.pendingSpace,
             obj.assignment.availableSpace,
-            obj.reservations.map { convert(it) },
             obj.bookings.map { convert(it) }
 
         )

@@ -8,9 +8,6 @@ import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationInfo
-import de.sambalmueslie.openbooking.core.reservation.api.ReservationStatus
-import de.sambalmueslie.openbooking.core.reservation.assembler.ReservationInfoAssembler
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -21,7 +18,6 @@ import java.time.LocalDate
 class OfferDetailsAssembler(
     private val repository: OfferRepository,
     private val bookingAssembler: BookingDetailsAssembler,
-    private val reservationAssembler: ReservationInfoAssembler,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(OfferDetailsAssembler::class.java)
@@ -64,32 +60,23 @@ class OfferDetailsAssembler(
     private fun details(data: List<OfferData>): List<OfferDetails> {
         val offerIds = data.map { it.id }.toSet()
         val bookings = bookingAssembler.getByOfferIds(offerIds).groupBy { it.booking.offerId }
-        val reservations = reservationAssembler.getByOfferIds(offerIds).groupBy { it.offer.offer.id }
-        return data.map { details(it, bookings[it.id] ?: emptyList(), reservations[it.id] ?: emptyList()) }
-    }
-
-    private fun details(data: OfferData, bookings: Map<Long, List<BookingDetails>>, reservations: Map<Long, List<ReservationInfo>>): OfferDetails? {
-        val bookings = bookings[data.id] ?: return null
-        val reservations = reservations[data.id] ?: return null
-
-        return details(data, bookings, reservations)
+        return data.map { details(it, bookings[it.id] ?: emptyList()) }
     }
 
     private fun details(data: OfferData): OfferDetails {
         val bookings = bookingAssembler.getByOfferId(data.id)
-        val reservations = reservationAssembler.getByOfferId(data.id)
-        return details(data, bookings, reservations)
+        return details(data, bookings)
     }
 
-    private fun details(data: OfferData, bookings: List<BookingDetails>, reservations: List<ReservationInfo>): OfferDetails {
+    private fun details(data: OfferData, bookings: List<BookingDetails>): OfferDetails {
         val bookedSpace = bookings.filter { it.booking.status == BookingStatus.CONFIRMED }.sumOf { it.visitor.size }
-        val reservedSpace = reservations.filter { it.status == ReservationStatus.UNCONFIRMED }.sumOf { it.visitor.size }
+        val reservedSpace = bookings.filter { it.booking.status == BookingStatus.PENDING }.sumOf { it.visitor.size }
         val availableSpace = 0.coerceAtLeast(data.maxPersons - bookedSpace - reservedSpace)
         val disabledSpace = if (data.active) 0 else data.maxPersons
 
         val assignment = Assignment(bookedSpace, reservedSpace, availableSpace, disabledSpace)
         val timestamp = data.updated ?: data.created
-        return OfferDetails(data.convert(), assignment, bookings, reservations, timestamp)
+        return OfferDetails(data.convert(), assignment, bookings, timestamp)
     }
 
     private fun getDataByDate(date: LocalDate): List<OfferData> {

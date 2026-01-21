@@ -6,6 +6,5 @@ import de.sambalmueslie.openbooking.core.offer.api.OfferInfo
 data class OfferSearchEntry(
     val info: OfferInfo,
     val assignment: Assignment,
-    val reservations: List<OfferReservationEntry>,
     val bookings: List<OfferBookingEntry>
 )

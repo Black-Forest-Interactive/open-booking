@@ -1,7 +1,7 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {SettingsService} from "@open-booking/admin";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTableModule} from "@angular/material/table";
@@ -11,6 +11,7 @@ import {MatInputModule} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {HotToastService} from "@ngxpert/hot-toast";
 import {MatIconButton} from "@angular/material/button";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-settings',
@@ -23,14 +24,14 @@ import {MatIconButton} from "@angular/material/button";
     MatIconModule,
     LoadingBarComponent,
     RouterLink,
-    SearchComponent,
-    MatIconButton
-],
+    MatIconButton,
+    MainContentComponent
+  ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent {
-  displayedColumns: string[] = ['id', 'value', 'type', 'cmd']
+  displayedColumns: string[] = ['id', 'key', 'value', 'type', 'cmd']
   pageNumber = signal(0)
   pageSize = signal(25)
 

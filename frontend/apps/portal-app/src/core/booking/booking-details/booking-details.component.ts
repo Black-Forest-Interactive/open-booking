@@ -70,7 +70,7 @@ export class BookingDetailsComponent {
   reloading = computed(() => this.bookingResource.isLoading() || this.processing())
   error = this.bookingResource.error
   data = computed(() => this.bookingResource.value())
-  isEditable = computed(() => this.data()?.status === BookingStatus.PENDING)
+  isEditable = computed(() => this.status() === BookingStatus.PENDING || this.status() === BookingStatus.CONFIRMED)
 
   status = computed(() => this.data()?.status ?? BookingStatus.PENDING)
   comment = computed(() => this.data()?.comment ?? '')

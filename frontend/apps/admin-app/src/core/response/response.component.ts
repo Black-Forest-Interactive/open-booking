@@ -4,7 +4,7 @@ import {HotToastService} from "@ngxpert/hot-toast";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {MatDialog} from "@angular/material/dialog";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -13,6 +13,7 @@ import {MatTableModule} from "@angular/material/table";
 import {Response} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {ResponseDeleteDialogComponent} from "./response-delete-dialog/response-delete-dialog.component";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-response',
@@ -23,10 +24,10 @@ import {ResponseDeleteDialogComponent} from "./response-delete-dialog/response-d
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
-    LoadingBarComponent,
-    SearchComponent,
     TranslatePipe,
-    RouterLink
+    RouterLink,
+    MainContentComponent,
+    LoadingBarComponent
   ],
   templateUrl: './response.component.html',
   styleUrl: './response.component.scss',

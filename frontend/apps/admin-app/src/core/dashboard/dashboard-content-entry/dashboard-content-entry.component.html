@@ -1,86 +1,73 @@
-<div>
-  <div class="flex justify-between items-start p-4 ">
-    <div class="flex-1">
-      <!-- Header row -->
-      <div class="flex items-center gap-2 mb-1">
-        <div class="w-7 h-7 rounded border-gray-300 border bg-gray-50 flex justify-center items-center">
-          <div class="text-base font-medium truncate text-gray-800">
-            {{ data().info.offer.id }}
-          </div>
-        </div>
-        <h3 class="text-lg font-bold"> {{ data().info.offer.start | date:'shortTime' }} Tour </h3>
-
-        <!-- Edit color -->
-        <button matIconButton (click)="toggleEditingColor()">
-          <mat-icon>edit</mat-icon>
-        </button>
-
-        <!-- Collapse toggle -->
-        <button matIconButton class="ml-auto"
-                (click)="toggleShowCollapse()">
-          <mat-icon>
-            {{ collapsed() ? 'expand_more' : 'expand_less' }}
-          </mat-icon>
-        </button>
+<div class="rounded border border-gray-300 bg-white">
+  <!-- Header -->
+  <div class="flex justify-between items-center p-4 border-b border-gray-200">
+    <div class="flex items-center gap-3">
+      <!-- Tour ID Badge -->
+      <div class=" h-8 rounded bg-gray-100 flex justify-center items-center flex-shrink-0 !px-2">
+        <span class="text-sm font-semibold text-gray-700">
+          {{ data().info.offer.id }}
+        </span>
       </div>
-
-      <!-- Time slot -->
-      <div class="flex items-center gap-2 text-sm">
-        <mat-icon inline>schedule</mat-icon>
-        <span>{{ data().info.offer.start | date:'shortTime' }}
-          - {{ data().info.offer.finish | date:'shortTime' }}</span>
+      <!-- Tour Info -->
+      <div>
+        <h3 class="text-base font-semibold text-gray-800">
+          {{ data().info.offer.start | date:'shortTime' }} Tour
+        </h3>
+        <div class="flex items-center gap-3 text-xs text-gray-600 mt-0.5">
+          <span class="flex items-center gap-1">
+            <mat-icon class="!text-sm" inline>schedule</mat-icon>
+            {{ data().info.offer.start | date:'shortTime' }} - {{ data().info.offer.finish | date:'shortTime' }}
+          </span>
+          <span class="flex items-center gap-1">
+            <mat-icon class="!text-sm" inline>person</mat-icon>
+            {{ data().info.guide?.firstName }} {{ data().info.guide?.lastName }}
+          </span>
+        </div>
       </div>
     </div>
 
     <!-- Availability -->
-    <div class="text-right">
-      <div class="text-xl font-bold">
+    <div class="text-right flex-shrink-0">
+      <div class="text-2xl font-bold text-gray-800">
         {{ availableSpace() }}
       </div>
-      <div class="text-xs">
+      <div class="text-xs text-gray-500">
         available
       </div>
     </div>
   </div>
 
-  <!-- Guide selector -->
-  <div class="flex items-center gap-2 text-sm cursor-pointer px-4" (click)="selectGuide()">
-    <span>Guide:</span>
-    <span>{{ data().info.guide?.firstName }} {{ data().info.guide?.lastName }}</span>
+  <!-- Stats Bar -->
+  <div class="flex items-center gap-4 px-4 py-2 bg-gray-50 border-b border-gray-200 text-xs">
+    <div class="flex items-center gap-1.5">
+      <mat-icon class="!text-sm text-gray-600" inline>group</mat-icon>
+      <span class="text-gray-600">Total:</span>
+      <span class="font-semibold text-gray-800">{{ data().info.offer.maxPersons }}</span>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <mat-icon class="!text-sm text-green-600" inline>check_circle</mat-icon>
+      <span class="text-gray-600">Confirmed:</span>
+      <span class="font-semibold text-green-700">{{ bookedSpace() }}</span>
+    </div>
+    @if (reservedSpace()) {
+      <div class="flex items-center gap-1.5">
+        <mat-icon class="!text-sm text-amber-600" inline>pending</mat-icon>
+        <span class="text-gray-600">Pending:</span>
+        <span class="font-semibold text-amber-700">{{ reservedSpace() }}</span>
+      </div>
+    }
   </div>
 
-  <div class="h-full">
-    <div class="flex gap-4 text-xs px-4 py-3 bg-gray-100 border-b ">
-      <div class="flex items-center gap-1">
-        <mat-icon inline>group</mat-icon>
-        <span class="text-gray-600">Total:</span>
-        <span class="font-semibold text-gray-800">{{ data().info.offer.maxPersons }}</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <mat-icon class="text-green-600" inline>check_circle</mat-icon>
-        <span class="text-gray-600">Confirmed:</span>
-        <span class="font-semibold text-green-700">{{ bookedSpace() }}</span>
-      </div>
-      @if (reservedSpace()) {
-        <div class="flex items-center gap-1">
-          <mat-icon class="text-amber-600" inline>pending</mat-icon>
-          <span class="text-gray-600">Pending:</span>
-          <span class="font-semibold text-amber-700">{{ reservedSpace() }}</span>
-        </div>
-      }
-    </div>
-    @if (!collapsed()) {
-
-      <!-- Reservations List -->
-      <div class="p-3 max-h-96 overflow-y-auto bg-gray-50 ">
-        @if (reservations().length === 0) {
-          <p class="text-gray-500 text-center py-3 text-sm">No reservations yet</p>
-        } @else {
-          <div class="flex flex-col gap-1">
-            @for (reservation of reservations(); track reservation.reservationId) {
-              <app-dashboard-content-entry-reservation [reservation]="reservation"/>
-            }
-          </div>
+  <!-- Bookings List -->
+  <div class="p-3 max-h-96 overflow-y-auto">
+    @if (bookings().length === 0) {
+      <p class="text-gray-500 text-center py-4 text-sm">
+        {{ 'BOOKING.NoBookings' | translate }}
+      </p>
+    } @else {
+      <div class="flex flex-col gap-2">
+        @for (booking of bookings(); track booking.bookingId) {
+          <app-dashboard-content-entry-booking [booking]="booking"/>
         }
       </div>
     }
