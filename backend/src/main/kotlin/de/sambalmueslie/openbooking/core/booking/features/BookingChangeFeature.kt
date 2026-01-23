@@ -32,7 +32,7 @@ class BookingChangeFeature(
 
         val key = UUID.randomUUID().toString().uppercase()
         val status = confirmFeature.create(request)
-        return BookingData(0, key, status, visitor.size, request.comment, offer.id, visitor.id, timeProvider.now())
+        return BookingData(0, key, status, visitor.size, request.comment, request.lang, offer.id, visitor.id, timeProvider.now())
     }
 
     fun update(data: BookingData, request: BookingChangeRequest): BookingData {

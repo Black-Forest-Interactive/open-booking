@@ -66,8 +66,8 @@
       </p>
     } @else {
       <div class="flex flex-col gap-2">
-        @for (booking of bookings(); track booking.bookingId) {
-          <app-dashboard-content-entry-booking [booking]="booking"/>
+        @for (booking of bookings(); track booking.booking.id) {
+          <app-booking-list-entry [data]="booking" [showText]="false" [showContact]="false"/>
         }
       </div>
     }

@@ -84,16 +84,7 @@
                 <app-editor-info [editor]="entry.editor"/>
 
                 <!-- Action Button -->
-                <button
-                  matButton="filled"
-                  routerLink="./details/{{entry.booking.id}}"
-                  [disabled]="entry.editor && !isCurrentUser(entry.editor.userId)"
-                  class="lg:w-full"
-                  [matTooltip]="entry.editor && !isCurrentUser(entry.editor.userId) ? ('RESERVATION.EditingBy' | translate: {name: entry.editor.userName}) : ''">
-                  <mat-icon class="mr-1">edit</mat-icon>
-                  {{ 'RESERVATION.Edit' | translate }}
-                </button>
-
+                <app-reservation-edit-button [entry]="entry" [currentUserId]="currentUserId()"/>
 
                 <div class="flex gap-2 text-xs text-gray-500 text-center">
                   <div class="font-medium">{{ 'RESERVATION.Created' | translate }}</div>

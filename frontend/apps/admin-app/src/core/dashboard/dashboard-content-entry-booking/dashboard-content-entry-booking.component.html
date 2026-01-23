@@ -1,11 +1,9 @@
 <div class="rounded border border-gray-300 bg-white hover:bg-gray-50 transition-colors">
   <div class="flex items-center justify-between gap-3 p-3">
-    <div class="w-32">
-      <lib-booking-status [status]="booking().status"/>
-    </div>
+    <lib-booking-status [status]="booking().status" [showText]="false"/>
     <!-- Main Info -->
     <div class="flex-1 min-w-0 flex gap-6 items-center">
-      <lib-visitor-type [data]="booking().visitor.type"></lib-visitor-type>
+      <lib-visitor-type [data]="booking().visitor.type" [showText]="false"></lib-visitor-type>
       <span class="font-medium text-gray-800 text-sm truncate">
           {{ name() }}
         </span>
@@ -17,10 +15,10 @@
     </div>
     <!-- Details Button -->
     <div class="flex-shrink-0">
-      <a matButton="tonal" color="primary" routerLink="/reservation/details/{{booking().bookingId}}"
-         class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
-        Details
-      </a>
+      <button matButton="tonal" color="primary" (click)="showDetails()" class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
+        <mat-icon>read_more</mat-icon>
+        {{ 'ACTION.Details' | translate }}
+      </button>
     </div>
   </div>
 </div>

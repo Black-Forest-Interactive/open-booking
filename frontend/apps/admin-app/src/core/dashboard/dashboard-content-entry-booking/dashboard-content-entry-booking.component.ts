@@ -10,6 +10,7 @@ import {
 import {BookingStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 import {RouterLink} from "@angular/router";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-dashboard-content-entry-booking',
@@ -21,6 +22,7 @@ import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.comp
     RouterLink,
     BookingStatusComponent,
     VisitorSizeComponent,
+    TranslatePipe,
   ],
   templateUrl: './dashboard-content-entry-booking.component.html',
   styleUrl: './dashboard-content-entry-booking.component.scss',

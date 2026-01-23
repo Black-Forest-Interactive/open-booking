@@ -21,6 +21,7 @@ const classes: Record<string, string> = {
 })
 export class ReservationStatusComponent {
   status = input.required<ReservationStatus>()
+  showText = input(true)
   statusClass = computed(() => classes[this.status()] || 'bg-gray-100 text-gray-800')
   text = computed(() => 'RESERVATION.Status.' + this.status())
 }

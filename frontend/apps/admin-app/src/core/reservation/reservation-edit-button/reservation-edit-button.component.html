@@ -1,0 +1,9 @@
+<button
+  matButton="filled"
+  routerLink="./details/{{id()}}"
+  [disabled]="editedBySomeoneElse()"
+  class="lg:w-full"
+  [matTooltip]="editedBySomeoneElse() ? ('RESERVATION.EditingBy' | translate: {name: userName()}) : ''">
+  <mat-icon class="mr-1">edit</mat-icon>
+  {{ 'RESERVATION.Edit' | translate }}
+</button>

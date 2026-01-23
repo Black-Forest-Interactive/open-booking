@@ -19,6 +19,7 @@ data class BookingSearchEntryData(
     var status: BookingStatus,
     var size: Int,
     var comment: String,
+    var lang: String,
     @Serializable(with = LocalDateTimeSerializer::class) var timestamp: LocalDateTime,
     // visitor
     var visitorId: Long,
@@ -53,7 +54,7 @@ data class BookingSearchEntryData(
 
 
     fun convert() = BookingDetails(
-        Booking(id.toLong(), key, status, size, comment, offerId, visitorId),
+        Booking(id.toLong(), key, status, size, comment, lang, offerId, visitorId),
         Visitor(visitorId, type, title, description, visitorSize, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verificationTimestamp)),
         OfferReference(
             Offer(offerId, start, finish, maxPersons, active),

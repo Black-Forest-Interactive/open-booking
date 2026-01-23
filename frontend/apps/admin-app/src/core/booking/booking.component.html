@@ -1,33 +1,75 @@
-<app-main-content [title]="'MENU.Booking' | translate">
-
-  <div class="flex gap-2 flex-auto" actions>
-    <mat-form-field class="flex-1 min-w-[300px] dense-3" subscriptSizing="dynamic" appearance="outline">
+<app-main-content
+  [title]="'MENU.Booking' | translate"
+  searchLabel="BOOKING.Action.Search"
+  [enableSearch]="true"
+  (search)="handleSearch($event)"
+>
+  <div class="flex gap-2 flex-auto items-center" actions>
+    <!-- Date Range Filter -->
+    <mat-form-field class="flex-1 !min-w-128 dense-3" subscriptSizing="dynamic" appearance="outline">
       <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-        <input matStartDate formControlName="start" placeholder="{{ 'DAY_INFO.SelectRange.StartDate' | translate }}">
+        <input matStartDate formControlName="start"
+               placeholder="{{ 'DAY_INFO.SelectRange.StartDate' | translate }}">
         <input matEndDate formControlName="end" placeholder="{{ 'DAY_INFO.SelectRange.EndDate' | translate }}">
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
+
+      @if (range.controls.start.hasError('matStartDateInvalid')) {
+        <mat-error>Invalid start date</mat-error>
+      }
+      @if (range.controls.end.hasError('matEndDateInvalid')) {
+        <mat-error>Invalid end date</mat-error>
+      }
     </mat-form-field>
 
-    @if (range.valid) {
+    <!-- Clear Filters Button -->
+    @if (hasActiveFilters()) {
       <button
-        mat-icon-button
-        (click)="clearSelection()"
-        color="warn"
-        matTooltip="{{ 'OFFER.Action.ClearFilter' | translate }}">
-        <mat-icon>close</mat-icon>
+        mat-stroked-button
+        color="primary"
+        (click)="clearFilters()">
+        <mat-icon>clear</mat-icon>
+        Clear Filters
       </button>
     }
+
+    <button matIconButton (click)="reload()">
+      @if (reloading()) {
+        <mat-spinner [diameter]="18"></mat-spinner>
+      } @else {
+        <mat-icon class="!text-gray-800">refresh</mat-icon>
+      }
+    </button>
   </div>
 
-  <app-loading-bar [reloading]="reloading()"/>
-  <div class="flex flex-col gap-3 p-2">
-    <div class="flex flex-wrap gap-3">
-      @for (d of data(); track d.date) {
-        <app-booking-entry [data]="d"/>
-      }
+  <app-booking-content
+    [entries]="entries()"
+    [reloading]="reloading()"
+    (reload)="reload()"
+    [currentUserId]="authService.getPrincipal()?.id ?? ''"
+    [isSearchActive]="isSearchActive()"
+  >
+  </app-booking-content>
+
+  <!-- Results Summary -->
+  @if (entries().length > 0) {
+    <div class="text-center text-sm text-gray-600 py-4">
+      Showing {{ entries().length }}
+      of {{ totalElements() }} {{ 'BOOKING.Table.Bookings' | translate | lowercase }}
     </div>
-  </div>
+  }
+
+  <!-- Paginator -->
+  <mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageNumber()"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [showFirstLastButtons]="true"
+    [disabled]="reloading()"
+    (page)="handlePageChange($event)">
+  </mat-paginator>
+
 </app-main-content>

@@ -8,6 +8,7 @@ data class Booking(
     val status: BookingStatus,
     val size: Int,
     val comment: String,
+    val lang: String,
     val offerId: Long,
     val visitorId: Long,
 ) : Entity<Long>

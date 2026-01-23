@@ -28,11 +28,16 @@
             } @else {
               <mat-icon>new_label</mat-icon>
             }
-            <span>{{ 'OFFER.Action.Relabel' }}</span>
+            <span>{{ 'OFFER.Action.Relabel' | translate }}</span>
           </button>
           <button matButton="tonal" class="dense-1" (click)="handleRedistribute(selectedEntry()!!)">
             <mat-icon>expand</mat-icon>
-            <span>{{ 'OFFER.Action.Redistribute' }}</span>
+            <span>{{ 'OFFER.Action.Redistribute' | translate }}</span>
+          </button>
+
+          <button matButton="tonal" (click)="exportExcel(selectedEntry()!!)" class="dense-1">
+            <mat-icon>file_copy</mat-icon>
+            {{ 'OFFER.Action.Export_Excel' | translate }}
           </button>
 
           <span class="px-2 py-1 bg-gray-700 text-white text-xs font-medium rounded">

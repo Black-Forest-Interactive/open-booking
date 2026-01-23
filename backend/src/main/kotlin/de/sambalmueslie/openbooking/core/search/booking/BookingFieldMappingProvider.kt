@@ -12,6 +12,7 @@ class BookingFieldMappingProvider : FieldMappingProvider {
             keyword(BookingSearchEntryData::key)
             keyword(BookingSearchEntryData::status)
             text(BookingSearchEntryData::comment)
+            keyword(BookingSearchEntryData::lang)
             date(BookingSearchEntryData::timestamp)
             // visitor
             number<Long>(BookingSearchEntryData::visitorId)

@@ -24,6 +24,7 @@ export class ReservationDetailsComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute)
   routeId = toSignal(this.route.paramMap.pipe(map(param => +(param.get('id') ?? ''))))
   inputId = input<number>()
+  editMode = input(false)
 
 
   private bookingCriteria = computed(() => this.routeId() || this.inputId())

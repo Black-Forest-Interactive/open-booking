@@ -10,5 +10,6 @@ data class BookingInfo(
     val offer: OfferInfo,
     val status: BookingStatus,
     val comment: String,
+    val lang: String,
     val timestamp: LocalDateTime
 )

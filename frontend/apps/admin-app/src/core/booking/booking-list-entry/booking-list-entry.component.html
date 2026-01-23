@@ -1,0 +1,53 @@
+<div class="rounded border border-gray-300 bg-white hover:bg-gray-50 transition-colors">
+  <div class="flex items-center gap-3 p-3">
+    <lib-visitor-type [data]="data().visitor.type" [showText]="false"/>
+    <lib-booking-status [status]="status()" [showText]="showText()"/>
+    <app-visitor-size [visitor]="data().visitor"></app-visitor-size>
+    <div class="flex justify-center items-center gap-2">
+      <span class="font-medium text-gray-800 text-sm truncate">{{ name() }}</span>
+      @if (contact()) {
+        <span class="text-xs text-gray-500 truncate">{{ contact() }}</span>
+      }
+    </div>
+    <!-- Main Info -->
+    @if (showContact()) {
+      <div class="flex flex-col items-stretch gap-1 flex-1">
+        <div class="flex-1 min-w-0 flex gap-6 items-center">
+          <div class="flex gap-4 min-w-0">
+            <div class="flex items-center gap-3 ">
+              @if (email()) {
+                <div class="flex items-center gap-1 truncate text-xs text-gray-600" [matTooltip]="email()">
+                  <mat-icon class="!text-sm" inline>email</mat-icon>
+                  <span class="truncate">{{ email() }}</span>
+                </div>
+              }
+              @if (phone()) {
+                <div class="flex items-center gap-1 text-xs text-gray-600" [matTooltip]="phone()">
+                  <mat-icon class="!text-sm" inline>phone</mat-icon>
+                  <span>{{ phone() }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="flex-1"></div>
+    <!-- Details Button -->
+    <div class="flex gap-2 flex-shrink-0">
+      @if (comment()) {
+        <button matButton="tonal" (click)="showCommentDialog()"
+                class="!px-4 !py-1 !text-xs !min-w-0 !h-7 !bg-amber-50 !border !border-amber-200">
+          <mat-icon class="!text-base !text-amber-600" inline>comment</mat-icon>
+          {{ 'RESERVATION.Form.Comment.Label' | translate }}
+        </button>
+      }
+
+      <button matButton="tonal" (click)="showDetails()" class="!px-3 !py-1 !text-xs !min-w-0 !h-7">
+        <mat-icon>read_more</mat-icon>
+        {{ 'ACTION.Details' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

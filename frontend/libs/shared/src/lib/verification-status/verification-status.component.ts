@@ -30,6 +30,8 @@ const icons: Record<string, string> = {
 })
 export class VerificationStatusComponent {
   data = input.required<Verification>()
+  showText = input(true)
+  
   status = computed(() => this.data().status ?? VerificationStatus.UNKNOWN)
   statusClass = computed(() => classes[this.status()] || classes['UNKNOWN'])
   statusIcon = computed(() => icons[this.status()] || classes['UNKNOWN'])

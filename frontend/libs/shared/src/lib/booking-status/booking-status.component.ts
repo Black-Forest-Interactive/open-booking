@@ -32,6 +32,7 @@ const bookingIcons: Record<string, string> = {
 })
 export class BookingStatusComponent {
   status = input.required<BookingStatus>()
+  showText = input(true)
   statusClass = computed(() => bookingClasses[this.status()] || 'bg-gray-100 text-gray-800')
   text = computed(() => 'BOOKING.Status.' + this.status())
   icon = computed(() => bookingIcons[this.status()] || 'flat')

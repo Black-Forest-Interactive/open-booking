@@ -1,5 +1,6 @@
 export * from './lib/audit/audit.service'
 export * from './lib/booking/booking.service'
+export * from './lib/booking/booking.util'
 export * from './lib/cache/cache.service'
 export * from './lib/dashboard/dashboard.api'
 export * from './lib/dashboard/dashboard.service'

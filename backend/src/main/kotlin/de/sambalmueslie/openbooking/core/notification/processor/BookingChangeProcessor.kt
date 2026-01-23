@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
+import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingInfoAssembler
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateEvaluator
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
@@ -35,6 +36,24 @@ class BookingChangeProcessor(
         private val logger = LoggerFactory.getLogger(BookingChangeProcessor::class.java)
         private const val DEFAULT_DATE_FORMAT = "dd-MM-yyyy"
         private const val DEFAULT_TIME_FORMAT = "HH:mm"
+        private val translation = mapOf(
+            "de" to mapOf(
+                BookingStatus.UNKNOWN to "Unbekannt",
+                BookingStatus.PENDING to "Ausstehend",
+                BookingStatus.CONFIRMED to "Bestätigt",
+                BookingStatus.DECLINED to "Abgelehnt",
+                BookingStatus.CANCELLED to "Storniert",
+                BookingStatus.EXPIRED to "Abgelaufen"
+            ),
+            "en" to mapOf(
+                BookingStatus.UNKNOWN to "Unknown",
+                BookingStatus.PENDING to "Pending",
+                BookingStatus.CONFIRMED to "Confirmed",
+                BookingStatus.DECLINED to "Declined",
+                BookingStatus.CANCELLED to "Canceled",
+                BookingStatus.EXPIRED to "Expired"
+            )
+        )
     }
 
     override fun process(event: NotificationEvent) {
@@ -91,15 +110,22 @@ class BookingChangeProcessor(
         val dateFormatter = DateTimeFormatter.ofPattern(settingService.getDateFormat().text.ifBlank { DEFAULT_DATE_FORMAT })
         val timeFormatter = DateTimeFormatter.ofPattern(settingService.getTimeFormat().text.ifBlank { DEFAULT_TIME_FORMAT })
         val timestamp = "${offer.start.format(dateFormatter)} ${offer.start.format(timeFormatter)} - ${offer.finish.format(timeFormatter)}"
+        val status = translateStatus(info.status, info.lang)
 
         return mutableMapOf(
             Pair("info", info),
             Pair("title", title),
             Pair("age", age),
+            Pair("status", status),
             Pair("timestamp", timestamp),
             Pair("isGroup", info.visitor.type == VisitorType.GROUP),
             Pair("detailsUrl", detailsUrl),
         )
+    }
+
+    private fun translateStatus(status: BookingStatus, lang: String): String {
+        val t = translation[lang] ?: translation.values.firstOrNull()
+        return t?.get(status) ?: status.name
     }
 
     private fun notifyContactOnChanged(info: BookingInfo, properties: Map<String, Any>) {

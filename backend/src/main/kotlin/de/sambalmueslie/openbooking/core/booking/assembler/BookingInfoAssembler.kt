@@ -91,7 +91,7 @@ class BookingInfoAssembler(
 
     private fun info(data: BookingData, visitor: Visitor, offer: OfferInfo): BookingInfo {
         val timestamp = data.updated ?: data.created
-        return BookingInfo(data.id, visitor, offer, data.status, data.comment, timestamp)
+        return BookingInfo(data.id, visitor, offer, data.status, data.comment, data.lang, timestamp)
     }
 
 }

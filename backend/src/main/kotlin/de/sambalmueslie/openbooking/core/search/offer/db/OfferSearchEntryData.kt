@@ -1,5 +1,6 @@
 package de.sambalmueslie.openbooking.core.search.offer.db
 
+import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.OfferInfo
 import de.sambalmueslie.openbooking.core.search.common.LocalDateTimeSerializer
@@ -22,9 +23,9 @@ data class OfferSearchEntryData(
     var bookings: List<OfferBookingEntryData>
 
 ) {
-    fun convert(info: OfferInfo) = OfferSearchEntry(
+    fun convert(info: OfferInfo, allBookings: Map<Long, BookingDetails>) = OfferSearchEntry(
         info,
         Assignment(bookedSpace, reservedSpace, availableSpace, if (active) 0 else maxPersons),
-        bookings.map { it.convert() }
+        bookings.mapNotNull { allBookings[it.bookingId] }
     )
 }

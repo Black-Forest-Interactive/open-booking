@@ -4,10 +4,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {OfferSearchEntry} from "@open-booking/core";
 import {DatePipe} from "@angular/common";
-import {
-  DashboardContentEntryBookingComponent
-} from "../dashboard-content-entry-booking/dashboard-content-entry-booking.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {BookingListEntryComponent} from "../../booking/booking-list-entry/booking-list-entry.component";
 
 @Component({
   selector: 'app-dashboard-content-entry',
@@ -16,8 +14,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     MatFormFieldModule,
     MatSelectModule,
     DatePipe,
-    DashboardContentEntryBookingComponent,
-    TranslatePipe
+    TranslatePipe,
+    BookingListEntryComponent
   ],
   templateUrl: './dashboard-content-entry.component.html',
   styleUrl: './dashboard-content-entry.component.scss',
