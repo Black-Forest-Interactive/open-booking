@@ -12,6 +12,7 @@ import {BookingSuccessDialogComponent} from "./booking-success-dialog/booking-su
 import {MatDialog} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {BookingService, CreateBookingRequest, CreateBookingResponse} from "@open-booking/portal";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-booking',
@@ -38,6 +39,7 @@ export class BookingComponent {
   ) {
 
   }
+
 
   handleConfirm(request: CreateBookingRequest) {
     this.processing.set(true)
@@ -67,5 +69,15 @@ export class BookingComponent {
   private handleError(err: any) {
     let dialogRef = this.dialog.open(BookingFailedDialogComponent, {data: err})
     dialogRef.afterClosed().subscribe(() => navigateToDashboard(this.router))
+  }
+
+  protected onBack() {
+    let selectedOffer = this.service.selectedOffer()
+    if (selectedOffer) {
+      let day = DateTime.fromISO(selectedOffer.offer.start, {zone: 'utc'}).toISODate()
+      this.router.navigate(["details", day]).then()
+    } else {
+      this.router.navigate(["/"]).then()
+    }
   }
 }

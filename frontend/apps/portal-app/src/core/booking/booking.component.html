@@ -12,6 +12,7 @@
             [offer]="service.selectedOffer()!!"
             [data]="service.request()"
             (request)="service.proceedToSummary($event)"
+            (back)="onBack()"
           />
         }
       }

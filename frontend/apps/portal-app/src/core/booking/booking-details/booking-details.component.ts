@@ -3,6 +3,7 @@ import {BookingService} from "@open-booking/portal";
 import {
   BookingStatusComponent,
   GenericRequestResult,
+  GenericResultDialogComponent,
   LoadingBarComponent,
   toPromise,
   VerificationStatusComponent,
@@ -26,7 +27,6 @@ import {HotToastService} from "@ngxpert/hot-toast";
 import {MatDialog} from "@angular/material/dialog";
 import {BookingResizeDialogComponent} from "../booking-resize-dialog/booking-resize-dialog.component";
 import {BookingCancelDialogComponent} from "../booking-cancel-dialog/booking-cancel-dialog.component";
-import {BookingSuccessDialogComponent} from "../booking-success-dialog/booking-success-dialog.component";
 import {BookingFailedDialogComponent} from "../booking-failed-dialog/booking-failed-dialog.component";
 
 interface EditableField {
@@ -214,17 +214,10 @@ export class BookingDetailsComponent {
   }
 
   private handleResult(response: GenericRequestResult) {
-    if (response.success) {
-      let dialogRef = this.dialog.open(BookingSuccessDialogComponent, {data: response})
-      dialogRef.afterClosed().subscribe(() => {
-        this.bookingResource.reload()
-      })
-    } else {
-      let dialogRef = this.dialog.open(BookingFailedDialogComponent, {data: response})
-      dialogRef.afterClosed().subscribe(() => {
-        this.bookingResource.reload()
-      })
-    }
+    let dialogRef = this.dialog.open(GenericResultDialogComponent, {data: response})
+    dialogRef.afterClosed().subscribe(() => {
+      this.bookingResource.reload()
+    })
   }
 
   private handleError(err: any) {

@@ -1,6 +1,5 @@
-<h2 mat-dialog-title class="flex items-center gap-2">
-  <mat-icon class="text-red-600">cancel</mat-icon>
-  {{ 'BOOKING.Dialog.Cancel.Title' | translate }}
+<h2 mat-dialog-title>
+  <span>{{ 'BOOKING.Dialog.Cancel.Title' | translate }}</span>
 </h2>
 
 <mat-dialog-content>
@@ -15,10 +14,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-stroked-button [mat-dialog-close]="true">
+  <button matButton="outlined" [mat-dialog-close]="true" class="!text-red-700">
+    <mat-icon>cancel</mat-icon>
     {{ 'ACTION.Yes' | translate }}
   </button>
-  <button mat-flat-button color="warn" [mat-dialog-close]="false">
-    {{ 'ACTION.No' | translate }}
+  <button matButton="outlined" [mat-dialog-close]="false">
+    {{ 'ACTION.Cancel' | translate }}
   </button>
 </mat-dialog-actions>

@@ -21,7 +21,9 @@
     "Welcome": "Welcome"
   },
   "COMMON": {
-    "LastUpdated": "Last upated"
+    "LastUpdated": "Last updated",
+    "SUCCESS": "Success",
+    "ERROR": "Error"
   },
   "BOOKING": {
     "Status": {
@@ -35,7 +37,10 @@
     },
     "Action": {
       "Resize": "Adjust size",
-      "Cancel": "Cancel"
+      "Cancel": "Cancel",
+      "Comment": "Add comment",
+      "ViewDetails": "Show booking details",
+      "Create": "Create Booking"
     },
     "Dialog": {
       "Resize": {
@@ -52,6 +57,20 @@
         "Title": "Cancel Booking",
         "Message": "Are you sure you want to cancel this booking?",
         "Warning": "This action cannot be undone. The booking will be permanently cancelled."
+      }
+    },
+    "MESSAGE": {
+      "CONFIRM": {
+        "SUCCESS": "The booking request has been confirmed successfully.",
+        "FAILED": "The booking request could not be confirmed."
+      },
+      "DECLINE": {
+        "SUCCESS": "The booking request has been declined successfully.",
+        "FAILED": "The booking request could not be declined."
+      },
+      "CANCEL": {
+        "SUCCESS": "The booking has been cancelled successfully.",
+        "FAILED": "The booking could not be cancelled."
       }
     }
   },
@@ -115,7 +134,8 @@
           "Available": "Available Space",
           "Confirmed": "Confirmed Space",
           "Deactivated": "Canceled",
-          "Unconfirmed": "Unconfirmed Space"
+          "Unconfirmed": "Unconfirmed Space",
+          "Claimed": "Claimed Space"
         },
         "Title": "Space Chart"
       }
@@ -252,7 +272,8 @@
       },
       "Comment": {
         "Hint": "Add some additional information that is important to consider",
-        "Label": "Comment"
+        "Label": "Comment",
+        "Empty": "No comment currently available"
       },
       "Contact": {
         "Hint": "The contact name",
@@ -408,7 +429,7 @@
         "TotalRemaining": "Remaining space"
       }
     },
-    "Title": "📅 Dashboard Overview",
+    "Title": "📅 Offer Overview",
     "NoData": "No Data Available",
     "ComeBackLater": "Please check back later for updates."
   },

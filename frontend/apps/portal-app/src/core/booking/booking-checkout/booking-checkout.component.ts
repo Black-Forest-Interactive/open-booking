@@ -62,8 +62,11 @@ export class BookingCheckoutComponent {
     })
 
     effect(() => {
-      const available = this.spaceAvailable()
-      const bookings = this.hasBookings()
+      let data = this.data()
+      if (data) this.setValues(data)
+    });
+
+    effect(() => {
       if (this.form) {
         this.updateSizeValidators()
       }
@@ -173,4 +176,22 @@ export class BookingCheckoutComponent {
 
 
   protected readonly VisitorType = VisitorType;
+
+  private setValues(data: CreateBookingRequest) {
+    this.form.patchValue({
+      type: data.visitor.type,
+      title: data.visitor.title,
+      description: data.visitor.description,
+      size: data.visitor.size,
+      minAge: data.visitor.minAge,
+      maxAge: data.visitor.maxAge,
+      name: data.visitor.name,
+      zip: data.visitor.address.zip,
+      city: data.visitor.address.city,
+      phone: data.visitor.phone,
+      mail: data.visitor.email,
+      termsAndConditions: data.termsAndConditions,
+      comment: data.comment,
+    })
+  }
 }

@@ -1,11 +1,11 @@
 <!-- Cart Header -->
 <div class="p-4 border-b">
-  <h2 class="text-xl font-semibold">{{ 'SUMMARY.Title' | translate }}</h2>
+  <h2 class="text-xl font-semibold">{{ 'BOOKING.Summary.Title' | translate }}</h2>
 </div>
 
 <h3 class="text-lg font-semibold flex items-center gap-2 p-4">
   <mat-icon class="text-primary">event</mat-icon>
-  {{ 'SUMMARY.TimeSlots.Title' | translate }}
+  {{ 'OFFER.TimeSlots.Title' | translate }}
 </h3>
 
 <div class="space-y-3  p-4">
@@ -24,7 +24,7 @@
         <!-- Max Persons Info -->
         <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
           <mat-icon class="text-base" inline>people</mat-icon>
-          <span>{{ 'SUMMARY.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
+          <span>{{ 'OFFER.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
   <section>
     <h3 class="text-lg font-semibold mb-3 flex items-center gap-2 p-4">
       <mat-icon class="text-primary">comment</mat-icon>
-      {{ 'REQUEST.Form.Comment.Label' | translate }}
+      {{ 'BOOKING.Form.Comment.Label' | translate }}
     </h3>
     <div class="bg-surface-container rounded-lg p-4">
       <p class="text-sm whitespace-pre-wrap">{{ comment() }}</p>
@@ -61,7 +61,7 @@
     {{ termsAccepted() ? 'check_circle' : 'cancel' }}
   </mat-icon>
   <span [class]="termsAccepted() ? 'text-on-surface' : 'text-error'">
-                {{ (termsAccepted() ? 'SUMMARY.Terms.Accepted' : 'SUMMARY.Terms.NotAccepted') | translate }}
+                {{ (termsAccepted() ? 'BOOKING.Terms.Accepted' : 'BOOKING.Terms.NotAccepted') | translate }}
               </span>
 </div>
 
@@ -69,12 +69,12 @@
 <div class="flex justify-between items-center p-4">
   <button mat-stroked-button (click)="edit.emit(request())">
     <mat-icon>edit</mat-icon>
-    {{ 'SUMMARY.Action.Edit' | translate }}
+    {{ 'ACTION.Edit' | translate }}
   </button>
   <button mat-flat-button color="primary"
           [disabled]="!termsAccepted()"
           (click)="confirm.emit(request())">
     <mat-icon>check</mat-icon>
-    {{ 'SUMMARY.Action.Confirm' | translate }}
+    {{ 'BOOKING.Action.Submit' | translate }}
   </button>
 </div>
