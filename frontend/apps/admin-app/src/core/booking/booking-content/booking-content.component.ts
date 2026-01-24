@@ -8,7 +8,6 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {BookingGroupListComponent} from "../booking-group-list/booking-group-list.component";
 import {BookingListEntryComponent} from "../booking-list-entry/booking-list-entry.component";
 import {BookingDetailsComponent} from "../booking-details/booking-details.component";
-import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-booking-content',
@@ -19,8 +18,7 @@ import {TranslatePipe} from "@ngx-translate/core";
     MatTooltipModule,
     BookingGroupListComponent,
     BookingListEntryComponent,
-    BookingDetailsComponent,
-    TranslatePipe
+    BookingDetailsComponent
   ],
   templateUrl: './booking-content.component.html',
   styleUrl: './booking-content.component.scss',
@@ -34,7 +32,7 @@ export class BookingContentComponent {
 
   selectionWeekChanged = output<WeekSummary>()
   selectionDayChanged = output<DaySummary | undefined>()
-  reload = output<number>()
+  reload = output<boolean>()
 
   groupedBookings = computed(() => groupBookingDetailsByDate(this.entries()))
 

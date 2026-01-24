@@ -5,6 +5,7 @@
       [data]="offer"
       class="bg-white rounded-lg shadow-sm overflow-hidden border-l-8"
       [style.border-color]="offer.info.label?.color ?? ''"
+      (reload)="reload.emit($event)"
     />
   }
 </div>

@@ -46,7 +46,7 @@ export class OfferBookingCapacityComponent {
 
   availablePercentage = computed(() => (this.availableSpace() / this.maxPersons()) * 100)
 
-  remainingAfterConfirmation = computed(() => this.availableSpace() - this.visitorSize())
+  remainingAfterConfirmation = computed(() => this.availableSpace())
 
-  hasCapacity = computed(() => this.availableSpace() >= this.visitorSize())
+  hasCapacity = computed(() => this.availableSpace() >= 0)
 }

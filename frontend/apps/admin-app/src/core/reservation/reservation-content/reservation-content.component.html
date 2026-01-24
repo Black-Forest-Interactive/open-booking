@@ -65,10 +65,11 @@
               </div>
 
               <!-- Middle Section: Capacity & Timestamp -->
-              <app-reservation-offer-capacity-visualization
-                [booking]="entry.booking"
-                [visitor]="entry.visitor"
-                [entry]="entry.offer"
+              <app-offer-booking-capacity
+                [offer]="entry.offer.offer"
+                [visitorSize]="entry.visitor.size"
+                [status]="entry.booking.status"
+                [assignment]="entry.offer.assignment"
                 class="flex-1"
               />
 

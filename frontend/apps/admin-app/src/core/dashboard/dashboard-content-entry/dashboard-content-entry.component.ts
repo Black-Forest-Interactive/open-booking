@@ -1,4 +1,4 @@
-import {Component, computed, input, signal} from '@angular/core';
+import {Component, computed, input, output, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -31,6 +31,8 @@ import {BookingCreateDialogComponent} from "../../booking/booking-create-dialog/
 export class DashboardContentEntryComponent {
   data = input.required<OfferSearchEntry>()
 
+  reload = output<boolean>()
+
   availableSpace = computed(() => this.data().assignment.availableSpace)
 
   bookings = computed(() => this.data().bookings ?? [])
@@ -60,6 +62,6 @@ export class DashboardContentEntryComponent {
       maxWidth: 'none',
       height: 'auto',
       maxHeight: '90vh',
-    })
+    }).afterClosed().subscribe(value => this.reload.emit(true))
   }
 }

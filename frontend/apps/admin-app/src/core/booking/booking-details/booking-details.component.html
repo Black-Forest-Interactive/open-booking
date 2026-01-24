@@ -4,6 +4,12 @@
       <!-- Card Header -->
       <div class="bg-gray-200 px-6 py-4 border-b border-gray-200 rounded-t-xl">
         <div class="flex justify-between">
+          @if (showBackButton()) {
+            <button matButton="outlined" (click)="back.emit(true)">
+              <mat-icon>arrow_back_ios</mat-icon>
+              {{ 'ACTION.Back' | translate }}
+            </button>
+          }
           <div class="flex items-center gap-3 flex-wrap">
             <lib-booking-status [status]="data().booking.status"/>
             <lib-verification-status [data]="data().visitor.verification"/>

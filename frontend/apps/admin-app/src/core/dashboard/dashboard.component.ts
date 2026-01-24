@@ -48,4 +48,7 @@ export class DashboardComponent {
     return new OfferSearchRequest('', from, to)
   }
 
+  protected reload() {
+    this.contentResource.reload()
+  }
 }

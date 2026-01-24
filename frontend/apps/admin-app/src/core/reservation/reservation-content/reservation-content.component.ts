@@ -9,12 +9,10 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
 import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
-import {
-  ReservationOfferCapacityVisualizationComponent
-} from "../reservation-offer-capacity-visualization/reservation-offer-capacity-visualization.component";
 import {BookingStatusComponent, VerificationStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 import {ReservationEditButtonComponent} from "../reservation-edit-button/reservation-edit-button.component";
 import {groupBookingDetailsByDate} from "@open-booking/admin";
+import {OfferBookingCapacityComponent} from "../../offer/offer-booking-capacity/offer-booking-capacity.component";
 
 
 @Component({
@@ -29,11 +27,11 @@ import {groupBookingDetailsByDate} from "@open-booking/admin";
     VisitorTitleComponent,
     VisitorSizeComponent,
     EditorInfoComponent,
-    ReservationOfferCapacityVisualizationComponent,
     VisitorTypeComponent,
     VerificationStatusComponent,
     BookingStatusComponent,
-    ReservationEditButtonComponent
+    ReservationEditButtonComponent,
+    OfferBookingCapacityComponent
   ],
   templateUrl: './reservation-content.component.html',
   styleUrl: './reservation-content.component.scss',

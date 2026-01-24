@@ -23,7 +23,13 @@
   <!-- Right Side - Details Panel (Slave) with independent scroll -->
   @if (selectedEntry()) {
     <div class="w-1/2 transition-all duration-300 overflow-y-auto">
-      <app-booking-details [data]="selectedEntry()!!" (close)="closeDetails()"/>
+      <app-booking-details
+        [data]="selectedEntry()!!"
+        [showBackButton]="false"
+        [reloading]="reloading()"
+        (reload)="reload.emit($event)"
+        (close)="closeDetails()"
+      />
     </div>
   }
 </div>

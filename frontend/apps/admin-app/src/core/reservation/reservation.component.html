@@ -53,14 +53,6 @@
   >
   </app-reservation-content>
 
-  <!-- Results Summary -->
-  @if (entries().length > 0) {
-    <div class="text-center text-sm text-gray-600 py-4">
-      Showing {{ entries().length }}
-      of {{ totalElements() }} {{ 'RESERVATION.Table.Reservations' | translate | lowercase }}
-    </div>
-  }
-
   <!-- Paginator -->
   <mat-paginator
     [length]="totalElements()"

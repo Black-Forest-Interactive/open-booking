@@ -33,7 +33,13 @@ import {OfferReferenceComponent} from "../../offer/offer-reference/offer-referen
 export class BookingDetailsComponent {
 
   data = input.required<BookingDetails>()
+  showBackButton = input(false)
+  reloading = input.required()
+
+  reload = output<boolean>()
   close = output<boolean>()
+  back = output<boolean>()
+
 
   constructor() {
   }

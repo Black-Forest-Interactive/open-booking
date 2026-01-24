@@ -37,7 +37,7 @@ export class ReservationContentEntryOfferComponent {
   maxPersons = computed(() => this.entry().offer.maxPersons)
   availableSpace = computed(() => this.entry().assignment.availableSpace)
 
-  hasCapacity = computed(() => this.availableSpace() >= this.visitor().size)
+  hasCapacity = computed(() => this.availableSpace() >= 0)
 
   canConfirmOffer = computed(() =>
     this.active() &&
