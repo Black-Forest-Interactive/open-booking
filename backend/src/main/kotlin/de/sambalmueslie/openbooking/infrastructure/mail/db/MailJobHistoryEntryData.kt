@@ -1,6 +1,5 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.db
 
-import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobHistoryEntry
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -12,8 +11,8 @@ data class MailJobHistoryEntryData(
     @Column var message: String,
     @Column var timestamp: LocalDateTime,
     @Column var jobId: Long
-) : EntityData<MailJobHistoryEntry> {
-    override fun convert(): MailJobHistoryEntry {
+) {
+    fun convert(): MailJobHistoryEntry {
         return MailJobHistoryEntry(id, message, timestamp)
     }
 }

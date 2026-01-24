@@ -1,5 +1,7 @@
-import {Assignment, Editor, Offer, OfferInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
-import {Page} from "@open-booking/shared";
+import type {Page} from "@open-booking/shared";
+import type {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
+import type {Assignment, Offer, OfferInfo} from "../offer/offer.api";
+import type {Editor} from "../editor/editor.api";
 
 export interface Reservation {
   id: number,

@@ -32,6 +32,9 @@ import {
 } from "./offer-feature-create-range-dialog/offer-feature-create-range-dialog.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {
+  OfferFeatureCreateSingleDialogComponent
+} from "./offer-feature-create-single-dialog/offer-feature-create-single-dialog.component";
 
 @Component({
   selector: 'app-offer',
@@ -142,6 +145,12 @@ export class OfferComponent {
     })
   }
 
+  protected handleCreateSingle() {
+    this.dialog.open(OfferFeatureCreateSingleDialogComponent, {
+      disableClose: true,
+    })
+  }
+
   protected handleCreateSeries() {
     this.dialog.open(OfferFeatureCreateSeriesDialogComponent, {
       disableClose: true,
@@ -161,4 +170,5 @@ export class OfferComponent {
   protected handleToggleActive(entry: OfferSearchEntry) {
     this.service.setOfferActive(entry.info.offer.id, !entry.info.offer.active).subscribe(value => this.offerResource.reload())
   }
+
 }

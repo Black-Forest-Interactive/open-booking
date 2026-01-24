@@ -92,7 +92,7 @@
         "MinValue": "Alter darf nicht kleiner 0 sein"
       },
       "Age": {
-        "Hint": "Alter des Besucherss",
+        "Hint": "Alter des Besuchers",
         "Label": "Alter"
       },
       "Phone": {

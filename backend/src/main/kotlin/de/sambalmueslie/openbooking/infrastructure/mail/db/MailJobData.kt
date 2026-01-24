@@ -31,7 +31,7 @@ data class MailJobData(
 
     override fun convert(): MailJob {
         val timestamp = updated ?: created
-        return MailJob(id, title, status, timestamp)
+        return MailJob(id, title, status, timestamp, created, updated)
     }
 
     fun updateStatus(status: MailJobStatus, timestamp: LocalDateTime): MailJobData {

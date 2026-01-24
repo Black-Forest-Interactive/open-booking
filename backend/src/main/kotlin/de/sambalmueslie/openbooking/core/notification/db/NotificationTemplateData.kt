@@ -37,7 +37,7 @@ data class NotificationTemplateData(
     }
 
     override fun convert(): NotificationTemplate {
-        return NotificationTemplate(id, lang, type, subject, contentType, content)
+        return NotificationTemplate(id, lang, type, subject, contentType, content, created, updated)
     }
 
     fun update(request: NotificationTemplateChangeRequest, timestamp: LocalDateTime): NotificationTemplateData {

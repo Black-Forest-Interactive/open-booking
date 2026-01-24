@@ -20,6 +20,10 @@ data class OfferSearchEntryData(
     var reservedSpace: Int,
     var availableSpace: Int,
 
+    @Serializable(with = LocalDateTimeSerializer::class) var created: LocalDateTime,
+    @Serializable(with = LocalDateTimeSerializer::class) var updated: LocalDateTime?,
+    @Serializable(with = LocalDateTimeSerializer::class) var timestamp: LocalDateTime,
+
     var bookings: List<OfferBookingEntryData>
 
 ) {

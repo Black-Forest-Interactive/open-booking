@@ -12,7 +12,7 @@ import {SearchComponent} from "@open-booking/shared";
 export class MainContentComponent {
   // Inputs
   title = input<string>('')
-  cardClass = input<string>('overflow-hidden')
+  cardClass = input<string>('')
   containerClass = input<string>('')
   enableSearch = input<boolean>(false)
   searchLabel = input<string>('Search')

@@ -8,14 +8,14 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {AuthService, toPromise} from "@open-booking/shared";
 import {BookingService} from "@open-booking/admin";
-import {BookingSearchRequest} from "@open-booking/core";
+import {BookingSearchRequest, DaySummary, WeekSummary} from "@open-booking/core";
 import {DateTime} from "luxon";
 import {MatIconModule} from "@angular/material/icon";
 import {MainContentComponent} from "../../shared/main-content/main-content.component";
 import {interval} from "rxjs";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {LowerCasePipe} from "@angular/common";
+import {JsonPipe, LowerCasePipe} from "@angular/common";
 import {BookingContentComponent} from "./booking-content/booking-content.component";
 
 @Component({
@@ -31,13 +31,15 @@ import {BookingContentComponent} from "./booking-content/booking-content.compone
     TranslatePipe,
     ReactiveFormsModule,
     MainContentComponent,
-    BookingContentComponent
+    BookingContentComponent,
+    JsonPipe
   ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })
 export class BookingComponent {
 
+  debug = signal(false)
   private fullTextSearch = signal('')
   dateFrom = signal<string | null | undefined>(null)
   dateTo = signal<string | null | undefined>(null)
@@ -51,10 +53,17 @@ export class BookingComponent {
   pageNumber = signal(0)
   pageSize = signal(25)
 
+  request = computed(() =>
+    (this.isSearchActive()) ?
+      new BookingSearchRequest(this.fullTextSearch(), [], '', '')
+      :
+      new BookingSearchRequest(this.fullTextSearch(), [], this.dateFrom(), this.dateTo())
+  )
+
   private bookingsCriteria = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize(),
-    request: new BookingSearchRequest(this.fullTextSearch(), [], this.dateFrom(), this.dateTo())
+    request: this.request()
   }))
 
 
@@ -64,18 +73,16 @@ export class BookingComponent {
   })
 
   private response = computed(() => this.bookingsResource.value())
-  private status = computed(() => this.response()?.status)
   private page = computed(() => this.response()?.result)
   entries = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
   reloading = this.bookingsResource.isLoading
-  hasActiveFilters = computed(() =>
-    this.dateFrom() !== null ||
-    this.dateTo() !== null
-  )
 
 
-  constructor(private service: BookingService, protected readonly authService: AuthService) {
+  constructor(
+    private service: BookingService,
+    protected readonly authService: AuthService
+  ) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
 
     interval(5000)
@@ -118,4 +125,15 @@ export class BookingComponent {
     this.bookingsResource.reload()
   }
 
+  protected handleSelectionWeekChanged(event: WeekSummary) {
+    this.dateFrom.set(event.startDate)
+    this.dateTo.set(event.endDate)
+  }
+
+  protected handleSelectionDayChanged(event: DaySummary | undefined) {
+    if (event) {
+      this.dateFrom.set(event.date)
+      this.dateTo.set(event.date)
+    }
+  }
 }

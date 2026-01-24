@@ -9,6 +9,7 @@ data class Editor(
     val resourceType: String,
     val userId: String,
     val userName: String,
-    val startedAt: LocalDateTime,
-    var expires: LocalDateTime
+    var expires: LocalDateTime,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

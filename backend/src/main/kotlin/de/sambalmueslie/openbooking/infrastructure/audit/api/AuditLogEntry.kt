@@ -12,4 +12,6 @@ data class AuditLogEntry(
     val referenceId: String,
     val reference: String,
     val source: String,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

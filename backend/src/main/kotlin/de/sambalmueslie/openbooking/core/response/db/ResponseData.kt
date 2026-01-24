@@ -34,7 +34,7 @@ data class ResponseData(
     }
 
     override fun convert(): Response {
-        return Response(id, lang, type, title, content)
+        return Response(id, lang, type, title, content, created, updated)
     }
 
     fun update(request: ResponseChangeRequest, timestamp: LocalDateTime): ResponseData {

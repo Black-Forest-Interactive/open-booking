@@ -53,7 +53,7 @@ data class VisitorData(
         }
     }
 
-    override fun convert() = Visitor(id, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verifiedAt))
+    override fun convert() = Visitor(id, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verifiedAt), created, updated)
 
     fun update(request: VisitorChangeRequest, timestamp: LocalDateTime): VisitorData {
         type = request.type

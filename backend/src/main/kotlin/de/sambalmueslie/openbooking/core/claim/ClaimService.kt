@@ -88,8 +88,9 @@ class ClaimService(
     }
 
     private fun add(offer: Offer, userId: String): Claim {
-        val expires = getExpires()
-        val claim = Claim(offer.id, userId, expires)
+        val timestamp = timeProvider.now()
+        val expires = getExpires(timestamp)
+        val claim = Claim(offer.id, userId, expires, timestamp, null)
         claims[offer.id] = claim
         logger.debug("Claim {} added", claim)
         notifyCreated(claim)
@@ -105,8 +106,8 @@ class ClaimService(
         return claim
     }
 
-    private fun getExpires(): LocalDateTime {
-        return timeProvider.now().plusSeconds(settingService.getClaimTTL().value ?: DEFAULT_TTL)
+    private fun getExpires(timestamp: LocalDateTime): LocalDateTime {
+        return timestamp.plusSeconds(settingService.getClaimTTL().value ?: DEFAULT_TTL)
     }
 
 }

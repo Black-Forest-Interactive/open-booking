@@ -52,7 +52,7 @@ function sortEntriesWithinGroup(entries: BookingDetails[]): BookingDetails[] {
     // Priority 2: status
     const aStatus = getStatusPriority(a.booking.status)
     const bStatus = getStatusPriority(b.booking.status)
-    if (aStatus !== bStatus) return aStatus > bStatus ? -1 : 1
+    if (aStatus !== bStatus) return aStatus > bStatus ? 1 : -1
 
     // Priority 3: Unconfirmed visitors
     const aUnconfirmed = a.visitor.verification.status === VerificationStatus.UNCONFIRMED ? 0 : 1

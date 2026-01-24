@@ -19,10 +19,12 @@ data class AuditLogEntryData(
     @Column var referenceId: String,
     @Column var reference: String,
     @Column var source: String,
+    @Column var created: LocalDateTime,
+    @Column var updated: LocalDateTime? = null,
 ) : EntityData<AuditLogEntry> {
 
     companion object {
-        fun create(request: AuditLogEntryChangeRequest, mapper: ObjectMapper): AuditLogEntryData {
+        fun create(request: AuditLogEntryChangeRequest, mapper: ObjectMapper, timestamp: LocalDateTime): AuditLogEntryData {
             return AuditLogEntryData(
                 0,
                 request.timestamp,
@@ -31,23 +33,25 @@ data class AuditLogEntryData(
                 request.message,
                 request.referenceId,
                 mapper.writeValueAsString(request.reference),
-                request.source
+                request.source,
+                timestamp, null
             )
         }
     }
 
     override fun convert(): AuditLogEntry {
-        return AuditLogEntry(id, timestamp, actor, level, message, referenceId, reference, source)
+        return AuditLogEntry(id, timestamp, actor, level, message, referenceId, reference, source, created, updated)
     }
 
-    fun update(request: AuditLogEntryChangeRequest, mapper: ObjectMapper): AuditLogEntryData {
-        timestamp = request.timestamp
+    fun update(request: AuditLogEntryChangeRequest, mapper: ObjectMapper, timestamp: LocalDateTime): AuditLogEntryData {
+        this.timestamp = request.timestamp
         actor = request.actor
         level = request.level
         message = request.message
         referenceId = request.referenceId
         reference = mapper.writeValueAsString(request.reference)
         source = request.source
+        updated = timestamp
         return this
     }
 }

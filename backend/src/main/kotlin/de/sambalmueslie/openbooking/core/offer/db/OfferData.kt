@@ -25,7 +25,7 @@ data class OfferData(
     @Column var updated: LocalDateTime? = null,
 ) : EntityData<Offer> {
 
-    override fun convert() = Offer(id, start, finish, maxPersons, active)
+    override fun convert() = Offer(id, start, finish, maxPersons, active, created, updated)
 
     fun update(request: OfferChangeRequest, label: Label?, guide: Guide?, timestamp: LocalDateTime): OfferData {
         start = request.start

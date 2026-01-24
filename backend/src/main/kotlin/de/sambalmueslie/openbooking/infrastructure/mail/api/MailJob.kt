@@ -8,4 +8,6 @@ data class MailJob(
     val title: String,
     val status: MailJobStatus,
     val timestamp: LocalDateTime,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

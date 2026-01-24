@@ -5,7 +5,5 @@ import java.time.LocalDate
 data class WeekSummary(
     val weekNumber: Int,
     val startDate: LocalDate,
-    val endDate: LocalDate,
-    val unconfirmedCount: Int,
-    val days: List<DaySummary>
+    val endDate: LocalDate
 )

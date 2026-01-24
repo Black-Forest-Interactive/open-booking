@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.editor
 
-import de.sambalmueslie.openbooking.common.Entity
 import de.sambalmueslie.openbooking.common.CrudService
+import de.sambalmueslie.openbooking.common.Entity
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.editor.api.Editor
 import de.sambalmueslie.openbooking.core.editor.api.EditorChangeRequest
@@ -74,7 +74,7 @@ class ResourceEditorService<O : Entity<Long>>(
 
     private fun add(resource: Entity<Long>, request: EditorChangeRequest, expires: LocalDateTime): Editor {
         val id = idGenerator.getId()
-        val editor = Editor(id, resource.id, resourceName, request.userId, request.userName, timeProvider.now(), expires)
+        val editor = Editor(id, resource.id, resourceName, request.userId, request.userName, expires, timeProvider.now(), null)
         editors[id] = editor
         logger.debug("Editor {} added", editor)
         return editor

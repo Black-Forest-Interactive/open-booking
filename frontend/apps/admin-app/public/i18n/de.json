@@ -24,7 +24,7 @@
     "Booking": "Buchungen",
     "Reservation": "Reservierungen",
     "BookingRequest": "Buchungsanfrage",
-    "Label": "Etikett",
+    "Label": "Marker",
     "Guide": "Guide",
     "Offer": "Angebot",
     "Settings": "Einstellungen",
@@ -71,7 +71,9 @@
     "NoBookings": "Bisher keine Buchungen",
     "Action": {
       "Create": "Buchung erstellen",
-      "Search": "Buchung suchen"
+      "Search": "Buchung suchen",
+      "Confirm": "Buchung bestätigen",
+      "Deny": "Buchung ablehnen"
     },
     "Create": {
       "Action": {
@@ -119,6 +121,71 @@
       "DECLINED": "Abgelehnt",
       "CANCELLED": "Storniert",
       "EXPIRED": "Abgelaufen"
+    },
+    "Form": {
+      "BookingType": {
+        "Single": "Privatperson",
+        "Group": "Gruppe oder Schulklasse"
+      },
+      "Title": {
+        "Hint": "Bezeichnung für die Gruppe",
+        "Label": "Bezeichung",
+        "Required": "Für die Gruppe wird eine Bezeichnung benötigt"
+      },
+      "Name": {
+        "Hint": "Name des Besuchers",
+        "Label": "Name"
+      },
+      "City": {
+        "Label": "Stadt"
+      },
+      "Comment": {
+        "Hint": "Wichtige Informationen, die für uns hilfreich sind.",
+        "Label": "Anmerkungen",
+        "Empty": "Derzeit gibt es keine Anmerkungen"
+      },
+      "Contact": {
+        "Hint": "Name der Kontaktperson",
+        "Label": "Name"
+      },
+      "Mail": {
+        "Label": "E-Mail Addresse",
+        "Invalid": "Ungültige E-Mail Addresse"
+      },
+      "MaxAge": {
+        "Hint": "Das Alter des ältesten Teilnehmers",
+        "Label": "Ältester Teilnehmer",
+        "MinValue": "Alter darf nicht kleiner 0 sein"
+      },
+      "MinAge": {
+        "Hint": "Das Alter des jüngsten Teilnehmers",
+        "Label": "Jüngster Teilnehmer",
+        "MinValue": "Alter darf nicht kleiner 0 sein"
+      },
+      "Age": {
+        "Hint": "Alter des Besuchers",
+        "Label": "Alter"
+      },
+      "Phone": {
+        "Label": "Telefon"
+      },
+      "School": {
+        "Label": "Schulklasse oder Kindergarten-Gruppe"
+      },
+      "SelectedDate": {
+        "Label": "Ausgewählter Termin"
+      },
+      "Size": {
+        "MaxSize": "Die maximale Anzahl von freien Plätzen ist leider überschritten.",
+        "MinSize": "Es muss mindestens eine Person angemeldet werden.",
+        "MaxAvailableSize": "Maximale Teilnehmeranzahl {{available}}",
+        "Hint": "Anzahl Personen, die angemeldet werden sollen",
+        "Label": "Anzahl Personen"
+      },
+      "Zip": {
+        "Label": "PLZ"
+      },
+      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld"
     }
   },
   "CACHE": {
@@ -241,7 +308,11 @@
       "Search": "Termin suchen",
       "Select": "Termin auswählen",
       "ShowBookings": "Buchungen",
-      "Filter": "Filtern"
+      "Filter": "Filtern",
+      "Relabel": "Marker neu berechnen",
+      "Redistribute": "Verdichten",
+      "SelectLabel": "Marker auswählen",
+      "SelectGuide": "Guide auswählen"
     },
     "Field": {
       "Active": "Aktiv",
@@ -258,7 +329,12 @@
       "End": "Ende",
       "Id": "ID",
       "MaxPersons": "Maximale Personzahl",
-      "Start": "Beginn"
+      "Start": "Beginn",
+      "Range": {
+        "Date": "Datum",
+        "TimeFrom": "Anfangszeit",
+        "TimeTo": "Endzeit"
+      }
     },
     "Info": {
       "SpaceAvailable": "Es sind noch {{value}} Plätze frei"
@@ -269,7 +345,7 @@
     },
     "Series": {
       "Date": "Datum",
-      "Duration": "Dauer",
+      "Duration": "Dauer des Termins",
       "Interval": "Intervall",
       "MaxPersons": "Maximale Personzahl",
       "MaxTime": "",
@@ -380,7 +456,7 @@
         "Available": "Verfügbar",
         "Booked": "Gebucht",
         "Reserved": "Reserviert",
-        "CurrentGroup": "Aktuelle Gruppe"
+        "CurrentGroup": "Diese Buchung"
       },
       "Capacity": {
         "Label": "Kapazität"
@@ -391,7 +467,8 @@
       },
       "Info": {
         "AlreadyConfirmed": "Reservierung bereits bestätigt",
-        "ConfirmationEffect": "Die Bestätigung verschiebt {{size}} Personen von reserviert zu gebucht. {{remaining}} Plätze bleiben verfügbar."
+        "ConfirmationEffect": "Die Bestätigung verschiebt {{size}} Personen von reserviert zu gebucht. {{remaining}} Plätze bleiben verfügbar.",
+        "OverbookingEffect": "Diese Buchung von {{size}} Personen überschreitet die maximale Anzahl von freien Plätzen von {{available}}"
       }
     },
     "Status": {
@@ -518,6 +595,16 @@
         "Title": "Buchungsstatistik Gesamt",
         "TotalRemaining": "Verbleibende Plätze"
       }
+    },
+    "WeekSelector": {
+      "SelectWeek": "Woche auswählen",
+      "Week": "Woche"
+    },
+    "DayCard": {
+      "OfferChange": "Angebotsänderung",
+      "OfferChanges": "Angebotsänderungen",
+      "BookingChange": "Buchungsänderung",
+      "BookingChanges": "Buchungsänderungen"
     }
   },
   "FORBIDDEN": {

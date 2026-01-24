@@ -15,7 +15,6 @@ import de.sambalmueslie.openbooking.core.booking.features.BookingConfirmFeature
 import de.sambalmueslie.openbooking.core.booking.features.BookingDeclineFeature
 import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
-import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.infrastructure.cache.CacheService
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -163,13 +162,5 @@ class BookingService(
         val data = repository.findByIdOrNull(id) ?: return ""
         return "${config.baseUrl}/booking/${data.key}"
     }
-
-    fun update(bookingId: Long, visitor: Visitor, status: BookingStatus) {
-        TODO("refactor me")
-//        val data = repository.findByIdOrNull(bookingId) ?: return
-//        val result = repository.update(data.update(visitor, status, timeProvider.now())).convert()
-//        notifyUpdated(result)
-    }
-
 
 }

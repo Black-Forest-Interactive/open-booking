@@ -1,7 +1,7 @@
-import {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
-import {OfferInfo, OfferReference} from "../offer/offer.api";
-import {Editor} from "../editor/editor.api";
-import {Page} from "@open-booking/shared";
+import type {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
+import type {OfferInfo, OfferReference} from "../offer/offer.api";
+import type {Editor} from "../editor/editor.api";
+import type {Page} from "@open-booking/shared";
 
 export interface Booking {
   id: number,
@@ -34,6 +34,7 @@ export class BookingChangeRequest {
   constructor(
     public visitor: VisitorChangeRequest,
     public comment: string,
+    public lang: string,
     public offerId: number,
     public autoConfirm: boolean,
     public ignoreSizeCheck: boolean

@@ -1,7 +1,0 @@
-<mat-progress-bar mode="indeterminate" *ngIf="this.service.reloading | async"></mat-progress-bar>
-<div class="day-entry-container gap-3 container">
-  <ng-container *ngFor="let day of this.service.data">
-    <app-day-info-dashboard-entry [data]="day" class="day-entry"></app-day-info-dashboard-entry>
-  </ng-container>
-</div>
-

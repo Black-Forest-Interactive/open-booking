@@ -15,6 +15,9 @@ class OfferFieldMappingProvider : FieldMappingProvider {
             date(OfferSearchEntryData::finish)
             number<Int>(OfferSearchEntryData::maxPersons)
             bool(OfferSearchEntryData::active)
+            date(OfferSearchEntryData::created)
+            date(OfferSearchEntryData::updated)
+            date(OfferSearchEntryData::timestamp)
             // stats
             number<Int>(OfferSearchEntryData::bookedSpace)
             number<Int>(OfferSearchEntryData::reservedSpace)

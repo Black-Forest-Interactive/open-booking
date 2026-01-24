@@ -21,7 +21,7 @@
     }
 
 
-    <button matButton="outlined" color="primary" routerLink="./create">
+    <button matButton="outlined" (click)="handleCreateSingle()">
       <mat-icon>add</mat-icon>
       {{ 'OFFER.Action.CreateSingle' | translate }}
     </button>

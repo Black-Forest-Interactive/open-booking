@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.infrastructure.audit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntry
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory
 class AuditLogEntryService(
     private val repository: AuditLogEntryRepository,
     private val mapper: ObjectMapper,
+    private val timeProvider: TimeProvider,
     cacheService: CacheService,
 ) : GenericCrudService<Long, AuditLogEntry, AuditLogEntryChangeRequest, AuditLogEntryChangeListener, AuditLogEntryData>(repository, cacheService, AuditLogEntry::class, logger) {
 
@@ -26,11 +28,11 @@ class AuditLogEntryService(
     }
 
     override fun createData(request: AuditLogEntryChangeRequest): AuditLogEntryData {
-        return AuditLogEntryData.create(request, mapper)
+        return AuditLogEntryData.create(request, mapper, timeProvider.now())
     }
 
     override fun updateData(data: AuditLogEntryData, request: AuditLogEntryChangeRequest): AuditLogEntryData {
-        return data.update(request, mapper)
+        return data.update(request, mapper, timeProvider.now())
     }
 
     override fun isValid(request: AuditLogEntryChangeRequest) {

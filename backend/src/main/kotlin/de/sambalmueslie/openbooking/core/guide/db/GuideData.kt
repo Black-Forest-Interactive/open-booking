@@ -24,7 +24,7 @@ data class GuideData(
         }
     }
 
-    override fun convert() = Guide(id, firstName, lastName, email, phone, mobile)
+    override fun convert() = Guide(id, firstName, lastName, email, phone, mobile, created, updated)
 
     fun update(request: GuideChangeRequest, timestamp: LocalDateTime): GuideData {
         firstName = request.firstName

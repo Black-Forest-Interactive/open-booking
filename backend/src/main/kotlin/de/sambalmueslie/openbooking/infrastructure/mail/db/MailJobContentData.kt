@@ -4,7 +4,6 @@ package de.sambalmueslie.openbooking.infrastructure.mail.db
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailJobContent
 import de.sambalmueslie.openbooking.infrastructure.mail.api.MailParticipant
@@ -19,7 +18,7 @@ data class MailJobContentData(
     @Column var toJson: String,
     @Column var bccJson: String,
     @Column(unique = true) var jobId: Long,
-) : EntityData<MailJobContent> {
+) {
 
 
     companion object {
@@ -45,7 +44,7 @@ data class MailJobContentData(
         }
     }
 
-    override fun convert(): MailJobContent {
+    fun convert(): MailJobContent {
         return MailJobContent(id, getMailObj(), getFromObj(), getToObj(), getBccObj())
     }
 

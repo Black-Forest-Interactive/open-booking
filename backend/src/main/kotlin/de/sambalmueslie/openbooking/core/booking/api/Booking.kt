@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.core.booking.api
 
 import de.sambalmueslie.openbooking.common.Entity
+import java.time.LocalDateTime
+
 
 data class Booking(
     override val id: Long,
@@ -11,4 +13,6 @@ data class Booking(
     val lang: String,
     val offerId: Long,
     val visitorId: Long,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

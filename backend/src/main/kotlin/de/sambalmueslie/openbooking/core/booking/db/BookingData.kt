@@ -25,7 +25,7 @@ data class BookingData(
     @Column var updated: LocalDateTime? = null,
 ) : EntityData<Booking> {
 
-    override fun convert() = Booking(id, key, status, size, comment, lang, offerId, visitorId)
+    override fun convert() = Booking(id, key, status, size, comment, lang, offerId, visitorId, created, updated)
 
     fun update(status: BookingStatus, timestamp: LocalDateTime): BookingData {
         this.status = status

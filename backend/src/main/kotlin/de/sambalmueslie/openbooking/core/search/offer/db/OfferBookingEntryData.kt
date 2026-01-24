@@ -2,8 +2,8 @@ package de.sambalmueslie.openbooking.core.search.offer.db
 
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.search.common.LocalDateTimeSerializer
-import de.sambalmueslie.openbooking.core.search.offer.api.OfferBookingEntry
-import de.sambalmueslie.openbooking.core.visitor.api.*
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorType
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
@@ -32,22 +32,5 @@ data class OfferBookingEntryData(
     @Serializable(with = LocalDateTimeSerializer::class)
     var verificationTimestamp: LocalDateTime?,
 ) {
-    fun convert() = OfferBookingEntry(
-        bookingId,
-        status,
-        Visitor(
-            visitorId,
-            type,
-            title,
-            description,
-            size,
-            minAge,
-            maxAge,
-            name,
-            Address(street, city, zip),
-            phone,
-            email,
-            Verification(verificationStatus, verificationTimestamp)
-        )
-    )
+
 }

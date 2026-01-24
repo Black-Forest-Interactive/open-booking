@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.notification.api
 
 import de.sambalmueslie.openbooking.common.Entity
+import java.time.LocalDateTime
 
 data class NotificationTemplate(
     override val id: Long,
@@ -8,5 +9,7 @@ data class NotificationTemplate(
     val type: NotificationTemplateType,
     val subject: String,
     val contentType: ContentType,
-    val content: String
+    val content: String,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

@@ -1,13 +1,9 @@
 package de.sambalmueslie.openbooking.core.search.booking
 
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.offer.api.Assignment
-import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.core.offer.api.OfferReference
 import de.sambalmueslie.openbooking.core.search.common.LocalDateTimeSerializer
-import de.sambalmueslie.openbooking.core.visitor.api.*
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorType
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
@@ -20,6 +16,8 @@ data class BookingSearchEntryData(
     var size: Int,
     var comment: String,
     var lang: String,
+    @Serializable(with = LocalDateTimeSerializer::class) var created: LocalDateTime,
+    @Serializable(with = LocalDateTimeSerializer::class) var updated: LocalDateTime?,
     @Serializable(with = LocalDateTimeSerializer::class) var timestamp: LocalDateTime,
     // visitor
     var visitorId: Long,
@@ -52,15 +50,4 @@ data class BookingSearchEntryData(
     var availableSpace: Int,
 ) {
 
-
-    fun convert() = BookingDetails(
-        Booking(id.toLong(), key, status, size, comment, lang, offerId, visitorId),
-        Visitor(visitorId, type, title, description, visitorSize, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verificationTimestamp)),
-        OfferReference(
-            Offer(offerId, start, finish, maxPersons, active),
-            Assignment(confirmedSpace, pendingSpace, availableSpace, if (active) 0 else maxPersons),
-        ),
-        timestamp,
-        null
-    )
 }

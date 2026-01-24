@@ -151,6 +151,9 @@ open class OfferSearchOperator(
             obj.assignment.confirmedSpace,
             obj.assignment.pendingSpace,
             obj.assignment.availableSpace,
+            obj.offer.created,
+            obj.offer.updated,
+            obj.offer.updated ?: obj.offer.created,
             obj.bookings.map { convert(it) }
 
         )

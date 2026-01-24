@@ -129,7 +129,10 @@ CREATE TABLE audit_log_entry
     message      TEXT         NOT NULL,
     reference_id VARCHAR(255) NOT NULL,
     reference    TEXT         NOT NULL,
-    source       VARCHAR(255) NOT NULL
+    source       VARCHAR(255) NOT NULL,
+
+    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated    TIMESTAMP WITHOUT TIME ZONE
 );
 
 -- setting

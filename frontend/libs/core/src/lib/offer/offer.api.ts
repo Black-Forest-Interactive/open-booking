@@ -1,9 +1,9 @@
-import {Label} from "../label/label.api";
-import {Guide} from "../guide/guide.api";
-import {BookingDetails, BookingStatus} from "../booking/booking.api";
-import {ReservationInfo, ReservationStatus} from "../reserveration/reservation.api";
-import {Page} from "@open-booking/shared";
-import {Visitor} from "../visitor/visitor.api";
+import type {Label} from "../label/label.api";
+import type {Guide} from "../guide/guide.api";
+import type {BookingDetails, BookingStatus} from "../booking/booking.api";
+import type {ReservationInfo, ReservationStatus} from "../reserveration/reservation.api";
+import type {Page} from "@open-booking/shared";
+import type {Visitor} from "../visitor/visitor.api";
 
 export interface Offer {
   id: number,

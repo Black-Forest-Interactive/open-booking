@@ -63,7 +63,7 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             request.to?.let { toDate ->
                 must(
                     range(OfferSearchEntryData::start) {
-                        lte = toDate.plusDays(1).minusSeconds(1).toString()
+                        lte = toDate.toString()
                     }
                 )
             }
@@ -72,6 +72,10 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             if (searchTerm.isBlank() && request.from == null && request.to == null) {
                 must(matchAll())
             }
+        }
+        sort {
+            add(OfferSearchEntryData::start, SortOrder.ASC)  // Group by start
+            add(OfferSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
         }
     }
 }

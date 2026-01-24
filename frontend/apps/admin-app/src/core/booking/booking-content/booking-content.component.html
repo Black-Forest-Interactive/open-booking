@@ -1,105 +1,29 @@
-<div class="max-w-6xl mx-auto p-6 space-y-4">
-  @for (group of groupedBookings(); track group.date + group.offerId; let idx = $index) {
-    <div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow border border-gray-100">
-      <div
-        class="px-6 py-4 border-b border-gray-100 transition-colors rounded-t-2xl"
-        [class.cursor-pointer]="!isSearchActive()"
-        [class.hover:bg-gray-50]="!isSearchActive()"
-        (click)="!isSearchActive() && toggleGroup(group.date + group.offerId)">
-        <div class="flex items-center gap-4 w-full">
-          <div class="flex items-center gap-3 flex-1">
-            <mat-icon class="text-blue-600">event</mat-icon>
-            <div>
-              <div class="font-semibold text-gray-800">{{ group.date | date:'shortDate' }}</div>
-              <div class="text-xs text-gray-500 mt-0.5">{{ group.timeRange }}</div>
-            </div>
-          </div>
+<div class="flex gap-6 overflow-hidden" style="height: calc(100vh - 270px); min-height: 600px;">
+  <!-- Left Side - List (Master) with independent scroll -->
+  <div
+    [class]="selectedEntry() ? 'w-1/2' : 'w-full'"
+    class="transition-all duration-300 overflow-y-auto">
+    <app-booking-group-list
+      [data]="groupedBookings()"
+      [isSearchActive]="isSearchActive()"
+      (selectionDayChanged)="selectionDayChanged.emit($event)"
+      (selectionWeekChanged)="selectionWeekChanged.emit($event)"
+    >
+      <ng-template let-entry let-group="group">
+        <app-booking-list-entry
+          [data]="entry"
+          [showText]="true"
+          [isSelected]="selectedEntry()?.booking?.id === entry.booking.id"
+          (showDetails)="onEntrySelected($event)"
+        />
+      </ng-template>
+    </app-booking-group-list>
+  </div>
 
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full">
-              <mat-icon class="text-blue-600" inline>confirmation_number</mat-icon>
-              <span class="text-sm font-medium text-blue-700">{{ group.totalEntries }}</span>
-            </div>
-
-            @if (group.openCount > 0) {
-              <div class="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full">
-                <mat-icon class="!w-4 !h-4 !text-base text-green-600">schedule</mat-icon>
-                <span class="text-sm font-medium text-green-700">{{ group.openCount }} {{ 'OPEN' | translate }}</span>
-              </div>
-            }
-
-            <mat-icon
-              class="text-gray-400 transition-transform"
-              [class.rotate-180]="isGroupExpanded(group.date + group.offerId)"
-              [class.opacity-50]="isSearchActive()">
-              expand_more
-            </mat-icon>
-          </div>
-        </div>
-      </div>
-
-      @if (isGroupExpanded(group.date + group.offerId)) {
-        <div class="px-6 pb-4 pt-2">
-          <div class="space-y-2">
-            @for (entry of group.entries; track entry.booking.id) {
-              <app-booking-list-entry [data]="entry" [showText]="true"></app-booking-list-entry>
-              <!--              <div-->
-                <!--                class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200">-->
-                <!--                <div class="flex-shrink-0">-->
-                <!--                  <div-->
-                <!--                    class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold text-sm">-->
-                <!--                    {{ getInitials(entry.visitor.name) }}-->
-                <!--                  </div>-->
-                <!--                </div>-->
-
-                <!--                <div class="flex-1 min-w-0">-->
-                <!--                  <div class="flex items-center gap-2 mb-1">-->
-                <!--                    <h3 class="font-semibold text-gray-800 truncate">-->
-                <!--                      {{ entry.visitor.name }}-->
-                <!--                    </h3>-->
-                <!--                    <span class="text-xs text-gray-500 font-mono bg-gray-200 px-2 py-0.5 rounded">-->
-                <!--                          #{{ entry.booking.key }}-->
-                <!--                        </span>-->
-                <!--                  </div>-->
-
-                <!--                  @if (entry.booking.comment) {-->
-                <!--                    <p class="text-sm text-gray-600 truncate" [matTooltip]="entry.booking.comment">-->
-                <!--                      <mat-icon class="!w-4 !h-4 !text-sm align-middle mr-1">comment</mat-icon>-->
-                <!--                      {{ entry.booking.comment }}-->
-                <!--                    </p>-->
-                <!--                  }-->
-                <!--                </div>-->
-
-                <!--                <div class="flex items-center gap-3">-->
-                <!--                  <app-visitor-size [visitor]="entry.visitor"></app-visitor-size>-->
-
-                <!--                  <lib-booking-status [status]="entry.booking.status"/>-->
-
-                <!--                  @if (entry.editor) {-->
-                <!--                    <mat-icon-->
-                <!--                      class="text-gray-400 !w-5 !h-5 !text-lg cursor-help"-->
-                <!--                      [matTooltip]="('LAST_EDITED_BY' | translate) + ' ' + entry.editor.userName">-->
-                <!--                      edit-->
-                <!--                    </mat-icon>-->
-                <!--                  }-->
-                <!--                </div>-->
-
-                <!--                <div class="text-xs text-gray-500">-->
-                <!--                  {{ entry.timestamp | date:'shortTime' }}-->
-                <!--                </div>-->
-                <!--              </div>-->
-            }
-          </div>
-        </div>
-      }
-    </div>
-  }
-
-  @if (groupedBookings().length === 0) {
-    <div class="text-center py-16">
-      <mat-icon class="!w-16 !h-16 !text-6xl text-gray-300 mb-4">event_busy</mat-icon>
-      <h3 class="text-lg font-medium text-gray-600 mb-2">{{ 'NO_BOOKINGS_FOUND' | translate }}</h3>
-      <p class="text-sm text-gray-500">{{ 'NO_BOOKINGS_DESCRIPTION' | translate }}</p>
+  <!-- Right Side - Details Panel (Slave) with independent scroll -->
+  @if (selectedEntry()) {
+    <div class="w-1/2 transition-all duration-300 overflow-y-auto">
+      <app-booking-details [data]="selectedEntry()!!" (close)="closeDetails()"/>
     </div>
   }
 </div>

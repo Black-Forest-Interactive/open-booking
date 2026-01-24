@@ -24,7 +24,7 @@ data class LabelData(
         }
     }
 
-    override fun convert() = Label(id, name, color, priority)
+    override fun convert() = Label(id, name, color, priority, created, updated)
 
     fun update(request: LabelChangeRequest, timestamp: LocalDateTime): LabelData {
         name = request.name

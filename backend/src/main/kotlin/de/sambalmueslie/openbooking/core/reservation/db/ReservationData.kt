@@ -23,7 +23,7 @@ data class ReservationData(
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
 ) : EntityData<Reservation> {
-    override fun convert() = Reservation(id, key, comment, status, visitorId, offerId)
+    override fun convert() = Reservation(id, key, comment, status, visitorId, offerId, created, updated)
 
     fun update(request: ReservationChangeRequest, timestamp: LocalDateTime): ReservationData {
         comment = request.comment

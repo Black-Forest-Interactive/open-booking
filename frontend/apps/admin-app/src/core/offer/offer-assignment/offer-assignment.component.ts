@@ -1,9 +1,12 @@
 import {Component, computed, input} from '@angular/core';
 import {Assignment} from "@open-booking/core";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-offer-assignment',
-  imports: [],
+  imports: [
+    TranslatePipe
+  ],
   templateUrl: './offer-assignment.component.html',
   styleUrl: './offer-assignment.component.scss',
 })

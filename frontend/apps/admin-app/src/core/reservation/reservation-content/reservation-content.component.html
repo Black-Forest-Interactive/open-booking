@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-6 pb-4 pe-4">
+<div class="flex flex-col gap-6">
   @for (group of groupedEntries(); track group.date + '-' + group.offerId) {
     <div class="bg-white rounded-lg shadow-sm border border-gray-300">
       <!-- Group Header -->
@@ -17,10 +17,6 @@
             <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200">
               <span class="font-medium">{{ group.totalEntries }}</span>
               <span class="text-gray-600 ml-1">{{ 'RESERVATION.Total' | translate }}</span>
-            </div>
-            <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-orange-200">
-              <span class="font-medium text-orange-600">{{ group.openCount }}</span>
-              <span class="text-gray-600 ml-1">{{ 'RESERVATION.Open' | translate }}</span>
             </div>
           </div>
         </div>

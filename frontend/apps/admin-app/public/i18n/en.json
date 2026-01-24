@@ -535,6 +535,16 @@
         "Title": "Total Visitor Statistics",
         "TotalRemaining": "Remaining space"
       }
+    },
+    "WeekSelector": {
+      "SelectWeek": "Select Week",
+      "Week": "Week"
+    },
+    "DayCard": {
+      "OfferChange": "offer change",
+      "OfferChanges": "offer changes",
+      "BookingChange": "booking change",
+      "BookingChanges": "booking changes"
     }
   },
   "FORBIDDEN": {

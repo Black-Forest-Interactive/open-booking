@@ -113,6 +113,8 @@ open class BookingSearchOperator(
             obj.booking.size,
             obj.booking.comment,
             obj.booking.lang,
+            obj.booking.created,
+            obj.booking.updated,
             obj.timestamp,
             obj.visitor.id,
             obj.visitor.type,

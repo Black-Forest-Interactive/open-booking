@@ -42,7 +42,7 @@ data class SettingData(
             else -> value
         }
 
-        return Setting(id, key, result, type)
+        return Setting(id, key, result, type, created, updated)
     }
 
     fun update(request: SettingChangeRequest, timestamp: LocalDateTime): SettingData {

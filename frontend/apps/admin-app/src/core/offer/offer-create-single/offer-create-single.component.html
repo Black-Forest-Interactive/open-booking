@@ -1,0 +1,105 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mx-auto mt-5 max-w-2xl p-4">
+  <div class="flex flex-col gap-6">
+
+    <!-- Date -->
+    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+      <mat-label>{{ 'OFFER.Field.Date' | translate }}</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="date" required>
+      <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+      <mat-icon matIconPrefix>calendar_today</mat-icon>
+      @if (form.get('date')?.hasError('required')) {
+        <mat-error>
+          {{ 'OFFER.Error.DateRequired' | translate }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Start Time and Finish Time Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>{{ 'OFFER.Field.StartTime' | translate }}</mat-label>
+        <input matInput type="time" formControlName="startTime" required>
+        <mat-icon matIconPrefix>schedule</mat-icon>
+        @if (form.get('startTime')?.hasError('required')) {
+          <mat-error>
+            {{ 'OFFER.Error.StartTimeRequired' | translate }}
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>{{ 'OFFER.Field.FinishTime' | translate }}</mat-label>
+        <input matInput type="time" formControlName="finishTime" required>
+        <mat-icon matIconPrefix>schedule</mat-icon>
+        @if (form.get('finishTime')?.hasError('required')) {
+          <mat-error>
+            {{ 'OFFER.Error.FinishTimeRequired' | translate }}
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Max Persons -->
+    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+      <mat-label>{{ 'OFFER.Field.MaxPersons' | translate }}</mat-label>
+      <input matInput type="number" formControlName="maxPersons" min="1">
+      <mat-icon matIconPrefix>group</mat-icon>
+    </mat-form-field>
+
+    <!-- Label Select with Color Indicator -->
+    <div class="w-full flex gap-2 items-center">
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>{{ 'OFFER.Action.SelectLabel' | translate }}</mat-label>
+        <mat-select formControlName="label">
+          <mat-option [value]="null">--</mat-option>
+          @for (label of labels(); track label.id) {
+            <mat-option [value]="label.id">
+              <div class="flex items-center gap-3">
+              <span
+                class="w-4 h-4 rounded-full border border-gray-300 flex-shrink-0"
+                [style.backgroundColor]="label.color">
+              </span>
+                <span>{{ label.name }}</span>
+              </div>
+            </mat-option>
+          }
+        </mat-select>
+        <mat-icon matIconPrefix>label</mat-icon>
+      </mat-form-field>
+      @if (form.get('label')?.value) {
+        <span
+          class="w-10 h-14 rounded border border-gray-400"
+          [style.backgroundColor]="getSelectedLabelColor()">
+        </span>
+      }
+    </div>
+
+    <!-- Guide Select -->
+    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+      <mat-label>{{ 'OFFER.Action.SelectGuide' | translate }}</mat-label>
+      <mat-select formControlName="guide">
+        <mat-option [value]="null">--</mat-option>
+        @for (guide of guides(); track guide.id) {
+          <mat-option [value]="guide.id">
+            {{ guide.firstName }} {{ guide.lastName }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-icon matIconPrefix>person_pin</mat-icon>
+    </mat-form-field>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <button matButton="filled" color="primary" type="submit" class="w-full">
+        <mat-icon>save</mat-icon>
+        {{ "ACTION.Save" | translate }}
+      </button>
+
+      <button matButton="outlined" color="warn" type="button" (click)="cancel()" class="w-full">
+        <mat-icon>cancel</mat-icon>
+        {{ 'ACTION.Cancel' | translate }}
+      </button>
+    </div>
+  </div>
+</form>

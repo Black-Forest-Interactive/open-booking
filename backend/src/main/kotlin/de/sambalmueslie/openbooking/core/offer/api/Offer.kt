@@ -8,5 +8,7 @@ data class Offer(
     val start: LocalDateTime,
     val finish: LocalDateTime,
     val maxPersons: Int,
-    val active: Boolean
+    val active: Boolean,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
 ) : Entity<Long>

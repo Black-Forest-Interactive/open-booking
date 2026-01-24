@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DailyVisitorStats
+import de.sambalmueslie.openbooking.core.dashboard.api.DaySummary
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
@@ -19,6 +20,7 @@ class DashboardService(
     private val offerService: OfferService,
     private val bookingService: BookingService,
     private val weeksSummaryProvider: WeeksSummaryProvider,
+    private val daySummaryProvider: DaySummaryProvider,
     private val offerEntryProvider: OfferEntryProvider
 ) {
 
@@ -57,12 +59,19 @@ class DashboardService(
         return DailyVisitorStats(date, offerAmount, activeOfferAmount, totalSpace, bookings)
     }
 
-
     fun getWeeksSummary(): List<WeekSummary> {
         val (duration, data) = measureTimeMillisWithReturn {
             weeksSummaryProvider.getWeeksSummary()
         }
         logger.info("Weeks summary created within $duration ms.")
+        return data
+    }
+
+    fun getDaySummary(from: LocalDate, to: LocalDate): List<DaySummary> {
+        val (duration, data) = measureTimeMillisWithReturn {
+            daySummaryProvider.getDaySummary(from, to)
+        }
+        logger.info("Day summary created within $duration ms.")
         return data
     }
 

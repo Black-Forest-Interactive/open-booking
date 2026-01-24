@@ -1,4 +1,6 @@
-import {BookingInfo, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import type {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
+import type {BookingInfo} from "../booking/booking.api";
+
 
 export interface BookingRequest {
   id: number,
