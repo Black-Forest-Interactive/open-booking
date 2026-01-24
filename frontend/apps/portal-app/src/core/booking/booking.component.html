@@ -20,6 +20,7 @@
         <app-booking-summary
           [data]="service.selectedOffer()!!"
           [request]="service.request()!!"
+          [reloading]="processing()"
           (edit)="this.service.proceedToCheckout()"
           (confirm)="handleConfirm($event)"
         />

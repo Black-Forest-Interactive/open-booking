@@ -4,9 +4,12 @@
     [data]="data"
     [reloading]="false"
     [showBackButton]="false"
-    (close)="close()"
+    [editMode]="editMode()"
+    (reload)="close(true)"
+    (close)="close(false)"
   ></app-booking-details>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
+  <button matButton (click)="toggleEditMode()">{{ 'BOOKING.Action.Edit' | translate }}</button>
   <button matButton mat-dialog-close>{{ 'ACTION.Close' | translate }}</button>
 </mat-dialog-actions>

@@ -31,22 +31,24 @@
       [visitorSize]="visitor().size"
     />
 
-    <!-- Confirm Button -->
-    <button matButton="filled"
-            [disabled]="!canConfirmOffer()"
-            (click)="onConfirm()"
-            class="w-full">
-      <mat-icon>check_circle</mat-icon>
-      {{ 'BOOKING.Action.Confirm' | translate }}
-    </button>
+    @if (editMode()) {
+      <!-- Confirm Button -->
+      <button matButton="filled"
+              [disabled]="!canConfirmOffer()"
+              (click)="onConfirm()"
+              class="w-full">
+        <mat-icon>check_circle</mat-icon>
+        {{ 'BOOKING.Action.Confirm' | translate }}
+      </button>
 
-    <button matButton="outlined"
-            [disabled]="!canDeclineOffer()"
-            (click)="onDecline()"
-            class="w-full">
-      <mat-icon>cancel</mat-icon>
-      {{ 'BOOKING.Action.Deny' | translate }}
-    </button>
+      <button matButton="outlined"
+              [disabled]="!canDeclineOffer()"
+              (click)="onDecline()"
+              class="w-full">
+        <mat-icon>cancel</mat-icon>
+        {{ 'BOOKING.Action.Deny' | translate }}
+      </button>
+    }
 
     <!-- Status Messages -->
     @if (!active()) {

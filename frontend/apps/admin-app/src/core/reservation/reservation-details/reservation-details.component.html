@@ -6,6 +6,7 @@
         <app-booking-details
           [reloading]="reloading()"
           [data]="data()!!"
+          [editMode]="true"
           (reload)="reload()"
           [showBackButton]="!!routeId()"
           (back)="navigateToReservation(router)"

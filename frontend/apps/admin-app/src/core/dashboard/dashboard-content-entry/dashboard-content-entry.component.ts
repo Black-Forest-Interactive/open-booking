@@ -51,6 +51,8 @@ export class DashboardContentEntryComponent {
       maxWidth: 'none',
       height: 'auto',
       maxHeight: 'none',
+    }).afterClosed().subscribe(value => {
+      if (value) this.reload.emit(true)
     })
   }
 

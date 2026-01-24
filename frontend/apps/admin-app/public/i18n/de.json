@@ -73,7 +73,8 @@
       "Create": "Buchung erstellen",
       "Search": "Buchung suchen",
       "Confirm": "Buchung bestätigen",
-      "Deny": "Buchung ablehnen"
+      "Deny": "Buchung ablehnen",
+      "Edit": "Buchung bearbeiten"
     },
     "Create": {
       "Action": {

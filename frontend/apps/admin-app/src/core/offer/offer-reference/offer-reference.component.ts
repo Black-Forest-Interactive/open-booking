@@ -26,6 +26,7 @@ export class OfferReferenceComponent {
   entry = input.required<OfferReference>()
   visitor = input.required<Visitor>()
   booking = input.required<Booking>()
+  editMode = input.required()
 
   // Output
   confirm = output<OfferReference>()

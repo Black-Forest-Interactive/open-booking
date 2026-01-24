@@ -72,8 +72,8 @@
     {{ 'ACTION.Edit' | translate }}
   </button>
   <button mat-flat-button color="primary"
-          [disabled]="!termsAccepted()"
-          (click)="confirm.emit(request())">
+          [disabled]="!termsAccepted() && reloading()"
+          (click)="onSubmit()">
     <mat-icon>check</mat-icon>
     {{ 'BOOKING.Action.Submit' | translate }}
   </button>
