@@ -2,6 +2,7 @@ export interface ChangeEvent {
   type: ChangeEventType,
   resourceId: string,
   resourceType: string,
+  resourceStatus: string,
   timestamp: string,
 }
 

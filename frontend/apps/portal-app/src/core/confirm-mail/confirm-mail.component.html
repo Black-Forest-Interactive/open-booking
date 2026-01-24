@@ -1,5 +1,4 @@
 <div class="flex flex-col gap-6 items-center justify-center h-screen p-4">
-
   @if (status() === 'confirmed') {
     <div
       class="w-full max-w-lg p-4 rounded-lg border-l-4 border-green-500 bg-green-100 text-green-800 shadow-md"
@@ -8,9 +7,12 @@
       <h4 class="text-xl font-bold mb-2">
         {{ 'VISITOR.MailConfirmation.Success.Title' | translate }}
       </h4>
-      <p>
+      <p class="mb-4">
         {{ 'VISITOR.MailConfirmation.Success.Message' | translate }}
       </p>
+      <button mat-raised-button color="primary" [routerLink]="['/booking', key()]" class="w-full">
+        {{ 'BOOKING.Action.ViewDetails' | translate }}
+      </button>
     </div>
   } @else if (status() === 'failed') {
     <div
@@ -20,7 +22,7 @@
       <h4 class="text-xl font-bold mb-2">
         {{ 'VISITOR.MailConfirmation.Failed.Title' | translate }}
       </h4>
-      <p>
+      <p class="mb-4">
         {{ 'VISITOR.MailConfirmation.Failed.Message' | translate }}
       </p>
     </div>
@@ -31,5 +33,4 @@
       }
     </div>
   }
-
 </div>

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.visitor.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.visitor.api.*
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -29,7 +29,7 @@ data class VisitorData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Visitor> {
+) : EntityData<Visitor> {
     companion object {
         fun create(request: VisitorChangeRequest, timestamp: LocalDateTime): VisitorData {
             return VisitorData(
@@ -53,7 +53,7 @@ data class VisitorData(
         }
     }
 
-    override fun convert() = Visitor(id, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verifiedAt))
+    override fun convert() = Visitor(id, type, title, description, size, minAge, maxAge, name, Address(street, city, zip), phone, email, Verification(verificationStatus, verifiedAt), created, updated)
 
     fun update(request: VisitorChangeRequest, timestamp: LocalDateTime): VisitorData {
         type = request.type
@@ -75,6 +75,26 @@ data class VisitorData(
     fun update(status: VerificationStatus, timestamp: LocalDateTime): VisitorData {
         this.verificationStatus = status
         this.verifiedAt = timestamp
+        updated = timestamp
+        return this
+    }
+
+    fun update(request: VisitorResizeRequest, timestamp: LocalDateTime): VisitorData {
+        this.size = request.size
+        this.minAge = request.minAge
+        this.maxAge = request.maxAge
+        updated = timestamp
+        return this
+    }
+
+    fun setPhone(phone: String, timestamp: LocalDateTime): VisitorData {
+        this.phone = phone
+        updated = timestamp
+        return this
+    }
+
+    fun setEmail(email: String, timestamp: LocalDateTime): VisitorData {
+        this.email = email
         updated = timestamp
         return this
     }

@@ -1,0 +1,94 @@
+<!-- Capacity Bar -->
+<div class="flex flex-col gap-2">
+  <div class="flex justify-between text-sm font-medium text-gray-700">
+    <span>{{ 'RESERVATION.Offer.Capacity.Label' | translate }}</span>
+    <span>{{ usedCapacity() }} / {{ maxPersons() }}</span>
+  </div>
+  <div class="relative h-6 bg-gray-200 rounded-lg overflow-hidden border border-gray-300">
+    <!-- Confirmed Bookings (Teal) -->
+    <div class="absolute h-full bg-teal-600 transition-all"
+         [style.width.%]="confirmedPercentage()">
+    </div>
+    <!-- Other Pending Reservations (Amber) - excluding current visitor -->
+    <div class="absolute h-full bg-amber-500 transition-all"
+         [style.left.%]="confirmedPercentage()"
+         [style.width.%]="otherPendingPercentage()">
+    </div>
+    <!-- Current Visitor Group (Purple) - only if UNCONFIRMED -->
+    <div class="absolute h-full bg-purple-500 transition-all border-l-2 border-r-2 border-purple-700"
+         [style.left.%]="confirmedPercentage() + otherPendingPercentage()"
+         [style.width.%]="visitorPercentage()">
+    </div>
+    <!-- Available Space (Green) - background shows through -->
+    <div class="absolute h-full bg-green-500 transition-all"
+         [style.left.%]="confirmedPercentage() + otherPendingPercentage() + visitorPercentage()"
+         [style.width.%]="availablePercentage()">
+    </div>
+    <!-- Capacity Numbers Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="flex gap-4 text-xs font-semibold text-white drop-shadow-md">
+        <span>{{ confirmedSpace() }}</span>
+        <span>{{ pendingSpace() }}</span>
+        <span>{{ availableSpace() }}</span>
+      </div>
+    </div>
+  </div>
+  <!-- Legend -->
+  <div class="flex flex-wrap gap-3 text-xs">
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-teal-600 rounded border border-teal-700"></div>
+      <span class="text-gray-700">
+                {{ 'RESERVATION.Offer.Stats.Booked' | translate }} ({{ confirmedSpace() }})
+              </span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-amber-500 rounded border border-amber-600"></div>
+      <span class="text-gray-700">
+                {{ 'RESERVATION.Offer.Stats.Reserved' | translate }} ({{ otherPendingSpace() }})
+              </span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-purple-500 rounded border border-purple-700"></div>
+      <span class="text-gray-700 font-medium">
+                  {{ 'RESERVATION.Offer.Stats.CurrentGroup' | translate }} ({{ visitorSize() }})
+                </span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-green-500 rounded border border-green-600"></div>
+      <span class="text-gray-700">
+                {{ 'RESERVATION.Offer.Stats.Available' | translate }} ({{ availableSpace() }})
+              </span>
+    </div>
+  </div>
+  <!-- Capacity Impact Info -->
+  @if (isPending() && hasCapacity()) {
+    <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+      <div class="flex items-start gap-2 text-xs text-purple-800">
+        <mat-icon class="shrink-0" inline>info</mat-icon>
+        <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
+          {{
+            'RESERVATION.Offer.Info.ConfirmationEffect' | translate:{
+              size: visitorSize(),
+              remaining: remainingAfterConfirmation()
+            }
+          }}
+        </div>
+      </div>
+    </div>
+  } @else if (!hasCapacity()) {
+    <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+      <div class="flex items-start gap-2 text-xs text-red-800">
+        <mat-icon class="shrink-0" inline>info</mat-icon>
+        <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
+          {{
+            'RESERVATION.Offer.Info.OverbookingEffect' | translate:{
+              size: visitorSize(),
+              available: availableSpace()
+
+            }
+          }}
+        </div>
+      </div>
+    </div>
+  }
+</div>

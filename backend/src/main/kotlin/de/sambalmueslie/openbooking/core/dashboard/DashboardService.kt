@@ -5,10 +5,11 @@ import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.dashboard.api.DailyVisitorStats
+import de.sambalmueslie.openbooking.core.dashboard.api.DaySummary
 import de.sambalmueslie.openbooking.core.dashboard.api.WeekSummary
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
-import de.sambalmueslie.openbooking.gateway.admin.dashboard.DailyOffersFilterRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
@@ -19,6 +20,7 @@ class DashboardService(
     private val offerService: OfferService,
     private val bookingService: BookingService,
     private val weeksSummaryProvider: WeeksSummaryProvider,
+    private val daySummaryProvider: DaySummaryProvider,
     private val offerEntryProvider: OfferEntryProvider
 ) {
 
@@ -57,7 +59,6 @@ class DashboardService(
         return DailyVisitorStats(date, offerAmount, activeOfferAmount, totalSpace, bookings)
     }
 
-
     fun getWeeksSummary(): List<WeekSummary> {
         val (duration, data) = measureTimeMillisWithReturn {
             weeksSummaryProvider.getWeeksSummary()
@@ -66,9 +67,17 @@ class DashboardService(
         return data
     }
 
-    fun getDailyOffers(day: LocalDate, request: DailyOffersFilterRequest?): List<OfferSearchEntry> {
+    fun getDaySummary(from: LocalDate, to: LocalDate): List<DaySummary> {
         val (duration, data) = measureTimeMillisWithReturn {
-            offerEntryProvider.getDailyOffers(day, request)
+            daySummaryProvider.getDaySummary(from, to)
+        }
+        logger.info("Day summary created within $duration ms.")
+        return data
+    }
+
+    fun getDailyOffers(request: OfferSearchRequest): List<OfferSearchEntry> {
+        val (duration, data) = measureTimeMillisWithReturn {
+            offerEntryProvider.getDailyOffers(request)
         }
         logger.info("Daily offers created within $duration ms.")
         return data

@@ -59,11 +59,11 @@ export abstract class BaseService {
     })
   }
 
-  protected put<T>(suffix: string, body: any): Observable<T> {
+  protected put<T>(suffix: string, body: any, params: HttpParams = new HttpParams()): Observable<T> {
     this.logger.info("[PUT] " + JSON.stringify(body));
     const url = this.createUrl(suffix);
     console.debug("Put '" + url + "'")
-    const observable = this.http.put<T>(url, body);
+    const observable = this.http.put<T>(url, body, {params: params});
     return this.createPipe(observable, url, 'put');
   }
 
@@ -83,10 +83,10 @@ export abstract class BaseService {
     return this.createPipe(observable, url, 'patch');
   }
 
-  protected delete<T>(suffix: string): Observable<T> {
+  protected delete<T>(suffix: string, params: HttpParams = new HttpParams()): Observable<T> {
     const url = this.createUrl(suffix);
     console.debug("Delete '" + url + "'")
-    const observable = this.http.delete<T>(url,);
+    const observable = this.http.delete<T>(url, {params: params})
     return this.createPipe(observable, url, 'delete');
   }
 

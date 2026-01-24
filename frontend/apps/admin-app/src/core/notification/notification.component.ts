@@ -11,6 +11,7 @@ import {RouterLink} from "@angular/router";
 import {NotificationTemplate} from "@open-booking/core";
 import {NotificationDeleteDialogComponent} from "./notification-delete-dialog/notification-delete-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-notification',
@@ -22,7 +23,8 @@ import {MatDialog} from "@angular/material/dialog";
     SearchComponent,
     LoadingBarComponent,
     TranslatePipe,
-    RouterLink
+    RouterLink,
+    MainContentComponent
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',

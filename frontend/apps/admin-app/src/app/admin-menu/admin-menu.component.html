@@ -23,9 +23,9 @@
         <span>{{ 'MENU.Reservation' | translate }}</span>
         <div class="flex-auto"></div>
         <div class="flex gap-1">
-          @if (unconfirmed()) {
+          @if (pending()) {
             <div
-              class="text-xs font-medium px-2 py-1 rounded bg-yellow-200 border-yellow-600 border">{{ unconfirmed() }}
+              class="text-xs font-medium px-2 py-1 rounded bg-yellow-200 border-yellow-600 border">{{ pending() }}
             </div>
           }
           @if (newReservations()) {
@@ -34,12 +34,6 @@
             </div>
           }
         </div>
-      </a>
-      <a routerLink="./request" routerLinkActive="active-nav-link" class="menu-link">
-        <mat-icon>thumb_up_alt</mat-icon>
-        <span>{{ 'MENU.BookingRequest' | translate }}</span>
-        <div class="flex-auto"></div>
-        <span class="text-xs px-2 py-1 rounded bg-red-200">Deprecated</span>
       </a>
     </div>
   </div>
@@ -72,7 +66,7 @@
         <span>{{ 'MENU.Settings' | translate }}</span>
       </a>
       <a routerLink="./notification" routerLinkActive="active-nav-link" class="menu-link">
-        <mat-icon>notifications</mat-icon>
+        <mat-icon>mail</mat-icon>
         <span>{{ 'MENU.Notification' | translate }}</span>
       </a>
       <a routerLink="./response" routerLinkActive="active-nav-link" class="menu-link">
@@ -95,7 +89,7 @@
         <span>{{ 'MENU.Cache' | translate }}</span>
       </a>
       <a routerLink="./mail" routerLinkActive="active-nav-link" class="menu-link">
-        <mat-icon>mail</mat-icon>
+        <mat-icon>inbox</mat-icon>
         <span>{{ 'MENU.Mail' | translate }}</span>
       </a>
       <a routerLink="./search" routerLinkActive="active-nav-link" class="menu-link">

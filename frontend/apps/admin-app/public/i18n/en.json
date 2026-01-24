@@ -69,6 +69,8 @@
     }
   },
   "BOOKING": {
+    "Title": "Bookings",
+    "NoBookings": "No bookings yet",
     "Action": {
       "Create": "Create Booking",
       "Search": "Search Booking"
@@ -112,11 +114,13 @@
       "Select": "Select Day"
     },
     "Status": {
-      "CONFIRMED": "Confirmed",
       "Title": "Booking Status",
-      "UNCONFIRMED": "Unconfirmed",
-      "DENIED": "Denied",
-      "UNKNOWN": "Unknown"
+      "UNKNOWN": "Unknown",
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "DECLINED": "Declined",
+      "CANCELLED": "Canceled",
+      "EXPIRED": "Expired"
     }
   },
   "CACHE": {
@@ -212,6 +216,10 @@
         "BOOKING_REQUEST_CREATED_ADMIN": "Booking Created message for Admin",
         "BOOKING_REQUEST_CREATED_CONTACT": "Booking Created message for Contact",
         "BOOKING_REQUEST_DENIED_CONTACT": "Booking Denied message for Contact",
+        "BOOKING_CREATED_CONTACT": "Booking created (Contact)",
+        "BOOKING_CREATED_ADMIN": "Booking created (Admin)",
+        "BOOKING_CHANGED_CONTACT": "Booking updated (Contact)",
+        "BOOKING_CHANGED_ADMIN": "Booking updated (Admin)",
         "Hint": "",
         "Title": "Type"
       }
@@ -467,6 +475,10 @@
         "RESERVATION_DENIED": "Reservation Denied (EMail)",
         "RESERVATION_RECEIVED": "Reservation Received (Dialog)",
         "RESERVATION_FAILED": "Reservation Failed (Dialog)",
+        "BOOKING_CONFIRM": "Booking confirmed",
+        "BOOKING_DECLINE": "Booking declined",
+        "BOOKING_FAILED": "Booking failed",
+        "BOOKING_RECEIVED": "Booking received",
         "Hint": "",
         "Title": "Type"
       }
@@ -523,6 +535,16 @@
         "Title": "Total Visitor Statistics",
         "TotalRemaining": "Remaining space"
       }
+    },
+    "WeekSelector": {
+      "SelectWeek": "Select Week",
+      "Week": "Week"
+    },
+    "DayCard": {
+      "OfferChange": "offer change",
+      "OfferChanges": "offer changes",
+      "BookingChange": "booking change",
+      "BookingChanges": "booking changes"
     }
   },
   "FORBIDDEN": {
@@ -539,7 +561,8 @@
     "key": {
       "guide": "Guide",
       "offer": "Offer",
-      "reservation": "Reservation"
+      "reservation": "Reservation",
+      "bookings": "Bookings"
     },
     "status": {
       "UNKNOWN": "Unknown",

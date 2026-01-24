@@ -2,12 +2,14 @@ package de.sambalmueslie.openbooking.core.visitor
 
 
 import de.sambalmueslie.openbooking.common.GenericCrudService
+import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorResizeRequest
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorData
 import de.sambalmueslie.openbooking.core.visitor.db.VisitorRepository
 import de.sambalmueslie.openbooking.error.InvalidRequestException
@@ -24,6 +26,8 @@ class VisitorService(
 
     companion object {
         private val logger = LoggerFactory.getLogger(VisitorService::class.java)
+        const val MSG_CONFIRM_EMAIL_FAILED = "VISITOR.Message.ConfirmEmailFailed"
+        const val MSG_CONFIRM_EMAIL_SUCCEED = "VISITOR.Message.ConfirmEmailSucceed"
     }
 
     override fun createData(request: VisitorChangeRequest): VisitorData {
@@ -56,14 +60,39 @@ class VisitorService(
         return repository.findByIdIn(visitorIds).map { it.convert() }
     }
 
-    fun confirm(id: Long): Visitor? {
-        val data = repository.findByIdOrNull(id) ?: return null
+    fun confirm(id: Long): GenericRequestResult {
+        val data = repository.findByIdOrNull(id) ?: return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
-        if (data.verificationStatus == VerificationStatus.CONFIRMED) return data.convert()
-        if (data.verificationStatus == VerificationStatus.EXPIRED) return null
+        if (data.verificationStatus == VerificationStatus.CONFIRMED) return GenericRequestResult(false, MSG_CONFIRM_EMAIL_SUCCEED)
+        if (data.verificationStatus == VerificationStatus.EXPIRED) return GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
 
-        return patchData(data) { it.update(VerificationStatus.CONFIRMED, timeProvider.now()) }
+        val result = patchData(data) { it.update(VerificationStatus.CONFIRMED, timeProvider.now()) }
+
+        return when (result.verification.status == VerificationStatus.CONFIRMED) {
+            true -> GenericRequestResult(true, MSG_CONFIRM_EMAIL_SUCCEED)
+            else -> GenericRequestResult(false, MSG_CONFIRM_EMAIL_FAILED)
+        }
     }
 
+    fun updateSize(id: Long, request: VisitorResizeRequest): Visitor? {
+        return patchData(id) { it.update(request, timeProvider.now()) }
+    }
+
+    fun updatePhone(id: Long, phone: String): Visitor? {
+        return patchData(id) { it.setPhone(phone, timeProvider.now()) }
+    }
+
+    fun updateEmail(id: Long, email: String): Visitor? {
+        return patchData(id) {
+            val unchanged = it.email == email
+            if (!unchanged) {
+                it.email = email
+                it.verificationStatus = VerificationStatus.UNCONFIRMED
+                it.verifiedAt = null
+                it.updated = timeProvider.now()
+            }
+            it
+        }
+    }
 
 }

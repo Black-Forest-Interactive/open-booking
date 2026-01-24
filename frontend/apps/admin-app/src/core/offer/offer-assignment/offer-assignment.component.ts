@@ -1,25 +1,30 @@
 import {Component, computed, input} from '@angular/core';
 import {Assignment} from "@open-booking/core";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-offer-assignment',
-  imports: [],
+  imports: [
+    TranslatePipe
+  ],
   templateUrl: './offer-assignment.component.html',
   styleUrl: './offer-assignment.component.scss',
 })
 export class OfferAssignmentComponent {
   assignment = input.required<Assignment>()
+  highlightReservedSpace = input(0)
 
-  otherReservedSpace = input(0)
-
-  bookedSpace = computed(() => this.assignment().bookedSpace)
-  reservedSpace = computed(() => this.assignment().reservedSpace)
+  confirmedSpace = computed(() => this.assignment().confirmedSpace)
+  pendingSpace = computed(() => this.assignment().pendingSpace)
   availableSpace = computed(() => this.assignment().availableSpace)
-  totalSpace = computed(() => this.bookedSpace() + this.reservedSpace() + this.availableSpace())
+  deactivatedSpace = computed(() => this.assignment().deactivatedSpace)
 
+  totalSpace = computed(() => this.confirmedSpace() + this.pendingSpace() + this.availableSpace() + this.deactivatedSpace())
+
+  confirmedPercentage = computed(() => (this.confirmedSpace() / this.totalSpace()) * 100)
+  pendingPercentage = computed(() => ((this.pendingSpace() - this.highlightReservedSpace()) / this.totalSpace()) * 100)
+  highlightPendingPercentage = computed(() => (this.highlightReservedSpace() / this.totalSpace()) * 100)
   availablePercentage = computed(() => (this.availableSpace() / this.totalSpace()) * 100)
-  bookedPercentage = computed(() => (this.bookedSpace() / this.totalSpace()) * 100)
-  otherReservedPercentage = computed(() => (this.otherReservedSpace() / this.totalSpace()) * 100)
-  visitorPercentage = computed(() => (this.otherReservedSpace() / this.totalSpace()) * 100)
-  isUnconfirmed = computed(() => this.otherReservedSpace() > 0)
+
+  isHighlighted = computed(() => this.highlightReservedSpace() > 0)
 }

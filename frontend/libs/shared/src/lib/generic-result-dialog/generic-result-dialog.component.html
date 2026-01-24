@@ -1,0 +1,21 @@
+<div class="flex flex-col">
+  <h2 mat-dialog-title class="text-xl font-bold">
+    {{ (data.success ? 'COMMON.Success' : 'COMMON.Error') | translate }}
+  </h2>
+
+  <mat-dialog-content class="py-4">
+    <div [class]="data.success ? 'text-green-700' : 'text-red-700'">
+      {{ data.msg | translate }}
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="flex justify-end gap-2">
+    <button
+      mat-button
+      (click)="onClose()"
+      [color]="data.success ? 'primary' : 'warn'"
+    >
+      {{ 'ACTION.Close' | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>

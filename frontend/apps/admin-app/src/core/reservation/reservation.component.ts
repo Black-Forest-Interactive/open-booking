@@ -1,7 +1,7 @@
 import {Component, computed, resource, signal} from '@angular/core';
-import {ReservationService} from "@open-booking/admin";
-import {AuthService, SearchComponent, toPromise} from "@open-booking/shared";
-import {ReservationSearchRequest, ReservationStatus} from "@open-booking/core";
+import {BookingService} from "@open-booking/admin";
+import {AuthService, toPromise} from "@open-booking/shared";
+import {BookingSearchRequest, BookingStatus} from "@open-booking/core";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
@@ -10,7 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDividerModule} from "@angular/material/divider";
-import {DatePipe, LowerCasePipe} from "@angular/common";
+import {LowerCasePipe} from "@angular/common";
 import {ReservationContentComponent} from "./reservation-content/reservation-content.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -20,6 +20,8 @@ import {MatInputModule} from "@angular/material/input";
 import {DateTime} from "luxon";
 import {interval} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-reservation',
@@ -35,13 +37,13 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     MatSelectModule,
     MatDatepickerModule,
     MatInputModule,
-    SearchComponent,
     TranslatePipe,
     LowerCasePipe,
     ReservationContentComponent,
     FormsModule,
-    DatePipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MainContentComponent,
+    MatProgressSpinner
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',
@@ -49,8 +51,6 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class ReservationComponent {
 
   private fullTextSearch = signal('')
-  availableStatusValues = Object.values(ReservationStatus)
-  selectedStatus = signal<ReservationStatus[]>([ReservationStatus.UNCONFIRMED])
   dateFrom = signal<string | null | undefined>(null)
   dateTo = signal<string | null | undefined>(null)
 
@@ -62,36 +62,35 @@ export class ReservationComponent {
   pageNumber = signal(0)
   pageSize = signal(25)
 
-  private reservationsCriteria = computed(() => ({
+  private bookingsCriteria = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize(),
-    request: new ReservationSearchRequest(this.fullTextSearch(), this.selectedStatus(), this.dateFrom(), this.dateTo())
+    request: new BookingSearchRequest(this.fullTextSearch(), [BookingStatus.PENDING], this.dateFrom(), this.dateTo())
   }))
 
 
-  private reservationsResource = resource({
-    params: this.reservationsCriteria,
-    loader: param => toPromise(this.service.searchReservation(param.params.request, param.params.page, param.params.size), param.abortSignal)
+  private bookingsResource = resource({
+    params: this.bookingsCriteria,
+    loader: param => toPromise(this.service.searchBooking(param.params.request, param.params.page, param.params.size), param.abortSignal)
   })
 
-  private response = computed(() => this.reservationsResource.value())
+  private response = computed(() => this.bookingsResource.value())
   private status = computed(() => this.response()?.status)
   private page = computed(() => this.response()?.result)
   entries = computed(() => this.page()?.content ?? [])
   totalElements = computed(() => this.page()?.totalSize ?? 0)
-  reloading = this.reservationsResource.isLoading
+  reloading = this.bookingsResource.isLoading
   hasActiveFilters = computed(() =>
-    this.selectedStatus().length > 0 ||
     this.dateFrom() !== null ||
     this.dateTo() !== null
   )
 
-  constructor(private service: ReservationService, protected readonly authService: AuthService) {
+  constructor(private service: BookingService, protected readonly authService: AuthService) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
 
     interval(5000)
       .pipe(takeUntilDestroyed())
-      .subscribe(() => this.reservationsResource.reload())
+      .subscribe(() => this.bookingsResource.reload())
   }
 
   protected handleSearch(text: string) {
@@ -120,14 +119,8 @@ export class ReservationComponent {
   }
 
   protected clearFilters() {
-    this.selectedStatus.set([ReservationStatus.UNCONFIRMED])
     this.dateFrom.set(null)
     this.dateTo.set(null)
-  }
-
-  protected removeStatusFilter(status: string) {
-    const current = this.selectedStatus();
-    this.selectedStatus.set(current.filter(s => s !== status))
   }
 
   protected clearDateFrom() {
@@ -139,16 +132,7 @@ export class ReservationComponent {
   }
 
   protected reload() {
-    this.reservationsResource.reload()
+    this.bookingsResource.reload()
   }
 
-  protected getStatusAmount(status: ReservationStatus): number {
-    let result = this.status()
-    if (!result) return 0
-
-    let value = result[status] ?? 0
-    return value
-  }
-
-  protected readonly ReservationStatus = ReservationStatus;
 }

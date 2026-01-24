@@ -8,19 +8,19 @@
   <div class="relative h-6 bg-green-500 rounded-lg overflow-hidden border border-gray-300">
     <!-- Booked Space (Blue) -->
     <div class="absolute h-full bg-blue-500 transition-all"
-         [style.width.%]="bookedPercentage()">
+         [style.width.%]="confirmedPercentage()">
     </div>
 
     <!-- Other Reserved Space (Orange) - excluding current visitor -->
     <div class="absolute h-full bg-orange-400 transition-all"
-         [style.left.%]="bookedPercentage()"
-         [style.width.%]="otherReservedPercentage()">
+         [style.left.%]="confirmedPercentage()"
+         [style.width.%]="otherPendingPercentage()">
     </div>
 
     <!-- Current Visitor Group (Purple) - only if UNCONFIRMED -->
-    @if (isUnconfirmed()) {
+    @if (isPending()) {
       <div class="absolute h-full bg-purple-500 transition-all border-l-2 border-r-2 border-purple-700"
-           [style.left.%]="bookedPercentage() + otherReservedPercentage()"
+           [style.left.%]="confirmedPercentage() + otherPendingPercentage()"
            [style.width.%]="visitorPercentage()">
       </div>
     }
@@ -28,8 +28,8 @@
     <!-- Capacity Numbers Overlay -->
     <div class="absolute inset-0 flex items-center justify-center">
       <div class="flex gap-4 text-xs font-semibold text-white drop-shadow-md">
-        <span>{{ bookedSpace() }}</span>
-        <span>{{ reservedSpace() }}</span>
+        <span>{{ confirmedSpace() }}</span>
+        <span>{{ pendingSpace() }}</span>
         <span>{{ availableSpace() }}</span>
       </div>
     </div>
@@ -40,16 +40,16 @@
     <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-blue-500 rounded border border-blue-600"></div>
       <span class="text-gray-700">
-                {{ 'RESERVATION.Offer.Stats.Booked' | translate }} ({{ bookedSpace() }})
+                {{ 'RESERVATION.Offer.Stats.Booked' | translate }} ({{ confirmedSpace() }})
               </span>
     </div>
     <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-orange-400 rounded border border-orange-500"></div>
       <span class="text-gray-700">
-                {{ 'RESERVATION.Offer.Stats.Reserved' | translate }} ({{ otherReservedSpace() }})
+                {{ 'RESERVATION.Offer.Stats.Reserved' | translate }} ({{ otherPendingSpace() }})
               </span>
     </div>
-    @if (isUnconfirmed()) {
+    @if (isPending()) {
       <div class="flex items-center gap-1">
         <div class="w-4 h-4 bg-purple-500 rounded border border-purple-700"></div>
         <span class="text-gray-700 font-medium">
@@ -65,7 +65,7 @@
     </div>
   </div>
   <!-- Capacity Impact Info -->
-  @if (isUnconfirmed() && hasCapacity()) {
+  @if (isPending() && hasCapacity()) {
     <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
       <div class="flex items-start gap-2 text-xs text-purple-800">
         <mat-icon class="shrink-0" inline>info</mat-icon>

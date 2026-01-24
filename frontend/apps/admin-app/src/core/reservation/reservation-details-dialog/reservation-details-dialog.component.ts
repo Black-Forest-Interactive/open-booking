@@ -18,5 +18,5 @@ import {ReservationDetailsComponent} from "../reservation-details/reservation-de
   styleUrl: './reservation-details-dialog.component.scss',
 })
 export class ReservationDetailsDialogComponent {
-  reservationId = inject<number>(MAT_DIALOG_DATA)
+  bookingId = inject<number>(MAT_DIALOG_DATA)
 }

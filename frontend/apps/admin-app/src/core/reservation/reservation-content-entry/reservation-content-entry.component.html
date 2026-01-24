@@ -9,7 +9,7 @@
         </button>
       }
       <div class="flex items-center gap-3 flex-wrap">
-        <lib-reservation-status [status]="data().reservation.status"/>
+        <lib-booking-status [status]="data().booking.status"/>
         <lib-verification-status [data]="data().visitor.verification"/>
         <lib-visitor-type [data]="data().visitor.type" class="flex-shrink-0"/>
       </div>
@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          @if (data().reservation.comment) {
+          @if (data().booking.comment) {
             <div class="p-3 bg-white/60 rounded-lg border border-gray-300">
               <div class="flex items-start gap-2">
                 <mat-icon class="w-4 h-4 text-blue-600 mt-0.5">comment</mat-icon>
@@ -55,7 +55,7 @@
                   <div class="text-xs font-medium text-gray-500 mb-1">
                     {{ 'RESERVATION.Form.Comment.Label' | translate }}
                   </div>
-                  <p class="text-sm text-gray-700">{{ data().reservation.comment }}</p>
+                  <p class="text-sm text-gray-700">{{ data().booking.comment }}</p>
                 </div>
               </div>
             </div>
@@ -107,8 +107,8 @@
           <button
             matButton="outlined"
             color="warn"
-            [disabled]="data().reservation.status === ReservationStatus.DENIED"
-            (click)="denyReservation()"
+            [disabled]="data().booking.status === BookingStatus.DECLINED"
+            (click)="declineReservation()"
             class="flex-1">
             <mat-icon>cancel</mat-icon>
             {{ 'RESERVATION.Action.Deny' | translate }}
@@ -131,7 +131,7 @@
             <app-reservation-content-entry-offer
               [entry]="data().offer"
               [visitor]="data().visitor"
-              [reservation]="data().reservation"
+              [booking]="data().booking"
               (confirm)="confirmOffer($event)"
             />
           </div>

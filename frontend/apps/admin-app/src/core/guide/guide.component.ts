@@ -1,7 +1,7 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {GuideService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
@@ -10,6 +10,7 @@ import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-guide',
@@ -23,7 +24,7 @@ import {MatCardModule} from "@angular/material/card";
     RouterLink,
     TranslatePipe,
     LoadingBarComponent,
-    SearchComponent
+    MainContentComponent
   ],
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.response.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.response.api.Response
 import de.sambalmueslie.openbooking.core.response.api.ResponseChangeRequest
 import de.sambalmueslie.openbooking.core.response.api.ResponseType
@@ -18,7 +18,7 @@ data class ResponseData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Response> {
+) : EntityData<Response> {
 
     companion object {
         fun create(request: ResponseChangeRequest, timestamp: LocalDateTime): ResponseData {
@@ -34,7 +34,7 @@ data class ResponseData(
     }
 
     override fun convert(): Response {
-        return Response(id, lang, type, title, content)
+        return Response(id, lang, type, title, content, created, updated)
     }
 
     fun update(request: ResponseChangeRequest, timestamp: LocalDateTime): ResponseData {

@@ -13,11 +13,150 @@
     "Submit": "Absenden",
     "Yes": "Ja",
     "Select": "Auswählen",
-    "Continue": "Weiter"
+    "Continue": "Weiter",
+    "Confirm": "Bestätigen"
   },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Willkommen"
+  },
+  "COMMON": {
+    "LastUpdated": "Letzte Änderung",
+    "SUCCESS": "Bestätigung",
+    "ERROR": "Fehlermeldung"
+  },
+  "BOOKING": {
+    "Status": {
+      "Title": "Buchungsstatus",
+      "UNKNOWN": "Unbekannt",
+      "PENDING": "Ausstehend",
+      "CONFIRMED": "Bestätigt",
+      "DECLINED": "Abgelehnt",
+      "CANCELLED": "Storniert",
+      "EXPIRED": "Abgelaufen"
+    },
+    "Action": {
+      "Resize": "Teilnehmer ändern",
+      "Cancel": "Buchung stornieren",
+      "Comment": "Anmerkung hinzufügen",
+      "ViewDetails": "Buchungsdetails anzeigen",
+      "Checkout": "Termin buchen",
+      "Submit": "Buchung abschliesen"
+    },
+    "Dialog": {
+      "Resize": {
+        "Title": "Buchungsgröße anpassen",
+        "Warning": {
+          "Increase": {
+            "Title": "Erneute Bestätigung erforderlich",
+            "MessagePending": "Eine Erhöhung der Gruppengröße erfordert eine neue Bestätigung durch den Gastgeber.",
+            "MessageConfirmed": "Eine Erhöhung der Gruppengröße macht die aktuelle Bestätigung ungültig und erfordert eine neue Bestätigung durch den Gastgeber."
+          }
+        }
+      },
+      "Cancel": {
+        "Title": "Buchung stornieren",
+        "Message": "Möchten Sie diese Buchung wirklich stornieren?",
+        "Warning": "Diese Aktion kann nicht rückgängig gemacht werden. Die Buchung wird endgültig storniert."
+      }
+    },
+    "Form": {
+      "BookingType": {
+        "Single": "Privatperson",
+        "Group": "Gruppe oder Schulklasse"
+      },
+      "City": {
+        "Label": "Stadt"
+      },
+      "Comment": {
+        "Hint": "Wichtige Informationen, die für uns hilfreich sind.",
+        "Label": "Anmerkungen",
+        "Empty": "Derzeit gibt es keine Anmerkungen"
+      },
+      "Contact": {
+        "Hint": "Name der Kontaktperson",
+        "Label": "Name"
+      },
+      "Mail": {
+        "Label": "E-Mail Addresse",
+        "Invalid": "Ungültige E-Mail Addresse"
+      },
+      "MaxAge": {
+        "Hint": "Das Alter des ältesten Teilnehmers",
+        "Label": "Ältester Teilnehmer",
+        "MinValue": "Alter darf nicht kleiner 0 sein"
+      },
+      "MinAge": {
+        "Hint": "Das Alter des jüngsten Teilnehmers",
+        "Label": "Jüngster Teilnehmer",
+        "MinValue": "Alter darf nicht kleiner 0 sein"
+      },
+      "Age": {
+        "Hint": "Alter des Besuchers",
+        "Label": "Alter"
+      },
+      "Phone": {
+        "Label": "Telefon"
+      },
+      "School": {
+        "Label": "Schulklasse oder Kindergarten-Gruppe"
+      },
+      "SelectedDate": {
+        "Label": "Ausgewählter Termin"
+      },
+      "Size": {
+        "MaxSize": "Die maximale Anzahl von freien Plätzen ist leider überschritten.",
+        "MinSize": "Es muss mindestens eine Person angemeldet werden.",
+        "MaxAvailableSize": "Maximale Teilnehmeranzahl {{available}}",
+        "Hint": "Anzahl Personen, die angemeldet werden sollen",
+        "Label": "Anzahl Personen"
+      },
+      "IgnoreSize": {
+        "Label": "Gruppengröße nicht prüfen"
+      },
+      "SpaceAvailable": "Places available",
+      "Street": {
+        "Label": "Straße"
+      },
+      "TermsAndConditions": {
+        "Label": "Ich habe die Hinweise zur Terminreservierung gelesen und akzeptiere sie.",
+        "Show": "Hinweise anzeigen"
+      },
+      "Title": {
+        "Hint": "Bezeichnung für die Gruppe",
+        "Label": "Bezeichung",
+        "Required": "Für die Gruppe wird eine Bezeichnung benötigt"
+      },
+      "Name": {
+        "Hint": "Name des Besuchers",
+        "Label": "Name"
+      },
+      "Zip": {
+        "Label": "PLZ"
+      },
+      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld"
+    },
+    "MESSAGE": {
+      "CONFIRM": {
+        "SUCCESS": "Die Buchungsanfrage wurde erfolgreich bestätigt.",
+        "FAILED": "Die Buchungsanfrage konnte nicht bestätigt werden."
+      },
+      "DECLINE": {
+        "SUCCESS": "Die Buchungsanfrage wurde erfolgreich abgelehnt.",
+        "FAILED": "Die Buchungsanfrage konnte nicht abgelehnt werden."
+      },
+      "CANCEL": {
+        "SUCCESS": "Die Buchung wurde erfolgreich storniert.",
+        "FAILED": "Die Buchung konnte nicht storniert werden."
+      }
+    },
+    "Terms": {
+      "Accepted": "Allgemeine Geschäftsbedingungen akzeptiert",
+      "NotAccepted": "Allgemeine Geschäftsbedingungen nicht akzeptiert"
+    },
+    "Summary": {
+      "Title": "Buchungszusammenfassung"
+    }
   },
   "RESERVATION": {
     "Action": {
@@ -78,9 +217,10 @@
       "Space": {
         "Series": {
           "Available": "Verfügbare Plätze",
-          "Confirmed": "Bestätigte Reservierung",
-          "Deactivated": "Keine Reservierung möglich",
-          "Unconfirmed": "Unbestätigte Reservierung"
+          "Confirmed": "Bestätigte Buchung",
+          "Deactivated": "Keine Buchung möglich",
+          "Unconfirmed": "Unbestätigte Buchung",
+          "Claimed": "Vorübergehende Reservierung"
         },
         "Title": "Belegung der jeweiligen Führungen"
       }
@@ -172,6 +312,10 @@
       "Selected": "{{count}} ausgewählt",
       "MaxGroupSize": "Max. Gruppengröße: {{size}}",
       "Expires": "Reserviert für {{time}}"
+    },
+    "TimeSlots": {
+      "Title": "Ausgewählter Termin",
+      "MaxPersons": "Max. {{count}} Personen"
     }
   },
   "REQUEST": {
@@ -217,7 +361,8 @@
       },
       "Comment": {
         "Hint": "Wichtige Informationen, die für uns hilfreich sind.",
-        "Label": "Anmerkungen"
+        "Label": "Anmerkungen",
+        "Empty": "Derzeit gibt es keine Anmerkungen"
       },
       "Contact": {
         "Hint": "Name der Kontaktperson",
@@ -373,7 +518,7 @@
         "TotalRemaining": "Verbleibende Plätze"
       }
     },
-    "Title": "📅 Dashboard-Übersicht",
+    "Title": "📅 Terminübersicht",
     "NoData": "Keine Daten verfügbar",
     "ComeBackLater": "Bitte schauen Sie später noch einmal vorbei."
   },

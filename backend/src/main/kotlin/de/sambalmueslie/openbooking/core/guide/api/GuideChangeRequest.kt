@@ -1,7 +1,7 @@
 package de.sambalmueslie.openbooking.core.guide.api
 
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 
 data class GuideChangeRequest(
     val firstName: String,
@@ -9,4 +9,4 @@ data class GuideChangeRequest(
     val email: String,
     val phone: String,
     val mobile: String
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

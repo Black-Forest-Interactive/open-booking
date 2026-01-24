@@ -10,8 +10,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   OfferFeatureRedistributeDialogComponent
 } from "../offer-feature-redistribute-dialog/offer-feature-redistribute-dialog.component";
-import {OfferService} from "@open-booking/admin";
+import {ExportService, OfferService} from "@open-booking/admin";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {TranslatePipe} from "@ngx-translate/core";
+import {HotToastService} from "@ngxpert/hot-toast";
 
 @Component({
   selector: 'app-offer-content',
@@ -24,6 +26,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     OfferContentEntryComponent,
     NgClass,
     MatProgressSpinner,
+    TranslatePipe,
   ],
   templateUrl: './offer-content.component.html',
   styleUrl: './offer-content.component.scss',
@@ -42,7 +45,7 @@ export class OfferContentComponent {
   selectedDay = signal<string>('')
   selectedEntry = computed(() => this.entries().find(e => e.day === this.selectedDay()) ?? this.entries()[0])
 
-  constructor(private service: OfferService, private dialog: MatDialog) {
+  constructor(private service: OfferService, private exportService: ExportService, private dialog: MatDialog, private toast: HotToastService) {
 
   }
 
@@ -60,5 +63,18 @@ export class OfferContentComponent {
       this.relabeling.set(false)
       this.reload.emit(true)
     })
+  }
+
+  protected exportExcel(entry: OfferGroupedSearchResult) {
+    let reference = this.toast.loading("Download started...")
+    this.exportService.createDailyReportExcel(entry.day)
+      .subscribe({
+          error: (e) => {
+            reference.close()
+            this.toast.error("Failed to generate Excel for " + entry.day)
+          },
+          complete: () => reference.close()
+        }
+      )
   }
 }

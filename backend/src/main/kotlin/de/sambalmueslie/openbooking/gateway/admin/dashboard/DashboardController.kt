@@ -1,9 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.dashboard
 
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
+import io.micronaut.http.annotation.*
 import io.micronaut.security.authentication.Authentication
 import io.swagger.v3.oas.annotations.tags.Tag
 import java.time.LocalDate
@@ -16,9 +14,13 @@ class DashboardController(private val gateway: DashboardGateway) {
     @Get("/visitor/daily")
     fun getDailyVisitorStats(auth: Authentication) = gateway.getDailyVisitorStats(auth)
 
-    @Get("/summary")
-    fun getSummary(auth: Authentication) = gateway.getSummary(auth)
+    @Get("/summary/week")
+    fun getWeeksSummary(auth: Authentication) = gateway.getWeeksSummary(auth)
 
-    @Post("/offer/{day}")
-    fun getDailyOffers(auth: Authentication, day: LocalDate, @Body request: DailyOffersFilterRequest?) = gateway.getDailyOffers(auth, day, request)
+
+    @Get("/summary/day")
+    fun getDaySummary(auth: Authentication, @QueryValue from: LocalDate, @QueryValue to: LocalDate) = gateway.getDaySummary(auth, from, to)
+
+    @Post("/offer")
+    fun getDailyOffers(auth: Authentication, @Body request: OfferSearchRequest) = gateway.getDailyOffers(auth, request)
 }

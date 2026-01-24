@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.editor.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import java.time.LocalDateTime
 
 data class Editor(
@@ -9,6 +9,7 @@ data class Editor(
     val resourceType: String,
     val userId: String,
     val userName: String,
-    val startedAt: LocalDateTime,
-    var expires: LocalDateTime
-) : BusinessObject<Long>
+    var expires: LocalDateTime,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
+) : Entity<Long>

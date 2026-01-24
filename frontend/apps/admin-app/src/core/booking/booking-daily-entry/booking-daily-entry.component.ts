@@ -1,5 +1,5 @@
 import {Component, computed, input, resource} from '@angular/core';
-import {Booking, BookingDetails, Offer, Visitor} from "@open-booking/core";
+import {Booking, BookingDetails, Offer} from "@open-booking/core";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {BookingService} from "@open-booking/admin";
 import {Router} from "@angular/router";
@@ -35,21 +35,13 @@ export class BookingDailyEntryComponent {
   constructor(private service: BookingService, private router: Router) {
   }
 
-  protected showDetails(b: BookingDetails) {
-    navigateToBookingDetails(this.router, b.booking.id)
+  protected showDetails(b: Booking) {
+    navigateToBookingDetails(this.router, b.id)
   }
 
   private getWidth(b: BookingDetails): number {
     let totalSize = this.offer().maxPersons
     return Math.abs(b.visitor.size / totalSize * 12)
   }
-}
-
-
-export interface BookingDetailsEntry {
-  booking: Booking,
-  visitorGroup: Visitor,
-  width: number
-
 }
 

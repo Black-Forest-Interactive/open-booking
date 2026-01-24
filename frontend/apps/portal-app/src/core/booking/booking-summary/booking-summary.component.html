@@ -1,0 +1,80 @@
+<!-- Cart Header -->
+<div class="p-4 border-b">
+  <h2 class="text-xl font-semibold">{{ 'BOOKING.Summary.Title' | translate }}</h2>
+</div>
+
+<h3 class="text-lg font-semibold flex items-center gap-2 p-4">
+  <mat-icon class="text-primary">event</mat-icon>
+  {{ 'OFFER.TimeSlots.Title' | translate }}
+</h3>
+
+<div class="space-y-3  p-4">
+  <mat-card appearance="outlined" class="!p-3">
+    <div class="flex items-start gap-3">
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1">
+            <div class="font-medium">{{ start() | date:'fullDate' }}</div>
+            <div class="text-sm opacity-70 mt-1">
+              {{ start() | date:'shortTime' }} - {{ finish() | date:'shortTime' }}
+            </div>
+          </div>
+        </div>
+        <!-- Max Persons Info -->
+        <div class="flex items-center gap-2 text-sm mt-2 text-on-surface-variant">
+          <mat-icon class="text-base" inline>people</mat-icon>
+          <span>{{ 'OFFER.TimeSlots.MaxPersons' | translate: {count: maxPersons()} }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<mat-divider></mat-divider>
+
+<!-- Visitor Group Information -->
+
+<app-visitor-info [data]="visitorGroup()"></app-visitor-info>
+
+@if (comment()) {
+  <mat-divider></mat-divider>
+
+  <!-- Comment Section -->
+  <section>
+    <h3 class="text-lg font-semibold mb-3 flex items-center gap-2 p-4">
+      <mat-icon class="text-primary">comment</mat-icon>
+      {{ 'BOOKING.Form.Comment.Label' | translate }}
+    </h3>
+    <div class="bg-surface-container rounded-lg p-4">
+      <p class="text-sm whitespace-pre-wrap">{{ comment() }}</p>
+    </div>
+  </section>
+}
+
+<mat-divider></mat-divider>
+
+<!-- Terms Confirmation -->
+
+<div class="flex items-center gap-2 text-sm p-4">
+  <mat-icon [class]="termsAccepted() ? 'text-primary' : 'text-error'">
+    {{ termsAccepted() ? 'check_circle' : 'cancel' }}
+  </mat-icon>
+  <span [class]="termsAccepted() ? 'text-on-surface' : 'text-error'">
+                {{ (termsAccepted() ? 'BOOKING.Terms.Accepted' : 'BOOKING.Terms.NotAccepted') | translate }}
+              </span>
+</div>
+
+
+<div class="flex justify-between items-center p-4">
+  <button mat-stroked-button (click)="edit.emit(request())">
+    <mat-icon>edit</mat-icon>
+    {{ 'ACTION.Edit' | translate }}
+  </button>
+  <button mat-flat-button color="primary"
+          [disabled]="!termsAccepted()"
+          (click)="confirm.emit(request())">
+    <mat-icon>check</mat-icon>
+    {{ 'BOOKING.Action.Submit' | translate }}
+  </button>
+</div>

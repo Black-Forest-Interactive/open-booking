@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>{{ 'BOOKING.Dialog.Resize.Title' | translate }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="space-y-4">
+    <mat-form-field class="w-full" appearance="fill">
+      <mat-label>{{ 'REQUEST.Form.Size.Label' | translate }}</mat-label>
+      <input matInput type="number" formControlName="size">
+      <mat-hint>{{ 'REQUEST.Form.Size.Hint' | translate }}</mat-hint>
+      @if (form.get('size')?.hasError('required')) {
+        <mat-error>{{ 'FORM.Required' | translate }}</mat-error>
+      } @else if (form.get('size')?.hasError('min')) {
+        <mat-error>{{ 'FORM.MinSize' | translate }}</mat-error>
+      } @else if (form.get('size')?.hasError('max')) {
+        <mat-error>{{ 'FORM.MaxSize' | translate: {max: data.offer.maxPersons} }}</mat-error>
+      }
+    </mat-form-field>
+
+    @if (form.get('size')?.value!! > 1) {
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field appearance="fill">
+          <mat-label>{{ 'REQUEST.Form.MinAge.Label' | translate }}</mat-label>
+          <input matInput type="number" formControlName="minAge">
+          <mat-hint>{{ 'REQUEST.Form.MinAge.Hint' | translate }}</mat-hint>
+          @if (form.get('minAge')?.hasError('required')) {
+            <mat-error>{{ 'FORM.Required' | translate }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>{{ 'REQUEST.Form.MaxAge.Label' | translate }}</mat-label>
+          <input matInput type="number" formControlName="maxAge">
+          <mat-hint>{{ 'REQUEST.Form.MaxAge.Hint' | translate }}</mat-hint>
+          @if (form.get('maxAge')?.hasError('required')) {
+            <mat-error>{{ 'FORM.Required' | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    } @else {
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>{{ 'REQUEST.Form.Age.Label' | translate }}</mat-label>
+        <input matInput type="number" formControlName="minAge">
+        <mat-hint>{{ 'REQUEST.Form.Age.Hint' | translate }}</mat-hint>
+      </mat-form-field>
+    }
+  </form>
+
+  @if (isIncreasing) {
+    <div class="bg-orange-50 border-l-4 border-orange-400 p-4 mt-4">
+      <div class="flex gap-3">
+        <mat-icon class="text-orange-500">warning</mat-icon>
+        <div>
+          <h4
+            class="font-semibold text-orange-900">{{ 'BOOKING.Dialog.Resize.Warning.Increase.Title' | translate }}</h4>
+          <p class="text-sm text-orange-700">
+            {{ (data.status === BookingStatus.CONFIRMED ? 'BOOKING.Dialog.Resize.Warning.Increase.MessageConfirmed' : 'BOOKING.Dialog.Resize.Warning.Increase.MessagePending') | translate }}
+          </p>
+        </div>
+      </div>
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>{{ 'ACTION.Cancel' | translate }}</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="confirm()">
+    {{ 'ACTION.Confirm' | translate }}
+  </button>
+</mat-dialog-actions>

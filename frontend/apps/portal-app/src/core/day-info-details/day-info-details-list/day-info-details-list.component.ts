@@ -5,9 +5,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {ReservationProcessService} from "../../reservation/reservation-process.service";
+import {BookingProcessService} from "../../booking/booking-process.service";
 import {Router} from "@angular/router";
-import {navigateToReservation} from "../../../app/app.navigation";
+import {navigateToBooking} from "../../../app/app.navigation";
 import {DayInfoDetailsListEntryComponent} from "../cart-info-details-list-entry/day-info-details-list-entry.component";
 import {ClaimInfoComponent} from "../../claim/claim-info/claim-info.component";
 
@@ -33,13 +33,13 @@ export class DayInfoDetailsListComponent {
 
   refresh = output<boolean>()
 
-  constructor(private service: ReservationProcessService, private router: Router) {
+  constructor(private service: BookingProcessService, private router: Router) {
     this.maxGroupSize = this.service.maxGroupSize
     this.selectedOffer = this.service.selectedOffer
   }
 
   protected proceedToBooking() {
-    navigateToReservation(this.router)
+    navigateToBooking(this.router)
   }
 
   protected reload() {

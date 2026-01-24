@@ -1,68 +1,72 @@
-import {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
-import {Offer} from "../offer/offer.api";
-
-export class CreateBookingRequest {
-  constructor(
-    public visitorChangeRequest: VisitorChangeRequest,
-    public offerIds: number[],
-    public comment: string,
-    public termsAndConditions: boolean
-  ) {
-  }
-}
+import type {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
+import type {OfferInfo, OfferReference} from "../offer/offer.api";
+import type {Editor} from "../editor/editor.api";
+import type {Page} from "@open-booking/shared";
 
 export interface Booking {
   id: number,
-  status: string,
+  key: string,
+  status: BookingStatus,
   size: number,
   comment: string,
   offerId: number,
   visitorId: number,
 }
 
-export class BookingChangeRequest {
-  constructor(
-    public offerId: number,
-    public visitorId: number,
-    public comment: string,
-  ) {
-  }
-}
-
-
 export interface BookingDetails {
   booking: Booking,
-  visitor: Visitor
+  visitor: Visitor,
+  offer: OfferReference,
+  timestamp: string,
+  editor: Editor | undefined
+}
+
+export interface BookingInfo {
+  id: number,
+  visitor: Visitor,
+  offer: OfferInfo,
+  status: BookingStatus,
+  comment: string,
+  timestamp: string
+}
+
+export class BookingChangeRequest {
+  constructor(
+    public visitor: VisitorChangeRequest,
+    public comment: string,
+    public lang: string,
+    public offerId: number,
+    public autoConfirm: boolean,
+    public ignoreSizeCheck: boolean
+  ) {
+  }
 }
 
 export class BookingSearchRequest {
   constructor(
-    public query: string
+    public fullTextSearch: String,
+    public status: BookingStatus[],
+    public from: string | null | undefined,
+    public to: string | null | undefined
   ) {
   }
 }
 
-export interface BookingSearchResult {
-  offer: Offer,
-  booking: Booking,
-  visitor: Visitor
+export interface BookingSearchResponse {
+  result: Page<BookingDetails>,
+  status: BookingStatusCount
 }
 
+export type BookingStatusCount = Partial<Record<BookingStatus, number>>
 
-export interface BookingInfo {
-  id: number,
-  offer: Offer,
-  spaceAvailable: number,
-  spaceConfirmed: number,
-  status: string,
-  timestamp: string
-}
 
 export const BookingStatus = {
   UNKNOWN: 'UNKNOWN',
-  UNCONFIRMED: 'UNCONFIRMED',
+  PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
-  DENIED: 'DENIED'
+  DECLINED: 'DECLINED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
 } as const;
 
 export type BookingStatus = typeof BookingStatus[keyof typeof BookingStatus]

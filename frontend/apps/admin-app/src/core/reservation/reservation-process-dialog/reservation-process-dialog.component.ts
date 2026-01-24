@@ -1,8 +1,8 @@
 import {Component, computed, effect, inject, resource} from '@angular/core';
-import {ReservationConfirmationContent, ReservationDetails, ReservationOffer} from "@open-booking/core";
+import {BookingConfirmationContent, BookingDetails, OfferReference} from "@open-booking/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {ReservationService} from "@open-booking/admin";
+import {BookingService} from "@open-booking/admin";
 import {toPromise} from "@open-booking/shared";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -37,7 +37,7 @@ export class ReservationProcessDialogComponent {
 
   private resource = resource({
     loader: param =>
-      toPromise((this.data.confirmation) ? this.service.getConfirmationMessage(this.data.info.reservation.id) : this.service.getDenialMessage(this.data.info.reservation.id), param.abortSignal)
+      toPromise((this.data.confirmation) ? this.service.getConfirmResponse(this.data.info.booking.id) : this.service.getDeclineResponse(this.data.info.booking.id), param.abortSignal)
   })
 
   loading = this.resource.isLoading
@@ -51,7 +51,7 @@ export class ReservationProcessDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ReservationProcessDialogComponent>,
     fb: FormBuilder,
-    private service: ReservationService
+    private service: BookingService
   ) {
     this.fg = fb.group({
         subject: ['', Validators.required],
@@ -76,7 +76,7 @@ export class ReservationProcessDialogComponent {
   onConfirmClick() {
     if (this.fg.invalid) return
     let value = this.fg.value
-    let content = new ReservationConfirmationContent(
+    let content = new BookingConfirmationContent(
       value.subject ?? "",
       value.content ?? "",
       value.silent ?? false
@@ -86,7 +86,7 @@ export class ReservationProcessDialogComponent {
 }
 
 export interface ReservationProcessDialogData {
-  info: ReservationDetails,
-  offer: ReservationOffer | undefined,
+  info: BookingDetails,
+  offer: OfferReference | undefined,
   confirmation: boolean
 }

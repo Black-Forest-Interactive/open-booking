@@ -1,9 +1,6 @@
 package de.sambalmueslie.openbooking.core.search.guide
 
-import com.jillesvangurp.searchdsls.querydsl.SearchDSL
-import com.jillesvangurp.searchdsls.querydsl.bool
-import com.jillesvangurp.searchdsls.querydsl.match
-import com.jillesvangurp.searchdsls.querydsl.matchAll
+import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
 import de.sambalmueslie.openbooking.core.search.guide.api.GuideSearchRequest
 import io.micronaut.data.model.Pageable
@@ -41,5 +38,9 @@ class GuideSearchQueryBuilder : SearchQueryBuilder<GuideSearchRequest> {
                     matchAll()
                 }
             }
+        sort {
+            add(GuideSearchEntryData::name, SortOrder.DESC)
+            add(GuideSearchEntryData::timestamp, SortOrder.DESC)
+        }
     }
 }

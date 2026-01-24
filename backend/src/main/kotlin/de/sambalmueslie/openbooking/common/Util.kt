@@ -8,7 +8,8 @@ fun <E, ID> PageableRepository<E, ID>.findByIdOrNull(id: ID): E? = this.findById
 inline fun <T> Iterable<T>.forEachWithTryCatch(action: (T) -> Unit) {
     try {
         for (element in this) action(element)
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+        //
     }
 }
 
@@ -19,7 +20,7 @@ inline fun <T> measureTimeMillisWithReturn(function: () -> T): Pair<Long, T> {
     return Pair(duration, result)
 }
 
-inline fun <T> executeWithReturn(result: T? = null, function : () -> Any): T? {
+inline fun <T> executeWithReturn(result: T? = null, function: () -> Any): T? {
     function.invoke()
     return result
 }

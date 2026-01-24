@@ -9,9 +9,13 @@ class GuideFieldMappingProvider : FieldMappingProvider {
     override fun createMappings(): FieldMappings.() -> Unit {
         return {
             number<Long>(GuideSearchEntryData::id)
+            text(GuideSearchEntryData::name)
             text(GuideSearchEntryData::firstName)
             text(GuideSearchEntryData::lastName)
             text(GuideSearchEntryData::email)
+            date(GuideSearchEntryData::created)
+            date(GuideSearchEntryData::updated)
+            date(GuideSearchEntryData::timestamp)
         }
     }
 }

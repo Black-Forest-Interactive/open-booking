@@ -17,6 +17,8 @@ const icons: Record<VisitorType, string> = {
 })
 export class VisitorTypeComponent {
   data = input.required<VisitorType>()
+  showText = input(true)
+  
   icon = computed(() => icons[this.data()] || 'person')
   text = computed(() => 'VISITOR.Type.' + this.data())
 }

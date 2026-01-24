@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {DayInfoOffer} from "@open-booking/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
-import {ReservationProcessService} from "../../reservation/reservation-process.service";
+import {BookingProcessService} from "../../booking/booking-process.service";
 import {DatePipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DateTime} from "luxon";
@@ -26,7 +26,7 @@ export class DayInfoDetailsListEntryComponent {
   isClaimed = computed(() => (this.data().claimedUntil && !this.isUserClaimed()) ?? false)
   claimedUntil = computed(() => !this.isUserClaimed() ? this.transformClaimedUntil(this.data().claimedUntil) : "")
 
-  reservedSpace = computed(() => this.data().assignment.reservedSpace)
+  reservedSpace = computed(() => this.data().assignment.pendingSpace)
   availableSpace = computed(() => this.data().assignment.availableSpace)
   hasAvailableSpace = computed(() => this.availableSpace() > 0)
   hasUnconfirmedBookings = computed(() => this.reservedSpace() > 0)
@@ -34,7 +34,7 @@ export class DayInfoDetailsListEntryComponent {
   refresh = output<boolean>()
 
 
-  constructor(private service: ReservationProcessService) {
+  constructor(private service: BookingProcessService) {
     this.service.updateClaim()
   }
 

@@ -1,16 +1,16 @@
 <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
   <div class="flex items-center mb-3">
     <app-loading-bar [reloading]="reloading()"/>
-    <div class="flex items-center gap-3 basis-9/12">
+    <div class="flex items-center gap-3 w-full">
       <mat-icon class="h-12">calendar_today</mat-icon>
-      <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-full">
-        <mat-label>Select Week</mat-label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dense-3 w-full">
+        <mat-label>{{ 'DASHBOARD.WeekSelector.SelectWeek' | translate }}</mat-label>
         <mat-select [(value)]="selectedWeek" (selectionChange)="handleWeekSelection($event.value)">
           @for (week of weekSummary(); track week) {
             <mat-option [value]="week">
-              Week {{ week.weekNumber }} : {{ week.startDate | date:'shortDate' }}
+              {{ 'DASHBOARD.WeekSelector.Week' | translate }} {{ week.weekNumber }}
+              : {{ week.startDate | date:'shortDate' }}
               - {{ week.endDate | date:'shortDate' }}
-              {{ week.unconfirmedCount > 0 ? '(' + week.unconfirmedCount + ' pending)' : '' }}
             </mat-option>
           }
         </mat-select>
@@ -24,21 +24,61 @@
            [ngClass]="(selectedDay() === day) ? 'border-blue-600 bg-blue-50' : 'border-gray-200 bg-white hover:border-gray-300'"
            (click)="handleDaySelection(day)"
       >
-        <div class="text-center">
-          <div class="text-xs font-medium text-gray-500 mb-1">
-            {{ day.date | date:'EEEE' }}
+        <div class="flex flex-col gap-2">
+          <!-- Date Header -->
+          <div class="text-center">
+            <div class="text-xs font-medium text-gray-500 mb-1">
+              {{ day.date | date:'EEEE' }}
+            </div>
+            <div class="text-2xl font-bold mb-1"
+                 [ngClass]="(selectedDay() === day) ? 'text-blue-600' : 'text-gray-800'">
+              {{ day.date | date:'dd' }}
+            </div>
+            <div class="text-xs font-medium text-gray-500 mb-1">
+              {{ day.date | date:'MMMM' }}
+            </div>
           </div>
-          <div class="text-2xl font-bold text-gray-500 mb-1"
-               [ngClass]="(selectedDay() === day) ? 'text-blue-600' : 'text-gray-800'">
-            {{ day.date | date:'dd' }}
+
+          <!-- Assignment Component -->
+          <div class="flex justify-center">
+            <app-offer-assignment [assignment]="day.assignment" class="w-full"/>
           </div>
-          <div class="text-xs font-medium text-gray-500 mb-1">
-            {{ day.date | date:'MMMM' }}
-          </div>
-          @if (day.unconfirmedCount > 0) {
-            <div
-              class="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-              {{ day.unconfirmedCount }}
+
+          <!-- Booking Stats -->
+          @if (showBookingStats() && hasBookingStats(day.bookingStats)) {
+            <div class="border-t pt-2 mt-1">
+              <div class="text-xs text-gray-600 space-y-1">
+                @for (status of getBookingStatuses(day.bookingStats); track status) {
+                  @if (day.bookingStats[status] > 0) {
+                    <div class="flex justify-between items-center">
+                      <lib-booking-status [status]="status" [compact]="true" class="flex-1"
+                                          [amount]="day.bookingStats[status] "/>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Recent Changes Indicators -->
+          @if (day.recentlyChangedOffer > 0 || day.recentlyChangedBookings > 0) {
+            <div class="border-t pt-2 mt-1 space-y-1">
+              @if (day.recentlyChangedOffer > 0) {
+                <div class="flex items-center gap-1 text-xs ">
+                  <mat-icon class="text-sm" style="font-size: 14px; width: 14px; height: 14px;">
+                    notifications
+                  </mat-icon>
+                  <span>{{ day.recentlyChangedOffer }} {{ day.recentlyChangedOffer > 1 ? ('DASHBOARD.DayCard.OfferChanges' | translate) : ('DASHBOARD.DayCard.OfferChange' | translate) }}</span>
+                </div>
+              }
+              @if (day.recentlyChangedBookings > 0) {
+                <div class="flex items-center gap-1 text-xs ">
+                  <mat-icon class="text-sm" style="font-size: 14px; width: 14px; height: 14px;">
+                    update
+                  </mat-icon>
+                  <span>{{ day.recentlyChangedBookings }} {{ day.recentlyChangedBookings > 1 ? ('DASHBOARD.DayCard.BookingChanges' | translate) : ('DASHBOARD.DayCard.BookingChange' | translate) }}</span>
+                </div>
+              }
             </div>
           }
         </div>

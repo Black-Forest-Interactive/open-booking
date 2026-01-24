@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 import java.time.LocalDateTime
 
 data class AuditLogEntryChangeRequest(
@@ -11,4 +11,4 @@ data class AuditLogEntryChangeRequest(
     val referenceId: String,
     val reference: Any,
     val source: String,
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.offer.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.guide.api.Guide
 import de.sambalmueslie.openbooking.core.label.api.Label
 import de.sambalmueslie.openbooking.core.offer.api.Offer
@@ -23,9 +23,9 @@ data class OfferData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Offer> {
+) : EntityData<Offer> {
 
-    override fun convert() = Offer(id, start, finish, maxPersons, active)
+    override fun convert() = Offer(id, start, finish, maxPersons, active, created, updated)
 
     fun update(request: OfferChangeRequest, label: Label?, guide: Guide?, timestamp: LocalDateTime): OfferData {
         start = request.start

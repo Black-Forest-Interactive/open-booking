@@ -2,7 +2,7 @@ import {Component, computed, input} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
-import {Reservation, ReservationOffer, ReservationStatus, Visitor} from "@open-booking/core";
+import {Booking, BookingStatus, OfferReference, Visitor} from "@open-booking/core";
 
 @Component({
   selector: 'app-reservation-offer-capacity-visualization',
@@ -16,34 +16,34 @@ import {Reservation, ReservationOffer, ReservationStatus, Visitor} from "@open-b
 })
 export class ReservationOfferCapacityVisualizationComponent {
   // Inputs
-  entry = input.required<ReservationOffer>()
+  entry = input.required<OfferReference>()
   visitor = input.required<Visitor>()
-  reservation = input.required<Reservation>()
+  booking = input.required<Booking>()
 
   // Computed properties
   active = computed(() => this.entry().offer.active)
   maxPersons = computed(() => this.entry().offer.maxPersons)
-  bookedSpace = computed(() => this.entry().assignment.bookedSpace)
-  reservedSpace = computed(() => this.entry().assignment.reservedSpace)
+  confirmedSpace = computed(() => this.entry().assignment.confirmedSpace)
+  pendingSpace = computed(() => this.entry().assignment.pendingSpace)
   availableSpace = computed(() => this.entry().assignment.availableSpace)
 
-  isUnconfirmed = computed(() =>
-    this.reservation().status === ReservationStatus.UNCONFIRMED
+  isPending = computed(() =>
+    this.booking().status === BookingStatus.PENDING
   );
 
   // Calculate reserved space excluding current visitor group
-  otherReservedSpace = computed(() => {
-    if (this.isUnconfirmed()) {
-      return Math.max(0, this.reservedSpace() - this.visitor().size)
+  otherPendingSpace = computed(() => {
+    if (this.isPending()) {
+      return Math.max(0, this.pendingSpace() - this.visitor().size)
     }
-    return this.reservedSpace()
+    return this.pendingSpace()
   });
 
-  usedCapacity = computed(() => this.bookedSpace() + this.reservedSpace())
+  usedCapacity = computed(() => this.confirmedSpace() + this.pendingSpace())
 
-  bookedPercentage = computed(() => (this.bookedSpace() / this.maxPersons()) * 100)
+  confirmedPercentage = computed(() => (this.confirmedSpace() / this.maxPersons()) * 100)
 
-  otherReservedPercentage = computed(() => (this.otherReservedSpace() / this.maxPersons()) * 100)
+  otherPendingPercentage = computed(() => (this.otherPendingSpace() / this.maxPersons()) * 100)
 
   visitorPercentage = computed(() => (this.visitor().size / this.maxPersons()) * 100)
 

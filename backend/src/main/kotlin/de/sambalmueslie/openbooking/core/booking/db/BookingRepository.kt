@@ -12,6 +12,8 @@ import io.micronaut.data.repository.PageableRepository
 @JdbcRepository(dialect = Dialect.POSTGRES)
 interface BookingRepository : PageableRepository<BookingData, Long> {
 
+    fun findByKey(key: String): BookingData?
+
     fun findByOfferIdIn(offerIds: Set<Long>): List<BookingData>
     fun findByOfferId(offerId: Long): List<BookingData>
     fun findByOfferId(offerId: Long, pageable: Pageable): Page<BookingData>
@@ -21,7 +23,8 @@ interface BookingRepository : PageableRepository<BookingData, Long> {
     fun countByVisitorId(visitorId: Long): Long
     fun findByIdIn(bookingIds: Set<Long>): List<BookingData>
 
-    fun findByVisitorId(visitorId: Long, pageable: Pageable): Page<BookingData>
+    fun findByVisitorId(visitorId: Long): List<BookingData>
+    fun findByVisitorIdIn(visitorIds: Set<Long>): List<BookingData>
 
 
 }

@@ -6,5 +6,6 @@ data class ChangeEvent(
     val type: ChangeEventType,
     val resourceId: String,
     val resourceType: String,
+    val resourceStatus: String,
     val timestamp: LocalDateTime,
 )

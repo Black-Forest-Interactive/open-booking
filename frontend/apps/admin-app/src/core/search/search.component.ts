@@ -9,6 +9,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {toPromise} from "@open-booking/shared";
 import {MatChipsModule} from "@angular/material/chips";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-search',
@@ -19,6 +20,7 @@ import {MatChipsModule} from "@angular/material/chips";
     MatProgressBarModule,
     MatChipsModule,
     TranslatePipe,
+    MainContentComponent,
 
   ],
   templateUrl: './search.component.html',

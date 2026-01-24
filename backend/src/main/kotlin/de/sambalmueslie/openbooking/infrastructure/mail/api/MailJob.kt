@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.mail.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import java.time.LocalDateTime
 
 data class MailJob(
@@ -8,4 +8,6 @@ data class MailJob(
     val title: String,
     val status: MailJobStatus,
     val timestamp: LocalDateTime,
-) : BusinessObject<Long>
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
+) : Entity<Long>

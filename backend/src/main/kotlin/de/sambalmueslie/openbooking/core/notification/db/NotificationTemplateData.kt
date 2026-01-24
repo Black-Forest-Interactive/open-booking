@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.notification.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.notification.api.ContentType
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateChangeRequest
@@ -20,7 +20,7 @@ data class NotificationTemplateData(
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<NotificationTemplate> {
+) : EntityData<NotificationTemplate> {
 
     companion object {
         fun create(request: NotificationTemplateChangeRequest, timestamp: LocalDateTime): NotificationTemplateData {
@@ -37,7 +37,7 @@ data class NotificationTemplateData(
     }
 
     override fun convert(): NotificationTemplate {
-        return NotificationTemplate(id, lang, type, subject, contentType, content)
+        return NotificationTemplate(id, lang, type, subject, contentType, content, created, updated)
     }
 
     fun update(request: NotificationTemplateChangeRequest, timestamp: LocalDateTime): NotificationTemplateData {

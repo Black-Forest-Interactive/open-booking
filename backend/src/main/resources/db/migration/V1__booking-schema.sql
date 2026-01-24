@@ -80,26 +80,10 @@ CREATE TABLE booking
     status     VARCHAR(255) NOT NULL,
     size       INT          NOT NULL,
     comment    TEXT         NOT NULL,
+    lang       VARCHAR(10)  NOT NULL,
 
     offer_id   BIGINT       NOT NULL REFERENCES offer (id),
     visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
-
-    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated    TIMESTAMP WITHOUT TIME ZONE
-);
-
--- reservation
-CREATE SEQUENCE reservation_seq;
-CREATE TABLE reservation
-(
-    id         BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('reservation_seq'::regclass),
-    key        VARCHAR(255) NOT NULL,
-    status     VARCHAR(50)  NOT NULL,
-    comment    TEXT,
-
-    visitor_id BIGINT       NOT NULL REFERENCES visitor (id),
-    offer_id   BIGINT       NOT NULL REFERENCES offer (id),
-    booking_id BIGINT REFERENCES booking (id),
 
     created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated    TIMESTAMP WITHOUT TIME ZONE
@@ -145,7 +129,10 @@ CREATE TABLE audit_log_entry
     message      TEXT         NOT NULL,
     reference_id VARCHAR(255) NOT NULL,
     reference    TEXT         NOT NULL,
-    source       VARCHAR(255) NOT NULL
+    source       VARCHAR(255) NOT NULL,
+
+    created    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated    TIMESTAMP WITHOUT TIME ZONE
 );
 
 -- setting

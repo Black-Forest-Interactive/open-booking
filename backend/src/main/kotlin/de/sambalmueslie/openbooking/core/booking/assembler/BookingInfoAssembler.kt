@@ -2,11 +2,10 @@ package de.sambalmueslie.openbooking.core.booking.assembler
 
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
-import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.offer.api.OfferInfo
+import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import io.micronaut.data.model.Page
@@ -17,32 +16,36 @@ import org.slf4j.LoggerFactory
 @Singleton
 class BookingInfoAssembler(
     private val repository: BookingRepository,
-    private val offerService: OfferService,
-    private val visitorService: VisitorService
+    private val offerInfoAssembler: OfferInfoAssembler,
+    private val visitorService: VisitorService,
 ) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(BookingInfoAssembler::class.java)
     }
 
-    fun getAllInfos(pageable: Pageable): Page<BookingInfo> {
+    fun getAll(pageable: Pageable): Page<BookingInfo> {
         return pageToInfo { repository.findAll(pageable) }
     }
 
-    fun getInfo(id: Long): BookingInfo? {
+    fun get(id: Long): BookingInfo? {
         return dataToInfo { repository.findByIdOrNull(id) }
     }
 
-    fun getInfoByIds(ids: Set<Long>): List<BookingInfo> {
+    fun getByIds(ids: Set<Long>): List<BookingInfo> {
         return listToInfo { repository.findByIdIn(ids) }
     }
 
-    fun getInfoByOfferId(offerId: Long): List<BookingInfo> {
+    fun getByOfferId(offerId: Long): List<BookingInfo> {
         return listToInfo { repository.findByOfferId(offerId) }
     }
 
-    fun getInfoByOfferIds(offerIds: Set<Long>): List<BookingInfo> {
+    fun getByOfferIds(offerIds: Set<Long>): List<BookingInfo> {
         return listToInfo { repository.findByOfferIdIn(offerIds) }
+    }
+
+    fun getByKey(key: String): BookingInfo? {
+        return dataToInfo { repository.findByKey(key) }
     }
 
     private fun pageToInfo(provider: () -> Page<BookingData>): Page<BookingInfo> {
@@ -64,39 +67,31 @@ class BookingInfoAssembler(
         return Page.of(result, data.pageable, data.totalSize)
     }
 
-
     private fun info(data: List<BookingData>): List<BookingInfo> {
-        val offerIds = data.map { it.offerId }.toSet()
-        val offer = offerService.getByIds(offerIds).associateBy { it.id }
-
         val visitorIds = data.map { it.visitorId }.toSet()
         val visitors = visitorService.getVisitors(visitorIds).associateBy { it.id }
 
-        val confirmedBookings = repository.findByOfferIdInAndStatus(offerIds, BookingStatus.CONFIRMED).groupBy { it.offerId }
+        val offerIds = data.map { it.offerId }.toSet()
+        val offers = offerInfoAssembler.getByIds(offerIds).associateBy { it.offer.id }
 
-        return data.mapNotNull { info(it, offer, visitors, confirmedBookings[it.offerId] ?: emptyList()) }
+        return data.mapNotNull { info(it, visitors, offers) }.sortedBy { it.visitor.verification.status.order }
     }
 
-    private fun info(data: BookingData, offers: Map<Long, Offer>, visitors: Map<Long, Visitor>, confirmedBookings: List<BookingData>): BookingInfo? {
-        val offer = offers[data.offerId] ?: return null
+    private fun info(data: BookingData, visitors: Map<Long, Visitor>, offers: Map<Long, OfferInfo>): BookingInfo? {
         val visitor = visitors[data.visitorId] ?: return null
-
-        return info(data, offer, visitor, confirmedBookings)
+        val offer = offers[data.offerId] ?: return null
+        return info(data, visitor, offer)
     }
 
     private fun info(data: BookingData): BookingInfo? {
-        val offer = offerService.get(data.offerId) ?: return null
         val visitor = visitorService.get(data.visitorId) ?: return null
-        val confirmedBookings = repository.findByOfferIdAndStatus(offer.id, BookingStatus.CONFIRMED)
-        return info(data, offer, visitor, confirmedBookings)
+        val offer = offerInfoAssembler.get(data.offerId) ?: return null
+        return info(data, visitor, offer)
     }
 
-    private fun info(data: BookingData, offer: Offer, visitor: Visitor, confirmedBookings: List<BookingData>): BookingInfo {
-        val spaceConfirmed = confirmedBookings.sumOf { visitorService.get(it.visitorId)?.size ?: 0 }
-        val spaceAvailable = (offer.maxPersons - spaceConfirmed).coerceAtLeast(0)
-
+    private fun info(data: BookingData, visitor: Visitor, offer: OfferInfo): BookingInfo {
         val timestamp = data.updated ?: data.created
-        return BookingInfo(data.id, offer, visitor, spaceAvailable, spaceConfirmed, data.status, timestamp)
+        return BookingInfo(data.id, visitor, offer, data.status, data.comment, data.lang, timestamp)
     }
 
 }

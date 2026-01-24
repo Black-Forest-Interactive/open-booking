@@ -1,21 +1,12 @@
-<div class="flex flex-col h-[calc(100vh-120px)] min-h-0">
-  <app-dashboard-summary
-    [reloading]="summaryReloading()"
-    [weekSummary]="summary()"
-    [selectedWeek]="selectedWeek()"
-    [selectedDay]="selectedDay()"
-    (selectionDayChanged)="handleDaySelection($event)"
-    (selectionWeekChanged)="handleWeekSelection($event)"
-  />
-  <app-dashboard-filter
-    [availableGuides]="availableGuides()"
-    (filterChange)="handleFilterChanged($event)"
-  />
-  <div class="flex-1 overflow-auto min-h-0">
-    <app-dashboard-content
-      [reloading]="contentReloading()"
-      [content]="content()"
-      (clearFilter)="clearFilter()"
-    />
+<app-main-content [title]="'MENU.Dashboard' | translate" [enableSearch]="false">
+  <div class="p-4">
+    <app-dashboard-summary (selectionDayChanged)="handleDaySelection($event)" [showBookingStats]="false"/>
+    <div class="flex-1 overflow-auto min-h-0">
+      <app-dashboard-content
+        [reloading]="contentReloading()"
+        [content]="content()"
+        (reload)="reload()"
+      />
+    </div>
   </div>
-</div>
+</app-main-content>

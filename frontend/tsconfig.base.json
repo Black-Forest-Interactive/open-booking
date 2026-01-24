@@ -10,30 +10,17 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@open-booking/core": [
-        "libs/core/src/index.ts"
-      ],
-      "@open-booking/shared": [
-        "libs/shared/src/index.ts"
-      ],
-      "@open-booking/admin": [
-        "libs/admin/src/index.ts"
-      ],
-      "@open-booking/portal": [
-        "libs/portal/src/index.ts"
-      ]
+      "@open-booking/core": ["libs/core/src/index.ts"],
+      "@open-booking/shared": ["libs/shared/src/index.ts"],
+      "@open-booking/admin": ["libs/admin/src/index.ts"],
+      "@open-booking/portal": ["libs/portal/src/index.ts"],
+      "@open-booking/ui": ["libs/ui/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

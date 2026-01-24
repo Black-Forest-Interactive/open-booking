@@ -1,0 +1,58 @@
+<div class="rounded border border-gray-300 bg-white transition-all duration-200 cursor-pointer relative overflow-hidden"
+     (click)="showDetails.emit(data()); $event.stopPropagation()"
+     [ngClass]="{
+       'border-blue-400 bg-blue-50 shadow-md': isSelected(),
+       'hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm': !isSelected()
+     }"
+>
+  <!-- Selected indicator bar -->
+  @if (isSelected()) {
+    <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-600"></div>
+  }
+
+  <div class="grid grid-cols-[auto_auto_auto_1fr_1fr_auto] gap-4 items-center p-3"
+       [ngClass]="isSelected() ? 'pl-4' : 'pl-3'">
+    <div class="w-16 flex justify-center">
+      <lib-visitor-type [data]="data().visitor.type" [showText]="false"/>
+    </div>
+    <div class="flex justify-center" [ngClass]="showText() ? 'w-28' : 'w-8'">
+      <lib-booking-status [status]="status()" [showText]="showText()"/>
+    </div>
+    <div class="w-28 flex justify-center">
+      <app-visitor-size [visitor]="data().visitor"></app-visitor-size>
+    </div>
+    <div class="flex flex-col gap-1 min-w-0 flex-1">
+      <span class="font-medium text-sm truncate"
+            [ngClass]="isSelected() ? 'text-blue-900' : 'text-gray-800'">
+        {{ name() }}
+      </span>
+      @if (contact()) {
+        <span class="text-xs truncate"
+              [ngClass]="isSelected() ? 'text-blue-700' : 'text-gray-500'">
+          {{ contact() }}
+        </span>
+      }
+    </div>
+    @if (showDetails) {
+      <div class="flex flex-col gap-1 min-w-0 flex-1">
+        <div class="flex items-center gap-3 text-xs bg-gray-200 rounded px-2 py-0.5">
+          <mat-icon class="text-gray-400" inline>phone</mat-icon>
+          <span class="text-gray-900">{{ data().visitor.phone }}</span>
+        </div>
+
+        <div class="flex items-center gap-3 text-xs bg-gray-200 rounded px-2 py-0.5">
+          <mat-icon class="text-gray-400" inline>email</mat-icon>
+          <span class="text-gray-900">{{ data().visitor.email }}</span>
+        </div>
+      </div>
+    }
+    <!-- Details Button -->
+    <div class="w-10 flex justify-end">
+      <button mat-icon-button
+              (click)="showDetails.emit(data()); $event.stopPropagation()"
+              [ngClass]="isSelected() ? '!text-blue-700' : '!text-gray-600'">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

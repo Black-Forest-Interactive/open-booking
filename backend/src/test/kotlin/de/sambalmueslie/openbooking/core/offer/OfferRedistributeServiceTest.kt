@@ -1,11 +1,13 @@
 package de.sambalmueslie.openbooking.core.offer
 
+import de.sambalmueslie.openbooking.common.BaseServiceTest
 import de.sambalmueslie.openbooking.core.label.db.LabelData
 import de.sambalmueslie.openbooking.core.label.db.LabelRepository
 import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import io.mockk.every
 import jakarta.inject.Inject
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
@@ -17,7 +19,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 @MicronautTest
-class OfferRedistributeServiceTest {
+class OfferRedistributeServiceTest : BaseServiceTest() {
 
     @Inject
     lateinit var offerService: OfferService
@@ -36,6 +38,10 @@ class OfferRedistributeServiceTest {
 
     @BeforeEach
     fun setup() {
+        val now = LocalDateTime.of(2026, 1, 18, 15, 17, 0)
+        every { timeProvider.now() } returns now
+
+
         // Clean up before each test
         offerRepository.deleteAll()
         labelRepository.deleteAll()

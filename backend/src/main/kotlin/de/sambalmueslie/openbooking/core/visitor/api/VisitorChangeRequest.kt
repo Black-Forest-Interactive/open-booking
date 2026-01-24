@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.visitor.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 
 data class VisitorChangeRequest(
     val type: VisitorType,
@@ -15,4 +15,4 @@ data class VisitorChangeRequest(
     val address: Address,
     val phone: String,
     val email: String,
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

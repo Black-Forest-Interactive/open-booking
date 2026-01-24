@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.core.offer.api
 
-import de.sambalmueslie.openbooking.common.BusinessObjectChangeRequest
+import de.sambalmueslie.openbooking.common.EntityChangeRequest
 import java.time.LocalDateTime
 
 data class OfferChangeRequest(
@@ -10,4 +10,4 @@ data class OfferChangeRequest(
     val active: Boolean,
     val labelId: Long?,
     val guideId: Long?
-) : BusinessObjectChangeRequest
+) : EntityChangeRequest

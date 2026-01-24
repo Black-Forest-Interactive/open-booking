@@ -1,4 +1,7 @@
-<div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium" [class]="statusClass()">
+<div class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium" [class]="statusClass()"
+     [matTooltip]="text() | translate">
   <mat-icon class="w-4 h-4">{{ icon() }}</mat-icon>
-  <span class="capitalize">{{ text() | translate }}</span>
+  @if (showText()) {
+    <span>{{ text() | translate }}</span>
+  }
 </div>

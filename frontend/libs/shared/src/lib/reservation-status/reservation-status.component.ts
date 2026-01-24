@@ -1,7 +1,7 @@
 import {Component, computed, input} from '@angular/core';
 import {ReservationStatus} from '@open-booking/core'
 import {MatIconModule} from "@angular/material/icon";
-import {StatusBadgeComponent} from "../status-badge/status-badge.component";
+import {StatusBadgeComponent} from "@open-booking/shared";
 
 const classes: Record<string, string> = {
   CONFIRMED: 'bg-green-100 text-green-800',
@@ -21,6 +21,7 @@ const classes: Record<string, string> = {
 })
 export class ReservationStatusComponent {
   status = input.required<ReservationStatus>()
+  showText = input(true)
   statusClass = computed(() => classes[this.status()] || 'bg-gray-100 text-gray-800')
   text = computed(() => 'RESERVATION.Status.' + this.status())
 }

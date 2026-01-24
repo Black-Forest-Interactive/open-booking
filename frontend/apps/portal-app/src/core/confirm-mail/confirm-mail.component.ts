@@ -2,24 +2,27 @@ import {Component, computed, inject, resource} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {map} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {GenericRequestResult, toPromise} from "@open-booking/shared";
-import {ReservationService} from "@open-booking/portal";
+import {BookingService} from "@open-booking/portal";
 import {AppService} from "../../app/app.service";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'app-confirm-mail',
   imports: [
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    RouterLink,
     TranslatePipe,
-    MatProgressSpinnerModule
   ],
   templateUrl: './confirm-mail.component.html',
   styleUrl: './confirm-mail.component.scss',
 })
 export class ConfirmMailComponent {
   private route = inject(ActivatedRoute)
-  private key = toSignal(this.route.paramMap.pipe(map(params => params.get('key'))))
+  key = toSignal(this.route.paramMap.pipe(map(params => params.get('key'))))
 
   private confirmMailResource = resource({
     params: this.key,
@@ -32,7 +35,7 @@ export class ConfirmMailComponent {
   status = computed(() => this.getStatus(this.result()))
   reloading = this.confirmMailResource.isLoading
 
-  constructor(private service: ReservationService, protected app: AppService) {
+  constructor(private service: BookingService, protected app: AppService) {
 
   }
 

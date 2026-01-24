@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.settings.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.infrastructure.settings.api.Setting
 import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.settings.api.ValueType
@@ -17,7 +17,7 @@ data class SettingData(
     @Column @Enumerated(EnumType.STRING) var type: ValueType,
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Setting> {
+) : EntityData<Setting> {
 
     companion object {
         fun create(request: SettingChangeRequest, timestamp: LocalDateTime): SettingData {
@@ -42,7 +42,7 @@ data class SettingData(
             else -> value
         }
 
-        return Setting(id, key, result, type)
+        return Setting(id, key, result, type, created, updated)
     }
 
     fun update(request: SettingChangeRequest, timestamp: LocalDateTime): SettingData {

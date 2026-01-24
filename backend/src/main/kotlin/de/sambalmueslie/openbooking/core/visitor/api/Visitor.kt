@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.core.visitor.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
+import java.time.LocalDateTime
 
 data class Visitor(
     override val id: Long,
@@ -17,5 +18,7 @@ data class Visitor(
     val phone: String,
     val email: String,
 
-    val verification: Verification
-) : BusinessObject<Long>
+    val verification: Verification,
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
+) : Entity<Long>

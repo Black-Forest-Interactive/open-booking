@@ -10,7 +10,7 @@ import io.micronaut.context.annotation.Context
 class OfferChangeHandler(
     service: OfferService,
     queue: EventService
-) : BusinessObjectChangeHandler<Long, Offer>(Offer::class, queue), OfferChangeListener {
+) : EntityChangeHandler<Long, Offer>(Offer::class, queue), OfferChangeListener {
 
     init {
         service.register(this)
@@ -22,5 +22,9 @@ class OfferChangeHandler(
 
     override fun handleBlockUpdated(offers: List<Offer>) {
         offers.forEach { o -> handleUpdated(o) }
+    }
+
+    override fun getStatus(obj: Offer): String {
+        return if (obj.active) "active" else "disabled"
     }
 }

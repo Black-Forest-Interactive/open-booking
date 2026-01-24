@@ -44,7 +44,7 @@ export class ResponseChangeComponent {
   data = model<Response | null>(null)
   title = signal('RESPONSE.CHANGE.Create')
   reloading = signal(false)
-  types: string[] = [ResponseType.RESERVATION_CONFIRMED, ResponseType.RESERVATION_DENIED, ResponseType.RESERVATION_FAILED, ResponseType.RESERVATION_RECEIVED]
+  types: string[] = [ResponseType.BOOKING_CONFIRM, ResponseType.BOOKING_DECLINE, ResponseType.BOOKING_FAILED, ResponseType.BOOKING_RECEIVED]
   languages: readonly string[] = []
 
   form: FormGroup

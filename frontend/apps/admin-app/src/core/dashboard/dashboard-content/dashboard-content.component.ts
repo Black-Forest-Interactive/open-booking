@@ -22,5 +22,6 @@ export class DashboardContentComponent {
 
   // Output
   clearFilter = output<boolean>()
+  reload = output<boolean>()
 
 }

@@ -9,6 +9,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {AuditService} from "@open-booking/admin";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-audit',
@@ -20,8 +21,9 @@ import {AuditService} from "@open-booking/admin";
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    LoadingBarComponent,
-    RouterLink
+    RouterLink,
+    MainContentComponent,
+    LoadingBarComponent
   ],
   templateUrl: './audit.component.html',
   styleUrl: './audit.component.scss',

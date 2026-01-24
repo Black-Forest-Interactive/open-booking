@@ -1,25 +1,45 @@
-<app-loading-bar [reloading]="reloading()"/>
-<div class="flex flex-col gap-3 p-2">
-  <div class="flex items-start gap-3 pt-2">
-    <mat-form-field appearance="fill">
-      <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
-      <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
-        <input matStartDate formControlName="start" placeholder="{{'DAY_INFO.SelectRange.StartDate' | translate}}">
-        <input matEndDate formControlName="end" placeholder="{{'DAY_INFO.SelectRange.EndDate' | translate}}">
-      </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-    @if (range.valid) {
-      <button mat-fab (click)="clearSelection()">
-        <mat-icon>cancel</mat-icon>
-      </button>
+<app-main-content
+  [title]="'MENU.Booking' | translate"
+  searchLabel="BOOKING.Action.Search"
+  [enableSearch]="true"
+  (search)="handleSearch($event)"
+>
+  <div class="flex gap-2 flex-auto items-center" actions>
+    @if (debug()) {
+      <div class="bg-amber-100 border-amber-400 border rounded px-2 py-1">
+        <span class="font-mono text-xs break-words whitespace-pre-wrap">{{ request() | json }}</span>
+      </div>
     }
-    <div class="flex-1"></div>
+    <button matIconButton (click)="reload()">
+      @if (reloading()) {
+        <mat-spinner [diameter]="18"></mat-spinner>
+      } @else {
+        <mat-icon class="!text-gray-800">refresh</mat-icon>
+      }
+    </button>
   </div>
-  <div class="flex flex-wrap gap-3">
-    @for (d of data(); track d.date) {
-      <app-booking-entry [data]="d"/>
-    }
-  </div>
-</div>
+
+  <app-booking-content
+    [entries]="entries()"
+    [reloading]="reloading()"
+    (reload)="reload()"
+    [currentUserId]="authService.getPrincipal()?.id ?? ''"
+    [isSearchActive]="isSearchActive()"
+    (selectionWeekChanged)="handleSelectionWeekChanged($event)"
+    (selectionDayChanged)="handleSelectionDayChanged($event)"
+    class="p-4"
+  >
+  </app-booking-content>
+
+  <!-- Paginator -->
+  <mat-paginator
+    footer
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageNumber()"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [showFirstLastButtons]="true"
+    [disabled]="reloading()"
+    (page)="handlePageChange($event)">
+  </mat-paginator>
+</app-main-content>

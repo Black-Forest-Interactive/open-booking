@@ -1,0 +1,19 @@
+@if (compact()) {
+  <div class="flex flex-1 items-center gap-2 px-2 py-0.5 rounded-full text-xs font-medium" [class]="statusClass()"
+       [matTooltip]="text() | translate">
+    <mat-icon inline>{{ icon() }}</mat-icon>
+    @if (showText()) {
+      <span>{{ text() | translate }}</span>
+    }
+    <div class="flex-1"></div>
+    <div class="px-2 py-0.5 rounded-lg border" [class]="badgeClass()">{{ amount() }}</div>
+  </div>
+
+} @else {
+  <lib-status-badge
+    [icon]="icon()"
+    [text]="text()"
+    [showText]="showText()"
+    [statusClass]="statusClass()"
+  />
+}

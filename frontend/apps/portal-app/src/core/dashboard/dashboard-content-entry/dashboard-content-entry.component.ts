@@ -5,7 +5,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
-import { CommonModule, DatePipe } from "@angular/common";
+import {CommonModule, DatePipe} from "@angular/common";
 import {NgxEchartsDirective} from "ngx-echarts";
 import {EChartsOption} from "echarts";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -106,8 +106,8 @@ export class DashboardContentEntryComponent {
         data: info.offer.map(i => i.offer.start.substring(11, 16))
       },
       series: [
-        {data: info.offer.map(i => i.assignment.bookedSpace)},
-        {data: info.offer.map(i => i.assignment.reservedSpace)},
+        {data: info.offer.map(i => i.assignment.confirmedSpace)},
+        {data: info.offer.map(i => i.assignment.pendingSpace)},
         {data: info.offer.map(i => i.assignment.deactivatedSpace)},
         {data: info.offer.map(i => i.claimedUntil ? 0 : i.assignment.availableSpace)},
         {data: info.offer.map(i => i.claimedUntil ? i.assignment.availableSpace : 0)}

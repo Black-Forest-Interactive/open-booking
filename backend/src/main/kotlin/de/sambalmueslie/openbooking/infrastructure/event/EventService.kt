@@ -25,8 +25,8 @@ class EventService(
     private val eventQueue = ConcurrentLinkedQueue<ChangeEvent>()
     private val subscribers = CopyOnWriteArrayList<FluxSink<ChangeEvent>>()
 
-    fun publishEvent(type: ChangeEventType, resourceId: String, resourceType: String) {
-        val event = ChangeEvent(type, resourceId, resourceType, timeProvider.now())
+    fun publishEvent(type: ChangeEventType, resourceId: String, resourceType: String, resourceStatus: String) {
+        val event = ChangeEvent(type, resourceId, resourceType, resourceStatus, timeProvider.now())
         eventQueue.offer(event)
 
         maintainQueueSize()
@@ -38,7 +38,7 @@ class EventService(
         return Flux.create(Consumer { sink: FluxSink<ChangeEvent> ->
             subscribers.add(sink)
 
-            sink.next(ChangeEvent(ChangeEventType.OTHER, "CONNECTION", "CONNECTED", timeProvider.now()))
+            sink.next(ChangeEvent(ChangeEventType.OTHER, "CONNECTION", "CONNECTED", "CONNECTED", timeProvider.now()))
 
             sink.onDispose(Disposable { subscribers.remove(sink) })
         })

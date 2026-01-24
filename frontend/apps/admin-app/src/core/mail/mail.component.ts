@@ -1,5 +1,5 @@
 import {Component, computed, resource, signal} from '@angular/core';
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MailService} from "@open-booking/admin";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -12,11 +12,11 @@ import {MatChipsModule} from "@angular/material/chips";
 import {RouterLink} from "@angular/router";
 import {MatInputModule} from "@angular/material/input";
 import {HotToastService} from "@ngxpert/hot-toast";
+import {MainContentComponent} from "../../shared/main-content/main-content.component";
 
 @Component({
   selector: 'app-mail',
   imports: [
-    LoadingBarComponent,
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
@@ -27,7 +27,8 @@ import {HotToastService} from "@ngxpert/hot-toast";
     DatePipe,
     TranslatePipe,
     RouterLink,
-    SearchComponent
+    MainContentComponent,
+    LoadingBarComponent
   ],
   templateUrl: './mail.component.html',
   styleUrl: './mail.component.scss',

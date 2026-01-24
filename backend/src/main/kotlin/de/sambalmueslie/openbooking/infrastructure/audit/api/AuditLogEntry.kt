@@ -1,6 +1,6 @@
 package de.sambalmueslie.openbooking.infrastructure.audit.api
 
-import de.sambalmueslie.openbooking.common.BusinessObject
+import de.sambalmueslie.openbooking.common.Entity
 import java.time.LocalDateTime
 
 data class AuditLogEntry(
@@ -12,4 +12,6 @@ data class AuditLogEntry(
     val referenceId: String,
     val reference: String,
     val source: String,
-) : BusinessObject<Long>
+    override val created: LocalDateTime,
+    override val updated: LocalDateTime?,
+) : Entity<Long>

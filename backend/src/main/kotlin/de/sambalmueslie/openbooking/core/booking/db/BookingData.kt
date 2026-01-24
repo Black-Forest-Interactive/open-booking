@@ -1,9 +1,9 @@
 package de.sambalmueslie.openbooking.core.booking.db
 
-import de.sambalmueslie.openbooking.common.DataObject
+import de.sambalmueslie.openbooking.common.EntityData
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.offer.api.Offer
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -16,27 +16,25 @@ data class BookingData(
     @Column @Enumerated(EnumType.STRING) var status: BookingStatus,
     @Column var size: Int,
     @Column var comment: String,
+    @Column var lang: String,
 
     @Column var offerId: Long,
     @Column var visitorId: Long,
 
     @Column var created: LocalDateTime,
     @Column var updated: LocalDateTime? = null,
-) : DataObject<Booking> {
+) : EntityData<Booking> {
 
-    override fun convert() = Booking(id, status, size, comment, offerId, visitorId)
+    override fun convert() = Booking(id, key, status, size, comment, lang, offerId, visitorId, created, updated)
 
-    fun update(request: BookingChangeRequest, visitor: Visitor, timestamp: LocalDateTime): BookingData {
-        offerId = request.offerId
-        visitorId = visitor.id
-        size = visitor.size
-        comment = request.comment
+    fun update(status: BookingStatus, timestamp: LocalDateTime): BookingData {
+        this.status = status
         updated = timestamp
         return this
     }
 
-    fun update(status: BookingStatus, timestamp: LocalDateTime): BookingData {
-        this.status = status
+    fun update(offer: Offer, timestamp: LocalDateTime): BookingData {
+        this.offerId = offer.id
         updated = timestamp
         return this
     }
@@ -47,10 +45,16 @@ data class BookingData(
         return this
     }
 
-    fun update(visitor: Visitor, status: BookingStatus, timestamp: LocalDateTime): BookingData {
-        this.size = visitor.size
-        this.status = status
+    fun setComment(value: String, timestamp: LocalDateTime): BookingData {
+        this.comment = value
         updated = timestamp
         return this
     }
+
+    fun setSize(value: Int, timestamp: LocalDateTime): BookingData {
+        this.size = value
+        updated = timestamp
+        return this
+    }
+
 }

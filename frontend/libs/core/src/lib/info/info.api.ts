@@ -1,4 +1,4 @@
-import {Assignment, Offer} from "@open-booking/core";
+import type {Assignment, Offer} from "../offer/offer.api";
 
 export interface DayInfo {
   date: string,

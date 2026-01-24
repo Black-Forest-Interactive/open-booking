@@ -3,7 +3,7 @@
   <div class="flex-1 overflow-auto min-h-0">
     <div class="container mx-auto py-4">
       @if (data()) {
-        <app-reservation-content-entry
+        <app-booking-details
           [reloading]="reloading()"
           [data]="data()!!"
           (reload)="reload()"

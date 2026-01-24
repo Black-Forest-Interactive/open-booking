@@ -1,23 +1,118 @@
-<app-loading-bar [reloading]="reloading()"/>
-<div class="flex flex-col">
-  <div class="flex items-center gap-3 py-2 mat-elevation-z2">
-    <button matIconButton (click)="back()">
-      <mat-icon>arrow_back_ios</mat-icon>
-    </button>
-    <!--    <button matButton="filled">-->
-    <!--      <mat-icon>playlist_add</mat-icon>-->
-    <!--      {{'REQUEST.Action.ChangeOffer' | translate}}</button>-->
-  </div>
-  <div class="flex gap-3 p-2">
-    @if (data()) {
-      <div class="flex flex-col gap-3 w-5/12">
-        <app-booking-details-visitor-group [data]="data()!!" (requestReload)="reload()"/>
+<div class="flex flex-col h-full">
+  <div class="flex-1 overflow-auto min-h-0">
+    <mat-card class="shadow-sm hover:shadow-md transition-shadow" appearance="outlined">
+      <!-- Card Header -->
+      <div class="bg-gray-200 px-6 py-4 border-b border-gray-200 rounded-t-xl">
+        <div class="flex justify-between">
+          @if (showBackButton()) {
+            <button matButton="outlined" (click)="back.emit(true)">
+              <mat-icon>arrow_back_ios</mat-icon>
+              {{ 'ACTION.Back' | translate }}
+            </button>
+          }
+          <div class="flex items-center gap-3 flex-wrap">
+            <lib-booking-status [status]="data().booking.status"/>
+            <lib-verification-status [data]="data().visitor.verification"/>
+            <lib-visitor-type [data]="data().visitor.type" class="flex-shrink-0"/>
+          </div>
+          <div>
+            <button mat-icon-button (click)="close.emit(true)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-col gap-3 flex-1">
-        <app-booking-details-header [data]="data()!!"/>
-        <app-booking-details-content [data]="data()!!" (change)="reload()"/>
-        <app-booking-details-comment [data]="data()!!" (change)="reload()"/>
+
+      <!-- Card Content -->
+      <div class="p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Visitor Information -->
+          <div class="bg-white rounded-lg border hover:shadow-md transition-all flex flex-col gap-4 border-gray-300">
+
+            <!-- Visitor Header -->
+            <div class="p-4 border-b bg-gray-200 rounded-t-lg">
+              <div class="flex justify-between gap-4">
+                <div class="flex items-center gap-2 text-sm flex-auto">
+                  <mat-icon class="w-4 h-4 text-gray-600">info</mat-icon>
+                  <app-visitor-title [data]="data().visitor"/>
+                </div>
+                <app-visitor-size [visitor]="data().visitor"/>
+              </div>
+            </div>
+
+            <div class="px-4 pb-4 flex flex-col gap-4">
+              <!-- Description -->
+              @if (data().visitor.description) {
+                <p class="text-sm text-gray-600 leading-relaxed">{{ data().visitor.description }}</p>
+              }
+
+              <!-- Type and Age Range -->
+              <div class="flex items-center gap-6 text-sm">
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-500">{{ 'BOOKING.Form.Age.Label' | translate }}:</span>
+                  <span class="font-medium text-gray-900">{{ data().visitor.minAge }}
+                    - {{ data().visitor.maxAge }}</span>
+                </div>
+              </div>
+
+              <!-- Comment -->
+              @if (data().booking.comment) {
+                <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="!w-5 !h-5 text-blue-600 mt-0.5">comment</mat-icon>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-xs font-medium text-blue-900 mb-1">
+                        {{ 'BOOKING.Form.Comment.Label' | translate }}
+                      </div>
+                      <p class="text-sm text-gray-700 break-words">{{ data().booking.comment }}</p>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <mat-divider></mat-divider>
+
+              <!-- Contact Information -->
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-3 text-sm">
+                  <mat-icon class="!w-5 !h-5 text-gray-400">phone</mat-icon>
+                  <span class="text-gray-900">{{ data().visitor.phone }}</span>
+                </div>
+
+                <div class="flex items-center gap-3 text-sm">
+                  <mat-icon class="!w-5 !h-5 text-gray-400">email</mat-icon>
+                  <span class="text-gray-900">{{ data().visitor.email }}</span>
+                </div>
+
+                <div class="flex items-start gap-3 text-sm">
+                  <mat-icon class="!w-5 !h-5 text-gray-400 mt-0.5">location_on</mat-icon>
+                  <div class="flex-1 text-gray-900">
+                    <div>{{ data().visitor.address.street }}</div>
+                    <div>{{ data().visitor.address.zip }} {{ data().visitor.address.city }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Offers & Actions -->
+          <div class="flex flex-col justify-between">
+            <div class="flex flex-col gap-2">
+              <app-offer-reference
+                [entry]="data().offer"
+                [visitor]="data().visitor"
+                [booking]="data().booking"
+              />
+            </div>
+          </div>
+          <div class="flex gap-2 text-xs text-gray-500 text-center">
+            <div class="font-medium">{{ 'RESERVATION.Created' | translate }}</div>
+            <div>{{ data().timestamp | date:'short' }}</div>
+          </div>
+        </div>
       </div>
-    }
+
+
+    </mat-card>
   </div>
 </div>

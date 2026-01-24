@@ -4,6 +4,7 @@ package de.sambalmueslie.openbooking.core.info
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.claim.api.Claim
 import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeListener
@@ -48,6 +49,18 @@ class InfoService(
 
             override fun handleDeleted(obj: Booking) {
                 updateCache(obj)
+            }
+
+            override fun canceled(booking: Booking) {
+                updateCache(booking)
+            }
+
+            override fun confirmed(booking: Booking, content: BookingConfirmationContent) {
+                updateCache(booking)
+            }
+
+            override fun declined(booking: Booking, content: BookingConfirmationContent) {
+                updateCache(booking)
             }
         })
 

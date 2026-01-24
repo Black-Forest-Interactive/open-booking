@@ -15,11 +15,11 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('../core/day-info-details/day-info-details.component').then(m => m.DayInfoDetailsComponent)
   },
   {
-    path: 'reservation',
-    loadComponent: () => import('../core/reservation/reservation.component').then(m => m.ReservationComponent)
+    path: 'booking',
+    loadComponent: () => import('../core/booking/booking.component').then(m => m.BookingComponent)
   },
   {
-    path: 'reservation/:key',
-    loadComponent: () => import('../core/reservation/reservation-details/reservation-details.component').then(m => m.ReservationDetailsComponent)
+    path: 'booking/:key',
+    loadComponent: () => import('../core/booking/booking-details/booking-details.component').then(m => m.BookingDetailsComponent)
   },
 ];

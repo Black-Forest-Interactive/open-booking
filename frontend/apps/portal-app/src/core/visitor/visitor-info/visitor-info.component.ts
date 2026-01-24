@@ -15,6 +15,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class VisitorInfoComponent {
   data = input.required<Visitor | VisitorChangeRequest>()
 
+
   type = computed(() => this.data().type ?? VisitorType.SINGLE)
   size = computed(() => this.data().size ?? 0)
   title = computed(() => this.data().title ?? '')

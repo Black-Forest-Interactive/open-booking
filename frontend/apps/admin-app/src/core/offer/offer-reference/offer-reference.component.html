@@ -1,0 +1,74 @@
+<div class="bg-white rounded-lg border hover:shadow-md transition-all flex flex-col gap-4"
+     [class.border-gray-300]="active()"
+     [class.border-red-300]="!active()"
+     [class.opacity-60]="!active()">
+
+  <!-- Offer Header -->
+  <div class="p-4 border-b bg-gray-200 rounded-t-lg">
+    <div class="flex justify-between gap-4">
+      <div class="flex items-center gap-2 text-sm flex-auto">
+        <mat-icon class="w-4 h-4 text-gray-600">schedule</mat-icon>
+        <span class="font-medium text-gray-700">{{ entry().offer.start | date:'shortDate' }}</span>
+        <span class="font-medium text-gray-700">{{ entry().offer.start | date:'shortTime' }}
+          - {{ entry().offer.finish | date:'shortTime' }}</span>
+      </div>
+      <div class="flex flex-1 justify-end items-center gap-2">
+        @if (!active()) {
+          <div class="text-xs text-red-600 font-medium">{{ 'RESERVATION.Offer.Inactive' | translate }}
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Capacity Visualization -->
+  <div class="px-4 pb-4 flex flex-col gap-4">
+
+    <app-offer-booking-capacity
+      [offer]="entry().offer"
+      [assignment]="entry().assignment"
+      [status]="booking().status"
+      [visitorSize]="visitor().size"
+    />
+
+    <!-- Confirm Button -->
+    <button matButton="filled"
+            [disabled]="!canConfirmOffer()"
+            (click)="onConfirm()"
+            class="w-full">
+      <mat-icon>check_circle</mat-icon>
+      {{ 'BOOKING.Action.Confirm' | translate }}
+    </button>
+
+    <button matButton="outlined"
+            [disabled]="!canDeclineOffer()"
+            (click)="onDecline()"
+            class="w-full">
+      <mat-icon>cancel</mat-icon>
+      {{ 'BOOKING.Action.Deny' | translate }}
+    </button>
+
+    <!-- Status Messages -->
+    @if (!active()) {
+      <div class="text-xs text-red-600 text-center flex items-center justify-center gap-1">
+        <mat-icon inline>block</mat-icon>
+        {{ 'RESERVATION.Offer.Error.Inactive' | translate }}
+      </div>
+    } @else if (!hasCapacity()) {
+      <div class="text-xs text-red-600 text-center flex items-center justify-center gap-1">
+        <mat-icon inline>warning</mat-icon>
+        {{
+          'RESERVATION.Offer.Error.InsufficientCapacity' | translate:{
+            need: visitor().size,
+            available: availableSpace()
+          }
+        }}
+      </div>
+    } @else if (booking().status === BookingStatus.CONFIRMED) {
+      <div class="text-xs text-gray-600 text-center flex items-center justify-center gap-1">
+        <mat-icon inline>check_circle</mat-icon>
+        {{ 'RESERVATION.Offer.Info.AlreadyConfirmed' | translate }}
+      </div>
+    }
+  </div>
+</div>

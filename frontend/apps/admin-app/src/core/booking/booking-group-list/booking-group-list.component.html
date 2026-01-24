@@ -1,0 +1,48 @@
+@if (!isSearchActive()) {
+  <app-dashboard-summary
+    (selectionWeekChanged)="selectionWeekChanged.emit($event)"
+    (selectionDayChanged)="selectionDayChanged.emit($event)"
+    [showBookingStats]="false"
+  />
+}
+<div class="flex flex-col gap-6">
+  @for (group of data(); track group.date + '-' + group.offerId) {
+    @let groupId = group.date + '-' + group.offerId;
+    <div class="bg-white rounded-lg shadow-sm border border-gray-300">
+      <!-- Group Header -->
+      <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 rounded-t-lg">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-gray-600">event</mat-icon>
+              <span class="font-semibold text-gray-800">{{ group.date | date:'fullDate' }}</span>
+            </div>
+            <div class="text-sm text-gray-600">
+              {{ group.timeRange }}
+            </div>
+          </div>
+          <ng-content select="actions"></ng-content>
+          <div class="flex items-center gap-4">
+            <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200">
+              <span class="font-medium">{{ group.totalEntries }}</span>
+              <span class="text-gray-600 ml-1">{{ 'RESERVATION.Total'  | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="divide-y divide-gray-200">
+        @for (entry of group.entries; track entry.booking.id) {
+          <ng-container *ngTemplateOutlet="entryTemplate; context: { $implicit: entry, group: group }">
+          </ng-container>
+        }
+      </div>
+    </div>
+  }
+  @if (data().length === 0) {
+    <div class="text-center py-16">
+      <mat-icon class="!w-16 !h-16 !text-6xl text-gray-300 mb-4">event_busy</mat-icon>
+      <h3 class="text-lg font-medium text-gray-600 mb-2">{{ noDataFoundTitle() | translate }}</h3>
+      <p class="text-sm text-gray-500">{{ noDataFoundDescription() | translate }}</p>
+    </div>
+  }
+</div>

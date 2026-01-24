@@ -3,8 +3,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatDividerModule} from "@angular/material/divider";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
-import {EventChangeListener, EventService, ReservationService} from "@open-booking/admin";
-import {ChangeEvent, ChangeEventType} from "@open-booking/core";
+import {BookingService, EventChangeListener, EventService} from "@open-booking/admin";
+import {BookingStatus, ChangeEvent, ChangeEventType} from "@open-booking/core";
 import {toPromise} from "@open-booking/shared";
 
 @Component({
@@ -21,17 +21,17 @@ import {toPromise} from "@open-booking/shared";
 })
 export class AdminMenuComponent implements EventChangeListener {
 
-  private unconfirmedResource = resource({
-      loader: param => toPromise(this.reservationService.getUnconfirmedReservationAmount(), param.abortSignal)
+  private pendingResource = resource({
+      loader: param => toPromise(this.bookingService.getPendingAmount(), param.abortSignal)
     }
   )
 
-  unconfirmed = computed(() => this.unconfirmedResource.value() ?? 0)
+  pending = computed(() => this.pendingResource.value() ?? 0)
   newReservations = signal(0)
 
   constructor(
     private eventService: EventService,
-    private reservationService: ReservationService
+    private bookingService: BookingService
   ) {
   }
 
@@ -46,9 +46,9 @@ export class AdminMenuComponent implements EventChangeListener {
 
 
   handleEvent(event: ChangeEvent) {
-    if (event.resourceType === 'Reservation') {
-      this.unconfirmedResource.reload()
-      if (event.type === ChangeEventType.CREATE) {
+    if (event.resourceType === 'Booking') {
+      this.pendingResource.reload()
+      if (event.type === ChangeEventType.CREATE && event.resourceStatus === BookingStatus.PENDING) {
         this.newReservations.update(value => value + 1)
       }
     }

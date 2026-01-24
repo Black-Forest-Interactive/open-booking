@@ -163,7 +163,7 @@ class ExcelSheetBuilder(
         createOfferHeaderLine1(colorHeader, details)
         createOfferHeaderLine2(colorHeader, details)
 
-        val bookings = details.bookings.filter { it.booking.status != BookingStatus.DENIED }
+        val bookings = details.bookings.filter { it.booking.status == BookingStatus.CONFIRMED || it.booking.status == BookingStatus.PENDING }
         bookings.forEachIndexed { index, info -> setupBooking(index, info) }
 
         if (bookings.isEmpty()) setupEmptyBooking()
@@ -191,7 +191,7 @@ class ExcelSheetBuilder(
         usedTextCell.setCellValue("Belegt:")
         usedTextCell.cellStyle = styleOfferHeaderText
         val usedValueCell = row.createCell(4)
-        usedValueCell.setCellValue(details.assignment.bookedSpace.toDouble())
+        usedValueCell.setCellValue(details.assignment.confirmedSpace.toDouble())
         usedValueCell.cellStyle = styleOfferHeaderBold
         CellUtil.setAlignment(usedValueCell, HorizontalAlignment.LEFT)
 

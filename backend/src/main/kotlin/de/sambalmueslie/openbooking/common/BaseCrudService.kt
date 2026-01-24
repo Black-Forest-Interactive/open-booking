@@ -3,7 +3,7 @@ package de.sambalmueslie.openbooking.common
 import org.slf4j.Logger
 
 
-abstract class BaseCrudService<T, O : BusinessObject<T>, R : BusinessObjectChangeRequest, L : BusinessObjectChangeListener<T, O>>(
+abstract class BaseCrudService<T, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O>>(
     private val logger: Logger
 ) : CrudService<T, O, R, L> {
 
