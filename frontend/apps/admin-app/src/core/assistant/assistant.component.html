@@ -1,0 +1,37 @@
+<app-main-content [title]="'MENU.Assistant' | translate">
+  <div class="flex gap-6 overflow-hidden p-3" style="height: calc(100vh - 174px); min-height: 600px;">
+    <div [class]="selectedOffer() ? 'w-1/3' : 'w-full'" class="transition-all duration-300 overflow-y-auto">
+      <mat-card appearance="outlined">
+        <app-offer-finder (offerSelected)="handleOfferSelected($event)"></app-offer-finder>
+      </mat-card>
+    </div>
+    @if (selectedOffer()) {
+      <div class="w-2/3 transition-all duration-300 overflow-y-auto">
+        <mat-card appearance="outlined">
+          <app-booking-create
+            [offer]="selectedOffer()!!.offer"
+            [assignment]="selectedOffer()!!.assignment"
+            class="p-4" #form
+          />
+
+          <div class="flex gap-2 px-4 pb-4 justify-end">
+            <button matButton="outlined">
+              <mat-icon>cancel</mat-icon>
+              {{ 'ACTION.Cancel' | translate }}
+            </button>
+            <button matButton="filled" [disabled]="!form.form.valid || form.processing()" (click)="form.onSubmit()">
+              @if (form.processing()) {
+                <mat-icon>
+                  <mat-spinner diameter="18"></mat-spinner>
+                </mat-icon>
+              } @else {
+                <mat-icon>save</mat-icon>
+              }
+              {{ 'ACTION.Submit' | translate }}
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    }
+  </div>
+</app-main-content>

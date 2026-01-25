@@ -34,6 +34,7 @@
     "Cache": "Cache",
     "Mail": "E-Mail",
     "Search": "Suche",
+    "Assistant": "Buchungsassistent",
     "Group": {
       "DailyBusiness": "Tagesgeschäft",
       "Offers": "Angebotsverwaltung",
@@ -74,7 +75,8 @@
       "Search": "Buchung suchen",
       "Confirm": "Buchung bestätigen",
       "Deny": "Buchung ablehnen",
-      "Edit": "Buchung bearbeiten"
+      "Edit": "Buchung bearbeiten",
+      "Finder": "Terminfinder"
     },
     "Create": {
       "Action": {
@@ -186,7 +188,13 @@
       "Zip": {
         "Label": "PLZ"
       },
-      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld"
+      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld",
+      "AutoConfirm": {
+        "Label": "Buchung automatisch bestätigen"
+      },
+      "IgnoreSizeCheck": {
+        "Label": "Überbuchung zulassen"
+      }
     }
   },
   "CACHE": {
@@ -353,6 +361,16 @@
       "MinTime": "",
       "Quantity": "Anzahl",
       "Time": "Zeit"
+    },
+    "Filter": {
+      "Size": {
+        "SINGLE": "Einzelperson",
+        "COUPLE": "Paar",
+        "FAMILY": "Familie",
+        "HUGE_GROUP": "Gruppe",
+        "SMALL_CLASS": "Kleine Klasse",
+        "HUGE_CLASS": "Große Klasse"
+      }
     }
   },
   "RESERVATION": {

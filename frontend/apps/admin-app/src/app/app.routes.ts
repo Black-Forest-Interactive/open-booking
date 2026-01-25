@@ -38,6 +38,12 @@ export const appRoutes: Route[] = [
     data: {roles: [PERMISSION_BOOKING_ADMIN]}
   },
   {
+    path: 'assistant',
+    loadChildren: () => import('../core/assistant/assistant.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_BOOKING_ADMIN]}
+  },
+  {
     path: 'request',
     loadChildren: () => import('../core/request/request.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],

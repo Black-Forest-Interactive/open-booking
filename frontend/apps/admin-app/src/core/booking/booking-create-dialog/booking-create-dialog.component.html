@@ -8,148 +8,21 @@
   </div>
 </div>
 <div class="mat-typography h-full px-6 py-4">
-  <app-offer-booking-capacity
-    [assignment]="data.assignment"
-    [offer]="data.offer.offer"
-    [status]="BookingStatus.PENDING"
-    [visitorSize]="size?.value ?? 0"
-  />
-
-  <form [formGroup]="form" class="flex flex-col gap-4 p-4">
-    @if (data.assignment.availableSpace > 1) {
-      <div class="flex items-center gap-4">
-        <mat-button-toggle-group formControlName="type" class="w-full">
-          <mat-button-toggle value="{{VisitorType.SINGLE}}" class="flex-1">
-            {{ 'BOOKING.Form.BookingType.Single' | translate }}
-          </mat-button-toggle>
-          <mat-button-toggle value="{{VisitorType.GROUP}}" class="flex-1">
-            {{ 'BOOKING.Form.BookingType.Group' | translate }}
-          </mat-button-toggle>
-          @if (form.get('type')?.hasError('required')) {
-            <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-          }
-        </mat-button-toggle-group>
-      </div>
-    }
-
-    <!-- GROUP MODE: Show title, size, minAge, maxAge, contact -->
-    @if (type?.value === VisitorType.GROUP) {
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Title.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="title">
-        @if (form.get('title')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Title.Required' | translate }}</mat-error>
-        }
-      </mat-form-field>
-    }
-    <!-- SINGLE PERSON MODE: Show name and age only -->
-    @if (type?.value === VisitorType.SINGLE) {
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Name.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="name">
-      </mat-form-field>
-    }
-
-    <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>{{ 'BOOKING.Form.Size.Label' | translate }}</mat-label>
-      <input matInput type="number" formControlName="size">
-      @if (form.get('size')?.hasError('required')) {
-        <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-      } @else if (form.get('size')?.hasError('min')) {
-        <mat-error>{{ 'BOOKING.Form.Size.MinSize' | translate }}</mat-error>
-      }
-
-    </mat-form-field>
-
-    @if (size?.value > 1) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-          <mat-label>{{ 'BOOKING.Form.MinAge.Label' | translate }}</mat-label>
-          <input matInput type="number" formControlName="minAge">
-          @if (form.get('minAge')?.hasError('required')) {
-            <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-          } @else if (form.get('minAge')?.hasError('min')) {
-            <mat-error>{{ 'BOOKING.Form.MinAge.MinValue' | translate: {min: 0} }}</mat-error>
-          } @else if (form.hasError('agesMustMatchForSingleVisitor')) {
-            <mat-error>{{ 'BOOKING.Form.MinAge.AgesMustMatch' | translate }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-          <mat-label>{{ 'BOOKING.Form.MaxAge.Label' | translate }}</mat-label>
-          <input matInput type="number" formControlName="maxAge">
-          @if (form.get('maxAge')?.hasError('required')) {
-            <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-          } @else if (form.get('maxAge')?.hasError('min')) {
-            <mat-error>{{ 'BOOKING.Form.MaxAge.MinValue' | translate: {min: 0} }}</mat-error>
-          } @else if (form.hasError('agesMustMatchForSingleVisitor')) {
-            <mat-error>{{ 'BOOKING.Form.MaxAge.AgesMustMatch' | translate }}</mat-error>
-          }
-        </mat-form-field>
-      </div>
-    } @else {
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Age.Label' | translate }}</mat-label>
-        <input matInput type="number" formControlName="minAge">
-      </mat-form-field>
-    }
-
-
-    @if (type?.value === VisitorType.GROUP) {
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Contact.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="name">
-        @if (form.get('name')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-        }
-      </mat-form-field>
-    }
-
-    <div class="grid grid-cols-3 gap-4">
-      <mat-form-field class="col-span-1 dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Zip.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="zip">
-        @if (form.get('zip')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-span-2 dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.City.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="city">
-        @if (form.get('city')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-        }
-      </mat-form-field>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Phone.Label' | translate }}</mat-label>
-        <input matInput type="text" formControlName="phone">
-        @if (form.get('phone')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-        <mat-label>{{ 'BOOKING.Form.Mail.Label' | translate }}</mat-label>
-        <input matInput type="email" formControlName="mail" email>
-        @if (form.get('mail')?.hasError('required')) {
-          <mat-error>{{ 'BOOKING.Form.Required' | translate }}</mat-error>
-        } @else if (form.get('mail')?.hasError('email')) {
-          <mat-error>{{ 'BOOKING.Form.Mail.Invalid' | translate }}</mat-error>
-        }
-      </mat-form-field>
-    </div>
-
-    <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>{{ 'BOOKING.Form.Comment.Label' | translate }}</mat-label>
-      <textarea matInput formControlName="comment"></textarea>
-    </mat-form-field>
-  </form>
-
+  <app-booking-create [offer]="data.offer.offer" [assignment]="data.assignment" (completed)="close()" #form/>
 </div>
 <mat-dialog-actions align="end">
-  <button mat-dialog-close matButton="outlined">{{ 'ACTION.Cancel' | translate }}</button>
-  <button matButton="filled" [disabled]="!form.valid" (click)="onSubmit()">
+  <button mat-dialog-close matButton="outlined">
+    <mat-icon>cancel</mat-icon>
+    {{ 'ACTION.Cancel' | translate }}
+  </button>
+  <button matButton="filled" [disabled]="!form.form.valid || form.processing()" (click)="form.onSubmit()">
+    @if (form.processing()) {
+      <mat-icon>
+        <mat-spinner diameter="18"></mat-spinner>
+      </mat-icon>
+    } @else {
+      <mat-icon>save</mat-icon>
+    }
     {{ 'ACTION.Submit' | translate }}
   </button>
 </mat-dialog-actions>

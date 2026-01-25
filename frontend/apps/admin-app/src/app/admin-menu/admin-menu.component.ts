@@ -6,6 +6,8 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {BookingService, EventChangeListener, EventService} from "@open-booking/admin";
 import {BookingStatus, ChangeEvent, ChangeEventType} from "@open-booking/core";
 import {toPromise} from "@open-booking/shared";
+import {interval} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-admin-menu',
@@ -33,6 +35,9 @@ export class AdminMenuComponent implements EventChangeListener {
     private eventService: EventService,
     private bookingService: BookingService
   ) {
+    interval(5000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.pendingResource.reload())
   }
 
 
