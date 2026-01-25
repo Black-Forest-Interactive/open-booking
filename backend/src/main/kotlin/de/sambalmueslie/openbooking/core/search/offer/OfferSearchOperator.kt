@@ -20,10 +20,7 @@ import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
-import de.sambalmueslie.openbooking.core.search.offer.api.OfferGroupedSearchResult
-import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchEntry
-import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
-import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchResponse
+import de.sambalmueslie.openbooking.core.search.offer.api.*
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferBookingEntryData
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferSearchEntryData
 import io.micronaut.data.model.Page
@@ -211,6 +208,21 @@ open class OfferSearchOperator(
             .map { OfferGroupedSearchResult(it.key, it.value.sortedBy { v -> v.info.offer.start }) }
             .sortedBy { it.day }
         return content
+    }
+
+    fun findSuitableOffer(request: OfferFindSuitableRequest): OfferFindSuitableResponse {
+        val response = search(queryBuilder.buildSearchQuery(request))
+
+        val data = response.hits?.hits?.mapNotNull { hit ->
+            hit.source?.let { source ->
+                mapper.readValue<OfferSearchEntryData>(source.toString())
+            }
+        } ?: emptyList()
+
+        val result = data.map { it.toReference() }.groupBy { it.offer.start.toLocalDate() }
+            .map { OfferFindSuitableResponseEntry(it.key, it.value.sortedBy { v -> v.offer.start }) }
+            .sortedBy { it.day }
+        return OfferFindSuitableResponse(result)
     }
 
 }

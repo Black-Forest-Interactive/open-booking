@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
@@ -27,6 +28,9 @@ class OfferController(private val gateway: OfferGateway) {
 
     @Post("search")
     fun search(auth: Authentication, @Body request: OfferSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
+
+    @Post("find")
+    fun find(auth: Authentication, @Body request: OfferFindSuitableRequest) = gateway.find(auth, request)
 
     @Post("search/by/day")
     fun searchGroupedByDay(auth: Authentication, @Body request: OfferSearchRequest) = gateway.searchGroupedByDay(auth, request)

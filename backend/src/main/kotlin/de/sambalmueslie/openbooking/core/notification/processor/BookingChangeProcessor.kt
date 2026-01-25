@@ -36,7 +36,7 @@ class BookingChangeProcessor(
         private val logger = LoggerFactory.getLogger(BookingChangeProcessor::class.java)
         private const val DEFAULT_DATE_FORMAT = "dd-MM-yyyy"
         private const val DEFAULT_TIME_FORMAT = "HH:mm"
-        private val translation = mapOf(
+        private val bookingStatusTranslation = mapOf(
             "de" to mapOf(
                 BookingStatus.UNKNOWN to "Unbekannt",
                 BookingStatus.PENDING to "Ausstehend",
@@ -119,12 +119,12 @@ class BookingChangeProcessor(
             Pair("status", status),
             Pair("timestamp", timestamp),
             Pair("isGroup", info.visitor.type == VisitorType.GROUP),
-            Pair("detailsUrl", detailsUrl),
+            Pair("detailsUrl", detailsUrl)
         )
     }
 
     private fun translateStatus(status: BookingStatus, lang: String): String {
-        val t = translation[lang] ?: translation.values.firstOrNull()
+        val t = bookingStatusTranslation[lang] ?: bookingStatusTranslation.values.firstOrNull()
         return t?.get(status) ?: status.name
     }
 

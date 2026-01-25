@@ -1,23 +1,22 @@
 import {ChangeDetectionStrategy, Component, computed, resource, signal} from '@angular/core';
-import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
+import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {OfferService} from "@open-booking/admin";
 import {MatDialog} from "@angular/material/dialog";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
-import {OfferSearchEntry, OfferSearchRequest} from "@open-booking/core";
+import {DaySummary, OfferSearchEntry, OfferSearchRequest, WeekSummary} from "@open-booking/core";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatChipsModule} from "@angular/material/chips";
-import {DateTime} from "luxon";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
@@ -35,6 +34,7 @@ import {MainContentComponent} from "../../shared/main-content/main-content.compo
 import {
   OfferFeatureCreateSingleDialogComponent
 } from "./offer-feature-create-single-dialog/offer-feature-create-single-dialog.component";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-offer',
@@ -67,30 +67,25 @@ import {
 })
 export class OfferComponent {
 
-  private fullTextSearch = signal('')
-  private dateFrom = signal<string | null | undefined>(null)
-  private dateTo = signal<string | null | undefined>(null)
+  selectedDay = signal('')
+  dateFrom = signal<string | null | undefined>(null)
+  dateTo = signal<string | null | undefined>(null)
 
-  range = new FormGroup({
-    start: new FormControl<DateTime | null>(null, Validators.required),
-    end: new FormControl<DateTime | null>(null, Validators.required),
-  })
-
-  pageNumber = signal(0)
-  pageSize = signal(25)
+  request = computed(() => new OfferSearchRequest('', this.dateFrom(), this.dateTo()))
 
   private offerCriteria = computed(() => ({
-    page: this.pageNumber(),
-    size: this.pageSize(),
-    request: new OfferSearchRequest(this.fullTextSearch(), this.dateFrom(), this.dateTo())
+    request: this.request()
   }))
+
 
   private offerResource = resource({
     params: this.offerCriteria,
-    loader: (param) => toPromise(this.service.searchOfferGroupedByDay(param.params.request), param.abortSignal)
+    loader: param => toPromise(this.service.searchOfferGroupedByDay(param.params.request), param.abortSignal)
   })
 
-  offer = computed(() => this.offerResource.value() ?? [])
+  private response = computed(() => this.offerResource.value() ?? [])
+  private selectedGroup = computed(() => this.response().find(g => g.day === this.selectedDay()) ?? this.response()[0])
+  entries = computed(() => this.selectedGroup()?.entries ?? [])
   reloading = this.offerResource.isLoading
 
 
@@ -98,36 +93,30 @@ export class OfferComponent {
     private service: OfferService,
     private dialog: MatDialog
   ) {
-    this.range.valueChanges.subscribe(d => this.handleSelectionChange())
   }
 
-  protected handlePageChange(event: PageEvent) {
-    this.pageNumber.set(event.pageIndex)
-    this.pageSize.set(event.pageSize)
+  protected reload() {
+    this.offerResource.reload()
   }
 
-  protected clearSelection() {
-    this.range.get('start')?.setValue(null)
-    this.range.get('end')?.setValue(null)
-    this.range.reset()
-    this.applyFilter()
+  protected handleSelectionWeekChanged(event: WeekSummary) {
+    let start = DateTime.fromISO(event.startDate, {zone: 'utc'}).startOf('day')
+    let end = DateTime.fromISO(event.endDate, {zone: 'utc'}).endOf('day')
+    this.dateFrom.set(start.toISO({includeOffset: false}))
+    this.dateTo.set(end.toISO({includeOffset: false}))
   }
 
-  protected applyFilter() {
-    let filter = this.range.value
-    this.dateFrom.set(filter.start?.toISO({includeOffset: false}))
-    this.dateTo.set(filter.end?.toISO({includeOffset: false}))
-  }
+  protected handleSelectionDayChanged(event: DaySummary | undefined) {
+    if (event) {
+      let start = DateTime.fromISO(event.date, {zone: 'utc'}).startOf('day')
+      let end = DateTime.fromISO(event.date, {zone: 'utc'}).endOf('day')
 
-  protected handleSelectionChange() {
-    let start = this.range.get('start')?.value
-    let end = this.range.get('end')?.value
-    if (this.range.invalid) return
-    if (start != null && end != null) {
-      this.pageNumber.set(0)
-      this.applyFilter()
+      this.dateFrom.set(start.toISO({includeOffset: false}))
+      this.dateTo.set(end.toISO({includeOffset: false}))
+      this.selectedDay.set(event.date)
     }
   }
+
 
   protected handleEdit(entry: OfferSearchEntry) {
     let dialogRef = this.dialog.open(OfferEditDialogComponent, {data: entry, disableClose: true})
@@ -163,9 +152,6 @@ export class OfferComponent {
     })
   }
 
-  protected reload() {
-    this.offerResource.reload()
-  }
 
   protected handleToggleActive(entry: OfferSearchEntry) {
     this.service.setOfferActive(entry.info.offer.id, !entry.info.offer.active).subscribe(value => this.offerResource.reload())

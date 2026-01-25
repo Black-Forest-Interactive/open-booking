@@ -2,6 +2,7 @@ package de.sambalmueslie.openbooking.core.search.offer
 
 import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferBookingEntryData
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferSearchEntryData
@@ -54,7 +55,7 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             // Date range filters - these apply to top-level fields
             request.from?.let { fromDate ->
                 must(
-                    range(OfferSearchEntryData::finish) {
+                    range(OfferSearchEntryData::start) {
                         gte = fromDate.toString()
                     }
                 )
@@ -71,6 +72,36 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             // If no search term, match all
             if (searchTerm.isBlank() && request.from == null && request.to == null) {
                 must(matchAll())
+            }
+        }
+        sort {
+            add(OfferSearchEntryData::start, SortOrder.ASC)  // Group by start
+            add(OfferSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
+        }
+    }
+
+    fun buildSearchQuery(request: OfferFindSuitableRequest): (SearchDSL.() -> Unit) = {
+        query = bool {
+            must(
+                range(OfferSearchEntryData::availableSpace) {
+                    gte = request.visitorSize
+                }
+            )
+
+            request.from?.let { fromDate ->
+                must(
+                    range(OfferSearchEntryData::start) {
+                        gte = fromDate.toString()
+                    }
+                )
+            }
+
+            request.to?.let { toDate ->
+                must(
+                    range(OfferSearchEntryData::start) {
+                        lte = toDate.toString()
+                    }
+                )
             }
         }
         sort {

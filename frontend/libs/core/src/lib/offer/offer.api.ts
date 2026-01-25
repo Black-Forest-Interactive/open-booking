@@ -1,9 +1,8 @@
 import type {Label} from "../label/label.api";
 import type {Guide} from "../guide/guide.api";
-import type {BookingDetails, BookingStatus} from "../booking/booking.api";
-import type {ReservationInfo, ReservationStatus} from "../reserveration/reservation.api";
+import type {BookingDetails} from "../booking/booking.api";
+import type {ReservationInfo} from "../reserveration/reservation.api";
 import type {Page} from "@open-booking/shared";
-import type {Visitor} from "../visitor/visitor.api";
 
 export interface Offer {
   id: number,
@@ -112,14 +111,20 @@ export interface OfferSearchEntry {
   bookings: BookingDetails[]
 }
 
-export interface OfferReservationEntry {
-  reservationId: number,
-  status: ReservationStatus,
-  visitor: Visitor
+export class OfferFindSuitableRequest {
+  constructor(
+    public from: string | null | undefined,
+    public to: string | null | undefined,
+    public visitorSize: number
+  ) {
+  }
 }
 
-export interface OfferBookingEntry {
-  bookingId: number,
-  status: BookingStatus,
-  visitor: Visitor
+export interface OfferFindSuitableResponse {
+  entries: OfferFindSuitableResponseEntry[]
+}
+
+export interface OfferFindSuitableResponseEntry {
+  day: string,
+  entries: OfferReference[]
 }

@@ -6,6 +6,8 @@ import {
   Label,
   Offer,
   OfferChangeRequest,
+  OfferFindSuitableRequest,
+  OfferFindSuitableResponse,
   OfferGroupedSearchResult,
   OfferInfo,
   OfferRangeRequest,
@@ -43,6 +45,10 @@ export class OfferService extends BaseService {
       .set('page', page)
       .set('size', size)
     return this.post('search', request, params)
+  }
+
+  findOffer(request: OfferFindSuitableRequest): Observable<OfferFindSuitableResponse> {
+    return this.post('find', request)
   }
 
   searchOfferGroupedByDay(request: OfferSearchRequest): Observable<OfferGroupedSearchResult[]> {

@@ -10,6 +10,7 @@ import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
 import de.sambalmueslie.openbooking.core.search.offer.OfferSearchOperator
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_OFFER_ADMIN
 import io.micronaut.data.model.Pageable
@@ -28,6 +29,7 @@ class OfferGateway(
     fun getAllInfo(auth: Authentication, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { infoAssembler.getAll(pageable) }
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.get(id) }
     fun search(auth: Authentication, request: OfferSearchRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { searchOperator.search(request, pageable) }
+    fun find(auth: Authentication, request: OfferFindSuitableRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { searchOperator.findSuitableOffer(request) }
     fun searchGroupedByDay(auth: Authentication, request: OfferSearchRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { searchOperator.searchGroupedByDay(request) }
 
     fun findByDate(auth: Authentication, date: LocalDate) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { service.getByDate(date) }

@@ -19,8 +19,8 @@ class OfferFieldMappingProvider : FieldMappingProvider {
             date(OfferSearchEntryData::updated)
             date(OfferSearchEntryData::timestamp)
             // stats
-            number<Int>(OfferSearchEntryData::bookedSpace)
-            number<Int>(OfferSearchEntryData::reservedSpace)
+            number<Int>(OfferSearchEntryData::confirmedSpace)
+            number<Int>(OfferSearchEntryData::pendingSpace)
             number<Int>(OfferSearchEntryData::availableSpace)
             // bookings
             nestedField(OfferSearchEntryData::bookings) {
