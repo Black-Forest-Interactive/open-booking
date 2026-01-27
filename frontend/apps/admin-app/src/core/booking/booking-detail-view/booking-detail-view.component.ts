@@ -1,27 +1,49 @@
-import {Component, computed, input, OnDestroy, OnInit, output, resource, signal} from '@angular/core';
-import {toPromise} from "@open-booking/shared";
+import {Component, computed, input, OnDestroy, OnInit, output, resource, signal, untracked} from '@angular/core';
+import {
+  BookingStatusComponent,
+  toPromise,
+  VerificationStatusComponent,
+  VisitorTypeComponent
+} from "@open-booking/shared";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
-import {BookingConfirmationContent, BookingDetails, OfferReference} from "@open-booking/core";
+import {BookingChangeRequest, BookingConfirmationContent, BookingDetails, OfferReference} from "@open-booking/core";
+import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
+import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
+import {TranslatePipe} from "@ngx-translate/core";
+import {MatDivider} from "@angular/material/list";
+import {DatePipe} from "@angular/common";
+import {OfferReferenceComponent} from "../../offer/offer-reference/offer-reference.component";
 import {BookingService} from "@open-booking/admin";
 import {MatDialog} from "@angular/material/dialog";
 import {BookingProcessDialogComponent} from "../booking-process-dialog/booking-process-dialog.component";
 import {EMPTY, interval, of, Subject, switchMap, takeUntil} from "rxjs";
-import {BookingDetailViewComponent} from "../booking-detail-view/booking-detail-view.component";
+import {VisitorChangeDialogComponent} from "../../visitor/visitor-change-dialog/visitor-change-dialog.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+
 
 @Component({
-  selector: 'app-booking-details',
+  selector: 'app-booking-detail-view',
   imports: [
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    BookingDetailViewComponent,
+    BookingStatusComponent,
+    VerificationStatusComponent,
+    VisitorTypeComponent,
+    VisitorTitleComponent,
+    VisitorSizeComponent,
+    TranslatePipe,
+    MatDivider,
+    DatePipe,
+    OfferReferenceComponent,
+    MatProgressSpinner,
   ],
-  templateUrl: './booking-details.component.html',
-  styleUrl: './booking-details.component.scss',
+  templateUrl: './booking-detail-view.component.html',
+  styleUrl: './booking-detail-view.component.scss',
 })
-export class BookingDetailsComponent implements OnInit, OnDestroy {
+export class BookingDetailViewComponent implements OnInit, OnDestroy {
 
   data = input.required<BookingDetails>()
   showBackButton = input(false)
@@ -44,7 +66,7 @@ export class BookingDetailsComponent implements OnInit, OnDestroy {
     loader: param => toPromise(
       (param.params.editMode)
         ? this.service.createEditor(param.params.bookingId)
-        : of(),
+        : of(null),
       param.abortSignal
     )
   })
@@ -66,12 +88,14 @@ export class BookingDetailsComponent implements OnInit, OnDestroy {
     this.unsub.next()
     this.unsub.complete()
 
-    let editor = this.editor()
+    const editor = untracked(() => this.editor())
+    const bookingId = untracked(() => this.data()?.booking?.id)
+
+
     if (editor) {
       this.service.deleteEditor(editor.resourceId).subscribe()
-    } else {
-      let resourceId = this.data().booking.id
-      if (resourceId) this.service.deleteEditor(resourceId).subscribe()
+    } else if (bookingId) {
+      this.service.deleteEditor(bookingId).subscribe()
     }
   }
 
@@ -98,12 +122,7 @@ export class BookingDetailsComponent implements OnInit, OnDestroy {
         let content = result as BookingConfirmationContent
         return this.service.confirmBooking(this.data().booking.id, content)
       })
-    ).subscribe({
-      complete: () => {
-        this.updating.set(false)
-        this.reload.emit(true)
-      }
-    })
+    ).subscribe(() => this.handleUpdateCompleted())
   }
 
   protected onDecline(offer: OfferReference) {
@@ -123,11 +142,30 @@ export class BookingDetailsComponent implements OnInit, OnDestroy {
         let content = result as BookingConfirmationContent
         return this.service.declineBooking(this.data().booking.id, content)
       })
-    ).subscribe({
-      complete: () => {
-        this.updating.set(false)
-        this.reload.emit(true)
+    ).subscribe(() => this.handleUpdateCompleted())
+  }
+
+  protected onEditVisitor() {
+    let reference = this.dialog.open(VisitorChangeDialogComponent, {
+      data: this.data().visitor,
+      disableClose: true
+    })
+    reference.afterClosed().subscribe(result => {
+      if (result) {
+        this.updating.set(true)
+        let current = this.data().booking
+        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true)
+        this.service.updateBooking(current.id, request).subscribe(() => this.handleUpdateCompleted())
       }
     })
+  }
+
+  protected onChangeOffer() {
+    alert("Not implemented yet")
+  }
+
+  private handleUpdateCompleted() {
+    this.updating.set(false)
+    this.reload.emit(true)
   }
 }

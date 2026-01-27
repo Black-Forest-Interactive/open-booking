@@ -32,7 +32,7 @@ data class OfferSearchEntryData(
     fun convert(info: OfferInfo, allBookings: Map<Long, BookingDetails>) = OfferSearchEntry(
         info,
         Assignment(confirmedSpace, pendingSpace, availableSpace, if (active) 0 else maxPersons),
-        bookings.mapNotNull { allBookings[it.bookingId] }
+        bookings.mapNotNull { allBookings[it.bookingId] }.sortedBy { it.booking.created }
     )
 
     fun toReference() = OfferReference(Offer(id, start, finish, maxPersons, active, created, updated), Assignment(confirmedSpace, pendingSpace, availableSpace, if (active) 0 else maxPersons))

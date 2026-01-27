@@ -9,8 +9,11 @@ export interface Booking {
   status: BookingStatus,
   size: number,
   comment: string,
+  lang: string,
   offerId: number,
   visitorId: number,
+  created: string,
+  updated: string | undefined,
 }
 
 export interface BookingDetails {

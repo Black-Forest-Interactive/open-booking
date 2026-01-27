@@ -8,8 +8,6 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {QuillModule} from "ngx-quill";
 import {MatIconModule} from "@angular/material/icon";
-import {TranslatePipe} from "@ngx-translate/core";
-import {DatePipe} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 
@@ -24,9 +22,7 @@ import {MatInputModule} from "@angular/material/input";
     MatButtonModule,
     MatInputModule,
     ReactiveFormsModule,
-    QuillModule,
-    TranslatePipe,
-    DatePipe
+    QuillModule
   ],
   templateUrl: './request-process-dialog.component.html',
   styleUrl: './request-process-dialog.component.scss',

@@ -42,6 +42,11 @@
       "Administration": "Verwaltung"
     }
   },
+  "COMMON": {
+    "Created": "Erstellt",
+    "Updated": "Geändert",
+    "Updating": "Änderung wird verarbeitet"
+  },
   "APP": {
     "Title": "Open Booking",
     "Welcome": "Willkommen"
@@ -76,7 +81,9 @@
       "Confirm": "Buchung bestätigen",
       "Deny": "Buchung ablehnen",
       "Edit": "Buchung bearbeiten",
-      "Finder": "Terminfinder"
+      "Finder": "Terminfinder",
+      "EditVisitor": "Besucherdaten bearbeiten",
+      "ChangeOffer": "Termin ändern"
     },
     "Create": {
       "Action": {
@@ -601,6 +608,11 @@
     "Type": {
       "SINGLE": "Privatperson",
       "GROUP": "Gruppe oder Schulklasse"
+    },
+    "Dialog": {
+      "Change": {
+        "Title": "Besucherdaten ändern"
+      }
     }
   },
   "DASHBOARD": {

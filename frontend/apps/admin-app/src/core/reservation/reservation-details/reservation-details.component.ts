@@ -7,7 +7,7 @@ import {BookingService} from "@open-booking/admin";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {TranslatePipe} from "@ngx-translate/core";
 import {LowerCasePipe} from "@angular/common";
-import {BookingDetailsComponent} from "../../booking/booking-details/booking-details.component";
+import {BookingDetailViewComponent} from "../../booking/booking-detail-view/booking-detail-view.component";
 
 @Component({
   selector: 'app-reservation-details',
@@ -15,7 +15,7 @@ import {BookingDetailsComponent} from "../../booking/booking-details/booking-det
     LoadingBarComponent,
     TranslatePipe,
     LowerCasePipe,
-    BookingDetailsComponent
+    BookingDetailViewComponent
   ],
   templateUrl: './reservation-details.component.html',
   styleUrl: './reservation-details.component.scss',

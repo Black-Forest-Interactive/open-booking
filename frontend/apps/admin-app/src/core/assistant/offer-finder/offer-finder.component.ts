@@ -1,5 +1,5 @@
 import {Component, computed, output, resource, signal} from '@angular/core';
-import {OfferFindSuitableRequest, OfferReference} from "@open-booking/core";
+import {Assignment, OfferFindSuitableRequest, OfferReference} from "@open-booking/core";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {OfferService} from "@open-booking/admin";
 import {DatePipe} from "@angular/common";
@@ -14,6 +14,13 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
 import {DateTime} from "luxon";
+
+interface DaySummary {
+  day: string
+  totalOffers: number
+  activeOffers: number
+  assignment: Assignment
+}
 
 @Component({
   selector: 'app-offer-finder',
@@ -47,7 +54,31 @@ export class OfferFinderComponent {
   })
 
   visitorSize = signal(1)
+  selectedDay = signal<string | null>(null)
   selectedOfferId = signal<number | null>(null)
+
+  // Compute day summaries
+  daySummaries = computed<DaySummary[]>(() => {
+    return this.entries().map(dayGroup => ({
+      day: dayGroup.day,
+      totalOffers: dayGroup.entries.length,
+      activeOffers: dayGroup.entries.filter(e => e.offer.active).length,
+      assignment: {
+        availableSpace: dayGroup.entries.reduce((sum, e) => sum + e.assignment.availableSpace, 0),
+        pendingSpace: dayGroup.entries.reduce((sum, e) => sum + e.assignment.pendingSpace, 0),
+        confirmedSpace: dayGroup.entries.reduce((sum, e) => sum + e.assignment.confirmedSpace, 0),
+        deactivatedSpace: dayGroup.entries.reduce((sum, e) => sum + e.assignment.deactivatedSpace, 0),
+      }
+    }))
+  })
+
+  // Get offers for selected day
+  selectedDayOffers = computed<OfferReference[]>(() => {
+    const day = this.selectedDay();
+    if (!day) return [];
+    const dayGroup = this.entries().find(d => d.day === day)
+    return dayGroup?.entries ?? []
+  })
 
   request = computed(() => new OfferFindSuitableRequest(this.dateFrom(), this.dateTo(), this.visitorSize()))
 
@@ -74,6 +105,12 @@ export class OfferFinderComponent {
 
   constructor(private service: OfferService) {
     this.range.valueChanges.subscribe(d => this.handleSelectionChange())
+  }
+
+
+  selectDay(day: string) {
+    this.selectedDay.set(day);
+    this.selectedOfferId.set(null);
   }
 
   selectOffer(offer: OfferReference) {

@@ -10,8 +10,7 @@ import {
   BookingSearchRequest,
   BookingSearchResponse,
   Editor,
-  ResolvedResponse,
-  VisitorChangeRequest
+  ResolvedResponse
 } from "@open-booking/core";
 import {HttpParams} from "@angular/common/http";
 
@@ -75,10 +74,6 @@ export class BookingService extends BaseService {
     return this.get('' + id + '/decline/response')
   }
 
-  updateVisitor(id: number, request: VisitorChangeRequest): Observable<GenericRequestResult> {
-    return this.put(id + '/visitor', request)
-  }
-
   setComment(id: number, comment: string): Observable<Booking> {
     return this.patch(id + '/comment', {value: comment})
   }
@@ -102,7 +97,6 @@ export class BookingService extends BaseService {
   refreshEditor(id: number): Observable<Editor> {
     return this.put(id + '/editor', {})
   }
-
 
   findBookingDetailsByOffer(offerId: number): Observable<BookingDetails[]> {
     return this.get('by/offer/' + offerId + '/details')

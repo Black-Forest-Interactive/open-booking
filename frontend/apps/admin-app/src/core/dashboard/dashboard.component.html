@@ -1,4 +1,15 @@
 <app-main-content [title]="'MENU.Dashboard' | translate" [enableSearch]="false">
+  <div class="flex gap-2 flex-auto" actions>
+
+    <button matIconButton (click)="reload()">
+      @if (contentReloading()) {
+        <mat-spinner [diameter]="18"></mat-spinner>
+      } @else {
+        <mat-icon class="!text-gray-800">refresh</mat-icon>
+      }
+    </button>
+  </div>
+
   <div class="p-4">
     <app-dashboard-summary (selectionDayChanged)="handleDaySelection($event)" [showBookingStats]="false"/>
     <div class="flex-1 overflow-auto min-h-0">

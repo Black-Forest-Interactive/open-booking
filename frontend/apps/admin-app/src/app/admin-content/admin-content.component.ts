@@ -17,7 +17,7 @@ import {AdminMenuComponent} from "../admin-menu/admin-menu.component";
     MatButtonModule,
     MatCardModule,
     AdminMenuComponent
-],
+  ],
   templateUrl: './admin-content.component.html',
   styleUrl: './admin-content.component.scss',
 })

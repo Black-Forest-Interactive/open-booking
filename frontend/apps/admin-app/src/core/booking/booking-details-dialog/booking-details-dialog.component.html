@@ -1,13 +1,13 @@
 <h2 mat-dialog-title>{{ 'BOOKING.Details.Title'|translate }}</h2>
 <mat-dialog-content class="mat-typography">
-  <app-booking-details
+  <app-booking-detail-view
     [data]="data"
     [reloading]="false"
     [showBackButton]="false"
     [editMode]="editMode()"
     (reload)="close(true)"
     (close)="close(false)"
-  ></app-booking-details>
+  />
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button matButton (click)="toggleEditMode()">{{ 'BOOKING.Action.Edit' | translate }}</button>

@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>{{ 'VISITOR.Dialog.Change.Title' | translate }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <app-visitor-change formControlName="visitor"></app-visitor-change>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton="outlined" (click)="onCancel()">
+    {{ 'ACTION.Cancel' | translate }}
+  </button>
+  <button matButton="filled" color="primary"
+          [disabled]="form.invalid"
+          (click)="onSave()">
+    {{ 'ACTION.Save' | translate }}
+  </button>
+</mat-dialog-actions>

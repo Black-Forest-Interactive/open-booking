@@ -1,4 +1,4 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, computed, effect, input, output, signal} from '@angular/core';
 import {BookingDetails, DaySummary, WeekSummary} from "@open-booking/core";
 import {groupBookingDetailsByDate} from "@open-booking/admin";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -7,7 +7,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {BookingGroupListComponent} from "../booking-group-list/booking-group-list.component";
 import {BookingListEntryComponent} from "../booking-list-entry/booking-list-entry.component";
-import {BookingDetailsComponent} from "../booking-details/booking-details.component";
+import {BookingDetailViewComponent} from "../booking-detail-view/booking-detail-view.component";
 
 @Component({
   selector: 'app-booking-content',
@@ -18,7 +18,7 @@ import {BookingDetailsComponent} from "../booking-details/booking-details.compon
     MatTooltipModule,
     BookingGroupListComponent,
     BookingListEntryComponent,
-    BookingDetailsComponent
+    BookingDetailViewComponent
   ],
   templateUrl: './booking-content.component.html',
   styleUrl: './booking-content.component.scss',
@@ -35,6 +35,22 @@ export class BookingContentComponent {
   reload = output<boolean>()
 
   groupedBookings = computed(() => groupBookingDetailsByDate(this.entries()))
+
+  constructor() {
+    effect(() => {
+      const currentEntries = this.entries()
+      const selected = this.selectedEntry()
+
+      if (!selected) return
+
+      const updatedEntry = currentEntries.find(e => e.booking.id === selected.booking.id)
+      if (updatedEntry) {
+        this.selectedEntry.set(updatedEntry)
+      } else {
+        this.selectedEntry.set(undefined)
+      }
+    })
+  }
 
   onEntrySelected(entry: BookingDetails) {
     this.selectedEntry.set(entry)

@@ -4,15 +4,18 @@
                [attr.role]="service.isHandset() ? 'dialog' : 'navigation'"
                [mode]="service.isHandset() ? 'over' : 'side'"
                [opened]="!service.isHandset()"
-               class="w-64 !bg-gray-200 mb-1.5 flex flex-col">
-    <app-admin-menu/>
+               class="!bg-gray-200 mb-1.5 flex flex-col transition-all duration-300"
+               [style.width.rem]="menu.collapsed() ? 6 : 20"
+  >
+    <app-admin-menu #menu/>
   </mat-sidenav>
-
   <!-- Scrollable Content -->
-  <mat-sidenav-content class="flex flex-col h-full">
-    <div class="container px-4 mx-auto flex-1 min-h-0">
+  <mat-sidenav-content class="flex flex-col h-full"
+                       [class.!ml-25]="!service.isHandset() && menu.collapsed()"
+                       [class.!ml-80]="!service.isHandset() && !menu.collapsed()"
+                       [class.!ml-0]="service.isHandset()">
+    <div class="px-4 mx-auto flex-1 min-h-0 w-full">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

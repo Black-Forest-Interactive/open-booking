@@ -12,6 +12,7 @@ import de.sambalmueslie.openbooking.core.visitor.api.VisitorResizeRequest
 import de.sambalmueslie.openbooking.gateway.portal.claim.ClaimGateway.Companion.CLAIM_KEY
 import io.micronaut.session.Session
 import jakarta.inject.Singleton
+import org.slf4j.LoggerFactory
 
 @Singleton
 class BookingGateway(
@@ -20,6 +21,9 @@ class BookingGateway(
     private val infoAssembler: BookingInfoAssembler,
     private val claimService: ClaimService,
 ) {
+    companion object {
+        private val logger = LoggerFactory.getLogger(BookingGateway::class.java)
+    }
 
     fun create(session: Session, request: CreateBookingRequest, lang: String): CreateBookingResponse {
         if (!request.termsAndConditions) throw BookingAcceptTermsRequired()
@@ -36,6 +40,7 @@ class BookingGateway(
             val response = responseService.getReceivedResponse(result.id, lang)
             CreateBookingResponse(true, response ?: ResolvedResponse("", ""))
         } catch (e: Exception) {
+            logger.error("[${session.id}] Error during creation", e)
             val response = responseService.getFailedResponse(r)
             CreateBookingResponse(false, response ?: ResolvedResponse("", ""))
         }

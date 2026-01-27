@@ -1,21 +1,26 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {DashboardSummaryComponent} from "./dashboard-summary/dashboard-summary.component";
-import {DashboardContentComponent} from "./dashboard-content/dashboard-content.component";
 import {DashboardService} from "@open-booking/admin";
-import {HotToastService} from "@ngxpert/hot-toast";
 import {toPromise} from "@open-booking/shared";
 import {DaySummary, OfferSearchRequest} from "@open-booking/core";
 import {MainContentComponent} from "../../shared/main-content/main-content.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DateTime} from "luxon";
+import {DashboardContentComponent} from "./dashboard-content/dashboard-content.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-dashboard',
   imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
     DashboardSummaryComponent,
-    DashboardContentComponent,
     MainContentComponent,
-    TranslatePipe
+    TranslatePipe,
+    DashboardContentComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -32,7 +37,7 @@ export class DashboardComponent {
   contentReloading = computed(() => this.contentResource.isLoading())
   content = computed(() => this.contentResource.value() ?? [])
 
-  constructor(private service: DashboardService, private toast: HotToastService) {
+  constructor(private service: DashboardService) {
 
   }
 

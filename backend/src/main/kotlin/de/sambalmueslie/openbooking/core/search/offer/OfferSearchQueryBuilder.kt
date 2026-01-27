@@ -81,6 +81,7 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
     }
 
     fun buildSearchQuery(request: OfferFindSuitableRequest): (SearchDSL.() -> Unit) = {
+        resultSize = 500
         query = bool {
             must(
                 range(OfferSearchEntryData::availableSpace) {

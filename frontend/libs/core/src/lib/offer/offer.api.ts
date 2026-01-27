@@ -9,7 +9,9 @@ export interface Offer {
   start: string,
   finish: string,
   maxPersons: number,
-  active: boolean
+  active: boolean,
+  created: string,
+  updated: string | undefined,
 }
 
 export interface OfferInfo {

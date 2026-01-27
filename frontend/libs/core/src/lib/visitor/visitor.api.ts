@@ -14,6 +14,9 @@ export interface Visitor {
   email: string,
 
   verification: Verification
+
+  created: string,
+  updated: string | undefined,
 }
 
 export interface Verification {

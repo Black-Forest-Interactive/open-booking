@@ -10,7 +10,6 @@ import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDividerModule} from "@angular/material/divider";
-import {LowerCasePipe} from "@angular/common";
 import {ReservationContentComponent} from "./reservation-content/reservation-content.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -38,7 +37,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatDatepickerModule,
     MatInputModule,
     TranslatePipe,
-    LowerCasePipe,
     ReservationContentComponent,
     FormsModule,
     ReactiveFormsModule,

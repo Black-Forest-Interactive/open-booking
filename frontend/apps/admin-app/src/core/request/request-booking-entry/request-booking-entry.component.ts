@@ -12,7 +12,6 @@ import {tap} from "rxjs";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-request-booking-entry',
@@ -20,8 +19,7 @@ import {DatePipe} from "@angular/common";
     MatRadioModule,
     MatIconModule,
     MatButtonModule,
-    ReactiveFormsModule,
-    DatePipe
+    ReactiveFormsModule
   ],
   templateUrl: './request-booking-entry.component.html',
   styleUrl: './request-booking-entry.component.scss',
