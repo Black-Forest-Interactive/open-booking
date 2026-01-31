@@ -37,7 +37,7 @@
           } @else {
             <!-- Step 2: Offer Selection for Selected Day -->
             <div class="bg-white p-3 rounded-lg border border-gray-300 flex items-center justify-between mb-4">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-1">
                 <button
                   mat-icon-button
                   (click)="selectedDay.set(null)"
@@ -48,6 +48,10 @@
                 <h3 class="text-base font-semibold text-gray-900">
                   {{ selectedDay() | date: 'EEEE, dd.MM.yyyy' }}
                 </h3>
+                <div class="flex-1"></div>
+                <mat-slide-toggle [(ngModel)]="hideNotMatching" labelPosition="before">
+                  {{ 'BOOKING.Filter.HideNotMatching' | translate }}
+                </mat-slide-toggle>
               </div>
             </div>
 
@@ -55,7 +59,7 @@
               @for (item of selectedDayOffers(); track item.offer.id) {
                 <div
                   class="bg-white p-3 rounded-lg border-2 border-gray-200 transition-all cursor-pointer hover:border-gray-300"
-                  [class.opacity-50]="!item.offer.active"
+                  [class.opacity-50]="!item.offer.active || item.assignment.availableSpace < visitorSize()"
                   [class.!border-blue-500]="selectedOfferId() === item.offer.id"
                   [class.!bg-blue-50]="selectedOfferId() === item.offer.id"
                   (click)="selectOffer(item)">

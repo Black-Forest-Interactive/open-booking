@@ -207,6 +207,9 @@
         "Label": "Überbuchung zulassen"
       }
     },
+    "Filter": {
+      "HideNotMatching": "Unpassende Termine filtern"
+    },
     "MESSAGE": {
       "CONFIRM": {
         "FAILED": "Die Buchung konnte nicht bestätigt werden. Bitte versuche es erneut.",

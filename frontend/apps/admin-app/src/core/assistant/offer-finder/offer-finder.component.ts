@@ -10,12 +10,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
 import {OfferFinderDayEntryComponent} from "../offer-finder-day-entry/offer-finder-day-entry.component";
 import {WeekSelectComponent} from "../../dashboard/week-select/week-select.component";
 import {DateTime} from "luxon";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 export interface OfferFinderDayEntry {
   day: string
@@ -42,6 +43,8 @@ export interface OfferFinderDayEntry {
     DatePipe,
     OfferFinderDayEntryComponent,
     WeekSelectComponent,
+    MatSlideToggle,
+    FormsModule,
   ],
   templateUrl: './offer-finder.component.html',
   styleUrl: './offer-finder.component.scss',
@@ -56,6 +59,7 @@ export class OfferFinderComponent {
   visitorSize = signal(1)
   selectedDay = signal<string | null>(null)
   selectedOfferId = signal<number | null>(null)
+  hideNotMatching = signal(false)
 
   // Compute day summaries
   daySummaries = computed<OfferFinderDayEntry[]>(() => {
@@ -77,11 +81,11 @@ export class OfferFinderComponent {
   selectedDayOffers = computed<OfferReference[]>(() => {
     const day = this.selectedDay();
     if (!day) return [];
-    const dayGroup = this.entries().find(d => d.day === day)
-    return dayGroup?.entries ?? []
+    const entries = this.entries().find(d => d.day === day)?.entries ?? []
+    return this.hideNotMatching() ? entries.filter(e => e.assignment.availableSpace >= this.visitorSize()) : entries
   })
 
-  request = computed(() => new OfferFindSuitableRequest(this.dateFrom(), this.dateTo(), this.visitorSize()))
+  request = computed(() => new OfferFindSuitableRequest(this.dateFrom(), this.dateTo(), 0))
 
   private offerCriteria = computed(() => ({
     request: this.request()
@@ -124,4 +128,5 @@ export class OfferFinderComponent {
     this.dateFrom.set(start)
     this.dateTo.set(end)
   }
+
 }
