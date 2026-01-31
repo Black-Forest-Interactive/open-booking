@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateChangeListener
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
+import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -21,12 +22,16 @@ class NotificationTemplateChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: NotificationTemplate) {
+    override fun handleCreated(obj: NotificationTemplate, request: NotificationTemplateChangeRequest) {
         handleChange(obj, "NOTIFICATION TEMPLATE CREATED")
     }
 
-    override fun handleUpdated(obj: NotificationTemplate) {
+    override fun handleUpdated(obj: NotificationTemplate, request: NotificationTemplateChangeRequest) {
         handleChange(obj, "NOTIFICATION TEMPLATE UPDATED")
+    }
+
+    override fun handlePatched(obj: NotificationTemplate) {
+        handleChange(obj, "NOTIFICATION TEMPLATE PATCHED")
     }
 
     override fun handleDeleted(obj: NotificationTemplate) {

@@ -45,7 +45,11 @@
   "COMMON": {
     "Created": "Erstellt",
     "Updated": "Geändert",
-    "Updating": "Änderung wird verarbeitet"
+    "Updating": "Änderung wird verarbeitet",
+    "Title": {
+      "Success": "Erfolgreich",
+      "Error": "Fehler"
+    }
   },
   "APP": {
     "Title": "Open Booking",
@@ -201,6 +205,20 @@
       },
       "IgnoreSizeCheck": {
         "Label": "Überbuchung zulassen"
+      }
+    },
+    "MESSAGE": {
+      "CONFIRM": {
+        "FAILED": "Die Buchung konnte nicht bestätigt werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich bestätigt."
+      },
+      "DECLINE": {
+        "FAILED": "Die Buchung konnte nicht abgelehnt werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich abgelehnt."
+      },
+      "CANCEL": {
+        "FAILED": "Die Buchung konnte nicht storniert werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich storniert."
       }
     }
   },

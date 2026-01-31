@@ -8,21 +8,10 @@
   </div>
 </div>
 <div class="mat-typography h-full px-6 py-4">
-  <app-booking-create [offer]="data.offer.offer" [assignment]="data.assignment" (completed)="close()" #form/>
+  <app-booking-create
+    [offer]="data.offer.offer"
+    [assignment]="data.assignment"
+    (completed)="close()"
+    (cancel)="close()"/>
 </div>
-<mat-dialog-actions align="end">
-  <button mat-dialog-close matButton="outlined">
-    <mat-icon>cancel</mat-icon>
-    {{ 'ACTION.Cancel' | translate }}
-  </button>
-  <button matButton="filled" [disabled]="!form.form.valid || form.processing()" (click)="form.onSubmit()">
-    @if (form.processing()) {
-      <mat-icon>
-        <mat-spinner diameter="18"></mat-spinner>
-      </mat-icon>
-    } @else {
-      <mat-icon>save</mat-icon>
-    }
-    {{ 'ACTION.Submit' | translate }}
-  </button>
-</mat-dialog-actions>
+

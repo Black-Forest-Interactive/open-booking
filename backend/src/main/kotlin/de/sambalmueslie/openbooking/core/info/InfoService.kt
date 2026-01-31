@@ -4,18 +4,18 @@ package de.sambalmueslie.openbooking.core.info
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.claim.ClaimService
 import de.sambalmueslie.openbooking.core.claim.api.Claim
 import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeListener
+import de.sambalmueslie.openbooking.core.claim.api.ClaimChangeRequest
 import de.sambalmueslie.openbooking.core.info.api.DateRangeSelectionRequest
 import de.sambalmueslie.openbooking.core.info.api.DayInfo
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
-import de.sambalmueslie.openbooking.core.reservation.ReservationChangeListener
-import de.sambalmueslie.openbooking.core.reservation.ReservationService
-import de.sambalmueslie.openbooking.core.reservation.api.Reservation
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
@@ -27,7 +27,6 @@ import java.time.temporal.ChronoUnit
 class InfoService(
     private val offerService: OfferService,
     bookingService: BookingService,
-    reservationService: ReservationService,
     claimService: ClaimService,
     private val cache: InfoCache
 ) {
@@ -39,11 +38,15 @@ class InfoService(
 
     init {
         bookingService.register(object : BookingChangeListener {
-            override fun handleCreated(obj: Booking) {
+            override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
                 updateCache(obj)
             }
 
-            override fun handleUpdated(obj: Booking) {
+            override fun handleUpdated(obj: Booking, request: BookingChangeRequest) {
+                updateCache(obj)
+            }
+
+            override fun handlePatched(obj: Booking) {
                 updateCache(obj)
             }
 
@@ -65,11 +68,15 @@ class InfoService(
         })
 
         offerService.register(object : OfferChangeListener {
-            override fun handleCreated(obj: Offer) {
+            override fun handleCreated(obj: Offer, request: OfferChangeRequest) {
                 updateCache(obj)
             }
 
-            override fun handleUpdated(obj: Offer) {
+            override fun handleUpdated(obj: Offer, request: OfferChangeRequest) {
+                updateCache(obj)
+            }
+
+            override fun handlePatched(obj: Offer) {
                 updateCache(obj)
             }
 
@@ -79,26 +86,16 @@ class InfoService(
         })
 
 
-        reservationService.register(object : ReservationChangeListener {
-            override fun handleCreated(obj: Reservation) {
-                updateCache(obj)
-            }
-
-            override fun handleUpdated(obj: Reservation) {
-                updateCache(obj)
-            }
-
-            override fun handleDeleted(obj: Reservation) {
-                updateCache(obj)
-            }
-        })
-
         claimService.register(object : ClaimChangeListener {
-            override fun handleCreated(obj: Claim) {
+            override fun handleCreated(obj: Claim, request: ClaimChangeRequest) {
                 updateCache(obj)
             }
 
-            override fun handleUpdated(obj: Claim) {
+            override fun handleUpdated(obj: Claim, request: ClaimChangeRequest) {
+                updateCache(obj)
+            }
+
+            override fun handlePatched(obj: Claim) {
                 updateCache(obj)
             }
 
@@ -111,12 +108,6 @@ class InfoService(
     private fun updateCache(booking: Booking) {
         logger.info("Update cache for booking ${booking.id}")
         val offer = offerService.get(booking.offerId) ?: return
-        updateCache(offer)
-    }
-
-    private fun updateCache(registration: Reservation) {
-        logger.info("Update cache for registration ${registration.id}")
-        val offer = offerService.get(registration.offerId) ?: return
         updateCache(offer)
     }
 

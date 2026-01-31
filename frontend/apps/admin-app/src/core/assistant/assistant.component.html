@@ -11,25 +11,10 @@
           <app-booking-create
             [offer]="selectedOffer()!!.offer"
             [assignment]="selectedOffer()!!.assignment"
-            class="p-4" #form
+            (cancel)="reset()"
+            (completed)="reset()"
+            class="p-4"
           />
-
-          <div class="flex gap-2 px-4 pb-4 justify-end">
-            <button matButton="outlined">
-              <mat-icon>cancel</mat-icon>
-              {{ 'ACTION.Cancel' | translate }}
-            </button>
-            <button matButton="filled" [disabled]="!form.form.valid || form.processing()" (click)="form.onSubmit()">
-              @if (form.processing()) {
-                <mat-icon>
-                  <mat-spinner diameter="18"></mat-spinner>
-                </mat-icon>
-              } @else {
-                <mat-icon>save</mat-icon>
-              }
-              {{ 'ACTION.Submit' | translate }}
-            </button>
-          </div>
         </mat-card>
       </div>
     }

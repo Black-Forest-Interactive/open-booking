@@ -34,7 +34,7 @@ class BookingGateway(
         if (claim != null) claimService.delete(claim.id)
         session.remove(CLAIM_KEY)
 
-        val r = BookingChangeRequest(request.visitor, request.comment, lang, request.offerId, false, false)
+        val r = BookingChangeRequest(request.visitor, request.comment, lang, request.offerId, false, false, false)
         return try {
             val result = service.create(r)
             val response = responseService.getReceivedResponse(result.id, lang)

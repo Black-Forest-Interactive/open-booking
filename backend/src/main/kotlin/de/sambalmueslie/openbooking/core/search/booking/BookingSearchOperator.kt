@@ -8,10 +8,7 @@ import com.jillesvangurp.searchdsls.querydsl.terms
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
-import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingDetailsAssembler
 import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchResponse
@@ -21,6 +18,7 @@ import de.sambalmueslie.openbooking.core.search.common.SearchRequest
 import de.sambalmueslie.openbooking.core.visitor.VisitorChangeListener
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
@@ -45,11 +43,15 @@ open class BookingSearchOperator(
 
     init {
         service.register(object : BookingChangeListener {
-            override fun handleCreated(obj: Booking) {
+            override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
                 handleChanged(obj, true)
             }
 
-            override fun handleUpdated(obj: Booking) {
+            override fun handleUpdated(obj: Booking, request: BookingChangeRequest) {
+                handleChanged(obj, true)
+            }
+
+            override fun handlePatched(obj: Booking) {
                 handleChanged(obj, true)
             }
 
@@ -71,11 +73,15 @@ open class BookingSearchOperator(
         })
 
         visitorService.register(object : VisitorChangeListener {
-            override fun handleCreated(obj: Visitor) {
+            override fun handleCreated(obj: Visitor, request: VisitorChangeRequest) {
                 handleChanged(obj)
             }
 
-            override fun handleUpdated(obj: Visitor) {
+            override fun handlePatched(obj: Visitor) {
+                handleChanged(obj)
+            }
+
+            override fun handleUpdated(obj: Visitor, request: VisitorChangeRequest) {
                 handleChanged(obj)
             }
 

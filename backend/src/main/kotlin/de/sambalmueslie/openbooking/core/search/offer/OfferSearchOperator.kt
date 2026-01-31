@@ -8,12 +8,14 @@ import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingDetailsAssembler
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferDetailsAssembler
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
@@ -54,11 +56,15 @@ open class OfferSearchOperator(
 
     init {
         service.register(object : OfferChangeListener {
-            override fun handleCreated(obj: Offer) {
+            override fun handleCreated(obj: Offer, request: OfferChangeRequest) {
                 processChange(obj)
             }
 
-            override fun handleUpdated(obj: Offer) {
+            override fun handleUpdated(obj: Offer, request: OfferChangeRequest) {
+                processChange(obj)
+            }
+
+            override fun handlePatched(obj: Offer) {
                 processChange(obj)
             }
 
@@ -77,11 +83,15 @@ open class OfferSearchOperator(
 
 
         bookingService.register(object : BookingChangeListener {
-            override fun handleCreated(obj: Booking) {
+            override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
                 processChange(obj)
             }
 
-            override fun handleUpdated(obj: Booking) {
+            override fun handleUpdated(obj: Booking, request: BookingChangeRequest) {
+                processChange(obj)
+            }
+
+            override fun handlePatched(obj: Booking) {
                 processChange(obj)
             }
 

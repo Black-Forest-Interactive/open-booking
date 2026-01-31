@@ -22,7 +22,6 @@ class BookingValidateSizeFeature(
         return isSuitable(request.visitor.size, offer, repository.findByOfferId(offer.id))
     }
 
-
     fun validate(request: BookingResizeRequest, offer: Offer): Boolean {
         if (request.ignoreSizeCheck) return true
         return isSuitable(request.visitor.size, offer, repository.findByOfferId(offer.id))

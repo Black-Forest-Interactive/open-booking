@@ -49,7 +49,7 @@ export class BookingCheckoutComponent {
       type: [VisitorType.SINGLE, Validators.required],
       title: [''],
       description: [''],
-      size: [1, [Validators.required, Validators.min(1)]],
+      size: ['', [Validators.required, Validators.min(1)]],
       minAge: ['', [Validators.required, Validators.min(0)]],
       maxAge: ['', [Validators.required, Validators.min(0)]],
       name: ['', Validators.required],
@@ -64,7 +64,7 @@ export class BookingCheckoutComponent {
     effect(() => {
       let data = this.data()
       if (data) this.setValues(data)
-    });
+    })
 
     effect(() => {
       if (this.form) {

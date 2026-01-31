@@ -1,5 +1,5 @@
 import {Component, computed, output, resource, signal} from '@angular/core';
-import {Assignment, OfferFindSuitableRequest, OfferReference} from "@open-booking/core";
+import {Assignment, OfferFindSuitableRequest, OfferReference, WeekSummary} from "@open-booking/core";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {OfferService} from "@open-booking/admin";
 import {DatePipe} from "@angular/common";
@@ -10,13 +10,16 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
+import {OfferFinderDayEntryComponent} from "../offer-finder-day-entry/offer-finder-day-entry.component";
+import {WeekSelectComponent} from "../../dashboard/week-select/week-select.component";
 import {DateTime} from "luxon";
 
-interface DaySummary {
+export interface OfferFinderDayEntry {
   day: string
+  entries: OfferReference[]
   totalOffers: number
   activeOffers: number
   assignment: Assignment
@@ -37,6 +40,8 @@ interface DaySummary {
     LoadingBarComponent,
     TranslatePipe,
     DatePipe,
+    OfferFinderDayEntryComponent,
+    WeekSelectComponent,
   ],
   templateUrl: './offer-finder.component.html',
   styleUrl: './offer-finder.component.scss',
@@ -48,19 +53,15 @@ export class OfferFinderComponent {
   private dateFrom = signal<string | null | undefined>(null)
   private dateTo = signal<string | null | undefined>(null)
 
-  range = new FormGroup({
-    start: new FormControl<DateTime | null>(null, Validators.required),
-    end: new FormControl<DateTime | null>(null, Validators.required),
-  })
-
   visitorSize = signal(1)
   selectedDay = signal<string | null>(null)
   selectedOfferId = signal<number | null>(null)
 
   // Compute day summaries
-  daySummaries = computed<DaySummary[]>(() => {
+  daySummaries = computed<OfferFinderDayEntry[]>(() => {
     return this.entries().map(dayGroup => ({
       day: dayGroup.day,
+      entries: dayGroup.entries,
       totalOffers: dayGroup.entries.length,
       activeOffers: dayGroup.entries.filter(e => e.offer.active).length,
       assignment: {
@@ -104,9 +105,8 @@ export class OfferFinderComponent {
   reloading = this.offerResource.isLoading
 
   constructor(private service: OfferService) {
-    this.range.valueChanges.subscribe(d => this.handleSelectionChange())
-  }
 
+  }
 
   selectDay(day: string) {
     this.selectedDay.set(day);
@@ -118,27 +118,10 @@ export class OfferFinderComponent {
     this.offerSelected.emit(offer)
   }
 
-
-  protected clearSelection() {
-    this.range.get('start')?.setValue(null)
-    this.range.get('end')?.setValue(null)
-    this.range.reset()
-    this.applyFilter()
-  }
-
-
-  protected handleSelectionChange() {
-    let start = this.range.get('start')?.value
-    let end = this.range.get('end')?.value
-    if (this.range.invalid) return
-    if (start != null && end != null) {
-      this.applyFilter()
-    }
-  }
-
-  protected applyFilter() {
-    let filter = this.range.value
-    this.dateFrom.set(filter.start?.toISO({includeOffset: false}))
-    this.dateTo.set(filter.end?.toISO({includeOffset: false}))
+  protected handleWeekSelected(week: WeekSummary) {
+    let start = DateTime.fromISO(week.startDate, {zone: 'utc'}).startOf('day').toISO({includeOffset: false})
+    let end = DateTime.fromISO(week.endDate, {zone: 'utc'}).endOf('day').toISO({includeOffset: false})
+    this.dateFrom.set(start)
+    this.dateTo.set(end)
   }
 }

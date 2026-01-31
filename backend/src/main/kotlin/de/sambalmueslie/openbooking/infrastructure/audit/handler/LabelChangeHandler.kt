@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.label.LabelChangeListener
 import de.sambalmueslie.openbooking.core.label.LabelService
 import de.sambalmueslie.openbooking.core.label.api.Label
+import de.sambalmueslie.openbooking.core.label.api.LabelChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -21,12 +22,16 @@ class LabelChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Label) {
+    override fun handleCreated(obj: Label, request: LabelChangeRequest) {
         handleChange(obj, "LABEL CREATED")
     }
 
-    override fun handleUpdated(obj: Label) {
+    override fun handleUpdated(obj: Label, request: LabelChangeRequest) {
         handleChange(obj, "LABEL UPDATED")
+    }
+
+    override fun handlePatched(obj: Label) {
+        handleChange(obj, "LABEL PATCHED")
     }
 
     override fun handleDeleted(obj: Label) {

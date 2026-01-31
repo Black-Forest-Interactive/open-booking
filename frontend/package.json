@@ -57,6 +57,7 @@
     "@types/luxon": "^3.7.1",
     "@types/node": "18.16.9",
     "@typescript-eslint/utils": "^8.40.0",
+    "@vendure/ngx-translate-extract": "^10.1.3",
     "angular-eslint": "^21.1.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.8.0",

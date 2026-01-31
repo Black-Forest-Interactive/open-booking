@@ -31,4 +31,8 @@ export class AssistantComponent {
   protected handleOfferSelected(offer: OfferReference | undefined) {
     this.selectedOffer.set(offer)
   }
+
+  protected reset() {
+    this.selectedOffer.set(undefined)
+  }
 }

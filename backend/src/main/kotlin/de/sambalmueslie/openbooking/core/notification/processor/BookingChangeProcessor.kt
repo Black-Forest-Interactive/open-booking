@@ -2,10 +2,7 @@ package de.sambalmueslie.openbooking.core.notification.processor
 
 import de.sambalmueslie.openbooking.config.MailConfig
 import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
-import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingInfoAssembler
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateEvaluator
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
@@ -68,12 +65,15 @@ class BookingChangeProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = infoAssembler.get(event.sourceId) ?: return
+        val request = event.parameter[BookingChangeHandler.REQUEST] as? BookingChangeRequest ?: return
         val confirmUrl = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
 
         val properties = createProperties(info)
         properties["confirmUrl"] = confirmUrl
 
-        notifyContactOnCreated(properties, info)
+        if (info.status == BookingStatus.PENDING && !request.noCreateNotification) {
+            notifyContactOnCreated(properties, info)
+        }
         notifyAdminsOnCreated(properties)
     }
 

@@ -33,6 +33,7 @@ export interface BookingInfo {
   timestamp: string
 }
 
+
 export class BookingChangeRequest {
   constructor(
     public visitor: VisitorChangeRequest,
@@ -40,7 +41,8 @@ export class BookingChangeRequest {
     public lang: string,
     public offerId: number,
     public autoConfirm: boolean,
-    public ignoreSizeCheck: boolean
+    public ignoreSizeCheck: boolean,
+    public noCreateNotification: boolean,
   ) {
   }
 }

@@ -8,6 +8,7 @@ import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
 import de.sambalmueslie.openbooking.infrastructure.settings.SettingChangeListener
 import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import de.sambalmueslie.openbooking.infrastructure.settings.api.Setting
+import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingChangeRequest
 import io.micronaut.context.annotation.Context
 
 @Context
@@ -21,12 +22,16 @@ class SettingsChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Setting) {
+    override fun handleCreated(obj: Setting, request: SettingChangeRequest) {
         handleChange(obj, "SETTING CREATED")
     }
 
-    override fun handleUpdated(obj: Setting) {
+    override fun handleUpdated(obj: Setting, request: SettingChangeRequest) {
         handleChange(obj, "SETTING UPDATED")
+    }
+
+    override fun handlePatched(obj: Setting) {
+        handleChange(obj, "SETTING PATCHED")
     }
 
     override fun handleDeleted(obj: Setting) {

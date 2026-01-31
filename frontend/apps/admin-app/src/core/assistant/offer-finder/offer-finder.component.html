@@ -6,28 +6,8 @@
     <div class="flex flex-col h-full space-y-4">
       <!-- Filters -->
       <div class="bg-white p-4 rounded-lg shadow-sm space-y-4 flex-shrink-0">
-        <div class="flex gap-2 items-start">
-          <mat-form-field class="flex-1 min-w-[300px] dense-3" subscriptSizing="dynamic" appearance="outline">
-            <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
-            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-              <input matStartDate formControlName="start"
-                     placeholder="{{ 'DAY_INFO.SelectRange.StartDate' | translate }}">
-              <input matEndDate formControlName="end" placeholder="{{ 'DAY_INFO.SelectRange.EndDate' | translate }}">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-          @if (range.valid) {
-            <button
-              mat-icon-button
-              (click)="clearSelection()"
-              class="!text-red-600 hover:!bg-red-50 mt-1"
-              matTooltip="{{ 'OFFER.Action.ClearFilter' | translate }}">
-              <mat-icon>close</mat-icon>
-            </button>
-          }
-        </div>
-        <div>
+        <div class="flex flex-col gap-2">
+          <app-week-select (selectedWeekChanged)="handleWeekSelected($event)" class="flex-1"/>
           <div class="flex gap-2 flex-wrap">
             @for (size of visitorSizes; track size.value) {
               <button
@@ -48,22 +28,12 @@
       <div class="flex-1 overflow-y-auto min-h-0">
         <div class="space-y-4 pr-2">
           @if (!selectedDay()) {
-            <!-- Step 1: Day Selection with Summary -->
-            @for (summary of daySummaries(); track summary.day) {
-              <div
-                class="bg-white p-4 rounded-lg border-2 border-gray-200 transition-all cursor-pointer hover:border-blue-300 hover:shadow-md"
-                (click)="selectDay(summary.day)">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="text-base font-semibold text-gray-900 flex-1">
-                    {{ summary.day | date: 'EEEE, dd.MM.yyyy' }}
-                  </div>
-                  <div class="flex-shrink-0 min-w-[120px]">
-                    <app-offer-assignment [assignment]="summary.assignment"/>
-                  </div>
-                  <mat-icon class="text-gray-400">chevron_right</mat-icon>
-                </div>
-              </div>
-            }
+            <div class="flex flex-col gap-2">
+              <!-- Step 1: Day Selection with Summary -->
+              @for (summary of daySummaries(); track summary.day) {
+                <app-offer-finder-day-entry [data]="summary" (selectDay)="selectDay($event)"/>
+              }
+            </div>
           } @else {
             <!-- Step 2: Offer Selection for Selected Day -->
             <div class="bg-white p-3 rounded-lg border border-gray-300 flex items-center justify-between mb-4">

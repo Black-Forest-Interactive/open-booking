@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
@@ -22,12 +23,16 @@ class BookingChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Booking) {
+    override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
         handleChange(obj, "BOOKING CREATED")
     }
 
-    override fun handleUpdated(obj: Booking) {
+    override fun handleUpdated(obj: Booking, request: BookingChangeRequest) {
         handleChange(obj, "BOOKING UPDATED")
+    }
+
+    override fun handlePatched(obj: Booking) {
+        handleChange(obj, "BOOKING PATCHED")
     }
 
     override fun handleDeleted(obj: Booking) {

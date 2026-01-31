@@ -9,5 +9,6 @@ data class BookingChangeRequest(
     val lang: String,
     val offerId: Long,
     val autoConfirm: Boolean,
-    val ignoreSizeCheck: Boolean
+    val ignoreSizeCheck: Boolean,
+    val noCreateNotification: Boolean
 ) : EntityChangeRequest

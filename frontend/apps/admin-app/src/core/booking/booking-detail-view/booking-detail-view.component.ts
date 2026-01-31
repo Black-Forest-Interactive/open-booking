@@ -21,6 +21,7 @@ import {BookingProcessDialogComponent} from "../booking-process-dialog/booking-p
 import {EMPTY, interval, of, Subject, switchMap, takeUntil} from "rxjs";
 import {VisitorChangeDialogComponent} from "../../visitor/visitor-change-dialog/visitor-change-dialog.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {BookingOfferChangeDialogComponent} from "../booking-offer-change-dialog/booking-offer-change-dialog.component";
 
 
 @Component({
@@ -154,14 +155,26 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
       if (result) {
         this.updating.set(true)
         let current = this.data().booking
-        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true)
+        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true, false)
         this.service.updateBooking(current.id, request).subscribe(() => this.handleUpdateCompleted())
       }
     })
   }
 
   protected onChangeOffer() {
-    alert("Not implemented yet")
+
+    let reference = this.dialog.open(BookingOfferChangeDialogComponent, {
+      data: this.data(),
+      disableClose: true
+    })
+    reference.afterClosed().subscribe(result => {
+      if (result) {
+        this.updating.set(true)
+        let current = this.data().booking
+        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true, false)
+        this.service.updateBooking(current.id, request).subscribe(() => this.handleUpdateCompleted())
+      }
+    })
   }
 
   private handleUpdateCompleted() {

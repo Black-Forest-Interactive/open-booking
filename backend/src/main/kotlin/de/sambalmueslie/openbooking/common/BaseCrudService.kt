@@ -3,7 +3,7 @@ package de.sambalmueslie.openbooking.common
 import org.slf4j.Logger
 
 
-abstract class BaseCrudService<T, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O>>(
+abstract class BaseCrudService<T, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O, R>>(
     private val logger: Logger
 ) : CrudService<T, O, R, L> {
 
@@ -17,12 +17,16 @@ abstract class BaseCrudService<T, O : Entity<T>, R : EntityChangeRequest, L : En
         listeners.remove(listener)
     }
 
-    protected fun notifyCreated(obj: O) {
-        notify { it.handleCreated(obj) }
+    protected fun notifyCreated(obj: O, request: R) {
+        notify { it.handleCreated(obj, request) }
     }
 
-    protected fun notifyUpdated(obj: O) {
-        notify { it.handleUpdated(obj) }
+    protected fun notifyUpdated(obj: O, request: R) {
+        notify { it.handleUpdated(obj, request) }
+    }
+
+    protected fun notifyPatched(obj: O) {
+        notify { it.handlePatched(obj) }
     }
 
     protected fun notifyDeleted(obj: O) {

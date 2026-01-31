@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.visitor.VisitorChangeListener
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -21,12 +22,16 @@ class VisitorChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Visitor) {
+    override fun handleCreated(obj: Visitor, request: VisitorChangeRequest) {
         handleChange(obj, "VISITOR CREATED")
     }
 
-    override fun handleUpdated(obj: Visitor) {
+    override fun handleUpdated(obj: Visitor, request: VisitorChangeRequest) {
         handleChange(obj, "VISITOR UPDATED")
+    }
+
+    override fun handlePatched(obj: Visitor) {
+        handleChange(obj, "VISITOR PATCHED")
     }
 
     override fun handleDeleted(obj: Visitor) {

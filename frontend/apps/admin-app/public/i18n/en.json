@@ -121,6 +121,20 @@
       "DECLINED": "Declined",
       "CANCELLED": "Canceled",
       "EXPIRED": "Expired"
+    },
+    "MESSAGE": {
+      "CONFIRM": {
+        "FAILED": "The booking could not be confirmed. Please try again.",
+        "SUCCESS": "The booking has been successfully confirmed."
+      },
+      "DECLINE": {
+        "FAILED": "The booking could not be declined. Please try again.",
+        "SUCCESS": "The booking has been successfully declined."
+      },
+      "CANCEL": {
+        "FAILED": "The booking could not be cancelled. Please try again.",
+        "SUCCESS": "The booking has been successfully cancelled."
+      }
     }
   },
   "CACHE": {

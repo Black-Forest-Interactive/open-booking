@@ -39,16 +39,10 @@ export class VisitorChangeDialogComponent {
   }
 
   onSave() {
-
-    console.log('Form valid?', this.form.valid);
-    console.log('Form value:', this.form.value);
-    console.log('Visitor control value:', this.form.get('visitor')?.value);
-
     if (!this.form.valid) return
 
     let value = this.form.get('visitor')?.value
     if (!value) return
-    console.log('Updated visitor:', value);
     let visitorRequest = new VisitorChangeRequest(
       value.type,
       value.title!!,

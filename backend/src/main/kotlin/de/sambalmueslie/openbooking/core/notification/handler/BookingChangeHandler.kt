@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.notification.handler
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.notification.NotificationService
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
@@ -23,14 +24,15 @@ class BookingChangeHandler(
         const val TYPE_DENIED = "denied"
         const val TYPE_CANCELED = "canceled"
         const val CONTENT = "content"
+        const val REQUEST = "request"
     }
 
     init {
         source.register(this)
     }
 
-    override fun handleCreated(obj: Booking) {
-        createEvent(obj, NotificationEventType.OBJ_CREATED)
+    override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
+        createEvent(obj, NotificationEventType.OBJ_CREATED, mapOf(Pair(REQUEST, request)))
     }
 
     override fun confirmed(booking: Booking, content: BookingConfirmationContent) {

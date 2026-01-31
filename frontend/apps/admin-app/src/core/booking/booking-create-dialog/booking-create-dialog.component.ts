@@ -1,5 +1,5 @@
-import {Component, inject} from '@angular/core';
-import {Assignment, BookingStatus, OfferInfo, VisitorType} from "@open-booking/core";
+import {Component, inject, signal} from '@angular/core';
+import {Assignment, Booking, BookingStatus, OfferInfo, VisitorType} from "@open-booking/core";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButtonModule} from "@angular/material/button";
@@ -10,7 +10,6 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {BookingCreateComponent} from "../booking-create/booking-create.component";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-booking-create-dialog',
@@ -24,8 +23,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     ReactiveFormsModule,
     TranslatePipe,
     DatePipe,
-    BookingCreateComponent,
-    MatProgressSpinner
+    BookingCreateComponent
   ],
   templateUrl: './booking-create-dialog.component.html',
   styleUrl: './booking-create-dialog.component.scss',
@@ -33,6 +31,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 export class BookingCreateDialogComponent {
   data = inject<{ offer: OfferInfo, assignment: Assignment }>(MAT_DIALOG_DATA)
 
+  booking = signal<Booking | null>(null)
 
   constructor(
     private reference: MatDialogRef<BookingCreateDialogComponent>
