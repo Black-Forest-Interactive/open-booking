@@ -5,6 +5,7 @@ import {
   Guide,
   Label,
   Offer,
+  OfferChangeDurationRequest,
   OfferChangeRequest,
   OfferFindSuitableRequest,
   OfferFindSuitableResponse,
@@ -102,6 +103,11 @@ export class OfferService extends BaseService {
 
   relabelOffer(date: string): Observable<GenericRequestResult> {
     return this.post('relabel/' + date, {})
+  }
+
+
+  changeDuration(request: OfferChangeDurationRequest): Observable<GenericRequestResult> {
+    return this.post('change_duration', request)
   }
 
 

@@ -23,7 +23,7 @@
     [entries]="entries()"
     [reloading]="reloading()"
     (reload)="reload()"
-    [currentUserId]="authService.getPrincipal()?.id ?? ''"
+    [currentUserId]="authService.currentUserId() ?? ''"
     [isSearchActive]="isSearchActive()"
     (selectionWeekChanged)="handleSelectionWeekChanged($event)"
     (selectionDayChanged)="handleSelectionDayChanged($event)"

@@ -5,7 +5,7 @@
       {{ 'OFFER.Action.CreateSingle' | translate }}
     </button>
 
-    <button matButton="outlined" (click)="handleCreateSeries()">
+    <button matButton="outlined" (click)="handleCreateSeries()" [disabled]="true">
       <mat-icon>playlist_add</mat-icon>
       {{ 'OFFER.Action.CreateSeries' | translate }}
     </button>
@@ -13,6 +13,12 @@
     <button matButton="outlined" (click)="handleCreateRange()">
       <mat-icon>format_list_bulleted_add</mat-icon>
       {{ 'OFFER.Action.CreateRange' | translate }}
+    </button>
+
+
+    <button matButton="outlined" (click)="handleChangeDuration()">
+      <mat-icon>more_time</mat-icon>
+      {{ 'OFFER.Action.ChangeDuration' | translate }}
     </button>
 
     <button matIconButton (click)="reload()">
@@ -35,6 +41,7 @@
       [reloading]="reloading()"
       (edit)="handleEdit($event)"
       (delete)="handleDelete($event)"
+      (reload)="reload()"
       (toggleActive)="handleToggleActive($event)"
       (selectionWeekChanged)="handleSelectionWeekChanged($event)"
       (selectionDayChanged)="handleSelectionDayChanged($event)"

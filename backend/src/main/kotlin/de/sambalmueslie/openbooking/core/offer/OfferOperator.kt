@@ -2,13 +2,11 @@ package de.sambalmueslie.openbooking.core.offer
 
 import de.sambalmueslie.openbooking.common.GenericRequestResult
 import de.sambalmueslie.openbooking.common.measureTimeMillisWithReturn
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeDurationRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
 import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
-import de.sambalmueslie.openbooking.core.offer.feature.OfferCreateRangeFeature
-import de.sambalmueslie.openbooking.core.offer.feature.OfferCreateSeriesFeature
-import de.sambalmueslie.openbooking.core.offer.feature.OfferLabelFeature
-import de.sambalmueslie.openbooking.core.offer.feature.OfferRedistributeFeature
+import de.sambalmueslie.openbooking.core.offer.feature.*
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
@@ -20,6 +18,7 @@ class OfferOperator(
     private val createRangeFeature: OfferCreateRangeFeature,
     private val redistributeFeature: OfferRedistributeFeature,
     private val labelFeature: OfferLabelFeature,
+    private val changeDurationFeature: OfferChangeDurationFeature,
 ) {
 
     companion object {
@@ -57,10 +56,23 @@ class OfferOperator(
         }
     }
 
+    fun changeDuration(request: OfferChangeDurationRequest): GenericRequestResult {
+        return process("ChangeDuration") {
+            changeDurationFeature.process(request)
+        }
+    }
+
     private fun process(cmd: String, action: () -> GenericRequestResult): GenericRequestResult {
         if (processing.get()) return GenericRequestResult(false, MSG_OFFER_PROCESSING_FAIL)
         processing.set(true)
-        val (duration, result) = measureTimeMillisWithReturn { action.invoke() }
+        val (duration, result) = measureTimeMillisWithReturn {
+            try {
+                action.invoke()
+            } catch (e: Exception) {
+                logger.error("[$cmd] Processing failed", e)
+                return GenericRequestResult(false, MSG_OFFER_PROCESSING_FAIL)
+            }
+        }
         logger.debug("[$cmd] Processing finished after $duration ms")
         processing.set(false)
         return result

@@ -4,10 +4,7 @@ import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.common.checkPermission
 import de.sambalmueslie.openbooking.core.offer.OfferOperator
 import de.sambalmueslie.openbooking.core.offer.OfferService
-import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
+import de.sambalmueslie.openbooking.core.offer.api.*
 import de.sambalmueslie.openbooking.core.offer.assembler.OfferInfoAssembler
 import de.sambalmueslie.openbooking.core.search.offer.OfferSearchOperator
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
@@ -46,5 +43,6 @@ class OfferGateway(
     fun createSeries(auth: Authentication, request: OfferSeriesRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.createSeries(request) }
     fun createRange(auth: Authentication, request: OfferRangeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.createRange(request) }
     fun redistribute(auth: Authentication, request: OfferRedistributeRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.redistribute(request) }
+    fun changeDuration(auth: Authentication, request: OfferChangeDurationRequest) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.changeDuration(request) }
     fun relabel(auth: Authentication, date: LocalDate) = auth.checkPermission(PERMISSION_OFFER_ADMIN) { operator.relabel(date) }
 }

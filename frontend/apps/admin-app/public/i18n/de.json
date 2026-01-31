@@ -349,7 +349,8 @@
       "Relabel": "Marker neu berechnen",
       "Redistribute": "Verdichten",
       "SelectLabel": "Marker auswählen",
-      "SelectGuide": "Guide auswählen"
+      "SelectGuide": "Guide auswählen",
+      "ChangeDuration": "Dauer ändern"
     },
     "Field": {
       "Active": "Aktiv",

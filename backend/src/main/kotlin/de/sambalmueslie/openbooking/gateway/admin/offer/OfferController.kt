@@ -1,10 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.offer
 
 import de.sambalmueslie.openbooking.common.PatchRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferRangeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferRedistributeRequest
-import de.sambalmueslie.openbooking.core.offer.api.OfferSeriesRequest
+import de.sambalmueslie.openbooking.core.offer.api.*
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import io.micronaut.data.model.Pageable
@@ -67,6 +64,10 @@ class OfferController(private val gateway: OfferGateway) {
 
     @Post("/redistribute")
     fun redistribute(auth: Authentication, @Body request: OfferRedistributeRequest) = gateway.redistribute(auth, request)
+
+
+    @Post("/change_duration")
+    fun changeDuration(auth: Authentication, @Body request: OfferChangeDurationRequest) = gateway.changeDuration(auth, request)
 
     @Post("/relabel/{date}")
     fun relabel(auth: Authentication, date: LocalDate) = gateway.relabel(auth, date)

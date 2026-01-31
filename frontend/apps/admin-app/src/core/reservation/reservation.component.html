@@ -48,7 +48,7 @@
     [entries]="entries()"
     [reloading]="reloading()"
     (reload)="reload()"
-    [currentUserId]="authService.getPrincipal()?.id ?? ''"
+    [currentUserId]="authService.currentUserId() ?? ''"
     class="p-4"
   >
   </app-reservation-content>

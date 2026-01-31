@@ -88,6 +88,17 @@ export class OfferRedistributeRequest {
   }
 }
 
+export class OfferChangeDurationRequest {
+  constructor(
+    public dateFrom: string,
+    public dateTo: string,
+    public timeFrom: string,
+    public timeTo: string,
+    public duration: string,
+  ) {
+  }
+}
+
 export class OfferSearchRequest {
   constructor(
     public fullTextSearch: string,

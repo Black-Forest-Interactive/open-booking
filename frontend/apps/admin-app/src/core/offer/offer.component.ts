@@ -35,6 +35,9 @@ import {
   OfferFeatureCreateSingleDialogComponent
 } from "./offer-feature-create-single-dialog/offer-feature-create-single-dialog.component";
 import {DateTime} from "luxon";
+import {
+  OfferFeatureChangeDurationDialogComponent
+} from "./offer-feature-change-duration-dialog/offer-feature-change-duration-dialog.component";
 
 @Component({
   selector: 'app-offer',
@@ -137,24 +140,30 @@ export class OfferComponent {
   protected handleCreateSingle() {
     this.dialog.open(OfferFeatureCreateSingleDialogComponent, {
       disableClose: true,
-    })
+    }).afterClosed().subscribe(value => this.reload())
   }
 
   protected handleCreateSeries() {
     this.dialog.open(OfferFeatureCreateSeriesDialogComponent, {
       disableClose: true,
-    })
+    }).afterClosed().subscribe(value => this.reload())
   }
 
   protected handleCreateRange() {
     this.dialog.open(OfferFeatureCreateRangeDialogComponent, {
       disableClose: true,
-    })
+    }).afterClosed().subscribe(value => this.reload())
   }
 
+  protected handleChangeDuration() {
+    this.dialog.open(OfferFeatureChangeDurationDialogComponent, {
+      disableClose: true,
+    }).afterClosed().subscribe(value => this.reload())
+  }
 
   protected handleToggleActive(entry: OfferSearchEntry) {
     this.service.setOfferActive(entry.info.offer.id, !entry.info.offer.active).subscribe(value => this.offerResource.reload())
   }
+
 
 }

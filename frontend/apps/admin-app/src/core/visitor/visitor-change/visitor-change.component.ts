@@ -59,9 +59,9 @@ export class VisitorChangeComponent implements ControlValueAccessor, Validator {
       minAge: ['', [Validators.required, Validators.min(0)]],
       maxAge: ['', [Validators.required, Validators.min(0)]],
       name: ['', Validators.required],
-      zip: ['', Validators.required],
-      city: ['', Validators.required],
-      phone: ['', Validators.required],
+      zip: [''],
+      city: [''],
+      phone: [''],
       mail: ['', [Validators.required, Validators.email]],
     })
 

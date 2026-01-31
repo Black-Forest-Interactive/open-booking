@@ -25,9 +25,17 @@ class BookingSearchQueryBuilder : SearchQueryBuilder<BookingSearchRequest> {
                         fuzziness = "AUTO"
                         boost = 2.0
                     },
+                    // Add prefix matching for partial word matches
+                    matchPhrasePrefix(BookingSearchEntryData::name, searchTerm) {
+                        boost = 2.5
+                    },
                     match(BookingSearchEntryData::title, searchTerm) {
                         fuzziness = "AUTO"
                         boost = 2.0
+                    },
+                    // Add prefix matching for partial word matches
+                    matchPhrasePrefix(BookingSearchEntryData::title, searchTerm) {
+                        boost = 2.5
                     },
                     match(BookingSearchEntryData::description, searchTerm) {
                         fuzziness = "AUTO"
