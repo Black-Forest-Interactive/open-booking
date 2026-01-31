@@ -55,6 +55,9 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
   close = output<boolean>()
   back = output<boolean>()
 
+  created = computed(() => this.data().booking.created + 'Z')
+  updated = computed(() => this.data().booking.updated + 'Z')
+
   updating = signal(false)
 
   private editorCriteria = computed(() => ({

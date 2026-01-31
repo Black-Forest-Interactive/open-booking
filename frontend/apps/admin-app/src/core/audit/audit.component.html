@@ -3,7 +3,7 @@
   <table mat-table [dataSource]="entries()">
     <ng-container matColumnDef="timestamp">
       <th mat-header-cell *matHeaderCellDef>{{ 'AUDIT.Field.Timestamp.Title' | translate }}</th>
-      <td mat-cell *matCellDef="let entry">{{ entry.timestamp | date:'medium' }}</td>
+      <td mat-cell *matCellDef="let entry">{{ getTimestamp(entry) | date:'medium' }}</td>
     </ng-container>
     <ng-container matColumnDef="user">
       <th mat-header-cell *matHeaderCellDef>{{ 'AUDIT.Field.User.Title' | translate }}</th>
