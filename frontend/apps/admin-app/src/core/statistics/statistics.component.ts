@@ -39,6 +39,7 @@ export class StatisticsComponent {
   labelTotalConfirmedSpace = toSignal(this.translate.get('STATISTICS.TotalConfirmedSpace'))
   labelTotalPendingSpace = toSignal(this.translate.get('STATISTICS.TotalPendingSpace'))
 
+
   private statisticsResource = resource({
     loader: param => toPromise(this.service.getStatistics(), param.abortSignal)
   })
@@ -238,13 +239,14 @@ export class StatisticsComponent {
     const confirmedSpace = data.spaceByDay.map(d => d.confirmedSpace)
     const pendingSpace = data.spaceByDay.map(d => d.pendingSpace)
     const availableSpace = data.spaceByDay.map(d => d.availableSpace)
+    const deactivatedSpace = data.spaceByDay.map(d => d.totalSpace - d.availableSpace - d.confirmedSpace - d.pendingSpace)
 
     this.spaceByDayChartOptions = {
       tooltip: {
         trigger: 'axis'
       },
       legend: {
-        data: ['Confirmed', 'Pending', 'Available']
+        data: ['Total', 'Deactivated', 'Confirmed', 'Pending', 'Available']
       },
       xAxis: {
         type: 'category',
@@ -281,6 +283,12 @@ export class StatisticsComponent {
           type: 'bar',
           stack: 'total',
           data: availableSpace,
+        },
+        {
+          name: 'Deactivated',
+          type: 'bar',
+          stack: 'total',
+          data: deactivatedSpace,
         }
       ]
     };
