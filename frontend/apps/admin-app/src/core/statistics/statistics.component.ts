@@ -244,7 +244,7 @@ export class StatisticsComponent {
         trigger: 'axis'
       },
       legend: {
-        data: ['Total', 'Confirmed', 'Pending', 'Available']
+        data: ['Confirmed', 'Pending', 'Available']
       },
       xAxis: {
         type: 'category',
@@ -262,7 +262,6 @@ export class StatisticsComponent {
         {
           name: 'Total',
           type: 'bar',
-          stack: 'total',
           data: totalSpace,
         },
         {

@@ -8,58 +8,53 @@
       }
     </button>
   </div>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 p-4">
-      <!-- Total Active Offer Space -->
-      <mat-card class="shadow-sm">
-        <div class="p-4">
-          <div class="text-sm font-normal text-gray-600 mb-2">
-            {{ 'STATISTICS.TotalActiveOfferSpace' | translate }}
-          </div>
-          <div class="text-3xl font-semibold text-blue-600">
-            {{ totalActiveOfferSpace() }}
-          </div>
-        </div>
-      </mat-card>
-
-      <!-- Total Deactivated Offer Space -->
-      <mat-card class="shadow-sm">
-        <div class="p-4">
-          <div class="text-sm font-normal text-gray-600 mb-2">
-            {{ 'STATISTICS.TotalDeactivatedOfferSpace' | translate }}
-          </div>
-          <div class="text-3xl font-semibold text-gray-600">
-            {{ totalDeactivatedOfferSpace() }}
-          </div>
-        </div>
-      </mat-card>
-
-      <!-- Total Confirmed Space -->
-      <mat-card class="shadow-sm">
-        <div class="p-4">
-          <div class="text-sm font-normal text-gray-600 mb-2">
-            {{ 'STATISTICS.TotalConfirmedSpace' | translate }}
-          </div>
-          <div class="text-3xl font-semibold text-green-600">
-            {{ totalConfirmedSpace() }}
-          </div>
-        </div>
-      </mat-card>
-
-      <!-- Total Pending Space -->
-      <mat-card class="shadow-sm">
-        <div class="p-4">
-          <div class="text-sm font-normal text-gray-600 mb-2">
-            {{ 'STATISTICS.TotalPendingSpace' | translate }}
-          </div>
-          <div class="text-3xl font-semibold text-orange-600">
-            {{ totalPendingSpace() }}
-          </div>
-        </div>
-      </mat-card>
-    </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-6 p-4">
+    <!-- Total Active Offer Space -->
     <mat-card class="shadow-sm">
-      <div echarts [options]="totalChartOptions" class="h-96"></div>
+      <div class="p-4">
+        <div class="text-sm font-normal text-gray-600 mb-2">
+          {{ 'STATISTICS.TotalActiveOfferSpace' | translate }}
+        </div>
+        <div class="text-3xl font-semibold text-blue-600">
+          {{ totalActiveOfferSpace() }}
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Total Deactivated Offer Space -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-sm font-normal text-gray-600 mb-2">
+          {{ 'STATISTICS.TotalDeactivatedOfferSpace' | translate }}
+        </div>
+        <div class="text-3xl font-semibold text-gray-600">
+          {{ totalDeactivatedOfferSpace() }}
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Total Confirmed Space -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-sm font-normal text-gray-600 mb-2">
+          {{ 'STATISTICS.TotalConfirmedSpace' | translate }}
+        </div>
+        <div class="text-3xl font-semibold text-green-600">
+          {{ totalConfirmedSpace() }}
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Total Pending Space -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-sm font-normal text-gray-600 mb-2">
+          {{ 'STATISTICS.TotalPendingSpace' | translate }}
+        </div>
+        <div class="text-3xl font-semibold text-orange-600">
+          {{ totalPendingSpace() }}
+        </div>
+      </div>
     </mat-card>
   </div>
 
