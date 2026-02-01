@@ -20,6 +20,7 @@
   },
   "MENU": {
     "Title": "Menü",
+    "Home": "Startseite",
     "Dashboard": "Dashboard",
     "Booking": "Buchungen",
     "Reservation": "Reservierungen",
@@ -40,7 +41,8 @@
       "Offers": "Angebotsverwaltung",
       "Settings": "Einstellungen & Vorlagen",
       "Administration": "Verwaltung"
-    }
+    },
+    "Statistics": "Statistiken"
   },
   "COMMON": {
     "Created": "Erstellt",
@@ -87,7 +89,8 @@
       "Edit": "Buchung bearbeiten",
       "Finder": "Terminfinder",
       "EditVisitor": "Besucherdaten bearbeiten",
-      "ChangeOffer": "Termin ändern"
+      "ChangeOffer": "Termin ändern",
+      "ConfirmMail": "Mailadresse bestätigen"
     },
     "Create": {
       "Action": {
@@ -208,7 +211,8 @@
       }
     },
     "Filter": {
-      "HideNotMatching": "Unpassende Termine filtern"
+      "HideNotMatching": "Unpassende Termine filtern",
+      "MailConfirmed": "Mail bestätigt"
     },
     "MESSAGE": {
       "CONFIRM": {
@@ -741,5 +745,20 @@
         "Mobile": "Handy"
       }
     }
+  },
+  "STATISTICS": {
+    "TotalActiveOfferSpace": "Gesamtkapazität aktiver Angebote",
+    "TotalDeactivatedOfferSpace": "Gesamtkapazität deaktivierter Angebote",
+    "TotalConfirmedSpace": "Gesamtkapazität bestätigter Buchungen",
+    "TotalPendingSpace": "Gesamtkapazität offener Buchungen",
+    "BookingStatusDistribution": "Verteilung Buchungsstatus",
+    "VerificationStatusDistribution": "Verteilung Verifizierungsstatus",
+    "VisitorTypeDistribution": "Verteilung Besuchertypen",
+    "SpaceUtilization": "Kapazitätsauslastung",
+    "AvgConfirmedSpace": "Ø Bestätigte Plätze",
+    "AvgPendingSpace": "Ø Offene Plätze",
+    "AvgAvailableSpace": "Ø Verfügbare Plätze",
+    "OffersByDay": "Angebote pro Tag",
+    "SpaceByDay": "Plätze pro Tag"
   }
 }

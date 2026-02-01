@@ -482,8 +482,8 @@
   "VISITOR": {
     "MailConfirmation": {
       "Failed": {
-        "Message": "Deine E-Mail-Adresse wurde nicht bestätigt. Bitte kontaktiere uns.",
-        "Title": "Leider hat etwas nicht funktionert!"
+        "Message": "Deine E-Mail-Adresse wurde bereits erfolgreich bestätigt.",
+        "Title": "E-Mail bereits bestätigt"
       },
       "Success": {
         "Message": "Deine Anfrage wurde erfolgreich bestätigt.",

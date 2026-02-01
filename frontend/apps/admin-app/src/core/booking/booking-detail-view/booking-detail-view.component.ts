@@ -1,6 +1,7 @@
-import {Component, computed, input, OnDestroy, OnInit, output, resource, signal, untracked} from '@angular/core';
+import {Component, computed, input, model, OnDestroy, OnInit, output, resource, signal, untracked} from '@angular/core';
 import {
   BookingStatusComponent,
+  GenericRequestResult,
   toPromise,
   VerificationStatusComponent,
   VisitorTypeComponent
@@ -8,20 +9,29 @@ import {
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
-import {BookingChangeRequest, BookingConfirmationContent, BookingDetails, OfferReference} from "@open-booking/core";
+import {
+  BookingChangeRequest,
+  BookingConfirmationContent,
+  BookingDetails,
+  OfferReference,
+  VerificationStatus
+} from "@open-booking/core";
 import {VisitorTitleComponent} from "../../visitor/visitor-title/visitor-title.component";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {MatDivider} from "@angular/material/list";
 import {DatePipe} from "@angular/common";
 import {OfferReferenceComponent} from "../../offer/offer-reference/offer-reference.component";
 import {BookingService} from "@open-booking/admin";
 import {MatDialog} from "@angular/material/dialog";
 import {BookingProcessDialogComponent} from "../booking-process-dialog/booking-process-dialog.component";
-import {EMPTY, interval, of, Subject, switchMap, takeUntil} from "rxjs";
+import {EMPTY, interval, of, Subject, switchMap, takeUntil, tap} from "rxjs";
 import {VisitorChangeDialogComponent} from "../../visitor/visitor-change-dialog/visitor-change-dialog.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {BookingOfferChangeDialogComponent} from "../booking-offer-change-dialog/booking-offer-change-dialog.component";
+import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
+import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
+import {HotToastService} from "@ngxpert/hot-toast";
 
 
 @Component({
@@ -40,6 +50,8 @@ import {BookingOfferChangeDialogComponent} from "../booking-offer-change-dialog/
     DatePipe,
     OfferReferenceComponent,
     MatProgressSpinner,
+    VisitorConfirmComponent,
+    EditorInfoComponent,
   ],
   templateUrl: './booking-detail-view.component.html',
   styleUrl: './booking-detail-view.component.scss',
@@ -48,7 +60,7 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
 
   data = input.required<BookingDetails>()
   showBackButton = input(false)
-  editMode = input(false)
+  editMode = model(false)
   reloading = input.required()
 
   reload = output<boolean>()
@@ -78,7 +90,7 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
   editor = computed(() => this.editorResource.value())
   private unsub = new Subject<void>()
 
-  constructor(private service: BookingService, private dialog: MatDialog) {
+  constructor(private service: BookingService, private translate: TranslateService, private toast: HotToastService, private dialog: MatDialog) {
 
   }
 
@@ -145,7 +157,8 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
         }
         let content = result as BookingConfirmationContent
         return this.service.declineBooking(this.data().booking.id, content)
-      })
+      }),
+      tap(value => this.handleGenericRequestResult(value))
     ).subscribe(() => this.handleUpdateCompleted())
   }
 
@@ -183,5 +196,20 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
   private handleUpdateCompleted() {
     this.updating.set(false)
     this.reload.emit(true)
+  }
+
+  protected readonly VerificationStatus = VerificationStatus;
+
+
+  protected onEditMode() {
+    this.editMode.set(true)
+  }
+
+  private handleGenericRequestResult(value: GenericRequestResult) {
+    if (value.success) {
+      this.translate.get(value.msg).subscribe(value => this.toast.success(value))
+    } else {
+      this.translate.get(value.msg).subscribe(value => this.toast.error(value))
+    }
   }
 }

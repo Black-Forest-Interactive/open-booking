@@ -1,0 +1,164 @@
+<app-main-content [title]="'MENU.Statistics' | translate">
+  <div class="flex gap-2 flex-auto items-center" actions>
+    <button matIconButton (click)="reload()">
+      @if (reloading()) {
+        <mat-spinner [diameter]="18"></mat-spinner>
+      } @else {
+        <mat-icon class="!text-gray-800">refresh</mat-icon>
+      }
+    </button>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 p-4">
+      <!-- Total Active Offer Space -->
+      <mat-card class="shadow-sm">
+        <div class="p-4">
+          <div class="text-sm font-normal text-gray-600 mb-2">
+            {{ 'STATISTICS.TotalActiveOfferSpace' | translate }}
+          </div>
+          <div class="text-3xl font-semibold text-blue-600">
+            {{ totalActiveOfferSpace() }}
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Total Deactivated Offer Space -->
+      <mat-card class="shadow-sm">
+        <div class="p-4">
+          <div class="text-sm font-normal text-gray-600 mb-2">
+            {{ 'STATISTICS.TotalDeactivatedOfferSpace' | translate }}
+          </div>
+          <div class="text-3xl font-semibold text-gray-600">
+            {{ totalDeactivatedOfferSpace() }}
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Total Confirmed Space -->
+      <mat-card class="shadow-sm">
+        <div class="p-4">
+          <div class="text-sm font-normal text-gray-600 mb-2">
+            {{ 'STATISTICS.TotalConfirmedSpace' | translate }}
+          </div>
+          <div class="text-3xl font-semibold text-green-600">
+            {{ totalConfirmedSpace() }}
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Total Pending Space -->
+      <mat-card class="shadow-sm">
+        <div class="p-4">
+          <div class="text-sm font-normal text-gray-600 mb-2">
+            {{ 'STATISTICS.TotalPendingSpace' | translate }}
+          </div>
+          <div class="text-3xl font-semibold text-orange-600">
+            {{ totalPendingSpace() }}
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <mat-card class="shadow-sm">
+      <div echarts [options]="totalChartOptions" class="h-96"></div>
+    </mat-card>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="grid grid-cols-1 gap-4 p-4">
+    <!-- Space by Day -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.SpaceByDay' | translate }}
+        </div>
+        <div echarts [options]="spaceByDayChartOptions" class="h-96"></div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 p-4">
+    <!-- Booking Status Distribution -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.BookingStatusDistribution' | translate }}
+        </div>
+        <div echarts [options]="bookingStatusChartOptions" class="h-80"></div>
+      </div>
+    </mat-card>
+
+    <!-- Verification Status Distribution -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.VerificationStatusDistribution' | translate }}
+        </div>
+        <div echarts [options]="verificationStatusChartOptions" class="h-80"></div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Charts Row 3 -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 p-4">
+    <!-- Visitor Type Distribution -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.VisitorTypeDistribution' | translate }}
+        </div>
+        <div echarts [options]="visitorTypeChartOptions" class="h-80"></div>
+      </div>
+    </mat-card>
+
+    <!-- Space Utilization -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.SpaceUtilization' | translate }}
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-normal">{{ 'STATISTICS.AvgConfirmedSpace' | translate }}</span>
+              <span class="text-sm font-normal">{{ avgConfirmedSpace() | number:'1.0-1' }}</span>
+            </div>
+            <mat-progress-bar mode="determinate" [value]="getUtilizationPercentage(data()!!, 'confirmed')"
+                              color="primary"></mat-progress-bar>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-normal">{{ 'STATISTICS.AvgPendingSpace' | translate }}</span>
+              <span class="text-sm font-normal">{{ avgPendingSpace() | number:'1.0-1' }}</span>
+            </div>
+            <mat-progress-bar mode="determinate" [value]="getUtilizationPercentage(data()!!,'pending')"
+                              color="accent"></mat-progress-bar>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-normal">{{ 'STATISTICS.AvgAvailableSpace' | translate }}</span>
+              <span class="text-sm font-normal">{{ avgAvailableSpace() | number:'1.0-1' }}</span>
+            </div>
+            <mat-progress-bar mode="determinate" [value]="getUtilizationPercentage(data()!!,'available')"
+                              color="warn"></mat-progress-bar>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Charts Row 4 -->
+  <div class="grid grid-cols-1 gap-4 mb-6 p-4">
+    <!-- Offers by Day -->
+    <mat-card class="shadow-sm">
+      <div class="p-4">
+        <div class="text-lg font-medium mb-4">
+          {{ 'STATISTICS.OffersByDay' | translate }}
+        </div>
+        <div echarts [options]="offersByDayChartOptions" class="h-80"></div>
+      </div>
+    </mat-card>
+  </div>
+
+
+</app-main-content>

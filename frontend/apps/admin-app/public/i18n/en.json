@@ -40,7 +40,8 @@
       "Offers": "Offers",
       "Settings": "Settings & Templates",
       "Administration": "Administrative Tasks"
-    }
+    },
+    "Statistics": "Statistics"
   },
   "APP": {
     "Title": "Open Booking",
@@ -642,5 +643,20 @@
       "Phone": "Phone",
       "Mobile": "Mobile"
     }
+  },
+  "STATISTICS": {
+    "TotalActiveOfferSpace": "Total Active Offer Space",
+    "TotalDeactivatedOfferSpace": "Total Deactivated Offer Space",
+    "TotalConfirmedSpace": "Total Confirmed Space",
+    "TotalPendingSpace": "Total Pending Space",
+    "BookingStatusDistribution": "Booking Status Distribution",
+    "VerificationStatusDistribution": "Verification Status Distribution",
+    "VisitorTypeDistribution": "Visitor Type Distribution",
+    "SpaceUtilization": "Space Utilization",
+    "AvgConfirmedSpace": "Avg. Confirmed Space",
+    "AvgPendingSpace": "Avg. Pending Space",
+    "AvgAvailableSpace": "Avg. Available Space",
+    "OffersByDay": "Offers by Day",
+    "SpaceByDay": "Space by Day"
   }
 }

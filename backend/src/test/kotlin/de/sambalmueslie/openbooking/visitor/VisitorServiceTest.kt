@@ -29,7 +29,7 @@ internal class VisitorServiceTest : BaseServiceTest() {
 
         var reference = Visitor(
             result.id, createRequest.type, createRequest.title, createRequest.description, createRequest.size, createRequest.minAge, createRequest.maxAge, createRequest.name,
-            createRequest.address, createRequest.phone, createRequest.email, Verification(VerificationStatus.UNCONFIRMED, null)
+            createRequest.address, createRequest.phone, createRequest.email, Verification(VerificationStatus.UNCONFIRMED, null), now, null
         )
         assertEquals(reference, result)
 
@@ -64,7 +64,8 @@ internal class VisitorServiceTest : BaseServiceTest() {
             updateRequest.address,
             updateRequest.phone,
             updateRequest.email,
-            Verification(VerificationStatus.UNCONFIRMED, null)
+            Verification(VerificationStatus.UNCONFIRMED, null),
+            now, null
         )
         assertEquals(reference, result)
 

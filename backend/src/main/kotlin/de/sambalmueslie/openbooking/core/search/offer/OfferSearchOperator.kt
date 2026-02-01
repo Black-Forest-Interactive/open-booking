@@ -1,9 +1,7 @@
 package de.sambalmueslie.openbooking.core.search.offer
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.jillesvangurp.ktsearch.SearchResponse
-import com.jillesvangurp.ktsearch.ids
-import com.jillesvangurp.ktsearch.total
+import com.jillesvangurp.ktsearch.*
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
@@ -28,8 +26,12 @@ import de.sambalmueslie.openbooking.core.search.offer.db.OfferSearchEntryData
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.jsonPrimitive
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import kotlin.system.measureTimeMillis
 
 @Singleton
@@ -233,6 +235,84 @@ open class OfferSearchOperator(
             .map { OfferFindSuitableResponseEntry(it.key, it.value.sortedBy { v -> v.offer.start }) }
             .sortedBy { it.day }
         return OfferFindSuitableResponse(result)
+    }
+
+    fun getOfferStatistics(): OfferStatistics {
+        val response = search(queryBuilder.getOfferStatistics())
+
+        // Parse active offers total space
+        val activeOffersJson = response.aggregations?.get("active_offers") as? JsonObject
+        val totalAvailableSpaceJson = activeOffersJson?.get("total_available_space") as? JsonObject
+        val totalActiveOfferSpace = totalAvailableSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+        // Parse inactive offers total space
+        val inactiveOffersJson = response.aggregations?.get("inactive_offers") as? JsonObject
+        val totalDeactivatedSpaceJson = inactiveOffersJson?.get("total_deactivated_space") as? JsonObject
+        val totalDeactivatedOfferSpace = totalDeactivatedSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+        // Parse offers by day
+        val offersByDay = response.aggregations
+            .dateHistogramResult("offers_by_day")
+            .parsedBuckets.map { bucket ->
+                DailyOfferStats(
+                    date = ZonedDateTime.parse(bucket.parsed.keyAsString).toLocalDate(),
+                    count = bucket.parsed.docCount
+                )
+            }
+
+        // Parse space by day
+        val spaceByDay = response.aggregations
+            .dateHistogramResult("space_by_day")
+            .parsedBuckets.map { bucket ->
+                val totalSpaceJson = bucket.aggregations["total_space"] as? JsonObject
+                val confirmedSpaceJson = bucket.aggregations["confirmed_space"] as? JsonObject
+                val pendingSpaceJson = bucket.aggregations["pending_space"] as? JsonObject
+                val availableSpaceJson = bucket.aggregations["available_space"] as? JsonObject
+
+                DailySpaceStats(
+                    date = ZonedDateTime.parse(bucket.parsed.keyAsString).toLocalDate(),
+                    totalSpace = totalSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L,
+                    confirmedSpace = confirmedSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L,
+                    pendingSpace = pendingSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L,
+                    availableSpace = availableSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+                )
+            }
+
+        // Parse simple aggregations
+        val avgConfirmedJson = response.aggregations?.get("avg_confirmed_space") as? JsonObject
+        val avgConfirmedSpace = avgConfirmedJson?.get("value")?.jsonPrimitive?.double ?: 0.0
+
+        val avgPendingJson = response.aggregations?.get("avg_pending_space") as? JsonObject
+        val avgPendingSpace = avgPendingJson?.get("value")?.jsonPrimitive?.double ?: 0.0
+
+        val avgAvailableJson = response.aggregations?.get("avg_available_space") as? JsonObject
+        val avgAvailableSpace = avgAvailableJson?.get("value")?.jsonPrimitive?.double ?: 0.0
+
+        val totalMaxSpaceJson = response.aggregations?.get("total_max_space") as? JsonObject
+        val totalMaxSpace = totalMaxSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+        val totalConfirmedSpaceJson = response.aggregations?.get("total_confirmed_space") as? JsonObject
+        val totalConfirmedSpace = totalConfirmedSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+        val totalPendingSpaceJson = response.aggregations?.get("total_pending_space") as? JsonObject
+        val totalPendingSpace = totalPendingSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+//        val totalAvailableSpaceJson = response.aggregations?.get("total_available_space") as? JsonObject
+        val totalAvailableSpace = totalAvailableSpaceJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+
+        return OfferStatistics(
+            totalActiveOfferSpace = totalActiveOfferSpace,
+            totalDeactivatedOfferSpace = totalDeactivatedOfferSpace,
+            offersByDay = offersByDay,
+            spaceByDay = spaceByDay,
+            avgConfirmedSpace = avgConfirmedSpace,
+            avgPendingSpace = avgPendingSpace,
+            avgAvailableSpace = avgAvailableSpace,
+            totalMaxSpace = totalMaxSpace,
+            totalConfirmedSpace = totalConfirmedSpace,
+            totalPendingSpace = totalPendingSpace,
+            totalAvailableSpace = totalAvailableSpace
+        )
     }
 
 }

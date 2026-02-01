@@ -21,6 +21,12 @@
         <h4 class="text-sm font-semibold text-gray-500 mb-2">{{ 'MENU.Group.DailyBusiness' | translate }}</h4>
       }
       <div class="flex flex-col gap-2">
+        <a routerLink="./statistics" routerLinkActive="active-nav-link" class="menu-link">
+          <mat-icon>analytics</mat-icon>
+          @if (!collapsed()) {
+            <span>{{ 'MENU.Statistics' | translate }}</span>
+          }
+        </a>
         <a routerLink="./dashboard" routerLinkActive="active-nav-link" class="menu-link">
           <mat-icon>dashboard</mat-icon>
           @if (!collapsed()) {

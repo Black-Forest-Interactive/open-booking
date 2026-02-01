@@ -4,14 +4,14 @@ import de.sambalmueslie.openbooking.error.InsufficientPermissionsException
 import io.micronaut.security.authentication.Authentication
 
 
-fun <T> Authentication.checkPermission(permission: String, function: () -> T): T {
-    if (roles.contains(permission)) return function.invoke()
+fun <T> Authentication.checkPermission(vararg permission: String, function: () -> T): T {
+    if (permission.any { roles.contains(it) }) return function.invoke()
     val resourceAccess = attributes["resource_access"] as? Map<String, *>
     val clientAccess = resourceAccess?.get("admin-app") as? Map<String, *>
     val clientRoles = clientAccess?.get("roles") as? List<String>
 
     if (clientRoles != null) {
-        if (clientRoles.contains(permission)) return function.invoke()
+        if (permission.any { clientRoles.contains(it) }) return function.invoke()
     }
     throw InsufficientPermissionsException("No permission to access resource")
 }

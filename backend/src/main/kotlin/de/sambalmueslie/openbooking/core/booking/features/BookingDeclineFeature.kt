@@ -15,8 +15,11 @@ class BookingDeclineFeature(
         private val logger = LoggerFactory.getLogger(BookingDeclineFeature::class.java)
     }
 
+    private val validStates = listOf(BookingStatus.PENDING, BookingStatus.CONFIRMED)
+
     fun decline(data: BookingData, content: BookingConfirmationContent): Boolean {
-        if (data.status != BookingStatus.PENDING) return false
+        if (!validStates.contains(data.status)) return false
+
         data.update(BookingStatus.DECLINED, timeProvider.now())
         return true
     }

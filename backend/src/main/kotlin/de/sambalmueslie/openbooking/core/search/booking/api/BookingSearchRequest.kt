@@ -9,4 +9,5 @@ data class BookingSearchRequest(
     val status: List<BookingStatus>,
     val from: LocalDate?,
     val to: LocalDate?,
+    val onlyMailConfirmed: Boolean?
 ) : SearchRequest

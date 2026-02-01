@@ -141,3 +141,4 @@ export interface OfferFindSuitableResponseEntry {
   day: string,
   entries: OfferReference[]
 }
+

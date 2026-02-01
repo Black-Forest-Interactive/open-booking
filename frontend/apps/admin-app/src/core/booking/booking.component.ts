@@ -48,9 +48,9 @@ export class BookingComponent {
 
   request = computed(() =>
     (this.isSearchActive()) ?
-      new BookingSearchRequest(this.fullTextSearch(), [], '', '')
+      new BookingSearchRequest(this.fullTextSearch(), [], '', '', null)
       :
-      new BookingSearchRequest(this.fullTextSearch(), [], this.dateFrom(), this.dateTo())
+      new BookingSearchRequest(this.fullTextSearch(), [], this.dateFrom(), this.dateTo(), null)
   )
 
   private bookingsCriteria = computed(() => ({

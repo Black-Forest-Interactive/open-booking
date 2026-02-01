@@ -17,13 +17,22 @@
               <lib-verification-status [data]="data().visitor.verification"/>
               <lib-visitor-type [data]="data().visitor.type" class="flex-shrink-0"/>
             </div>
-            @if (!showBackButton()) {
-              <div>
+            <div class="flex justify-center">
+              @if (!editMode()) {
+                <button matButton="tonal" (click)="onEditMode()">
+                  <mat-icon>edit</mat-icon>
+                  {{ 'BOOKING.Action.Edit' | translate }}
+                </button>
+              } @else {
+                <app-editor-info [editor]="editor()!!"/>
+              }
+
+              @if (!showBackButton()) {
                 <button mat-icon-button (click)="close.emit(true)">
                   <mat-icon>close</mat-icon>
                 </button>
-              </div>
-            }
+              }
+            </div>
           </div>
         </div>
 
@@ -114,6 +123,18 @@
                 </div>
               </div>
             </div>
+            <div class="flex-1"></div>
+            <div class="flex gap-2 px-4 pb-4">
+              @if (editMode()) {
+                <button matButton="outlined" (click)="onEditVisitor()" [disabled]="updating()">
+                  <mat-icon>edit</mat-icon>
+                  {{ 'BOOKING.Action.EditVisitor' | translate }}
+                </button>
+              }
+              @if (data().visitor.verification.status !== VerificationStatus.CONFIRMED) {
+                <app-visitor-confirm [data]="data().visitor" (changed)="this.reload.emit(true)"/>
+              }
+            </div>
           </div>
 
           <!-- Offers & Actions -->
@@ -126,31 +147,22 @@
                 [editMode]="editMode()"
                 (confirm)="onConfirm($event)"
                 (decline)="onDecline($event)"
+                (changeOffer)="onChangeOffer()"
               />
+
             </div>
           </div>
         </div>
 
         <!-- Card Footer --->
         <div class="flex flex-col gap-3">
-          <div class="flex gap-2 justify-between  px-5">
-            <button matButton="outlined" (click)="onEditVisitor()" [disabled]="updating()">
-              <mat-icon>edit</mat-icon>
-              {{ 'BOOKING.Action.EditVisitor' | translate }}
-            </button>
-
-            <button matButton="outlined" (click)="onChangeOffer()" [disabled]="updating()">
-              <mat-icon>swap_horiz</mat-icon>
-              {{ 'BOOKING.Action.ChangeOffer' | translate }}
-            </button>
-          </div>
           <div
             class="flex gap-4 text-xs text-gray-500 text-center justify-between bg-white border-t border-gray-200 rounded-b-xl px-4 py-2">
             <div class="flex gap-1">
               <div class="font-medium">{{ 'COMMON.Created' | translate }}</div>
               <div>{{ created() | date:'short' }}</div>
             </div>
-            @if (updated()) {
+            @if (updated() !== 'nullZ') {
               <div class="flex gap-1">
                 <div class="font-medium">{{ 'COMMON.Updated' | translate }}</div>
                 <div>{{ updated() | date:'short' }}</div>
