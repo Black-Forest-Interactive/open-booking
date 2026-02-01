@@ -18,10 +18,13 @@ export class OfferBookingCapacityComponent {
   assignment = input.required<Assignment>()
   visitorSize = input.required<number>()
   status = input.required<BookingStatus>()
+  sizeUpdate = input<boolean>(false)
+  hideImpactInfo = input<boolean>(false)
 
   // Computed properties
   active = computed(() => this.offer().active)
   maxPersons = computed(() => this.offer().maxPersons)
+
   confirmedSpace = computed(() => this.assignment().confirmedSpace)
   pendingSpace = computed(() => this.assignment().pendingSpace)
   availableSpace = computed(() => this.assignment().availableSpace)
@@ -34,19 +37,15 @@ export class OfferBookingCapacityComponent {
       return Math.max(0, this.pendingSpace() - this.visitorSize())
     }
     return this.pendingSpace()
-  });
+  })
 
   usedCapacity = computed(() => this.confirmedSpace() + this.pendingSpace())
 
   confirmedPercentage = computed(() => (this.confirmedSpace() / this.maxPersons()) * 100)
-
-  otherPendingPercentage = computed(() => (this.otherPendingSpace() / this.maxPersons()) * 100)
-
-  visitorPercentage = computed(() => (this.visitorSize() / this.maxPersons()) * 100)
-
+  pendingPercentage = computed(() => (this.otherPendingSpace() / this.maxPersons()) * 100)
+  highlightPendingPercentage = computed(() => (this.visitorSize() / this.maxPersons()) * 100)
   availablePercentage = computed(() => (this.availableSpace() / this.maxPersons()) * 100)
 
-  remainingAfterConfirmation = computed(() => this.availableSpace())
-
-  hasCapacity = computed(() => this.availableSpace() >= 0)
+  remainingAfterConfirmation = computed(() => (this.sizeUpdate()) ? this.availableSpace() - this.visitorSize() : this.availableSpace())
+  hasCapacity = computed(() => this.remainingAfterConfirmation() >= 0)
 }

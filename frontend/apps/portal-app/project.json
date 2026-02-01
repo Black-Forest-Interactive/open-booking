@@ -66,7 +66,8 @@
       },
       "defaultConfiguration": "development",
       "options": {
-        "proxyConfig": "proxy.conf.json"
+        "proxyConfig": "proxy.conf.json",
+        "port": 4201
       }
     },
     "extract-i18n": {
@@ -93,7 +94,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "portal-app:build",
-        "port": 4200,
+        "port": 4201,
         "staticFilePath": "dist/apps/portal-app/browser",
         "spa": true
       }

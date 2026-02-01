@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 interface OfferRepository : PageableRepository<OfferData, Long>, JpaSpecificationExecutor<OfferData> {
 
     fun findByStartGreaterThanEqualsAndFinishLessThanEqualsOrderByStart(start: LocalDateTime, end: LocalDateTime): List<OfferData>
+    fun findByStartGreaterThanEqualsAndStartLessThanEquals(start: LocalDateTime, end: LocalDateTime, pageable: Pageable): Page<OfferData>
     fun findOneByStartGreaterThanEqualsOrderByStart(start: LocalDateTime): OfferData?
     fun findOneByStartGreaterThanEqualsOrderByStartDesc(start: LocalDateTime): OfferData?
     fun findOneByStartLessThanEqualsOrderByStartDesc(start: LocalDateTime): OfferData?

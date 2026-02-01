@@ -29,7 +29,7 @@ internal class OfferServiceTest : BaseServiceTest() {
         val createRequest = OfferChangeRequest(s1, f1, 20, true, null, null)
         var result = service.create(createRequest)
 
-        var reference = Offer(result.id, createRequest.start, createRequest.finish, createRequest.maxPersons, createRequest.active)
+        var reference = Offer(result.id, createRequest.start, createRequest.finish, createRequest.maxPersons, createRequest.active, now, null)
         assertEquals(reference, result)
 
         // read
@@ -47,7 +47,8 @@ internal class OfferServiceTest : BaseServiceTest() {
             updateRequest.start,
             updateRequest.finish,
             updateRequest.maxPersons,
-            updateRequest.active
+            updateRequest.active,
+            now, null
         )
         assertEquals(reference, result)
 

@@ -5,6 +5,8 @@
   (search)="handleSearch($event)"
 >
   <div class="flex gap-2 flex-auto items-center" actions>
+    <mat-slide-toggle [(ngModel)]="filter.onlyMailConfirmed">{{ 'BOOKING.Filter.MailConfirmed' |translate }}
+    </mat-slide-toggle>
     <!-- Date Range Filter -->
     <mat-form-field class="flex-1 !min-w-128 dense-3" subscriptSizing="dynamic" appearance="outline">
       <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
@@ -25,7 +27,7 @@
     </mat-form-field>
 
     <!-- Clear Filters Button -->
-    @if (hasActiveFilters()) {
+    @if (filter.hasActiveFilters()) {
       <button
         mat-stroked-button
         color="primary"
@@ -36,7 +38,7 @@
     }
 
     <button matIconButton (click)="reload()">
-      @if (reloading()) {
+      @if (filter.reloading()) {
         <mat-spinner [diameter]="18"></mat-spinner>
       } @else {
         <mat-icon class="!text-gray-800">refresh</mat-icon>
@@ -45,22 +47,22 @@
   </div>
 
   <app-reservation-content
-    [entries]="entries()"
-    [reloading]="reloading()"
+    [entries]="filter.entries()"
+    [reloading]="filter.reloading()"
     (reload)="reload()"
-    [currentUserId]="authService.getPrincipal()?.id ?? ''"
+    [currentUserId]="authService.currentUserId() ?? ''"
     class="p-4"
   >
   </app-reservation-content>
 
   <!-- Paginator -->
   <mat-paginator
-    [length]="totalElements()"
-    [pageSize]="pageSize()"
-    [pageIndex]="pageNumber()"
+    [length]="filter.totalElements()"
+    [pageSize]="filter.pageSize()"
+    [pageIndex]="filter.pageNumber()"
     [pageSizeOptions]="[10, 25, 50, 100]"
     [showFirstLastButtons]="true"
-    [disabled]="reloading()"
+    [disabled]="filter.reloading()"
     (page)="handlePageChange($event)">
   </mat-paginator>
 

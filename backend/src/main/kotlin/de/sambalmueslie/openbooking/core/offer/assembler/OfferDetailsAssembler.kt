@@ -2,9 +2,7 @@ package de.sambalmueslie.openbooking.core.offer.assembler
 
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingDetailsAssembler
-import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
@@ -18,6 +16,7 @@ import java.time.LocalDate
 class OfferDetailsAssembler(
     private val repository: OfferRepository,
     private val bookingAssembler: BookingDetailsAssembler,
+    private val assignmentProvider: AssignmentProvider
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(OfferDetailsAssembler::class.java)
@@ -69,12 +68,7 @@ class OfferDetailsAssembler(
     }
 
     private fun details(data: OfferData, bookings: List<BookingDetails>): OfferDetails {
-        val bookedSpace = bookings.filter { it.booking.status == BookingStatus.CONFIRMED }.sumOf { it.visitor.size }
-        val reservedSpace = bookings.filter { it.booking.status == BookingStatus.PENDING }.sumOf { it.visitor.size }
-        val availableSpace = 0.coerceAtLeast(data.maxPersons - bookedSpace - reservedSpace)
-        val disabledSpace = if (data.active) 0 else data.maxPersons
-
-        val assignment = Assignment(bookedSpace, reservedSpace, availableSpace, disabledSpace)
+        val assignment = assignmentProvider.getBookingDetailsAssignment(data, bookings)
         val timestamp = data.updated ?: data.created
         return OfferDetails(data.convert(), assignment, bookings, timestamp)
     }

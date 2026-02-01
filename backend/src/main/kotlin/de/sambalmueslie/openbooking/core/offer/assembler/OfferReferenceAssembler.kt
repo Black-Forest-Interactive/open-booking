@@ -3,8 +3,6 @@ package de.sambalmueslie.openbooking.core.offer.assembler
 import de.sambalmueslie.openbooking.common.findByIdOrNull
 import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
-import de.sambalmueslie.openbooking.core.offer.api.Assignment
 import de.sambalmueslie.openbooking.core.offer.api.OfferReference
 import de.sambalmueslie.openbooking.core.offer.db.OfferData
 import de.sambalmueslie.openbooking.core.offer.db.OfferRepository
@@ -16,6 +14,7 @@ import jakarta.inject.Singleton
 class OfferReferenceAssembler(
     private val repository: OfferRepository,
     private val bookingService: BookingService,
+    private val assignmentProvider: AssignmentProvider
 ) {
 
     fun getAll(pageable: Pageable): Page<OfferReference> {
@@ -60,12 +59,7 @@ class OfferReferenceAssembler(
     }
 
     private fun references(data: OfferData, bookings: List<Booking>): OfferReference {
-        val confirmedSpace = bookings.filter { it.status == BookingStatus.CONFIRMED }.sumOf { it.size }
-        val pendingSpace = bookings.filter { it.status == BookingStatus.PENDING }.sumOf { it.size }
-        val availableSpace = 0.coerceAtLeast(data.maxPersons - confirmedSpace - pendingSpace)
-        val disabledSpace = if (data.active) 0 else data.maxPersons
-
-        val assignment = Assignment(confirmedSpace, pendingSpace, availableSpace, disabledSpace)
+        val assignment = assignmentProvider.getBookingAssignment(data, bookings)
         return OfferReference(data.convert(), assignment)
     }
 

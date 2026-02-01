@@ -15,10 +15,18 @@ import {
   PERMISSION_RESPONSE_ADMIN,
   PERMISSION_SEARCH_ADMIN,
   PERMISSION_SETTINGS_ADMIN,
+  PERMISSION_STATS_ADMIN,
   PERMISSION_VISITOR_ADMIN
 } from "@open-booking/admin";
 
 export const appRoutes: Route[] = [
+  {path: '', redirectTo: 'statistics', pathMatch: "full"},
+  {
+    path: 'statistics',
+    loadChildren: () => import('../core/statistics/statistics.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_STATS_ADMIN]}
+  },
   {
     path: 'dashboard',
     loadChildren: () => import('../core/dashboard/dashboard.routes').then(m => m.routes),
@@ -34,6 +42,12 @@ export const appRoutes: Route[] = [
   {
     path: 'booking',
     loadChildren: () => import('../core/booking/booking.routes').then(m => m.routes),
+    canActivate: [canActivateAuthRole],
+    data: {roles: [PERMISSION_BOOKING_ADMIN]}
+  },
+  {
+    path: 'assistant',
+    loadChildren: () => import('../core/assistant/assistant.routes').then(m => m.routes),
     canActivate: [canActivateAuthRole],
     data: {roles: [PERMISSION_BOOKING_ADMIN]}
   },

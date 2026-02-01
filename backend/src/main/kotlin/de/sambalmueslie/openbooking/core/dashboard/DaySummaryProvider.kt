@@ -41,10 +41,10 @@ class DaySummaryProvider(
             val end = start.plusDays(1)
             val offerResponse = offerSearchService.search(OfferSearchRequest("", start, end), Pageable.from(0, 10000))
 
-            var confirmedSpace: Int = 0
-            var pendingSpace: Int = 0
-            var availableSpace: Int = 0
-            var deactivatedSpace: Int = 0
+            var confirmedSpace = 0
+            var pendingSpace = 0
+            var availableSpace = 0
+            var deactivatedSpace = 0
             var recentlyChangedOffer = 0
             var recentlyChangedBookings = 0
             val bookingStats = mutableMapOf<BookingStatus, Int>()

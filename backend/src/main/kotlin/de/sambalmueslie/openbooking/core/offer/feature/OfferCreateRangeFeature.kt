@@ -32,12 +32,13 @@ class OfferCreateRangeFeature(
         val labels = labelService.getLabelIterator()
 
         (0..days).forEach {
+            labels.reset()
             var startTime = request.timeFrom
             var finishTime = startTime.plus(request.duration)
 
             val createRequests = mutableListOf<OfferChangeRequest>()
 
-            while (!finishTime.isAfter(request.timeTo)) {
+            while (!startTime.isAfter(request.timeTo)) {
                 val start = LocalDateTime.of(date, startTime)
                 val finish = LocalDateTime.of(date, finishTime)
                 createRequests.add(OfferChangeRequest(start, finish, request.maxPersons, true, labels.next()?.id, null))

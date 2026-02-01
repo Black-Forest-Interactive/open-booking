@@ -6,6 +6,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {BookingService, EventChangeListener, EventService} from "@open-booking/admin";
 import {BookingStatus, ChangeEvent, ChangeEventType} from "@open-booking/core";
 import {toPromise} from "@open-booking/shared";
+import {interval} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MatIconButton} from "@angular/material/button";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-admin-menu',
@@ -14,12 +18,16 @@ import {toPromise} from "@open-booking/shared";
     MatDividerModule,
     RouterLink,
     RouterLinkActive,
-    TranslatePipe
+    TranslatePipe,
+    MatIconButton,
+    NgClass
   ],
   templateUrl: './admin-menu.component.html',
   styleUrl: './admin-menu.component.scss',
 })
 export class AdminMenuComponent implements EventChangeListener {
+
+  collapsed = signal(false)
 
   private pendingResource = resource({
       loader: param => toPromise(this.bookingService.getPendingAmount(), param.abortSignal)
@@ -33,6 +41,9 @@ export class AdminMenuComponent implements EventChangeListener {
     private eventService: EventService,
     private bookingService: BookingService
   ) {
+    interval(5000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.pendingResource.reload())
   }
 
 

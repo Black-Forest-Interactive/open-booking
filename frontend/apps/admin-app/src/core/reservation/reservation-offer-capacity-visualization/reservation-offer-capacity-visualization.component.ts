@@ -37,7 +37,7 @@ export class ReservationOfferCapacityVisualizationComponent {
       return Math.max(0, this.pendingSpace() - this.visitor().size)
     }
     return this.pendingSpace()
-  });
+  })
 
   usedCapacity = computed(() => this.confirmedSpace() + this.pendingSpace())
 

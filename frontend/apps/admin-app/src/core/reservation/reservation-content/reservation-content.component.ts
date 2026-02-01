@@ -45,4 +45,8 @@ export class ReservationContentComponent {
 
   groupedEntries = computed(() => groupBookingDetailsByDate(this.entries()))
 
+  getTimestamp(entry: BookingDetails): string {
+    return entry.timestamp + 'Z'
+  }
+
 }

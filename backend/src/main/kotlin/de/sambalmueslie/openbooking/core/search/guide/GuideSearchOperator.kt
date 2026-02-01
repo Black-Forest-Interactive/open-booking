@@ -7,6 +7,7 @@ import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.guide.GuideChangeListener
 import de.sambalmueslie.openbooking.core.guide.GuideService
 import de.sambalmueslie.openbooking.core.guide.api.Guide
+import de.sambalmueslie.openbooking.core.guide.api.GuideChangeRequest
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
@@ -33,11 +34,15 @@ open class GuideSearchOperator(
 
     init {
         service.register(object : GuideChangeListener {
-            override fun handleCreated(obj: Guide) {
+            override fun handleCreated(obj: Guide, request: GuideChangeRequest) {
                 handleChanged(obj)
             }
 
-            override fun handleUpdated(obj: Guide) {
+            override fun handleUpdated(obj: Guide, request: GuideChangeRequest) {
+                handleChanged(obj)
+            }
+
+            override fun handlePatched(obj: Guide) {
                 handleChanged(obj)
             }
 

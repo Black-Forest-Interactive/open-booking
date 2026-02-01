@@ -93,7 +93,7 @@ class ClaimService(
         val claim = Claim(offer.id, userId, expires, timestamp, null)
         claims[offer.id] = claim
         logger.debug("Claim {} added", claim)
-        notifyCreated(claim)
+        notifyCreated(claim, ClaimChangeRequest(offer.id, userId))
         return claim
     }
 

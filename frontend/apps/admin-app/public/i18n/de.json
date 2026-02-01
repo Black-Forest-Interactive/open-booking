@@ -20,6 +20,7 @@
   },
   "MENU": {
     "Title": "Menü",
+    "Home": "Startseite",
     "Dashboard": "Dashboard",
     "Booking": "Buchungen",
     "Reservation": "Reservierungen",
@@ -34,11 +35,22 @@
     "Cache": "Cache",
     "Mail": "E-Mail",
     "Search": "Suche",
+    "Assistant": "Buchungsassistent",
     "Group": {
       "DailyBusiness": "Tagesgeschäft",
       "Offers": "Angebotsverwaltung",
       "Settings": "Einstellungen & Vorlagen",
       "Administration": "Verwaltung"
+    },
+    "Statistics": "Statistiken"
+  },
+  "COMMON": {
+    "Created": "Erstellt",
+    "Updated": "Geändert",
+    "Updating": "Änderung wird verarbeitet",
+    "Title": {
+      "Success": "Erfolgreich",
+      "Error": "Fehler"
     }
   },
   "APP": {
@@ -73,7 +85,12 @@
       "Create": "Buchung erstellen",
       "Search": "Buchung suchen",
       "Confirm": "Buchung bestätigen",
-      "Deny": "Buchung ablehnen"
+      "Deny": "Buchung ablehnen",
+      "Edit": "Buchung bearbeiten",
+      "Finder": "Terminfinder",
+      "EditVisitor": "Besucherdaten bearbeiten",
+      "ChangeOffer": "Termin ändern",
+      "ConfirmMail": "Mailadresse bestätigen"
     },
     "Create": {
       "Action": {
@@ -185,7 +202,31 @@
       "Zip": {
         "Label": "PLZ"
       },
-      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld"
+      "Required": "Bei diesem Feld handelt es sich um ein Pflichtfeld",
+      "AutoConfirm": {
+        "Label": "Buchung automatisch bestätigen"
+      },
+      "IgnoreSizeCheck": {
+        "Label": "Überbuchung zulassen"
+      }
+    },
+    "Filter": {
+      "HideNotMatching": "Unpassende Termine filtern",
+      "MailConfirmed": "Mail bestätigt"
+    },
+    "MESSAGE": {
+      "CONFIRM": {
+        "FAILED": "Die Buchung konnte nicht bestätigt werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich bestätigt."
+      },
+      "DECLINE": {
+        "FAILED": "Die Buchung konnte nicht abgelehnt werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich abgelehnt."
+      },
+      "CANCEL": {
+        "FAILED": "Die Buchung konnte nicht storniert werden. Bitte versuche es erneut.",
+        "SUCCESS": "Die Buchung wurde erfolgreich storniert."
+      }
     }
   },
   "CACHE": {
@@ -312,7 +353,8 @@
       "Relabel": "Marker neu berechnen",
       "Redistribute": "Verdichten",
       "SelectLabel": "Marker auswählen",
-      "SelectGuide": "Guide auswählen"
+      "SelectGuide": "Guide auswählen",
+      "ChangeDuration": "Dauer ändern"
     },
     "Field": {
       "Active": "Aktiv",
@@ -352,6 +394,16 @@
       "MinTime": "",
       "Quantity": "Anzahl",
       "Time": "Zeit"
+    },
+    "Filter": {
+      "Size": {
+        "SINGLE": "Einzelperson",
+        "COUPLE": "Paar",
+        "FAMILY": "Familie",
+        "HUGE_GROUP": "Gruppe",
+        "SMALL_CLASS": "Kleine Klasse",
+        "HUGE_CLASS": "Große Klasse"
+      }
     }
   },
   "RESERVATION": {
@@ -582,6 +634,11 @@
     "Type": {
       "SINGLE": "Privatperson",
       "GROUP": "Gruppe oder Schulklasse"
+    },
+    "Dialog": {
+      "Change": {
+        "Title": "Besucherdaten ändern"
+      }
     }
   },
   "DASHBOARD": {
@@ -688,5 +745,20 @@
         "Mobile": "Handy"
       }
     }
+  },
+  "STATISTICS": {
+    "TotalActiveOfferSpace": "Gesamtkapazität aktiver Angebote",
+    "TotalDeactivatedOfferSpace": "Gesamtkapazität deaktivierter Angebote",
+    "TotalConfirmedSpace": "Gesamtkapazität bestätigter Buchungen",
+    "TotalPendingSpace": "Gesamtkapazität offener Buchungen",
+    "BookingStatusDistribution": "Verteilung Buchungsstatus",
+    "VerificationStatusDistribution": "Verteilung Verifizierungsstatus",
+    "VisitorTypeDistribution": "Verteilung Besuchertypen",
+    "SpaceUtilization": "Kapazitätsauslastung",
+    "AvgConfirmedSpace": "Ø Bestätigte Plätze",
+    "AvgPendingSpace": "Ø Offene Plätze",
+    "AvgAvailableSpace": "Ø Verfügbare Plätze",
+    "OffersByDay": "Angebote pro Tag",
+    "SpaceByDay": "Plätze pro Tag"
   }
 }

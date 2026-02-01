@@ -6,6 +6,7 @@ import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
 import de.sambalmueslie.openbooking.core.booking.db.BookingData
 import de.sambalmueslie.openbooking.core.booking.db.BookingRepository
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorType
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
@@ -19,9 +20,13 @@ class BookingValidateSizeFeature(
 
     fun validate(request: BookingChangeRequest, offer: Offer): Boolean {
         if (request.ignoreSizeCheck) return true
-        return isSuitable(request.visitor.size, offer, repository.findByOfferId(offer.id))
+        val bookings = repository.findByOfferId(offer.id)
+        if (request.visitor.type == VisitorType.GROUP) {
+            val existingBookings = bookings.any { it.status == BookingStatus.PENDING || it.status == BookingStatus.CONFIRMED }
+            if (!existingBookings) return true
+        }
+        return isSuitable(request.visitor.size, offer, bookings)
     }
-
 
     fun validate(request: BookingResizeRequest, offer: Offer): Boolean {
         if (request.ignoreSizeCheck) return true

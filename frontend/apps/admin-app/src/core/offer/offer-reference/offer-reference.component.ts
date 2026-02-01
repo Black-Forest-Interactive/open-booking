@@ -26,10 +26,13 @@ export class OfferReferenceComponent {
   entry = input.required<OfferReference>()
   visitor = input.required<Visitor>()
   booking = input.required<Booking>()
+  editMode = input.required()
+  disabled = input(false)
 
   // Output
   confirm = output<OfferReference>()
   decline = output<OfferReference>()
+  changeOffer = output<OfferReference>()
 
   // Computed properties
   active = computed(() => this.entry().offer.active)
@@ -46,6 +49,7 @@ export class OfferReferenceComponent {
     this.active() &&
     this.booking().status !== BookingStatus.DECLINED
   )
+  canChangeOffer = computed(() => this.active())
 
   protected onConfirm() {
     this.confirm.emit(this.entry())
@@ -55,5 +59,11 @@ export class OfferReferenceComponent {
     this.decline.emit(this.entry())
   }
 
+  protected onChangeOffer() {
+    this.changeOffer.emit(this.entry())
+  }
+
   protected readonly BookingStatus = BookingStatus
+
+
 }

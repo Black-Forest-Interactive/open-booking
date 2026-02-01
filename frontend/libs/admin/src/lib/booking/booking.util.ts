@@ -59,8 +59,8 @@ function sortEntriesWithinGroup(entries: BookingDetails[]): BookingDetails[] {
     const bUnconfirmed = b.visitor.verification.status === VerificationStatus.UNCONFIRMED ? 0 : 1
     if (aUnconfirmed !== bUnconfirmed) return aUnconfirmed - bUnconfirmed
 
-    // Priority 4: Oldest first (by timestamp)
-    return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    // Priority 4: Newest first (by timestamp)
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   });
 }
 

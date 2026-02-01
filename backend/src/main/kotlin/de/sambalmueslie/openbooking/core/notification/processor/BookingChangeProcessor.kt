@@ -2,10 +2,7 @@ package de.sambalmueslie.openbooking.core.notification.processor
 
 import de.sambalmueslie.openbooking.config.MailConfig
 import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
-import de.sambalmueslie.openbooking.core.booking.api.BookingInfo
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingInfoAssembler
 import de.sambalmueslie.openbooking.core.notification.NotificationTemplateEvaluator
 import de.sambalmueslie.openbooking.core.notification.api.NotificationEvent
@@ -36,7 +33,7 @@ class BookingChangeProcessor(
         private val logger = LoggerFactory.getLogger(BookingChangeProcessor::class.java)
         private const val DEFAULT_DATE_FORMAT = "dd-MM-yyyy"
         private const val DEFAULT_TIME_FORMAT = "HH:mm"
-        private val translation = mapOf(
+        private val bookingStatusTranslation = mapOf(
             "de" to mapOf(
                 BookingStatus.UNKNOWN to "Unbekannt",
                 BookingStatus.PENDING to "Ausstehend",
@@ -68,12 +65,15 @@ class BookingChangeProcessor(
 
     private fun handleCreated(event: NotificationEvent) {
         val info = infoAssembler.get(event.sourceId) ?: return
+        val request = event.parameter[BookingChangeHandler.REQUEST] as? BookingChangeRequest ?: return
         val confirmUrl = if (info.visitor.verification.status == VerificationStatus.CONFIRMED) "" else service.getConfirmationUrl(event.sourceId)
 
         val properties = createProperties(info)
         properties["confirmUrl"] = confirmUrl
 
-        notifyContactOnCreated(properties, info)
+        if (info.status == BookingStatus.PENDING && !request.noCreateNotification) {
+            notifyContactOnCreated(properties, info)
+        }
         notifyAdminsOnCreated(properties)
     }
 
@@ -119,12 +119,12 @@ class BookingChangeProcessor(
             Pair("status", status),
             Pair("timestamp", timestamp),
             Pair("isGroup", info.visitor.type == VisitorType.GROUP),
-            Pair("detailsUrl", detailsUrl),
+            Pair("detailsUrl", detailsUrl)
         )
     }
 
     private fun translateStatus(status: BookingStatus, lang: String): String {
-        val t = translation[lang] ?: translation.values.firstOrNull()
+        val t = bookingStatusTranslation[lang] ?: bookingStatusTranslation.values.firstOrNull()
         return t?.get(status) ?: status.name
     }
 

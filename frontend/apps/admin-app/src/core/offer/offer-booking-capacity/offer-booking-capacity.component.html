@@ -12,16 +12,16 @@
     <!-- Other Pending Reservations (Amber) - excluding current visitor -->
     <div class="absolute h-full bg-amber-500 transition-all"
          [style.left.%]="confirmedPercentage()"
-         [style.width.%]="otherPendingPercentage()">
+         [style.width.%]="pendingPercentage()">
     </div>
     <!-- Current Visitor Group (Purple) - only if UNCONFIRMED -->
     <div class="absolute h-full bg-purple-500 transition-all border-l-2 border-r-2 border-purple-700"
-         [style.left.%]="confirmedPercentage() + otherPendingPercentage()"
-         [style.width.%]="visitorPercentage()">
+         [style.left.%]="confirmedPercentage() + pendingPercentage()"
+         [style.width.%]="highlightPendingPercentage()">
     </div>
     <!-- Available Space (Green) - background shows through -->
     <div class="absolute h-full bg-green-500 transition-all"
-         [style.left.%]="confirmedPercentage() + otherPendingPercentage() + visitorPercentage()"
+         [style.left.%]="confirmedPercentage() + pendingPercentage() + highlightPendingPercentage()"
          [style.width.%]="availablePercentage()">
     </div>
     <!-- Capacity Numbers Overlay -->
@@ -56,39 +56,41 @@
     <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-green-500 rounded border border-green-600"></div>
       <span class="text-gray-700">
-                {{ 'RESERVATION.Offer.Stats.Available' | translate }} ({{ availableSpace() }})
+                {{ 'RESERVATION.Offer.Stats.Available' | translate }}
+        ({{ sizeUpdate() ? remainingAfterConfirmation() : availableSpace() }})
               </span>
     </div>
   </div>
-  <!-- Capacity Impact Info -->
-  @if (isPending() && hasCapacity()) {
-    <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
-      <div class="flex items-start gap-2 text-xs text-purple-800">
-        <mat-icon class="shrink-0" inline>info</mat-icon>
-        <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
-          {{
-            'RESERVATION.Offer.Info.ConfirmationEffect' | translate:{
-              size: visitorSize(),
-              remaining: remainingAfterConfirmation()
-            }
-          }}
+  @if (!hideImpactInfo) {
+    <!-- Capacity Impact Info -->
+    @if (isPending() && hasCapacity()) {
+      <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+        <div class="flex items-start gap-2 text-xs text-purple-800">
+          <mat-icon class="shrink-0" inline>info</mat-icon>
+          <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
+            {{
+              'RESERVATION.Offer.Info.ConfirmationEffect' | translate:{
+                size: visitorSize(),
+                remaining: remainingAfterConfirmation()
+              }
+            }}
+          </div>
         </div>
       </div>
-    </div>
-  } @else if (!hasCapacity()) {
-    <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
-      <div class="flex items-start gap-2 text-xs text-red-800">
-        <mat-icon class="shrink-0" inline>info</mat-icon>
-        <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
-          {{
-            'RESERVATION.Offer.Info.OverbookingEffect' | translate:{
-              size: visitorSize(),
-              available: availableSpace()
-
-            }
-          }}
+    } @else if (!hasCapacity()) {
+      <div class="p-2 bg-purple-50 border border-purple-200 rounded-lg">
+        <div class="flex items-start gap-2 text-xs text-red-800">
+          <mat-icon class="shrink-0" inline>info</mat-icon>
+          <div class="min-w-0 whitespace-normal break-words overflow-wrap-anywhere">
+            {{
+              'RESERVATION.Offer.Info.OverbookingEffect' | translate:{
+                size: visitorSize(),
+                available: availableSpace()
+              }
+            }}
+          </div>
         </div>
       </div>
-    </div>
+    }
   }
 </div>

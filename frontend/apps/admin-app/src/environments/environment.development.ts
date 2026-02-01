@@ -1,6 +1,6 @@
 export const environment = {
   logrocket: true,
-  logrocketAppId: '0euwfq/open-event',
+  logrocketAppId: '0euwfq/open-booking-jcupc',
   logoutUrl: 'https://open.psm.church/',
   keycloak: {
     url: 'https://auth.psm.church/auth',

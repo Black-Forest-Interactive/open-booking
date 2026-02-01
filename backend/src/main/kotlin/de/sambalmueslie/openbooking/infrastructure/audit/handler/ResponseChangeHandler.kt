@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.response.ResponseChangeListener
 import de.sambalmueslie.openbooking.core.response.ResponseService
 import de.sambalmueslie.openbooking.core.response.api.Response
+import de.sambalmueslie.openbooking.core.response.api.ResponseChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -21,12 +22,16 @@ class ResponseChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Response) {
+    override fun handleCreated(obj: Response, request: ResponseChangeRequest) {
         handleChange(obj, "RESPONSE CREATED")
     }
 
-    override fun handleUpdated(obj: Response) {
+    override fun handleUpdated(obj: Response, request: ResponseChangeRequest) {
         handleChange(obj, "RESPONSE UPDATED")
+    }
+
+    override fun handlePatched(obj: Response) {
+        handleChange(obj, "RESPONSE PATCHED")
     }
 
     override fun handleDeleted(obj: Response) {

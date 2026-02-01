@@ -34,7 +34,7 @@ class BookingChangeFeature(
         val status = confirmFeature.create(request)
         return BookingData(0, key, status, visitor.size, request.comment, request.lang, offer.id, visitor.id, timeProvider.now())
     }
-
+    
     fun update(data: BookingData, request: BookingChangeRequest): BookingData {
         val offer = changeOfferFeature.migrate(data, request.offerId) ?: throw BookingOfferInvalid(request.offerId)
         val suitable = validateSizeFeature.validate(request, offer)

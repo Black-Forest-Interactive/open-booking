@@ -11,7 +11,7 @@ import org.slf4j.Logger
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
-abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O>, D : EntityData<O>>(
+abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O, R>, D : EntityData<O>>(
     private val repository: PageableRepository<D, T>,
     cacheService: CacheService,
     type: KClass<O>,
@@ -42,7 +42,7 @@ abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeReques
 
         val result = repository.save(createData(request)).convert()
         cache.put(result.id, result)
-        notifyCreated(result)
+        notifyCreated(result, request)
         return result
     }
 
@@ -53,7 +53,7 @@ abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeReques
         isValid(request)
         val result = repository.update(updateData(data, request)).convert()
         cache.put(result.id, result)
-        notifyUpdated(result)
+        notifyUpdated(result, request)
         return result
     }
 
@@ -68,7 +68,7 @@ abstract class GenericCrudService<T : Any, O : Entity<T>, R : EntityChangeReques
         patch.invoke(data)
         val result = repository.update(data).convert()
         cache.put(result.id, result)
-        notifyUpdated(result)
+        notifyPatched(result)
         return result
     }
 

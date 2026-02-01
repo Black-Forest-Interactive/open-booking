@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.core.search.booking
 import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 
@@ -25,9 +26,17 @@ class BookingSearchQueryBuilder : SearchQueryBuilder<BookingSearchRequest> {
                         fuzziness = "AUTO"
                         boost = 2.0
                     },
+                    // Add prefix matching for partial word matches
+                    matchPhrasePrefix(BookingSearchEntryData::name, searchTerm) {
+                        boost = 2.5
+                    },
                     match(BookingSearchEntryData::title, searchTerm) {
                         fuzziness = "AUTO"
                         boost = 2.0
+                    },
+                    // Add prefix matching for partial word matches
+                    matchPhrasePrefix(BookingSearchEntryData::title, searchTerm) {
+                        boost = 2.5
                     },
                     match(BookingSearchEntryData::description, searchTerm) {
                         fuzziness = "AUTO"
@@ -61,6 +70,16 @@ class BookingSearchQueryBuilder : SearchQueryBuilder<BookingSearchRequest> {
                 )
             }
 
+            if (request.onlyMailConfirmed != null) {
+                if (request.onlyMailConfirmed) {
+                    must(
+                        terms(BookingSearchEntryData::verificationStatus, VerificationStatus.CONFIRMED.toString())
+                    )
+                } else {
+                    // not implemented yet
+                }
+            }
+
             // Date range filters on nested offer fields
             if (request.from != null || request.to != null) {
                 request.from?.let { fromDate ->
@@ -90,5 +109,40 @@ class BookingSearchQueryBuilder : SearchQueryBuilder<BookingSearchRequest> {
             add(BookingSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
         }
         agg(BookingSearchEntryData::status.name, TermsAgg(BookingSearchEntryData::status))
+    }
+
+    fun getBookingStatistics(): (SearchDSL.() -> Unit) = {
+        resultSize = 0
+
+        // Status distribution with total seats per status
+        agg(BookingSearchEntryData::status.name, TermsAgg(BookingSearchEntryData::status).apply {
+            agg("total_seats", SumAgg(BookingSearchEntryData::size))
+        })
+
+        // Bookings created by day
+        agg("bookings_by_day", DateHistogramAgg(BookingSearchEntryData::created) {
+            calendarInterval = "day"
+        })
+
+        // Seats created by day - need to create separately for nested agg
+        val seatsByDayAgg = DateHistogramAgg(BookingSearchEntryData::created) {
+            calendarInterval = "day"
+        }
+        seatsByDayAgg.agg("total_seats", SumAgg(BookingSearchEntryData::size))
+        agg("seats_by_day", seatsByDayAgg)
+
+        // Additional useful stats
+        agg(BookingSearchEntryData::type.name, TermsAgg(BookingSearchEntryData::type))
+
+        agg(BookingSearchEntryData::verificationStatus.name, TermsAgg(BookingSearchEntryData::verificationStatus))
+
+        agg("avg_booking_size", AvgAgg(BookingSearchEntryData::size))
+
+        agg("total_seats", SumAgg(BookingSearchEntryData::size))
+
+        // Popular offers with seats
+        val popularOffersAgg = TermsAgg(BookingSearchEntryData::offerId)
+        popularOffersAgg.agg("total_seats", SumAgg(BookingSearchEntryData::size))
+        agg("popular_offers", popularOffersAgg)
     }
 }

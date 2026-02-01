@@ -1,7 +1,7 @@
 import {Component, computed, resource, signal} from '@angular/core';
 import {NotificationService} from "@open-booking/admin";
 import {HotToastService} from "@ngxpert/hot-toast";
-import {LoadingBarComponent, SearchComponent, toPromise} from "@open-booking/shared";
+import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
@@ -20,7 +20,6 @@ import {MainContentComponent} from "../../shared/main-content/main-content.compo
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
-    SearchComponent,
     LoadingBarComponent,
     TranslatePipe,
     RouterLink,

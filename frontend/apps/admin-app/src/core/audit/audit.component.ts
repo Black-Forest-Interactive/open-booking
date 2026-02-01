@@ -10,6 +10,7 @@ import {MatInputModule} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {AuditService} from "@open-booking/admin";
 import {MainContentComponent} from "../../shared/main-content/main-content.component";
+import {AuditLogEntry} from "@open-booking/core";
 
 @Component({
   selector: 'app-audit',
@@ -59,5 +60,9 @@ export class AuditComponent {
   protected handlePageChange(event: PageEvent) {
     this.pageNumber.set(event.pageIndex)
     this.pageSize.set(event.pageSize)
+  }
+
+  getTimestamp(entry: AuditLogEntry): string {
+    return entry.timestamp + 'Z'
   }
 }

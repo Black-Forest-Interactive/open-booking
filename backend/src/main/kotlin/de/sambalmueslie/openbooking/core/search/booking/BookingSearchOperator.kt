@@ -8,23 +8,26 @@ import com.jillesvangurp.searchdsls.querydsl.terms
 import de.sambalmueslie.openbooking.config.OpenSearchConfig
 import de.sambalmueslie.openbooking.core.booking.BookingChangeListener
 import de.sambalmueslie.openbooking.core.booking.BookingService
-import de.sambalmueslie.openbooking.core.booking.api.Booking
-import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
-import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
-import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.booking.api.*
 import de.sambalmueslie.openbooking.core.booking.assembler.BookingDetailsAssembler
-import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
-import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchResponse
+import de.sambalmueslie.openbooking.core.search.booking.api.*
 import de.sambalmueslie.openbooking.core.search.common.BaseOpenSearchOperator
 import de.sambalmueslie.openbooking.core.search.common.SearchClientFactory
 import de.sambalmueslie.openbooking.core.search.common.SearchRequest
 import de.sambalmueslie.openbooking.core.visitor.VisitorChangeListener
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
+import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorType
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.jsonPrimitive
 import org.slf4j.LoggerFactory
+import java.time.ZonedDateTime
 
 @Singleton
 open class BookingSearchOperator(
@@ -45,11 +48,15 @@ open class BookingSearchOperator(
 
     init {
         service.register(object : BookingChangeListener {
-            override fun handleCreated(obj: Booking) {
+            override fun handleCreated(obj: Booking, request: BookingChangeRequest) {
                 handleChanged(obj, true)
             }
 
-            override fun handleUpdated(obj: Booking) {
+            override fun handleUpdated(obj: Booking, request: BookingChangeRequest) {
+                handleChanged(obj, true)
+            }
+
+            override fun handlePatched(obj: Booking) {
                 handleChanged(obj, true)
             }
 
@@ -71,11 +78,15 @@ open class BookingSearchOperator(
         })
 
         visitorService.register(object : VisitorChangeListener {
-            override fun handleCreated(obj: Visitor) {
+            override fun handleCreated(obj: Visitor, request: VisitorChangeRequest) {
                 handleChanged(obj)
             }
 
-            override fun handleUpdated(obj: Visitor) {
+            override fun handlePatched(obj: Visitor) {
+                handleChanged(obj)
+            }
+
+            override fun handleUpdated(obj: Visitor, request: VisitorChangeRequest) {
                 handleChanged(obj)
             }
 
@@ -176,6 +187,59 @@ open class BookingSearchOperator(
             }
         }
         return result.total
+    }
+
+    fun getBookingStatistics(): BookingStatistics {
+        val response = search(queryBuilder.getBookingStatistics())
+
+        // Parse status distribution
+        val statusDistribution = response.aggregations
+            .termsResult(BookingSearchEntryData::status.name)
+            .parsedBuckets.mapNotNull { bucket ->
+                val status = try {
+                    BookingStatus.valueOf(bucket.parsed.key)
+                } catch (e: Exception) {
+                    logger.error("Cannot parse status ${bucket.parsed.key}", e)
+                    return@mapNotNull null
+                }
+                val totalSeatsJson = bucket.aggregations["total_seats"] as? JsonObject
+                val totalSeats = totalSeatsJson?.get("value")?.jsonPrimitive?.double?.toLong() ?: 0L
+                status to BookingStatusStats(
+                    count = bucket.parsed.docCount,
+                    totalSeats = totalSeats
+                )
+            }.toMap()
+
+        // Parse bookings by day
+        val bookingsByDay = response.aggregations
+            .dateHistogramResult("bookings_by_day")
+            .parsedBuckets.map { bucket ->
+                DailyBookingStats(
+                    date = ZonedDateTime.parse(bucket.parsed.keyAsString).toLocalDate(),
+                    count = bucket.parsed.docCount
+                )
+            }
+
+        // Parse visitor type distribution
+        val visitorTypeDistribution = response.aggregations
+            .termsResult(BookingSearchEntryData::type.name)
+            .parsedBuckets.associate { bucket ->
+                VisitorType.valueOf(bucket.parsed.key) to bucket.parsed.docCount
+            }
+
+        // Parse verification status distribution
+        val verificationStatusDistribution = response.aggregations
+            .termsResult(BookingSearchEntryData::verificationStatus.name)
+            .parsedBuckets.associate { bucket ->
+                VerificationStatus.valueOf(bucket.parsed.key) to bucket.parsed.docCount
+            }
+
+        return BookingStatistics(
+            bookingsByDay,
+            statusDistribution = statusDistribution,
+            visitorTypeDistribution = visitorTypeDistribution,
+            verificationStatusDistribution = verificationStatusDistribution,
+        )
     }
 
 }

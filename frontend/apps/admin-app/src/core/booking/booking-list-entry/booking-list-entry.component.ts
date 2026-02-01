@@ -5,7 +5,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {BookingStatusComponent, VisitorTypeComponent} from "@open-booking/shared";
 import {VisitorSizeComponent} from "../../visitor/visitor-size/visitor-size.component";
-import {TranslatePipe} from "@ngx-translate/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {NgClass} from "@angular/common";
 
@@ -18,7 +17,6 @@ import {NgClass} from "@angular/common";
     BookingStatusComponent,
     VisitorTypeComponent,
     VisitorSizeComponent,
-    TranslatePipe,
     NgClass
   ],
   templateUrl: './booking-list-entry.component.html',

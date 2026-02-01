@@ -8,8 +8,6 @@ import de.sambalmueslie.openbooking.core.booking.api.Booking
 import de.sambalmueslie.openbooking.core.editor.api.Editor
 import de.sambalmueslie.openbooking.core.editor.api.EditorChangeListener
 import de.sambalmueslie.openbooking.core.editor.api.EditorChangeRequest
-import de.sambalmueslie.openbooking.core.reservation.ReservationService
-import de.sambalmueslie.openbooking.core.reservation.api.Reservation
 import de.sambalmueslie.openbooking.error.InvalidRequestException
 import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import io.micronaut.data.model.Page
@@ -22,7 +20,6 @@ import kotlin.reflect.KClass
 
 @Singleton
 class EditorService(
-    reservationService: ReservationService,
     bookingService: BookingService,
     private val settingService: SettingService,
     private val timeProvider: TimeProvider
@@ -34,7 +31,6 @@ class EditorService(
 
     private val idGenerator = EditorIdGenerator()
     private val resourceServices = mutableMapOf(
-        Reservation::class to ResourceEditorService(reservationService, idGenerator, Reservation::class, timeProvider),
         Booking::class to ResourceEditorService(bookingService, idGenerator, Booking::class, timeProvider),
     )
 
@@ -78,7 +74,7 @@ class EditorService(
         val resource = service.getResource(request.resourceId)
             ?: throw InvalidRequestException("Cannot find resource ${request.resourceId} for editor")
         val result = service.create(resource, request, getExpires())
-        notifyCreated(result)
+        notifyCreated(result, request)
         return result
     }
 
@@ -113,7 +109,7 @@ class EditorService(
     fun refresh(resourceId: Long, resourceType: KClass<*>): Editor? {
         val service = resourceServices[resourceType] ?: return null
         val result = service.refresh(resourceId, getExpires())
-        result.forEach { notifyUpdated(it) }
+        result.forEach { notifyPatched(it) }
         return result.firstOrNull()
     }
 

@@ -1,18 +1,15 @@
 import {Component, computed, input, resource} from '@angular/core';
 import {Booking, BookingDetails, Offer} from "@open-booking/core";
-import {LoadingBarComponent, toPromise} from "@open-booking/shared";
+import {toPromise} from "@open-booking/shared";
 import {BookingService} from "@open-booking/admin";
 import {Router} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
 import {navigateToBookingDetails} from "../booking.routes";
 import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-booking-daily-entry',
   imports: [
-    MatIconModule,
-    LoadingBarComponent,
-    TranslatePipe
+    MatIconModule
   ],
   templateUrl: './booking-daily-entry.component.html',
   styleUrl: './booking-daily-entry.component.scss',

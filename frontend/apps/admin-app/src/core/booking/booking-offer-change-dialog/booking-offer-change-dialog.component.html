@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{ 'BOOKING.Dialog.OfferChange.Title' | translate }}</h2>
+
+<mat-dialog-content>
+  <app-booking-offer-change [data]="data" #change/>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton="outlined" (click)="onCancel()">
+    {{ 'ACTION.Cancel' | translate }}
+  </button>
+  <button matButton="filled" color="primary"
+          [disabled]="change.form.invalid"
+          (click)="onSave()">
+    {{ 'ACTION.Save' | translate }}
+  </button>
+</mat-dialog-actions>

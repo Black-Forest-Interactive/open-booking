@@ -68,4 +68,10 @@ data class OfferData(
         updated = timestamp
         return this
     }
+
+    fun updateFinish(finish: LocalDateTime, timestamp: LocalDateTime): OfferData {
+        this.finish = finish
+        updated = timestamp
+        return this
+    }
 }

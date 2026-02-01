@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.common.TimeProvider
 import de.sambalmueslie.openbooking.core.offer.OfferChangeListener
 import de.sambalmueslie.openbooking.core.offer.OfferService
 import de.sambalmueslie.openbooking.core.offer.api.Offer
+import de.sambalmueslie.openbooking.core.offer.api.OfferChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.AuditLogEntryService
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogEntryChangeRequest
 import de.sambalmueslie.openbooking.infrastructure.audit.api.AuditLogLevel
@@ -21,12 +22,16 @@ class OfferChangeHandler(
         source.register(this)
     }
 
-    override fun handleCreated(obj: Offer) {
+    override fun handleCreated(obj: Offer, request: OfferChangeRequest) {
         handleChange(obj, "OFFER CREATED")
     }
 
-    override fun handleUpdated(obj: Offer) {
+    override fun handleUpdated(obj: Offer, request: OfferChangeRequest) {
         handleChange(obj, "OFFER UPDATED")
+    }
+
+    override fun handlePatched(obj: Offer) {
+        handleChange(obj, "OFFER PATCHED")
     }
 
     override fun handleDeleted(obj: Offer) {

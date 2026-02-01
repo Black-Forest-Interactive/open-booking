@@ -8,6 +8,7 @@ import {BookingStatus, DaySummary, WeekSummary} from "@open-booking/core";
 import {DashboardService} from "@open-booking/admin";
 import {OfferAssignmentComponent} from "../../offer/offer-assignment/offer-assignment.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {WeekSelectComponent} from "../week-select/week-select.component";
 
 @Component({
   selector: 'app-dashboard-summary',
@@ -20,7 +21,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     NgClass,
     OfferAssignmentComponent,
     TranslatePipe,
-    BookingStatusComponent
+    BookingStatusComponent,
+    WeekSelectComponent
   ],
   templateUrl: './dashboard-summary.component.html',
   styleUrl: './dashboard-summary.component.scss',
@@ -35,11 +37,6 @@ export class DashboardSummaryComponent {
   selectionWeekChanged = output<WeekSummary>()
   selectionDayChanged = output<DaySummary | undefined>()
 
-  private weekSummaryResource = resource({
-    loader: param => toPromise(this.service.getWeeksSummary(), param.abortSignal)
-  })
-
-  weekSummary = computed(() => this.weekSummaryResource.value() ?? [])
   selectedWeek = signal<WeekSummary | undefined>(undefined)
 
   private daySummaryResource = resource({
@@ -50,15 +47,10 @@ export class DashboardSummaryComponent {
   daySummary = computed(() => this.daySummaryResource.value() ?? [])
   selectedDay = signal<DaySummary | undefined>(undefined)
 
-  reloading = computed(() => this.weekSummaryResource.isLoading() || this.daySummaryResource.isLoading())
+  reloading = computed(() => this.daySummaryResource.isLoading())
 
 
   constructor(private service: DashboardService) {
-    effect(() => {
-      let week = this.weekSummary()[0]
-      this.handleWeekSelection(week)
-    })
-
     effect(() => {
       let daysWithOffers = this.daySummary().filter(d => d.assignment.availableSpace > 0 || d.assignment.confirmedSpace > 0 || d.assignment.pendingSpace > 0)
       if (daysWithOffers.length) {

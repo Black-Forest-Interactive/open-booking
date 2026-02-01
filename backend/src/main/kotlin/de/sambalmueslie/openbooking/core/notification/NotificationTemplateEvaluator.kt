@@ -5,6 +5,7 @@ import de.sambalmueslie.openbooking.core.notification.api.ContentType
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplate
 import de.sambalmueslie.openbooking.core.notification.api.NotificationTemplateType
 import de.sambalmueslie.openbooking.infrastructure.export.tools.LocalDateTimeTool
+import de.sambalmueslie.openbooking.infrastructure.mail.api.Mail
 import jakarta.inject.Singleton
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.tools.ToolManager
@@ -28,17 +29,17 @@ class NotificationTemplateEvaluator(
     }
 
 
-    fun evaluate(type: NotificationTemplateType, properties: Map<String, Any>, lang: String = "de"): List<de.sambalmueslie.openbooking.infrastructure.mail.api.Mail> {
+    fun evaluate(type: NotificationTemplateType, properties: Map<String, Any>, lang: String = "de"): List<Mail> {
         val templates = templateService.findByType(type, lang)
         return templates.groupBy { it.type }.mapNotNull { evaluate(it.value, properties) }
     }
 
-    private fun evaluate(templates: List<NotificationTemplate>, properties: Map<String, Any>): de.sambalmueslie.openbooking.infrastructure.mail.api.Mail? {
+    private fun evaluate(templates: List<NotificationTemplate>, properties: Map<String, Any>): Mail? {
         val plain = evaluate(templates, properties, ContentType.PLAIN)
         val html = evaluate(templates, properties, ContentType.HTML)
 
         val subject = plain?.first ?: html?.first ?: return null
-        return _root_ide_package_.de.sambalmueslie.openbooking.infrastructure.mail.api.Mail(subject, html?.second, plain?.second)
+        return Mail(subject, html?.second, plain?.second)
     }
 
     private fun evaluate(templates: List<NotificationTemplate>, properties: Map<String, Any>, type: ContentType): Pair<String, String>? {

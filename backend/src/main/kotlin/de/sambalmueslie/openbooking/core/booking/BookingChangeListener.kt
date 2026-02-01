@@ -2,9 +2,10 @@ package de.sambalmueslie.openbooking.core.booking
 
 import de.sambalmueslie.openbooking.common.EntityChangeListener
 import de.sambalmueslie.openbooking.core.booking.api.Booking
+import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 
-interface BookingChangeListener : EntityChangeListener<Long, Booking> {
+interface BookingChangeListener : EntityChangeListener<Long, Booking, BookingChangeRequest> {
     fun confirmed(booking: Booking, content: BookingConfirmationContent) {
         // intentionally left empty
     }

@@ -1,0 +1,89 @@
+<div class="flex flex-col h-full">
+  <div class="flex-shrink-0">
+    <app-loading-bar [reloading]="reloading()"/>
+  </div>
+  <div class="flex flex-col flex-1 min-h-0 p-4">
+    <div class="flex flex-col h-full space-y-4">
+      <!-- Filters -->
+      <div class="bg-white p-4 rounded-lg shadow-sm space-y-4 flex-shrink-0">
+        <div class="flex flex-col gap-2">
+          <app-week-select (selectedWeekChanged)="handleWeekSelected($event)" class="flex-1"/>
+          <div class="flex gap-2 flex-wrap">
+            @for (size of visitorSizes; track size.value) {
+              <button
+                mat-stroked-button
+                class="!border-gray-300 !text-gray-700 hover:!bg-gray-50"
+                [class.!bg-blue-50]="visitorSize() === size.value"
+                [class.!border-blue-500]="visitorSize() === size.value"
+                [class.!text-blue-700]="visitorSize() === size.value"
+                (click)="visitorSize.set(size.value)">
+                {{ size.label | translate }} ({{ size.value }})
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-step selection -->
+      <div class="flex-1 overflow-y-auto min-h-0">
+        <div class="space-y-4 pr-2">
+          @if (!selectedDay()) {
+            <div class="flex flex-col gap-2">
+              <!-- Step 1: Day Selection with Summary -->
+              @for (summary of daySummaries(); track summary.day) {
+                <app-offer-finder-day-entry [data]="summary" (selectDay)="selectDay($event)"/>
+              }
+            </div>
+          } @else {
+            <!-- Step 2: Offer Selection for Selected Day -->
+            <div class="bg-white p-3 rounded-lg border border-gray-300 flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2 flex-1">
+                <button
+                  mat-icon-button
+                  (click)="selectedDay.set(null)"
+                  class="!text-blue-600"
+                  matTooltip="{{ 'OFFER.Action.BackToDays' | translate }}">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+                <h3 class="text-base font-semibold text-gray-900">
+                  {{ selectedDay() | date: 'EEEE, dd.MM.yyyy' }}
+                </h3>
+                <div class="flex-1"></div>
+                <mat-slide-toggle [(ngModel)]="hideNotMatching" labelPosition="before">
+                  {{ 'BOOKING.Filter.HideNotMatching' | translate }}
+                </mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              @for (item of selectedDayOffers(); track item.offer.id) {
+                <div
+                  class="bg-white p-3 rounded-lg border-2 border-gray-200 transition-all cursor-pointer hover:border-gray-300"
+                  [class.opacity-50]="!item.offer.active || item.assignment.availableSpace < visitorSize()"
+                  [class.!border-blue-500]="selectedOfferId() === item.offer.id"
+                  [class.!bg-blue-50]="selectedOfferId() === item.offer.id"
+                  (click)="selectOffer(item)">
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <div class="flex flex-col">
+                            <span class="text-sm font-medium" [class.text-gray-400]="!item.offer.active">
+                              {{ item.offer.start | date: 'HH:mm' }} - {{ item.offer.finish | date: 'HH:mm' }}
+                            </span>
+                        @if (!item.offer.active) {
+                          <span class="text-xs text-gray-400">{{ 'OFFER.INACTIVE' | translate }}</span>
+                        }
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0 min-w-[120px]">
+                      <app-offer-assignment [assignment]="item.assignment"/>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

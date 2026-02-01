@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.jpa") version "2.3.0"
     kotlin("plugin.serialization") version "2.3.0"
 
-    id("com.google.devtools.ksp") version "2.3.4"
+    id("com.google.devtools.ksp") version "2.3.5"
     id("org.sonarqube") version "7.2.2.6593"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.2"
@@ -32,12 +32,12 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.25")
+    implementation("ch.qos.logback:logback-classic:1.5.26")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.2")
-    testImplementation("io.mockk:mockk:1.14.7")
+    testImplementation("io.mockk:mockk:1.14.9")
 
     // jackson
     ksp("io.micronaut.serde:micronaut-serde-processor")
@@ -134,7 +134,7 @@ dependencies {
     testImplementation("org.opensearch:opensearch-testcontainers:4.1.0")
     testImplementation("io.micronaut.test:micronaut-test-rest-assured")
     testImplementation("io.fusionauth:fusionauth-jwt:6.0.0")
-    testImplementation("io.mockk:mockk:1.14.7")
+    testImplementation("io.mockk:mockk:1.14.9")
 
     implementation("jakarta.annotation:jakarta.annotation-api")
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")

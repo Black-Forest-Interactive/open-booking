@@ -1,32 +1,11 @@
 <app-main-content [title]="'MENU.Offer' | translate">
   <div class="flex gap-2 flex-auto" actions>
-    <mat-form-field class="flex-1 min-w-[300px] dense-3" subscriptSizing="dynamic" appearance="outline">
-      <mat-label>{{ 'DAY_INFO.SelectRange.Title' | translate }}</mat-label>
-      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-        <input matStartDate formControlName="start" placeholder="{{ 'DAY_INFO.SelectRange.StartDate' | translate }}">
-        <input matEndDate formControlName="end" placeholder="{{ 'DAY_INFO.SelectRange.EndDate' | translate }}">
-      </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-
-    @if (range.valid) {
-      <button
-        mat-icon-button
-        (click)="clearSelection()"
-        color="warn"
-        matTooltip="{{ 'OFFER.Action.ClearFilter' | translate }}">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-
-
     <button matButton="outlined" (click)="handleCreateSingle()">
       <mat-icon>add</mat-icon>
       {{ 'OFFER.Action.CreateSingle' | translate }}
     </button>
 
-    <button matButton="outlined" (click)="handleCreateSeries()">
+    <button matButton="outlined" (click)="handleCreateSeries()" [disabled]="true">
       <mat-icon>playlist_add</mat-icon>
       {{ 'OFFER.Action.CreateSeries' | translate }}
     </button>
@@ -34,6 +13,12 @@
     <button matButton="outlined" (click)="handleCreateRange()">
       <mat-icon>format_list_bulleted_add</mat-icon>
       {{ 'OFFER.Action.CreateRange' | translate }}
+    </button>
+
+
+    <button matButton="outlined" (click)="handleChangeDuration()">
+      <mat-icon>more_time</mat-icon>
+      {{ 'OFFER.Action.ChangeDuration' | translate }}
     </button>
 
     <button matIconButton (click)="reload()">
@@ -51,15 +36,19 @@
   <!-- ✅ SCROLL AREA -->
   <div class="flex-1 overflow-auto min-h-0 px-4">
     <app-offer-content
-      [entries]="offer()"
+      [entries]="entries()"
+      [selectedDay]="selectedDay()"
       [reloading]="reloading()"
       (edit)="handleEdit($event)"
       (delete)="handleDelete($event)"
+      (reload)="reload()"
       (toggleActive)="handleToggleActive($event)"
+      (selectionWeekChanged)="handleSelectionWeekChanged($event)"
+      (selectionDayChanged)="handleSelectionDayChanged($event)"
     >
     </app-offer-content>
 
-    @if (offer().length === 0 && !reloading()) {
+    @if (entries().length === 0 && !reloading()) {
       <div class="py-20 text-center">
         <div class="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6">
           <mat-icon class="!w-16 !h-16 !text-6xl opacity-50" color="primary">inbox</mat-icon>

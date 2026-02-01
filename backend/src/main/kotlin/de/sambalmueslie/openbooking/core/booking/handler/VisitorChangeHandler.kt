@@ -4,6 +4,7 @@ import de.sambalmueslie.openbooking.core.booking.BookingService
 import de.sambalmueslie.openbooking.core.visitor.VisitorChangeListener
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.Visitor
+import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
@@ -20,12 +21,12 @@ class VisitorChangeHandler(
         visitorService.register(this)
     }
 
-    override fun handleCreated(obj: Visitor) {
+    override fun handleCreated(obj: Visitor, request: VisitorChangeRequest) {
         // TODO verify size if visitor is assigned to a booking
 //        handleVisitorChanged(obj)
     }
 
-    override fun handleUpdated(obj: Visitor) {
+    override fun handleUpdated(obj: Visitor, request: VisitorChangeRequest) {
         // TODO verify size if visitor is assigned to a booking
 //        handleVisitorChanged(obj)
     }

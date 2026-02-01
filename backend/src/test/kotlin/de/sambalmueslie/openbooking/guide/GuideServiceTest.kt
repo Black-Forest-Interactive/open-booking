@@ -27,7 +27,7 @@ internal class GuideServiceTest : BaseServiceTest() {
         val createRequest = GuideChangeRequest("firstName", "lastName", "email", "phone", "mobile")
         var result = service.create(createRequest)
 
-        var reference = Guide(result.id, createRequest.firstName, createRequest.lastName, createRequest.email, createRequest.phone, createRequest.mobile)
+        var reference = Guide(result.id, createRequest.firstName, createRequest.lastName, createRequest.email, createRequest.phone, createRequest.mobile, now, null)
         assertEquals(reference, result)
 
         // read
@@ -45,6 +45,8 @@ internal class GuideServiceTest : BaseServiceTest() {
             updateRequest.email,
             updateRequest.phone,
             updateRequest.mobile,
+            now,
+            null
         )
         assertEquals(reference, result)
 

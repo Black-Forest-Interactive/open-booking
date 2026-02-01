@@ -40,6 +40,7 @@
       "Cancel": "Cancel",
       "Comment": "Add comment",
       "ViewDetails": "Show booking details",
+	  "Checkout": "Finalize booking",
       "Create": "Create Booking"
     },
     "Dialog": {
@@ -59,6 +60,82 @@
         "Warning": "This action cannot be undone. The booking will be permanently cancelled."
       }
     },
+	"Form": {
+      "BookingType": {
+        "Single": "Single visitor",
+        "Group": "Group visitor"
+      },
+      "City": {
+        "Label": "City"
+      },
+      "Comment": {
+        "Hint": "Important information, which is important for us.",
+        "Label": "Information",
+        "Empty": "There is currently no additional information"
+      },
+      "Contact": {
+        "Hint": "Name of the contact person",
+        "Label": "Name"
+      },
+      "Mail": {
+        "Label": "Mail address",
+        "Invalid": "Invaild mail address"
+      },
+      "MaxAge": {
+        "Hint": "Age of the oldest participant",
+        "Label": "Oldest participant",
+        "MinValue": "Age may not be lower than 0"
+      },
+      "MinAge": {
+        "Hint": "Age of the youngest participant",
+        "Label": "Youngest participant",
+        "MinValue": "Age may not be lower than 0"
+      },
+      "Age": {
+        "Hint": "Age of the visitor",
+        "Label": "Age"
+      },
+      "Phone": {
+        "Label": "Phone"
+      },
+      "School": {
+        "Label": "School class or kindergarten group"
+      },
+      "SelectedDate": {
+        "Label": "Selected date"
+      },
+      "Size": {
+        "MaxSize": "Unfortunately, the maximum number of available slots has been exceeded.",
+        "MinSize": "At least one person must be registered.",
+        "MaxAvailableSize": "Maximum number of visitors {{available}}",
+        "Hint": "Number of persons to be registered",
+        "Label": "Number of persons"
+      },
+      "IgnoreSize": {
+        "Label": "Do not check group size"
+      },
+      "SpaceAvailable": "Slots available",
+      "Street": {
+        "Label": "Street"
+      },
+      "TermsAndConditions": {
+        "Label": "I have read and accept the terms and conditions.",
+        "Show": "Show terms and conditions"
+      },
+      "Title": {
+        "Hint": "Name of the group",
+        "Label": "Group name",
+        "Required": "A name is required for the group"
+      },
+      "Name": {
+        "Hint": "Name of the visitor",
+        "Label": "Name"
+      },
+      "Zip": {
+        "Label": "Zip Code"
+      },
+      "Required": "This field is a required field."
+    },
     "MESSAGE": {
       "CONFIRM": {
         "SUCCESS": "The booking request has been confirmed successfully.",
@@ -72,6 +149,13 @@
         "SUCCESS": "The booking has been cancelled successfully.",
         "FAILED": "The booking could not be cancelled."
       }
+    },
+	"Terms": {
+      "Accepted": "Terms and conditions accepted",
+      "NotAccepted": "Terms and conditions not accepted"
+    },
+    "Summary": {
+      "Title": "Summary"
     }
   },
   "RESERVATION": {
@@ -110,7 +194,8 @@
     "Details": {
       "Title": "Reservation Details",
       "NotEditable": "This reservation can no longer be edited",
-      "LoadingError": "Error Loading Reservation"
+      "LoadingError": "Error loading reservation",
+	  "Offer": "Selected date"
     },
     "Dialog": {
       "InfoTitle": "Reservation Info"
@@ -227,6 +312,10 @@
       "Selected": "{{count}} selected",
       "MaxGroupSize": "Max group size: {{size}}",
       "Expires": "Expires at {{time}}"
+    },
+    "TimeSlots": {
+      "Title": "Selected slot",
+      "MaxPersons": "Max. {{count}} persons"
     }
   },
   "REQUEST": {

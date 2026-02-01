@@ -31,18 +31,18 @@
       </button>
     }
 
-    @if (service.isHandset()) {
-      <button matIconButton (click)="showHelp()" aria-label="Help" class="flex-shrink-0">
-        <mat-icon>help</mat-icon>
-      </button>
-    } @else {
-      <button matButton="filled" (click)="showHelp()" aria-label="Help" class="flex-shrink-0">
-        <mat-icon>help</mat-icon>
-        {{ 'MENU.Help' | translate }}
-      </button>
-    }
+    <!--    @if (service.isHandset()) {-->
+    <!--      <button matIconButton (click)="showHelp()" aria-label="Help" class="flex-shrink-0">-->
+    <!--        <mat-icon>help</mat-icon>-->
+    <!--      </button>-->
+    <!--    } @else {-->
+    <!--      <button matButton="filled" (click)="showHelp()" aria-label="Help" class="flex-shrink-0">-->
+    <!--        <mat-icon>help</mat-icon>-->
+    <!--        {{ 'MENU.Help' | translate }}-->
+    <!--      </button>-->
+    <!--    }-->
 
-    <lib-theme-toggle-button/>
+    <!--    <lib-theme-toggle-button/>-->
   </div>
 </mat-toolbar>
 

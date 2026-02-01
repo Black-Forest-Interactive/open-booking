@@ -60,40 +60,6 @@ html {
   ));
 }
 
-
-// Optional: Dark theme variant
-.dark-theme {
-  color-scheme: dark;
-
-  // Dark theme color overrides
-  --mat-sys-primary: #c6c6c6;
-  --mat-sys-on-primary: #333333;
-  --mat-sys-primary-container: #474747;
-  --mat-sys-on-primary-container: #e3e3e3;
-
-  --mat-sys-tertiary: #9dfd9b;
-  --mat-sys-on-tertiary: #0a2f0f;
-  --mat-sys-tertiary-container: #257e2a;
-  --mat-sys-on-tertiary-container: #d4ffd0;
-
-  --mat-sys-error: #ffb4ab;
-  --mat-sys-on-error: #690005;
-  --mat-sys-error-container: #93000a;
-  --mat-sys-on-error-container: #ffdad6;
-}
-
-:root {
-  @include mat.toolbar-overrides((
-    container-background-color: #474747,
-    container-text-color: #e3e3e3,
-  ));
-
-  @include mat.icon-button-overrides((
-    icon-color: #e3e3e3,
-    state-layer-color: #e3e3e3,
-  ));
-}
-
 // Material Design Token CSS Classes
 .bg-primary {
   background-color: var(--mat-sys-primary) !important;

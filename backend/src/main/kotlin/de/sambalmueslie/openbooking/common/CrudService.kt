@@ -4,7 +4,7 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 
 
-interface CrudService<T, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O>> {
+interface CrudService<T, O : Entity<T>, R : EntityChangeRequest, L : EntityChangeListener<T, O, R>> {
     fun get(id: T): O?
     fun getAll(pageable: Pageable): Page<O>
     fun create(request: R): O

@@ -9,8 +9,11 @@ export interface Booking {
   status: BookingStatus,
   size: number,
   comment: string,
+  lang: string,
   offerId: number,
   visitorId: number,
+  created: string,
+  updated: string | undefined,
 }
 
 export interface BookingDetails {
@@ -30,6 +33,7 @@ export interface BookingInfo {
   timestamp: string
 }
 
+
 export class BookingChangeRequest {
   constructor(
     public visitor: VisitorChangeRequest,
@@ -37,7 +41,8 @@ export class BookingChangeRequest {
     public lang: string,
     public offerId: number,
     public autoConfirm: boolean,
-    public ignoreSizeCheck: boolean
+    public ignoreSizeCheck: boolean,
+    public noCreateNotification: boolean,
   ) {
   }
 }
@@ -47,7 +52,8 @@ export class BookingSearchRequest {
     public fullTextSearch: String,
     public status: BookingStatus[],
     public from: string | null | undefined,
-    public to: string | null | undefined
+    public to: string | null | undefined,
+    public onlyMailConfirmed: boolean | null
   ) {
   }
 }
@@ -70,3 +76,4 @@ export const BookingStatus = {
 } as const;
 
 export type BookingStatus = typeof BookingStatus[keyof typeof BookingStatus]
+

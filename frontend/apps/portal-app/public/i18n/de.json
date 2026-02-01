@@ -56,7 +56,7 @@
       },
       "Cancel": {
         "Title": "Buchung stornieren",
-        "Message": "Möchten Sie diese Buchung wirklich stornieren?",
+        "Message": "Möchtest du diese Buchung wirklich stornieren?",
         "Warning": "Diese Aktion kann nicht rückgängig gemacht werden. Die Buchung wird endgültig storniert."
       }
     },
@@ -78,8 +78,8 @@
         "Label": "Name"
       },
       "Mail": {
-        "Label": "E-Mail Addresse",
-        "Invalid": "Ungültige E-Mail Addresse"
+        "Label": "E-Mail Adresse",
+        "Invalid": "Ungültige E-Mail Adresse"
       },
       "MaxAge": {
         "Hint": "Das Alter des ältesten Teilnehmers",
@@ -114,7 +114,7 @@
       "IgnoreSize": {
         "Label": "Gruppengröße nicht prüfen"
       },
-      "SpaceAvailable": "Places available",
+      "SpaceAvailable": "Verfügbare Plätze",
       "Street": {
         "Label": "Straße"
       },
@@ -232,7 +232,7 @@
     }
   },
   "ERROR": {
-    "NoDaySelectedForReservation": "Sie müssen mindestens einen Tag auswählen, um eine Reservierung zu starten",
+    "NoDaySelectedForReservation": "Du musst mindestens einen Tag auswählen, um eine Reservierung zu starten",
     "NoSpaceLeftForReservation": "Leider ist diese Führung bereits ausgebucht",
     "OfferIsDeactivated": "Die Führung wurde deaktivert und kann daher nicht gebucht werden"
   },
@@ -267,7 +267,7 @@
       "Select": "Termin auswählen",
       "ShowReservations": "Reservierungen",
       "Filter": "Filtern",
-      "ProceedToCheckout": "Reservierung abschliesen"
+      "ProceedToCheckout": "Reservierung abschließen"
     },
     "Field": {
       "Active": "Aktiv",
@@ -277,7 +277,7 @@
       "Id": "ID",
       "MaxPersons": "Maximale Personzahl",
       "Start": "Start",
-      "StartTime": "Begin"
+      "StartTime": "Beginn"
     },
     "Form": {
       "Active": "Aktiv",
@@ -288,7 +288,7 @@
     },
     "Info": {
       "SpacesAvailable": "Plätze verfügbar",
-      "Pending": "ausstehend",
+      "Pending": "Ausstehend",
       "Full": "Ausgebucht",
       "LimitedSpaces": "Wenige Plätze",
       "NoOffersAvailable": "Keine Angebote verfügbar",
@@ -347,7 +347,7 @@
         "Title": "Reservierung bestätigen"
       },
       "Failed": {
-        "Message": "Es tut uns leid, aber es ist bei der Anfrage leider etwas schief gegangen. Bitte erneut probieren oder einen anderen Termin auswählen.",
+        "Message": "Es tut uns leid, aber es ist bei der Anfrage leider etwas schief gegangen. Bitte probiere es erneut oder wähle einen anderen Termin aus.",
         "Title": "Fehler beim Verarbeiten der Terminanfrage"
       }
     },
@@ -369,7 +369,7 @@
         "Label": "Name"
       },
       "Mail": {
-        "Label": "E-Mail Addresse"
+        "Label": "E-Mail Adresse"
       },
       "MaxAge": {
         "Hint": "Das Alter des ältesten Teilnehmers",
@@ -380,7 +380,7 @@
         "Label": "Jüngster Teilnehmer"
       },
       "Age": {
-        "Hint": "Alter des Besucherss",
+        "Hint": "Alter des Besuchers",
         "Label": "Alter"
       },
       "Phone": {
@@ -403,7 +403,7 @@
       "IgnoreSize": {
         "Label": "Gruppengröße nicht prüfen"
       },
-      "SpaceAvailable": "Places available",
+      "SpaceAvailable": "Verfügbare Plätze",
       "Street": {
         "Label": "Straße"
       },
@@ -443,7 +443,7 @@
     },
     "Dialog": {
       "Delete": {
-        "Question": "Wollen Sie diese Antwort worklich löschen?",
+        "Question": "Willst du diese Antwort wirklich löschen?",
         "Title": "Anfrage {{type}} löschen"
       }
     },
@@ -482,11 +482,11 @@
   "VISITOR": {
     "MailConfirmation": {
       "Failed": {
-        "Message": "Ihre E-Mail-Adresse wurde nicht bestätigt. Bitte kontaktieren Sie uns.",
-        "Title": "Leider hat etwas nicht funktionert!"
+        "Message": "Deine E-Mail-Adresse wurde bereits erfolgreich bestätigt.",
+        "Title": "E-Mail bereits bestätigt"
       },
       "Success": {
-        "Message": "Ihre Anfrage wurde erfolgreich bestätigt.",
+        "Message": "Deine Anfrage wurde erfolgreich bestätigt.",
         "Title": "Vielen Dank!"
       },
       "Title": "Bestätigung"
@@ -520,7 +520,7 @@
     },
     "Title": "📅 Terminübersicht",
     "NoData": "Keine Daten verfügbar",
-    "ComeBackLater": "Bitte schauen Sie später noch einmal vorbei."
+    "ComeBackLater": "Bitte schaue später noch einmal vorbei."
   },
   "CART": {
     "Title": "Warenkorb",

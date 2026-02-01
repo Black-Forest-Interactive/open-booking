@@ -2,6 +2,7 @@ package de.sambalmueslie.openbooking.core.search.offer
 
 import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
+import de.sambalmueslie.openbooking.core.search.offer.api.OfferFindSuitableRequest
 import de.sambalmueslie.openbooking.core.search.offer.api.OfferSearchRequest
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferBookingEntryData
 import de.sambalmueslie.openbooking.core.search.offer.db.OfferSearchEntryData
@@ -54,7 +55,7 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             // Date range filters - these apply to top-level fields
             request.from?.let { fromDate ->
                 must(
-                    range(OfferSearchEntryData::finish) {
+                    range(OfferSearchEntryData::start) {
                         gte = fromDate.toString()
                     }
                 )
@@ -77,5 +78,76 @@ class OfferSearchQueryBuilder : SearchQueryBuilder<OfferSearchRequest> {
             add(OfferSearchEntryData::start, SortOrder.ASC)  // Group by start
             add(OfferSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
         }
+    }
+
+    fun buildSearchQuery(request: OfferFindSuitableRequest): (SearchDSL.() -> Unit) = {
+        resultSize = 500
+        query = bool {
+            must(
+                range(OfferSearchEntryData::availableSpace) {
+                    gte = request.visitorSize
+                }
+            )
+
+            request.from?.let { fromDate ->
+                must(
+                    range(OfferSearchEntryData::start) {
+                        gte = fromDate.toString()
+                    }
+                )
+            }
+
+            request.to?.let { toDate ->
+                must(
+                    range(OfferSearchEntryData::start) {
+                        lte = toDate.toString()
+                    }
+                )
+            }
+        }
+        sort {
+            add(OfferSearchEntryData::start, SortOrder.ASC)  // Group by start
+            add(OfferSearchEntryData::timestamp, SortOrder.DESC)  // Then by timestamp
+        }
+    }
+
+    fun getOfferStatistics(): (SearchDSL.() -> Unit) = {
+        resultSize = 0
+
+        // Total available space in active offers
+        val activeOffersAgg = FilterAgg(TermQuery(OfferSearchEntryData::active.name, true))
+        activeOffersAgg.agg("total_available_space", SumAgg(OfferSearchEntryData::maxPersons))
+        agg("active_offers", activeOffersAgg)
+
+        // Total space in inactive offers
+        val inactiveOffersAgg = FilterAgg(TermQuery(OfferSearchEntryData::active.name, false))
+        inactiveOffersAgg.agg("total_deactivated_space", SumAgg(OfferSearchEntryData::maxPersons))
+        agg("inactive_offers", inactiveOffersAgg)
+
+        // Offers created by day
+        agg("offers_by_day", DateHistogramAgg(OfferSearchEntryData::created) {
+            calendarInterval = "day"
+        })
+
+        // Available space by day
+        agg("space_by_day", DateHistogramAgg(OfferSearchEntryData::start) {
+            calendarInterval = "day"
+        }) {
+            agg("total_space", SumAgg(OfferSearchEntryData::maxPersons))
+            agg("confirmed_space", SumAgg(OfferSearchEntryData::confirmedSpace))
+            agg("pending_space", SumAgg(OfferSearchEntryData::pendingSpace))
+            agg("available_space", SumAgg(OfferSearchEntryData::availableSpace))
+        }
+
+        // Average utilization
+        agg("avg_confirmed_space", AvgAgg(OfferSearchEntryData::confirmedSpace))
+        agg("avg_pending_space", AvgAgg(OfferSearchEntryData::pendingSpace))
+        agg("avg_available_space", AvgAgg(OfferSearchEntryData::availableSpace))
+
+        // Total spaces
+        agg("total_max_space", SumAgg(OfferSearchEntryData::maxPersons))
+        agg("total_confirmed_space", SumAgg(OfferSearchEntryData::confirmedSpace))
+        agg("total_pending_space", SumAgg(OfferSearchEntryData::pendingSpace))
+        agg("total_available_space", SumAgg(OfferSearchEntryData::availableSpace))
     }
 }

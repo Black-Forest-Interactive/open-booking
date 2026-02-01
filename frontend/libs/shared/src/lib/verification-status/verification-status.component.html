@@ -4,7 +4,7 @@
     @if (isVerified()) {
       <div class="flex gap-1 items-center">
         <span>{{ text() | translate }}</span>
-        <span class="text-xs text-gray-500 px-2">{{ data().timestamp | date:'short' }}</span>
+        <span class="text-xs text-gray-500 px-2">{{ timestamp() | date:'short' }}</span>
       </div>
     } @else {
       <span>{{ text() | translate }}</span>

@@ -1,0 +1,13 @@
+<div
+  class="bg-white rounded-lg border-2 border-gray-200 transition-all cursor-pointer hover:border-blue-300 hover:shadow-md px-4"
+  (click)="onSelectDay()">
+  <div class="flex items-center justify-between gap-4">
+    <div class="text-base font-semibold text-gray-900 flex-1 py-4">
+      {{ data().day | date: 'EEEE, dd.MM.yyyy' }}
+    </div>
+    <div class="flex-shrink-0 flex-1">
+      <div echarts [options]="chartOption()" [merge]="chartMerge()" class="h-[60px]" [autoResize]="true"></div>
+    </div>
+    <mat-icon class="text-gray-400">chevron_right</mat-icon>
+  </div>
+</div>

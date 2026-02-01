@@ -1,0 +1,22 @@
+<app-main-content [title]="'MENU.Assistant' | translate">
+  <div class="flex gap-6 overflow-hidden p-3" style="height: calc(100vh - 174px); min-height: 600px;">
+    <div [class]="selectedOffer() ? 'w-1/3' : 'w-full'" class="transition-all duration-300 overflow-y-auto">
+      <mat-card appearance="outlined">
+        <app-offer-finder (offerSelected)="handleOfferSelected($event)"></app-offer-finder>
+      </mat-card>
+    </div>
+    @if (selectedOffer()) {
+      <div class="w-2/3 transition-all duration-300 overflow-y-auto">
+        <mat-card appearance="outlined">
+          <app-booking-create
+            [offer]="selectedOffer()!!.offer"
+            [assignment]="selectedOffer()!!.assignment"
+            (cancel)="reset()"
+            (completed)="reset()"
+            class="p-4"
+          />
+        </mat-card>
+      </div>
+    }
+  </div>
+</app-main-content>
