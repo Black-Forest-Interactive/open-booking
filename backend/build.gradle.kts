@@ -11,9 +11,9 @@ plugins {
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.2"
 
-    id("io.micronaut.application") version "4.6.1"
-    id("io.micronaut.test-resources") version "4.6.1"
-    id("io.micronaut.aot") version "4.6.1"
+    id("io.micronaut.application") version "4.6.2"
+    id("io.micronaut.test-resources") version "4.6.2"
+    id("io.micronaut.aot") version "4.6.2"
 
     id("maven-publish")
     id("jacoco")
@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.26")
+    implementation("ch.qos.logback:logback-classic:1.5.27")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
