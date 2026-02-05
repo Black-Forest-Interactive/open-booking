@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {AddressChangeRequest, BookingChangeRequest, BookingDetails, VisitorChangeRequest} from "@open-booking/core";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -23,26 +23,15 @@ import {BookingOfferChangeComponent} from "../booking-offer-change/booking-offer
 export class BookingOfferChangeDialogComponent {
   data = inject<BookingDetails>(MAT_DIALOG_DATA)
 
-  form: FormGroup
-
   constructor(
-    private fb: FormBuilder,
     private reference: MatDialogRef<BookingOfferChangeDialogComponent>
   ) {
-    this.form = this.fb.group({
-      size: [this.data.visitor.size, [Validators.required, Validators.min(1)]],
-      minAge: [this.data.visitor.minAge, [Validators.required, Validators.min(0)]],
-      maxAge: [this.data.visitor.maxAge, [Validators.required, Validators.min(0)]],
-      offerId: [this.data.offer.offer.id, [Validators.required, Validators.min(1)]]
-    })
+
   }
 
-  onSave() {
-    if (!this.form.valid) return
-
-    let value = this.form.value
+  onSave(value: any) {
     if (!value) return
-    let visitor = this.data.visitor;
+    let visitor = this.data.visitor
     let visitorRequest = new VisitorChangeRequest(
       visitor.type,
       visitor.title,
@@ -55,9 +44,9 @@ export class BookingOfferChangeDialogComponent {
       visitor.phone,
       visitor.email
     )
-
+    debugger
     let booking = this.data.booking
-    let request = new BookingChangeRequest(visitorRequest, booking.comment, booking.lang, value.offerId, true, true, false)
+    let request = new BookingChangeRequest(visitorRequest, booking.comment, booking.lang, value.offerId, false, true, false)
     this.reference.close(request)
   }
 

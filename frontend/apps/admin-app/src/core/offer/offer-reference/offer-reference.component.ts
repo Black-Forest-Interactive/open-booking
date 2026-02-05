@@ -37,9 +37,10 @@ export class OfferReferenceComponent {
   // Computed properties
   active = computed(() => this.entry().offer.active)
   maxPersons = computed(() => this.entry().offer.maxPersons)
+  assignment = computed(() => this.entry().assignment)
   availableSpace = computed(() => this.entry().assignment.availableSpace)
 
-  hasCapacity = computed(() => this.availableSpace() >= 0)
+  hasCapacity = computed(() => (this.maxPersons() - this.assignment().confirmedSpace - this.assignment().deactivatedSpace) >= 0)
 
   canConfirmOffer = computed(() =>
     this.active() &&

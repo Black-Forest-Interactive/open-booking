@@ -1,12 +1,28 @@
-<div class="p-6">
-  <div class="flex items-center gap-3 mb-4">
-    <mat-icon class="text-amber-600">comment</mat-icon>
-    <h2 class="text-lg font-semibold text-gray-800">{{ 'RESERVATION.Dialog.Comment.Title'| translate }}</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="flex flex-col gap-4">
+
+    <div class="flex items-center gap-3 border-b p-4">
+      <mat-icon class="text-amber-600">comment</mat-icon>
+      <h2 class="text-lg font-semibold text-gray-800">{{ 'BOOKING.Dialog.Comment.Title'| translate }}</h2>
+    </div>
+
+    <div class="flex items-center gap-3 px-4">
+      <mat-form-field class="w-full dense-3" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>{{ 'BOOKING.Form.Comment.Label' | translate }}</mat-label>
+        <textarea matInput formControlName="comment" rows="10" cols="50"></textarea>
+      </mat-form-field>
+    </div>
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <button matButton="filled" color="primary" type="submit" class="w-full" [disabled]="!form.valid">
+        <mat-icon>save</mat-icon>
+        {{ "ACTION.Save" | translate }}
+      </button>
+
+      <button matButton="outlined" color="warn" type="button" (click)="cancel()" class="w-full">
+        <mat-icon>cancel</mat-icon>
+        {{ 'ACTION.Cancel' | translate }}
+      </button>
+    </div>
   </div>
-  <div class="text-sm text-gray-700 whitespace-pre-wrap break-words bg-gray-50 p-4 rounded-lg border border-gray-200">
-    {{ data.comment }}
-  </div>
-  <div class="flex justify-end mt-6">
-    <button mat-button mat-dialog-close color="primary">{{ 'ACTION.Close' | translate }}</button>
-  </div>
-</div>
+</form>

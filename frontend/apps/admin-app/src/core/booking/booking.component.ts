@@ -44,7 +44,7 @@ export class BookingComponent {
   isSearchActive = computed(() => this.fullTextSearch().length > 0)
 
   pageNumber = signal(0)
-  pageSize = signal(25)
+  pageSize = signal(100)
 
   request = computed(() =>
     (this.isSearchActive()) ?

@@ -90,7 +90,8 @@
       "Finder": "Terminfinder",
       "EditVisitor": "Besucherdaten bearbeiten",
       "ChangeOffer": "Termin ändern",
-      "ConfirmMail": "Mailadresse bestätigen"
+      "ConfirmMail": "Mailadresse bestätigen",
+      "EditComment": "Kommentar bearbeiten"
     },
     "Create": {
       "Action": {
