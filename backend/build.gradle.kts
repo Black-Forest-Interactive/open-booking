@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.28")
+    implementation("ch.qos.logback:logback-classic:1.5.29")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
