@@ -3,7 +3,6 @@ package de.sambalmueslie.openbooking.core.search.booking
 import com.jillesvangurp.searchdsls.querydsl.*
 import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.core.search.common.SearchQueryBuilder
-import de.sambalmueslie.openbooking.core.visitor.api.VerificationStatus
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 
@@ -70,14 +69,18 @@ class BookingSearchQueryBuilder : SearchQueryBuilder<BookingSearchRequest> {
                 )
             }
 
-            if (request.onlyMailConfirmed != null) {
-                if (request.onlyMailConfirmed) {
-                    must(
-                        terms(BookingSearchEntryData::verificationStatus, VerificationStatus.CONFIRMED.toString())
-                    )
-                } else {
-                    // not implemented yet
-                }
+            // Filter by visitor type
+            if (request.visitorType.isNotEmpty()) {
+                must(
+                    terms(BookingSearchEntryData::type, request.visitorType.map { it.name })
+                )
+            }
+
+            // Filter by verification status
+            if (request.verificationStatus.isNotEmpty()) {
+                must(
+                    terms(BookingSearchEntryData::verificationStatus, request.verificationStatus.map { it.name })
+                )
             }
 
             // Date range filters on nested offer fields

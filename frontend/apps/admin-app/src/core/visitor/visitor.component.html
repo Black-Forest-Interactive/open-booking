@@ -1,1 +1,212 @@
-<p>group works!</p>
+<app-main-content
+  [title]="'MENU.Visitor' | translate"
+  [enableSearch]="false"
+>
+
+  <div class="flex gap-2 flex-auto items-center p-2 w-full">
+    <form [formGroup]="form" class="flex-1">
+      <mat-card appearance="outlined" class="p-2">
+        <div class="flex flex-col gap-2">
+          <!-- Row 1: Search + Dropdowns -->
+          <div class="flex flex-wrap gap-3">
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-96">
+              <mat-label>{{ 'VISITOR.Search' | translate }}</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput formControlName="fullTextSearch"/>
+              @if (form.controls.fullTextSearch.value) {
+                <button matSuffix mat-icon-button (click)="form.controls.fullTextSearch.reset('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-44">
+              <mat-label>{{ 'BOOKING.Status.Title' | translate }}</mat-label>
+              <mat-select formControlName="status" multiple>
+                @for (s of bookingStatuses; track s) {
+                  <mat-option [value]="s">{{ 'BOOKING.Status.' + s | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-44">
+              <mat-label>{{ 'VISITOR.Type.Type' | translate }}</mat-label>
+              <mat-select formControlName="visitorType" multiple>
+                @for (t of visitorTypes; track t) {
+                  <mat-option [value]="t">{{ 'VISITOR.Type.' + t | translate }}</mat-option>
+
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-48">
+              <mat-label>{{ 'VISITOR.Verification.Type' | translate }}</mat-label>
+              <mat-select formControlName="verificationStatus" multiple>
+                @for (v of verificationStatuses; track v) {
+                  <mat-option [value]="v">{{ 'VISITOR.Verification.' + v | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-64"
+                            [class.opacity-40]="isSearchActive()">
+              <mat-label>{{ 'VISITOR.DateRange' | translate }}</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [disabled]="isSearchActive()">
+                <input matStartDate formControlName="from"/>
+                <input matEndDate formControlName="to"/>
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"/>
+              <mat-date-range-picker #picker/>
+            </mat-form-field>
+
+          </div>
+
+          <!-- Row 2: Active filter chips + Actions -->
+          <div class="flex flex-wrap items-center gap-2">
+
+            <!-- Active filter chips -->
+            @for (s of form.controls.status.value; track s) {
+              <mat-chip (removed)="removeStatus(s)">
+                {{ 'BOOKING.Status.' + s | translate }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            }
+            @for (t of form.controls.visitorType.value; track t) {
+              <mat-chip (removed)="removeVisitorType(t)">
+                {{ 'VISITOR.Type.' + t | translate }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            }
+            @for (v of form.controls.verificationStatus.value; track v) {
+              <mat-chip (removed)="removeVerificationStatus(v)">
+                {{ 'VISITOR.Verification.' + v | translate }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            }
+
+            @if (form.dirty) {
+              <button mat-icon-button matTooltip="Reset all filters" (click)="reset()">
+                <mat-icon>filter_alt_off</mat-icon>
+              </button>
+            }
+
+            <div class="flex-auto"></div>
+
+            @if (selection.selected.length > 0) {
+              <span class="text-sm text-gray-500">{{ selection.selected.length }} selected</span>
+            }
+
+            <button mat-stroked-button (click)="export()">
+              <mat-icon>download</mat-icon>
+              Export
+            </button>
+
+            <button mat-flat-button color="primary"
+                    [disabled]="!selection.hasValue()"
+                    (click)="notifySelected()">
+              <mat-icon>mail</mat-icon>
+              Notify ({{ selection.selected.length }})
+            </button>
+
+          </div>
+        </div>
+      </mat-card>
+    </form>
+  </div>
+
+  <!-- Error -->
+  @if (visitorResource.error()) {
+    <div class="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-lg p-4">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ 'VISITOR.LoadError' | translate }}</span>
+      <button mat-stroked-button color="warn" (click)="visitorResource.reload()">Retry</button>
+    </div>
+  }
+
+  <!-- Table -->
+  <div class="bg-white border border-gray-200 rounded-xl overflow-hidden flex-1">
+    <table mat-table [dataSource]="entries()" class="w-full">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            (change)="toggleAll()"/>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            [checked]="selection.isSelected(row)"
+            (change)="selection.toggle(row)"/>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'BOOKING.Form.Name.Label' | translate }}</th>
+        <td mat-cell *matCellDef="let row">
+          @if (row.visitor.type == VisitorType.GROUP) {
+            <div class="flex flex-col gap-1">
+              <div>{{ row.visitor.title }}</div>
+              <div>{{ row.visitor.name }}</div>
+            </div>
+          } @else {
+            {{ row.visitor.name }}
+          }
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>{{ 'BOOKING.Form.Mail.Label' | translate }}</th>
+        <td mat-cell *matCellDef="let row" class="text-gray-500">{{ row.visitor.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="offer">
+        <th mat-header-cell *matHeaderCellDef>{{ 'MENU.Offer' | translate }}</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.offer.offer.start | date:'short' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'BOOKING.Status.Title'  | translate }}</th>
+        <td mat-cell *matCellDef="let row">
+          <lib-booking-status [status]="row.booking.status" [amount]="row.visitor.size" [compact]="true"/>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="verification">
+        <th mat-header-cell *matHeaderCellDef>{{ 'VISITOR.Verification.Type' | translate }}</th>
+        <td mat-cell *matCellDef="let row">
+          <lib-verification-status [data]="row.visitor.verification" [showText]="false"/>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-gray-50 cursor-pointer"></tr>
+
+      <tr *matNoDataRow>
+        <td [colSpan]="columns.length" class="text-center py-16 text-gray-400">
+          <mat-icon>group_off</mat-icon>
+          <p class="mt-2">{{ 'VISITOR.NoResults' | translate }}</p>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    footer
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageNumber()"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [showFirstLastButtons]="true"
+    [disabled]="reloading()"
+    (page)="handlePageChange($event)">
+  </mat-paginator>
+
+
+</app-main-content>

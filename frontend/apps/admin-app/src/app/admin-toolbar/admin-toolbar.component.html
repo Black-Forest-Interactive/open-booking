@@ -42,6 +42,8 @@
       </button>
     }
 
+    <lib-principal-button [principal]="authService.principal()!!" (logout)="authService.logout()"/>
+
     <lib-theme-toggle-button/>
   </div>
 </mat-toolbar>
@@ -61,3 +63,4 @@
     <span>{{ 'LANG.German' | translate }}</span>
   </button>
 </mat-menu>
+

@@ -4,7 +4,7 @@ export const environment = {
   logrocketAppId: '0euwfq/open-booking-jcupc',
   logoutUrl: 'https://open.psm.church/',
   keycloak: {
-    url: 'https://auth.psm.church/auth',
+    url: 'https://idp.psm.church/auth',
     realm: 'open-booking',
     clientId: 'admin-app',
   },

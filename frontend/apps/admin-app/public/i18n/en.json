@@ -41,7 +41,8 @@
       "Settings": "Settings & Templates",
       "Administration": "Administrative Tasks"
     },
-    "Statistics": "Statistics"
+    "Statistics": "Statistics",
+    "Visitor": "Visitor"
   },
   "APP": {
     "Title": "Open Booking",
@@ -532,9 +533,12 @@
     "Status": {
       "Title": "Status",
       "CONFIRMED": "Confirmed",
-      "UNCONFIRMED": "Unconfirmed"
+      "UNCONFIRMED": "Unconfirmed",
+      "EXPIRED": "Expired",
+      "UNKNOWN": "Unknown"
     },
     "Type": {
+      "Type": "Visitor type",
       "SINGLE": "Single",
       "GROUP": "Group"
     }

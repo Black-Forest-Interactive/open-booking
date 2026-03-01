@@ -59,6 +59,22 @@ export abstract class BaseService {
     })
   }
 
+
+  protected postBlob(suffix: string, body: any, params = new HttpParams()): Observable<HttpResponse<Blob>> {
+    const url = this.createUrl(suffix);
+    console.debug("Post blob '" + url + "'")
+    const headers = new HttpHeaders().set("Accept", "application/octet-stream")
+
+    // @ts-ignore
+    return this.http.post<Blob>(url, body, {
+      headers: headers,
+      observe: 'response',
+      params: params,
+      // @ts-ignore
+      responseType: 'blob'
+    })
+  }
+
   protected put<T>(suffix: string, body: any, params: HttpParams = new HttpParams()): Observable<T> {
     this.logger.info("[PUT] " + JSON.stringify(body));
     const url = this.createUrl(suffix);

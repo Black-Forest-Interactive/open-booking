@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {BaseService} from "@open-booking/shared";
 import {Observable} from "rxjs";
-import {Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {BookingSearchRequest, BookingSearchResponse, Visitor, VisitorChangeRequest} from "@open-booking/core";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,13 @@ export class VisitorService extends BaseService {
 
   confirm(id: number): Observable<Visitor> {
     return this.put(id + '/confirm', {})
+  }
+
+  searchVisitor(request: BookingSearchRequest, page: number, size: number): Observable<BookingSearchResponse> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+    return this.post('search', request, params)
   }
 
 }

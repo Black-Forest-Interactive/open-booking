@@ -42,7 +42,8 @@
       "Settings": "Einstellungen & Vorlagen",
       "Administration": "Verwaltung"
     },
-    "Statistics": "Statistiken"
+    "Statistics": "Statistiken",
+    "Visitor": "Besucher"
   },
   "COMMON": {
     "Created": "Erstellt",
@@ -627,12 +628,14 @@
     "Person": "Person",
     "Persons": "Personen",
     "Verification": {
+      "Type": "Verifizierung",
       "UNKNOWN": "Verifizierung unbekannt",
       "UNCONFIRMED": "Verifizierung ausstehend",
       "CONFIRMED": "Verifiziert",
       "EXPIRED": "Verifizierung abgelaufen"
     },
     "Type": {
+      "Type": "Besucherart",
       "SINGLE": "Privatperson",
       "GROUP": "Gruppe oder Schulklasse"
     },
@@ -640,7 +643,8 @@
       "Change": {
         "Title": "Besucherdaten ändern"
       }
-    }
+    },
+    "Search": "Suche nach Name, Email ect"
   },
   "DASHBOARD": {
     "Stats": {

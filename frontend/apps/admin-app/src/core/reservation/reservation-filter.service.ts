@@ -1,5 +1,5 @@
 import {computed, Injectable, resource, signal} from "@angular/core";
-import {BookingSearchRequest, BookingStatus} from "@open-booking/core";
+import {BookingSearchRequest, BookingStatus, VerificationStatus} from "@open-booking/core";
 import {toPromise} from "@open-booking/shared";
 import {BookingService} from "@open-booking/admin";
 import {PageEvent} from "@angular/material/paginator";
@@ -21,7 +21,7 @@ export class ReservationFilterService {
   private bookingsCriteria = computed(() => ({
     page: this.pageNumber(),
     size: this.pageSize(),
-    request: new BookingSearchRequest(this.fullTextSearch(), [BookingStatus.PENDING], this.dateFrom(), this.dateTo(), this.onlyMailConfirmed())
+    request: new BookingSearchRequest(this.fullTextSearch(), [BookingStatus.PENDING], [], this.onlyMailConfirmed() ? [VerificationStatus.CONFIRMED] : [], this.dateFrom(), this.dateTo())
   }))
 
 

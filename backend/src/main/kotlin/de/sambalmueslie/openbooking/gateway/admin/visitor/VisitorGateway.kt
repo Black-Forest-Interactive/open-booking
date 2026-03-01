@@ -1,6 +1,8 @@
 package de.sambalmueslie.openbooking.gateway.admin.visitor
 
 import de.sambalmueslie.openbooking.common.checkPermission
+import de.sambalmueslie.openbooking.core.search.booking.BookingSearchOperator
+import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.core.visitor.VisitorService
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_VISITOR_ADMIN
@@ -9,7 +11,10 @@ import io.micronaut.security.authentication.Authentication
 import jakarta.inject.Singleton
 
 @Singleton
-class VisitorGateway(private val service: VisitorService) {
+class VisitorGateway(
+    private val service: VisitorService,
+    private val searchOperator: BookingSearchOperator,
+) {
     fun get(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_VISITOR_ADMIN) {
         service.get(id)
     }
@@ -32,5 +37,9 @@ class VisitorGateway(private val service: VisitorService) {
 
     fun confirm(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_VISITOR_ADMIN) {
         service.confirm(id)
+    }
+
+    fun search(auth: Authentication, request: BookingSearchRequest, pageable: Pageable) = auth.checkPermission(PERMISSION_VISITOR_ADMIN) {
+        searchOperator.search(request, pageable)
     }
 }
