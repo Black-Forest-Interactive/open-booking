@@ -8,19 +8,21 @@
       <div class="bg-white p-4 rounded-lg shadow-sm space-y-4 flex-shrink-0">
         <div class="flex flex-col gap-2">
           <app-week-select (selectedWeekChanged)="handleWeekSelected($event)" class="flex-1"/>
-          <div class="flex gap-2 flex-wrap">
-            @for (size of visitorSizes; track size.value) {
-              <button
-                mat-stroked-button
-                class="!border-gray-300 !text-gray-700 hover:!bg-gray-50"
-                [class.!bg-blue-50]="visitorSize() === size.value"
-                [class.!border-blue-500]="visitorSize() === size.value"
-                [class.!text-blue-700]="visitorSize() === size.value"
-                (click)="visitorSize.set(size.value)">
-                {{ size.label | translate }} ({{ size.value }})
-              </button>
-            }
-          </div>
+          @if (!hideVisitorSizeSelector()) {
+            <div class="flex gap-2 flex-wrap">
+              @for (size of visitorSizes; track size.value) {
+                <button
+                  mat-stroked-button
+                  class="!border-gray-300 !text-gray-700 hover:!bg-gray-50"
+                  [class.!bg-blue-50]="visitorSize() === size.value"
+                  [class.!border-blue-500]="visitorSize() === size.value"
+                  [class.!text-blue-700]="visitorSize() === size.value"
+                  (click)="visitorSize.set(size.value)">
+                  {{ size.label | translate }} ({{ size.value }})
+                </button>
+              }
+            </div>
+          }
         </div>
       </div>
 

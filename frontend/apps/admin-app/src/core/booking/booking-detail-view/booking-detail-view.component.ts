@@ -32,6 +32,8 @@ import {BookingOfferChangeDialogComponent} from "../booking-offer-change-dialog/
 import {VisitorConfirmComponent} from "../../visitor/visitor-confirm/visitor-confirm.component";
 import {EditorInfoComponent} from "../../editor/editor-info/editor-info.component";
 import {HotToastService} from "@ngxpert/hot-toast";
+import {BookingCommentDialogComponent} from "../booking-comment-dialog/booking-comment-dialog.component";
+import {RouterLink} from "@angular/router";
 
 
 @Component({
@@ -52,6 +54,7 @@ import {HotToastService} from "@ngxpert/hot-toast";
     MatProgressSpinner,
     VisitorConfirmComponent,
     EditorInfoComponent,
+    RouterLink,
   ],
   templateUrl: './booking-detail-view.component.html',
   styleUrl: './booking-detail-view.component.scss',
@@ -60,6 +63,7 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
 
   data = input.required<BookingDetails>()
   showBackButton = input(false)
+  showEmbeddedActions = input(true)
   editMode = model(false)
   reloading = input.required()
 
@@ -171,23 +175,40 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
       if (result) {
         this.updating.set(true)
         let current = this.data().booking
-        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true, false)
+        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, false, true, false)
         this.service.updateBooking(current.id, request).subscribe(() => this.handleUpdateCompleted())
       }
     })
   }
 
-  protected onChangeOffer() {
-
-    let reference = this.dialog.open(BookingOfferChangeDialogComponent, {
-      data: this.data(),
+  protected onEditComment() {
+    let reference = this.dialog.open(BookingCommentDialogComponent, {
+      data: this.data().booking,
       disableClose: true
     })
-    reference.afterClosed().subscribe(result => {
-      if (result) {
+
+    reference.afterClosed().subscribe(comment => {
+      if (comment) {
         this.updating.set(true)
         let current = this.data().booking
-        let request = new BookingChangeRequest(result, current.comment, current.lang, current.offerId, true, true, false)
+        this.service.setComment(current.id, comment).subscribe(() => this.handleUpdateCompleted())
+      }
+    })
+  }
+
+  protected onChangeOffer() {
+    let reference = this.dialog.open(BookingOfferChangeDialogComponent, {
+      data: this.data(),
+      disableClose: true,
+      width: 'auto',
+      maxWidth: 'none',
+      height: 'auto',
+      maxHeight: 'none',
+    })
+    reference.afterClosed().subscribe(request => {
+      if (request) {
+        this.updating.set(true)
+        let current = this.data().booking
         this.service.updateBooking(current.id, request).subscribe(() => this.handleUpdateCompleted())
       }
     })
@@ -212,4 +233,6 @@ export class BookingDetailViewComponent implements OnInit, OnDestroy {
       this.translate.get(value.msg).subscribe(value => this.toast.error(value))
     }
   }
+
+
 }

@@ -1,4 +1,4 @@
-import {Component, computed, output, resource, signal} from '@angular/core';
+import {Component, computed, input, model, output, resource, signal} from '@angular/core';
 import {Assignment, OfferFindSuitableRequest, OfferReference, WeekSummary} from "@open-booking/core";
 import {LoadingBarComponent, toPromise} from "@open-booking/shared";
 import {OfferService} from "@open-booking/admin";
@@ -51,15 +51,16 @@ export interface OfferFinderDayEntry {
 })
 export class OfferFinderComponent {
 
+  hideVisitorSizeSelector = input(false)
   offerSelected = output<OfferReference>()
 
   private dateFrom = signal<string | null | undefined>(null)
   private dateTo = signal<string | null | undefined>(null)
 
-  visitorSize = signal(1)
+  visitorSize = model(1)
   selectedDay = signal<string | null>(null)
   selectedOfferId = signal<number | null>(null)
-  hideNotMatching = signal(false)
+  hideNotMatching = model(false)
 
   // Compute day summaries
   daySummaries = computed<OfferFinderDayEntry[]>(() => {

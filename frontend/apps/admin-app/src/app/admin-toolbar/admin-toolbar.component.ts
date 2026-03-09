@@ -6,7 +6,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AppService} from "../app.service";
 import {SettingsService} from "@open-booking/admin";
-import {ThemeToggleButtonComponent} from "@open-booking/shared";
+import {AuthService, PrincipalButtonComponent, ThemeToggleButtonComponent} from "@open-booking/shared";
 import {RouterLink} from "@angular/router";
 
 @Component({
@@ -21,14 +21,18 @@ import {RouterLink} from "@angular/router";
     TranslatePipe,
     MatMenuTrigger,
     ThemeToggleButtonComponent,
-    RouterLink
+    PrincipalButtonComponent,
+    RouterLink,
   ],
   templateUrl: './admin-toolbar.component.html',
   styleUrl: './admin-toolbar.component.scss',
 })
 export class AdminToolbarComponent {
+
+
   constructor(
     protected readonly service: AppService,
+    protected readonly authService: AuthService,
     protected readonly settingsService: SettingsService
   ) {
   }

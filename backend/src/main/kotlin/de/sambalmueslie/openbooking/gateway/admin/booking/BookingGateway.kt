@@ -63,5 +63,6 @@ class BookingGateway(
     fun deleteEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_BOOKING_ADMIN) { editorService.deleteByResource(id, Booking::class) }
     fun getEditor(auth: Authentication, id: Long) = auth.checkPermission(PERMISSION_BOOKING_ADMIN) { editorService.getByResource(id, Booking::class) }
 
+    fun setComment(auth: Authentication, id: Long, comment: String) = auth.checkPermission(PERMISSION_BOOKING_ADMIN) { service.updateComment(id, comment) }
 
 }

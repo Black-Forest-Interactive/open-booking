@@ -1,5 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.booking
 
+import de.sambalmueslie.openbooking.common.PatchRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingChangeRequest
 import de.sambalmueslie.openbooking.core.booking.api.BookingConfirmationContent
 import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
@@ -68,4 +69,6 @@ class BookingController(private val gateway: BookingGateway) {
     @Get("/by/offer/{offerId}/details")
     fun getDetailByOfferId(auth: Authentication, offerId: Long) = gateway.getDetailByOfferId(auth, offerId)
 
+    @Patch("{id}/comment")
+    fun setComment(auth: Authentication, id: Long, @Body comment: PatchRequest<String>) = gateway.setComment(auth, id, comment.value)
 }

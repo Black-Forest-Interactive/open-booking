@@ -1,5 +1,6 @@
 package de.sambalmueslie.openbooking.gateway.admin.visitor
 
+import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.core.visitor.api.VisitorChangeRequest
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.annotation.*
@@ -27,4 +28,8 @@ class VisitorController(private val gateway: VisitorGateway) {
 
     @Put("/{id}/confirm")
     fun confirm(auth: Authentication, id: Long) = gateway.confirm(auth, id)
+
+    @Post("search")
+    fun search(auth: Authentication, @Body request: BookingSearchRequest, pageable: Pageable) = gateway.search(auth, request, pageable)
+
 }

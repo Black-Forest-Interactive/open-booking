@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg border hover:shadow-md transition-all flex flex-col gap-4"
+<div class="bg-white rounded-lg border hover:shadow-md transition-all flex flex-col gap-4 h-full"
      [class.border-gray-300]="active()"
      [class.border-red-300]="!active()"
      [class.opacity-60]="!active()">
@@ -22,7 +22,7 @@
   </div>
 
   <!-- Capacity Visualization -->
-  <div class="px-4 pb-4 flex flex-col gap-4">
+  <div class="px-4 pb-4 flex flex-col gap-4 h-full">
 
     <app-offer-booking-capacity
       [offer]="entry().offer"
@@ -30,31 +30,6 @@
       [status]="booking().status"
       [visitorSize]="visitor().size"
     />
-
-    @if (editMode()) {
-      <!-- Confirm Button -->
-      <button matButton="filled"
-              [disabled]="!canConfirmOffer()|| disabled()"
-              (click)="onConfirm()"
-              class="w-full">
-        <mat-icon>check_circle</mat-icon>
-        {{ 'BOOKING.Action.Confirm' | translate }}
-      </button>
-
-      <button matButton="outlined"
-              [disabled]="!canDeclineOffer()|| disabled()"
-              (click)="onDecline()"
-              class="w-full">
-        <mat-icon>cancel</mat-icon>
-        {{ 'BOOKING.Action.Deny' | translate }}
-      </button>
-
-      <button matButton="outlined" (click)="onChangeOffer()" [disabled]="!canChangeOffer() || disabled()">
-        <mat-icon>swap_horiz</mat-icon>
-        {{ 'BOOKING.Action.ChangeOffer' | translate }}
-      </button>
-    }
-
     <!-- Status Messages -->
     @if (!active()) {
       <div class="text-xs text-red-600 text-center flex items-center justify-center gap-1">
@@ -77,5 +52,32 @@
         {{ 'RESERVATION.Offer.Info.AlreadyConfirmed' | translate }}
       </div>
     }
+    @if (editMode()) {
+      <div class="flex flex-col xl:flex-row gap-2">
+        <!-- Confirm Button -->
+        <button matButton="filled"
+                [disabled]="!canConfirmOffer()|| disabled()"
+                (click)="onConfirm()"
+                class="w-full">
+          <mat-icon>check_circle</mat-icon>
+          {{ 'BOOKING.Action.Confirm' | translate }}
+        </button>
+
+        <button matButton="outlined"
+                [disabled]="!canDeclineOffer()|| disabled()"
+                (click)="onDecline()"
+                class="w-full">
+          <mat-icon>cancel</mat-icon>
+          {{ 'BOOKING.Action.Deny' | translate }}
+        </button>
+      </div>
+      <div class="flex-1"></div>
+      <button matButton="outlined" (click)="onChangeOffer()" [disabled]="!canChangeOffer() || disabled()">
+        <mat-icon>swap_horiz</mat-icon>
+        {{ 'BOOKING.Action.ChangeOffer' | translate }}
+      </button>
+    }
+
+
   </div>
 </div>

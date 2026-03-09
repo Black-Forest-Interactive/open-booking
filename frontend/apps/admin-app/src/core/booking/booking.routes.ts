@@ -17,6 +17,10 @@ export const routes: Routes = [
     path: 'edit/:id',
     loadComponent: () => import('./booking-change/booking-change.component').then(m => m.BookingChangeComponent)
   },
+  {
+    path: 'details/:id',
+    loadComponent: () => import('./booking-details/booking-details.component').then(m => m.BookingDetailsComponent)
+  },
 ];
 
 export function navigateToBookingDetails(router: Router, id: number) {

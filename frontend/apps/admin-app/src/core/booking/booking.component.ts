@@ -44,13 +44,13 @@ export class BookingComponent {
   isSearchActive = computed(() => this.fullTextSearch().length > 0)
 
   pageNumber = signal(0)
-  pageSize = signal(25)
+  pageSize = signal(100)
 
   request = computed(() =>
     (this.isSearchActive()) ?
-      new BookingSearchRequest(this.fullTextSearch(), [], '', '', null)
+      new BookingSearchRequest(this.fullTextSearch(), [], [], [], '', '')
       :
-      new BookingSearchRequest(this.fullTextSearch(), [], this.dateFrom(), this.dateTo(), null)
+      new BookingSearchRequest(this.fullTextSearch(), [], [], [], this.dateFrom(), this.dateTo())
   )
 
   private bookingsCriteria = computed(() => ({

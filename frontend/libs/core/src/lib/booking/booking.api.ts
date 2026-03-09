@@ -1,4 +1,4 @@
-import type {Visitor, VisitorChangeRequest} from "../visitor/visitor.api";
+import type {VerificationStatus, Visitor, VisitorChangeRequest, VisitorType} from "../visitor/visitor.api";
 import type {OfferInfo, OfferReference} from "../offer/offer.api";
 import type {Editor} from "../editor/editor.api";
 import type {Page} from "@open-booking/shared";
@@ -51,9 +51,10 @@ export class BookingSearchRequest {
   constructor(
     public fullTextSearch: String,
     public status: BookingStatus[],
+    public visitorType: VisitorType[],
+    public verificationStatus: VerificationStatus[],
     public from: string | null | undefined,
-    public to: string | null | undefined,
-    public onlyMailConfirmed: boolean | null
+    public to: string | null | undefined
   ) {
   }
 }

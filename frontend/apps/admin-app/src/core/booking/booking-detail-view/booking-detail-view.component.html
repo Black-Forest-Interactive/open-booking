@@ -27,9 +27,13 @@
                 <app-editor-info [editor]="editor()!!"/>
               }
 
-              @if (!showBackButton()) {
+              @if (!showBackButton() && showEmbeddedActions()) {
                 <button mat-icon-button (click)="close.emit(true)">
                   <mat-icon>close</mat-icon>
+                </button>
+                <button mat-icon-button [routerLink]="['/', 'booking', 'details' , data().booking.id]"
+                        [queryParams]="{edit: editMode()}">
+                  <mat-icon>open_in_new</mat-icon>
                 </button>
               }
             </div>
@@ -124,30 +128,36 @@
               </div>
             </div>
             <div class="flex-1"></div>
-            <div class="flex gap-2 px-4 pb-4">
+            <div class="flex flex-col xl:flex-row gap-2 px-4 pb-4">
               @if (editMode()) {
-                <button matButton="outlined" (click)="onEditVisitor()" [disabled]="updating()">
+                <button matButton="outlined" (click)="onEditVisitor()" [disabled]="updating()" class="w-full">
                   <mat-icon>edit</mat-icon>
                   {{ 'BOOKING.Action.EditVisitor' | translate }}
                 </button>
+                <button matButton="outlined" (click)="onEditComment()" [disabled]="updating()" class="w-full">
+                  <mat-icon>comment</mat-icon>
+                  {{ 'BOOKING.Action.EditComment' | translate }}
+                </button>
               }
               @if (data().visitor.verification.status !== VerificationStatus.CONFIRMED) {
-                <app-visitor-confirm [data]="data().visitor" (changed)="this.reload.emit(true)"/>
+                <app-visitor-confirm [data]="data().visitor" (changed)="this.reload.emit(true)" class="flex-1"/>
               }
             </div>
           </div>
 
           <!-- Offers & Actions -->
-          <div class="flex flex-col justify-between">
-            <div class="flex flex-col gap-2">
+          <div class="flex flex-col justify-between h-full">
+            <div class="flex flex-col gap-2 h-full">
               <app-offer-reference
                 [entry]="data().offer"
                 [visitor]="data().visitor"
                 [booking]="data().booking"
                 [editMode]="editMode()"
+                [disabled]="updating()"
                 (confirm)="onConfirm($event)"
                 (decline)="onDecline($event)"
                 (changeOffer)="onChangeOffer()"
+                class="h-full"
               />
 
             </div>

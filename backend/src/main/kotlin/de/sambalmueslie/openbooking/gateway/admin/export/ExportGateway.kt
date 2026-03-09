@@ -1,6 +1,7 @@
 package de.sambalmueslie.openbooking.gateway.admin.export
 
 import de.sambalmueslie.openbooking.common.checkPermission
+import de.sambalmueslie.openbooking.core.search.booking.api.BookingSearchRequest
 import de.sambalmueslie.openbooking.gateway.admin.PERMISSION_EXPORT_ADMIN
 import de.sambalmueslie.openbooking.infrastructure.export.ExportService
 import io.micronaut.security.authentication.Authentication
@@ -14,4 +15,7 @@ class ExportGateway(private val service: ExportService) {
 
     fun createDailyReportExcel(auth: Authentication, date: LocalDate) =
         auth.checkPermission(PERMISSION_EXPORT_ADMIN) { service.createDailyReportExcel(date) }
+
+    fun exportVisitor(auth: Authentication, request: BookingSearchRequest) =
+        auth.checkPermission(PERMISSION_EXPORT_ADMIN) { service.exportVisitor(request) }
 }

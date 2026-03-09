@@ -10,7 +10,7 @@
   </button>
   <button matButton="filled" color="primary"
           [disabled]="change.form.invalid"
-          (click)="onSave()">
+          (click)="onSave(change.form.value)">
     {{ 'ACTION.Save' | translate }}
   </button>
 </mat-dialog-actions>

@@ -3,6 +3,7 @@ import {BaseService} from "@open-booking/shared";
 import {catchError, map, Observable} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import * as FileSaver from "file-saver";
+import {BookingSearchRequest} from "@open-booking/core";
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,15 @@ export class ExportService extends BaseService {
     let fileName = contentDispositionHeader.split(';')[1].trim().split('=')[1].replace(/"/g, '')
     FileSaver.saveAs(response.body as Blob, fileName)
     return true
+  }
+
+  exportVisitor(request: BookingSearchRequest): Observable<boolean> {
+    return this.postBlob('visitor', request)
+      .pipe(
+        map(response => this.handleFileDownload(response)),
+        catchError((err, caught) => {
+          throw err
+        })
+      )
   }
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "@open-booking/shared";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
@@ -21,6 +21,7 @@ import {MainContentComponent} from "../../shared/main-content/main-content.compo
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ReservationFilterService} from "./reservation-filter.service";
+import {WeekSelectComponent} from "../dashboard/week-select/week-select.component";
 
 @Component({
   selector: 'app-reservation',
@@ -42,12 +43,13 @@ import {ReservationFilterService} from "./reservation-filter.service";
     ReactiveFormsModule,
     MainContentComponent,
     MatProgressSpinner,
-    MatSlideToggle
+    MatSlideToggle,
+    WeekSelectComponent
   ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.scss',
 })
-export class ReservationComponent {
+export class ReservationComponent implements OnInit {
 
   range = new FormGroup({
     start: new FormControl<DateTime | null>(null, Validators.required),
@@ -61,6 +63,10 @@ export class ReservationComponent {
     interval(5000)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.filter.reload())
+  }
+
+  ngOnInit() {
+    this.filter.reload()
   }
 
   protected handleSearch(text: string) {
