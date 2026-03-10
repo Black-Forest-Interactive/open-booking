@@ -3,6 +3,7 @@ package de.sambalmueslie.openbooking.infrastructure.export.excel
 
 import de.sambalmueslie.openbooking.core.booking.api.BookingDetails
 import de.sambalmueslie.openbooking.core.booking.api.BookingStatus
+import de.sambalmueslie.openbooking.core.label.api.Label
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.FillPatternType
@@ -15,18 +16,23 @@ import org.apache.poi.xssf.usermodel.IndexedColorMap
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlin.math.min
 
 
 class ExcelSheetBuilder(
     private val wb: XSSFWorkbook,
     private val date: LocalDate,
-    private val offer: List<OfferDetails>
+    private val labels: List<Label>,
+    private val offer: List<OfferDetails>,
+    private val minBookingRows: Int
 ) {
 
     companion object {
+        private val logger = LoggerFactory.getLogger(ExcelSheetBuilder::class.java)
         private val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
         // Donnerstag, 16. März 2023
@@ -46,7 +52,7 @@ class ExcelSheetBuilder(
     private val normalFont = wb.createFont()
 
     private val colorMap: IndexedColorMap = wb.stylesSource.indexedColors
-    private val colors = listOf(
+    private val defaultColors = listOf(
         Pair(XSSFColor(Color(0, 112, 192), colorMap), boldFontInverted), // dark blue
         Pair(XSSFColor(Color(166, 166, 166), colorMap), boldFont), // gray
         Pair(XSSFColor(Color(191, 143, 0), colorMap), boldFont), // gold
@@ -61,13 +67,47 @@ class ExcelSheetBuilder(
         Pair(XSSFColor(Color(255, 255, 0), colorMap), boldFont),// yellow
     )
 
-    private val colorHeaders = mutableListOf<XSSFCellStyle>()
+    private val colorHeaders = mutableMapOf<Long, XSSFCellStyle>()
+    private val defaultColorHeader: XSSFCellStyle = createDefaultColorHeader()
 
     fun build() {
+        setupColors()
         setupStyles()
         setupSheet()
         setupHeadline()
         offer.filter { it.offer.active }.forEachIndexed { index, offer -> setupOffer(index, offer) }
+    }
+
+    private fun createDefaultColorHeader(): XSSFCellStyle {
+        val header = wb.createCellStyle()
+        val (color, font) = defaultColors.first()
+        header.setFillForegroundColor(color)
+        header.fillPattern = FillPatternType.SOLID_FOREGROUND
+        header.setFont(font)
+        header.borderBottom = BorderStyle.THIN
+        header.alignment = HorizontalAlignment.CENTER
+        return header
+    }
+
+    private fun setupColors() {
+        labels.forEachIndexed { index, label ->
+
+            val (color, font) = try {
+                Pair(XSSFColor(Color.decode(label.color), colorMap), boldFont)
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid color format '${label.color}'", e)
+                defaultColors[index % defaultColors.size]
+            }
+
+            val header = wb.createCellStyle()
+            header.setFillForegroundColor(color)
+            header.fillPattern = FillPatternType.SOLID_FOREGROUND
+            header.setFont(font)
+            header.borderBottom = BorderStyle.THIN
+            header.alignment = HorizontalAlignment.CENTER
+
+            colorHeaders[label.id] = header
+        }
     }
 
     private fun setupStyles() {
@@ -86,17 +126,6 @@ class ExcelSheetBuilder(
         styleOfferHeaderBold.setFont(boldFont)
         styleOfferHeaderBold.borderBottom = BorderStyle.THIN
         styleOfferHeaderBold.alignment = HorizontalAlignment.CENTER
-
-        colors.forEach { (color, font) ->
-            val header = wb.createCellStyle()
-            header.setFillForegroundColor(color)
-            header.fillPattern = FillPatternType.SOLID_FOREGROUND
-            header.setFont(font)
-            header.borderBottom = BorderStyle.THIN
-            header.alignment = HorizontalAlignment.CENTER
-
-            colorHeaders.add(header)
-        }
 
         styleOfferHeaderBoldCombined.setFillForegroundColor(XSSFColor(Color(217, 217, 217), colorMap))
         styleOfferHeaderBoldCombined.fillPattern = FillPatternType.SOLID_FOREGROUND
@@ -159,16 +188,18 @@ class ExcelSheetBuilder(
     }
 
     private fun setupOffer(index: Int, details: OfferDetails) {
-        val colorHeader = colorHeaders[index % colorHeaders.size]
+        val label = details.label ?: labels[index % labels.size]
+        val colorHeader = colorHeaders[label.id] ?: defaultColorHeader
         createOfferHeaderLine1(colorHeader, details)
         createOfferHeaderLine2(colorHeader, details)
 
         val bookings = details.bookings.filter { it.booking.status == BookingStatus.CONFIRMED || it.booking.status == BookingStatus.PENDING }
         bookings.forEachIndexed { index, info -> setupBooking(index, info) }
 
-        if (bookings.isEmpty()) setupEmptyBooking()
+        val emptyBookingsToAdd = if (bookings.isEmpty()) minBookingRows else min(minBookingRows, details.assignment.availableSpace / 2)
+        (0..emptyBookingsToAdd).forEach { index -> addEmptyBookingRow(bookings.size + index) }
 
-        val firstRow = if (bookings.isEmpty()) rowIndex - 3 else rowIndex - bookings.size - 2
+        val firstRow = rowIndex - bookings.size - emptyBookingsToAdd - 3
         val region = CellRangeAddress(firstRow, rowIndex - 1, 1, 9)
         RegionUtil.setBorderLeft(BorderStyle.MEDIUM, region, sheet)
         RegionUtil.setBorderRight(BorderStyle.MEDIUM, region, sheet)
@@ -279,11 +310,11 @@ class ExcelSheetBuilder(
     }
 
 
-    private fun setupEmptyBooking() {
+    private fun addEmptyBookingRow(index: Int) {
         val row = sheet.createRow(rowIndex++)
 
         val indexCell = row.createCell(1)
-        indexCell.setCellValue(1.0)
+        indexCell.setCellValue(index.toDouble())
         indexCell.cellStyle = styleBooking
         CellUtil.setAlignment(indexCell, HorizontalAlignment.CENTER)
 

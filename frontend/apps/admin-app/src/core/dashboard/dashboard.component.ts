@@ -10,6 +10,7 @@ import {DashboardContentComponent} from "./dashboard-content/dashboard-content.c
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {ExportExcelButtonComponent} from "../export/export-excel-button/export-excel-button.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     DashboardSummaryComponent,
     MainContentComponent,
     TranslatePipe,
-    DashboardContentComponent
+    DashboardContentComponent,
+    ExportExcelButtonComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

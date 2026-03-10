@@ -91,6 +91,10 @@ class SettingService(
         return TextResponse(getValue(SettingsAPI.SETTINGS_TIME_FORMAT))
     }
 
+    fun getMinBookingRows(): NumberResponse {
+        return NumberResponse(getValue(SettingsAPI.SETTINGS_EXPORT_MIN_ROWS).toLongOrNull())
+    }
+
     fun getValue(key: String): String {
         return findByKey(key)?.value as? String ?: ""
     }

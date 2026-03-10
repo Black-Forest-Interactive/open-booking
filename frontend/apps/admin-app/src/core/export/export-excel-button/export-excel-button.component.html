@@ -1,0 +1,5 @@
+<button matButton="outlined" (click)="exportExcel()"
+        *kaHasRoles="[PERMISSION_EXPORT_ADMIN]; resource:environment.keycloak.clientId">
+  <mat-icon>file_copy</mat-icon>
+  {{ 'OFFER.Action.Export_Excel' | translate }}
+</button>

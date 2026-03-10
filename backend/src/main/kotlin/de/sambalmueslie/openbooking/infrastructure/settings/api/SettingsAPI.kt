@@ -16,6 +16,7 @@ interface SettingsAPI : AuthCrudAPI<Long, Setting, SettingChangeRequest> {
         const val SETTINGS_EDITOR_TTL = "editor.ttl"
         const val SETTINGS_DATE_FORMAT = "format.date"
         const val SETTINGS_TIME_FORMAT = "format.time"
+        const val SETTINGS_EXPORT_MIN_ROWS = "export.min-rows"
     }
 
     fun setValue(auth: Authentication, id: Long, value: PatchRequest<Any>): Setting?

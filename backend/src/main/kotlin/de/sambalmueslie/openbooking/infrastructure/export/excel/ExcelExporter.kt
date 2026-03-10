@@ -1,8 +1,10 @@
 package de.sambalmueslie.openbooking.infrastructure.export.excel
 
 
+import de.sambalmueslie.openbooking.core.label.LabelService
 import de.sambalmueslie.openbooking.core.offer.api.OfferDetails
 import de.sambalmueslie.openbooking.infrastructure.export.Exporter
+import de.sambalmueslie.openbooking.infrastructure.settings.SettingService
 import io.micronaut.http.server.types.files.SystemFile
 import jakarta.inject.Singleton
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -12,18 +14,23 @@ import java.time.LocalDate
 
 
 @Singleton
-class ExcelExporter : Exporter {
+class ExcelExporter(
+    private val labelService: LabelService,
+    private val settingService: SettingService
+) : Exporter {
 
     companion object {
         private val logger = LoggerFactory.getLogger(ExcelExporter::class.java)
         private const val HEADER_EXCEL_FILE_SUFIX = ".xlsx"
         private const val HEADER_EXCEL_FILE_PREFIX = "books"
+        private const val DEFAULT_MIN_BOOKING_ROWS = 5
     }
 
     override fun export(date: LocalDate, offer: List<OfferDetails>): SystemFile? {
 
         val wb = XSSFWorkbook()
-        val builder = ExcelSheetBuilder(wb, date, offer)
+        val labels = labelService.getSortedLabels()
+        val builder = ExcelSheetBuilder(wb, date, labels, offer, settingService.getMinBookingRows().value?.toInt() ?: DEFAULT_MIN_BOOKING_ROWS)
         builder.build()
 
 

@@ -1,6 +1,8 @@
 <app-main-content [title]="'MENU.Dashboard' | translate" [enableSearch]="false">
   <div class="flex gap-2 flex-auto" actions>
 
+    <app-export-excel-button [selectedDay]="summary.selectedDay()?.date!!"/>
+    
     <button matIconButton (click)="reload()">
       @if (contentReloading()) {
         <mat-spinner [diameter]="18"></mat-spinner>
@@ -11,7 +13,7 @@
   </div>
 
   <div class="p-4">
-    <app-dashboard-summary (selectionDayChanged)="handleDaySelection($event)" [showBookingStats]="false"/>
+    <app-dashboard-summary (selectionDayChanged)="handleDaySelection($event)" [showBookingStats]="false" #summary/>
     <div class="flex-1 overflow-auto min-h-0">
       <app-dashboard-content
         [reloading]="contentReloading()"
