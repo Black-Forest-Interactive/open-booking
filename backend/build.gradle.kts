@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "2.3.10"
 
     id("com.google.devtools.ksp") version "2.3.6"
-    id("org.sonarqube") version "7.2.2.6593"
+    id("org.sonarqube") version "7.2.3.7755"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
 
@@ -93,7 +93,7 @@ dependencies {
     // session
     implementation("io.micronaut.session:micronaut-session")
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.5")
+    implementation("com.jillesvangurp:search-client:2.8.6")
     // jsoup
     implementation("org.jsoup:jsoup:1.22.1")
 
@@ -106,8 +106,8 @@ dependencies {
     implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
 
     // OpenPDF
-    implementation("com.github.librepdf:openpdf:3.0.1")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.0.6")
+    implementation("com.github.librepdf:openpdf:3.0.2")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.1.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
@@ -124,7 +124,7 @@ dependencies {
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.5")
+    implementation("com.jillesvangurp:search-client:2.8.6")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
