@@ -93,7 +93,7 @@ dependencies {
     // session
     implementation("io.micronaut.session:micronaut-session")
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.6")
+    implementation("com.jillesvangurp:search-client:2.8.7")
     // jsoup
     implementation("org.jsoup:jsoup:1.22.1")
 
@@ -106,7 +106,7 @@ dependencies {
     implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
 
     // OpenPDF
-    implementation("com.github.librepdf:openpdf:3.0.2")
+    implementation("com.github.librepdf:openpdf:3.0.3")
     implementation("org.xhtmlrenderer:flying-saucer-pdf:10.1.0")
 
     // qrcode
@@ -124,7 +124,7 @@ dependencies {
     implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
 
     // opensearch
-    implementation("com.jillesvangurp:search-client:2.8.6")
+    implementation("com.jillesvangurp:search-client:2.8.7")
 
     // test
     testImplementation("io.micronaut:micronaut-http-client")
