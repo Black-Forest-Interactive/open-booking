@@ -23,8 +23,7 @@ class OpenSearchService(
                 port = config.port,
                 https = config.https,
                 user = config.user,
-                password = config.password,
-                logging = false
+                password = config.password
             )
         )
     }

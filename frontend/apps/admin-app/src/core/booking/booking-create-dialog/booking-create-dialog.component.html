@@ -1,10 +1,16 @@
 <div class="px-6 pt-6 text-lg">
   <div class="flex justify-between">
     <span>{{ 'BOOKING.Dialog.Create.Title'|translate }}</span>
-    <span class="flex items-center gap-1 px-2 py-1 rounded bg-gray-200">
-    <mat-icon class="!text-sm" inline>schedule</mat-icon>
-      {{ data.offer.offer.start | date:'shortTime' }} - {{ data.offer.offer.finish | date:'shortTime' }}
-    </span>
+    <div class="flex gap-2">
+      <span class="flex items-center gap-1 px-2 py-1 rounded bg-gray-200">
+        <mat-icon class="!text-sm" inline>date_range</mat-icon>
+        {{ data.offer.offer.start | date:'fullDate' }}
+      </span>
+      <span class="flex items-center gap-1 px-2 py-1 rounded bg-gray-200">
+        <mat-icon class="!text-sm" inline>schedule</mat-icon>
+        {{ data.offer.offer.start | date:'shortTime' }} - {{ data.offer.offer.finish | date:'shortTime' }}
+      </span>
+    </div>
   </div>
 </div>
 <div class="mat-typography h-full px-6 py-4">
