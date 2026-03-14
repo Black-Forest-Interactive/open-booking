@@ -1,0 +1,11 @@
+/* Leaflet tooltip reset — kann nicht per Tailwind gesetzt werden */
+.leaflet-tooltip-clean {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip-clean::before {
+  display: none !important;
+}

@@ -1,0 +1,333 @@
+<div class="flex flex-col h-[calc(100vh-120px)] bg-slate-100 font-sans">
+
+  <!-- ── HEADER ── -->
+  <header
+    class="flex items-center gap-6 px-5 py-3 bg-white border-b border-slate-200 shadow-sm flex-shrink-0 flex-wrap z-10">
+
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-indigo-600 !text-3xl !w-8 !h-8">map</mat-icon>
+      <div>
+        <h1 class="text-lg font-bold text-slate-800 m-0 tracking-tight leading-none">
+          {{ 'VISITOR_MAP.TITLE' | translate }}
+        </h1>
+        <p class="text-xs text-slate-400 m-0 mt-0.5">{{ 'VISITOR_MAP.SUBTITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <!-- KPI bar -->
+    <div class="flex ml-auto border border-slate-200 rounded-xl overflow-hidden">
+      <div class="flex flex-col items-center px-5 py-2 border-r border-slate-200 min-w-[100px]">
+        <span class="text-xl font-bold text-slate-800 tabular-nums">{{ stats().totalBookings | number }}</span>
+        <span
+          class="text-[10px] text-slate-400 uppercase tracking-wide whitespace-nowrap">{{ 'VISITOR_MAP.STATS.TOTAL_BOOKINGS' | translate }}</span>
+      </div>
+      <div class="flex flex-col items-center px-5 py-2 border-r border-slate-200 min-w-[100px]">
+        <span class="text-xl font-bold text-slate-800 tabular-nums">{{ stats().totalPersons | number }}</span>
+        <span
+          class="text-[10px] text-slate-400 uppercase tracking-wide whitespace-nowrap">{{ 'VISITOR_MAP.STATS.TOTAL_PERSONS' | translate }}</span>
+      </div>
+      <div class="flex flex-col items-center px-5 py-2 border-r border-slate-200 min-w-[100px]">
+        <span class="text-xl font-bold text-slate-800 tabular-nums">{{ stats().uniqueZips }}</span>
+        <span
+          class="text-[10px] text-slate-400 uppercase tracking-wide whitespace-nowrap">{{ 'VISITOR_MAP.STATS.UNIQUE_ZIPS' | translate }}</span>
+      </div>
+      <div class="flex flex-col items-center px-5 py-2 min-w-[100px] bg-indigo-50">
+        <span class="text-xl font-bold text-indigo-600 tabular-nums">{{ stats().topZip }}</span>
+        <span
+          class="text-[10px] text-indigo-400 uppercase tracking-wide whitespace-nowrap">{{ 'VISITOR_MAP.STATS.TOP_ZIP' | translate }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── BODY ── -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- ── LEFT SIDEBAR ── -->
+    <aside
+      class="transition-all duration-300 flex flex-col gap-3 overflow-y-auto flex-shrink-0 bg-slate-100 scrollbar-thin scrollbar-thumb-slate-200"
+      [class.w-72]="filtersOpen()"
+      [class.p-3]="filtersOpen()"
+      [class.w-0]="!filtersOpen()"
+      [class.overflow-hidden]="!filtersOpen()">
+
+      <!-- Filter Panel -->
+      <mat-card class="!rounded-xl !shadow-sm !p-3.5">
+
+        <div class="flex items-center gap-2 mb-3 font-semibold text-sm text-slate-700">
+          <mat-icon class="!text-lg !w-[18px] !h-[18px] text-indigo-500">tune</mat-icon>
+          <span>{{ 'VISITOR_MAP.FILTER.TITLE' | translate }}</span>
+          @if (activeFilterCount() > 0) {
+            <span class="bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+              {{ activeFilterCount() }}
+            </span>
+          }
+          <button mat-icon-button class="!ml-auto !w-8 !h-8" (click)="resetFilters()"
+                  [matTooltip]="'VISITOR_MAP.FILTER.RESET' | translate">
+            <mat-icon class="!text-base">filter_alt_off</mat-icon>
+          </button>
+        </div>
+
+        <!-- Search -->
+        <mat-form-field class="w-full" appearance="outline" subscriptSizing="dynamic">
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput [(ngModel)]="searchTerm" (ngModelChange)="applySearch()"
+                 [placeholder]="'VISITOR_MAP.FILTER.SEARCH' | translate"/>
+          @if (searchTerm) {
+            <button matSuffix mat-icon-button (click)="searchTerm=''; applySearch()">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+
+        <!-- Status Filter -->
+        <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mt-3 mb-1.5">
+          {{ 'VISITOR_MAP.FILTER.STATUS' | translate }}
+        </p>
+        <div class="flex flex-wrap gap-1.5 mb-1">
+          @for (s of allStatuses; track s) {
+            <button
+              class="inline-flex items-center px-2.5 py-1 rounded-full border text-[11px] font-medium cursor-pointer transition-all duration-150"
+              [style.border-color]="isStatusActive(s) ? statusHex(s) : ''"
+              [style.background-color]="isStatusActive(s) ? statusHex(s) : ''"
+              [class.text-white]="isStatusActive(s)"
+              [class.border-slate-200]="!isStatusActive(s)"
+              [class.text-slate-500]="!isStatusActive(s)"
+              (click)="toggleStatus(s)">
+              {{ statusKey(s) | translate }}
+            </button>
+          }
+        </div>
+
+        <!-- Type Filter -->
+        <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mt-3 mb-1.5">
+          {{ 'VISITOR_MAP.FILTER.VISITOR_TYPE' | translate }}
+        </p>
+        <div class="flex flex-wrap gap-1.5">
+          @for (t of allTypes; track t) {
+            <button
+              class="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full border text-[11px] font-medium cursor-pointer transition-all duration-150"
+              [style.border-color]="isTypeActive(t) ? typeColor(t) : ''"
+              [style.background-color]="isTypeActive(t) ? typeColor(t) : ''"
+              [class.text-white]="isTypeActive(t)"
+              [class.border-slate-200]="!isTypeActive(t)"
+              [class.text-slate-500]="!isTypeActive(t)"
+              (click)="toggleType(t)">
+              <mat-icon class="!text-[13px] !w-[13px] !h-[13px]">{{ typeIcon(t) }}</mat-icon>
+              {{ typeKey(t) | translate }}
+            </button>
+          }
+        </div>
+      </mat-card>
+
+      <!-- Status Distribution -->
+      <mat-card class="!rounded-xl !shadow-sm !p-3.5">
+        <div class="flex items-center gap-2 mb-3 font-semibold text-sm text-slate-700">
+          <mat-icon class="!text-lg !w-[18px] !h-[18px] text-indigo-500">donut_small</mat-icon>
+          <span>{{ 'VISITOR_MAP.STATUS_DISTRIBUTION' | translate }}</span>
+        </div>
+        @for (entry of getStatusEntries(stats().statusSummary); track entry[0]) {
+          <div class="flex items-center gap-2 py-1 text-xs">
+            <span class="w-2 h-2 rounded-full flex-shrink-0" [style.background]="statusHex(entry[0])"></span>
+            <span class="w-20 text-slate-700 truncate">{{ statusKey(entry[0]) | translate }}</span>
+            <div class="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-300"
+                   [style.width.%]="getStatusPercent(entry[1], stats().totalBookings)"
+                   [style.background]="statusHex(entry[0])">
+              </div>
+            </div>
+            <span class="w-6 text-right font-semibold text-slate-700 tabular-nums">{{ entry[1] }}</span>
+          </div>
+        }
+      </mat-card>
+
+      <!-- Type Distribution -->
+      <mat-card class="!rounded-xl !shadow-sm !p-3.5">
+        <div class="flex items-center gap-2 mb-3 font-semibold text-sm text-slate-700">
+          <mat-icon class="!text-lg !w-[18px] !h-[18px] text-indigo-500">category</mat-icon>
+          <span>{{ 'VISITOR_MAP.TYPE_DISTRIBUTION' | translate }}</span>
+        </div>
+        @for (entry of getStatusEntries(stats().typeSummary); track entry[0]) {
+          <div class="flex items-center gap-2 py-1 text-xs">
+            <mat-icon class="!text-sm !w-3.5 !h-3.5 flex-shrink-0" [style.color]="typeColor(entry[0])">
+              {{ typeIcon(entry[0]) }}
+            </mat-icon>
+            <span class="w-20 text-slate-700 truncate">{{ typeKey(entry[0]) | translate }}</span>
+            <div class="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-300"
+                   [style.width.%]="getStatusPercent(entry[1], stats().totalBookings)"
+                   [style.background]="typeColor(entry[0])">
+              </div>
+            </div>
+            <span class="w-6 text-right font-semibold text-slate-700 tabular-nums">{{ entry[1] }}</span>
+          </div>
+        }
+      </mat-card>
+
+    </aside>
+
+    <!-- ── MAP CENTER ── -->
+    <div class="flex-1 relative min-w-0">
+
+      <!-- Leaflet map -->
+      <div #mapContainer class="w-full h-full"></div>
+
+      <!-- Loading overlay -->
+      @if (loading()) {
+        <div
+          class="absolute inset-0 bg-white/70 backdrop-blur-sm z-[600] flex flex-col items-center justify-center gap-3">
+          <div class="w-10 h-10 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin"></div>
+          @if (progress(); as p) {
+            <span class="text-sm text-slate-500 tabular-nums">
+              Seite {{ p.loaded }} / {{ p.total }} geladen …
+            </span>
+          }
+        </div>
+      }
+
+      <!-- Error banner -->
+      @if (error(); as msg) {
+        <div
+          class="absolute top-3 left-1/2 -translate-x-1/2 z-[600] bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2 rounded-xl shadow flex items-center gap-2">
+          <mat-icon class="!text-base text-red-500">error_outline</mat-icon>
+          {{ msg }}
+          <button class="ml-2 underline text-xs" (click)="bookingMap.load()">Neu laden</button>
+        </div>
+      }
+
+      <!-- Legend (bottom-left) -->
+      <div
+        class="absolute bottom-6 left-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl px-3.5 py-2.5 shadow-md z-[400] min-w-[160px] text-xs">
+        <span class="block font-semibold text-[11px] uppercase tracking-wide text-slate-400 mb-2">
+          Dominanter Status
+        </span>
+        @for (s of allStatuses; track s) {
+          <div class="flex items-center gap-1.5 py-0.5 text-slate-700">
+            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" [style.background]="statusHex(s)"></span>
+            <span>{{ statusKey(s) | translate }}</span>
+          </div>
+        }
+        <div class="h-px bg-slate-200 my-1.5"></div>
+        <span class="text-[10px] text-slate-400">Kreisgröße = Anzahl Buchungen</span>
+      </div>
+
+      <!-- Sidebar toggle button -->
+      <button mat-mini-fab
+              class="!absolute !top-3 !left-3 !z-[500] !bg-white !text-indigo-600 !shadow-md !w-8 !h-8 !min-w-[32px]"
+              (click)="filtersOpen.set(!filtersOpen())"
+              [matTooltip]="filtersOpen() ? 'Panel schließen' : 'Panel öffnen'">
+        <mat-icon class="!text-lg">{{ filtersOpen() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+    </div>
+
+    <!-- ── RIGHT PANEL ── -->
+    <aside
+      class="w-[300px] flex-shrink-0 bg-slate-100 overflow-y-auto p-3 flex flex-col gap-3 scrollbar-thin scrollbar-thumb-slate-200">
+
+      <!-- Top Regions -->
+      <mat-card class="!rounded-xl !shadow-sm !p-3.5 flex-1">
+        <div class="flex items-center gap-2 mb-3 font-semibold text-sm text-slate-700">
+          <mat-icon class="!text-lg !w-[18px] !h-[18px] text-indigo-500">leaderboard</mat-icon>
+          <span>{{ 'VISITOR_MAP.TOP_REGIONS' | translate }}</span>
+        </div>
+
+        @if (topClusters().length === 0) {
+          <p class="text-slate-400 text-sm text-center py-5">{{ 'VISITOR_MAP.NO_DATA' | translate }}</p>
+        }
+
+        @for (cluster of topClusters(); track cluster.zip; let i = $index) {
+          <div class="flex items-center gap-2.5 px-2 py-2 rounded-lg cursor-pointer transition-colors duration-100"
+               [class.bg-slate-50]="selectedCluster()?.zip !== cluster.zip"
+               [class.bg-indigo-50]="selectedCluster()?.zip === cluster.zip"
+               (click)="selectCluster(cluster)">
+
+            <span class="text-[11px] font-bold text-slate-400 w-6">#{{ i + 1 }}</span>
+
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-1.5">
+                <strong class="text-sm"
+                        [class.text-indigo-600]="selectedCluster()?.zip === cluster.zip"
+                        [class.text-slate-800]="selectedCluster()?.zip !== cluster.zip">
+                  {{ cluster.zip }}
+                </strong>
+                <span class="text-xs text-slate-400 truncate">{{ cluster.city }}</span>
+              </div>
+              <div class="h-0.5 bg-slate-200 rounded mt-1">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-indigo-300 rounded transition-all duration-500"
+                     [style.width.%]="getBarWidth(cluster.count, maxClusterCount())">
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-end">
+              <span class="text-base font-bold text-slate-800 leading-none tabular-nums">{{ cluster.count }}</span>
+              <span class="text-[10px] text-slate-400 flex items-center gap-0.5">
+                <mat-icon class="!text-[10px] !w-[10px] !h-[10px]">person</mat-icon>
+                {{ cluster.totalPersons }}
+              </span>
+            </div>
+          </div>
+        }
+      </mat-card>
+
+      <!-- Cluster Detail -->
+      @if (selectedCluster(); as cluster) {
+        <mat-card class="!rounded-xl !shadow-sm !p-3.5 !border-t-[3px] !border-t-indigo-500">
+
+          <div class="flex items-center gap-2 mb-3 font-semibold text-sm text-slate-700">
+            <mat-icon class="!text-lg !w-[18px] !h-[18px] text-indigo-500">place</mat-icon>
+            <span>{{ cluster.zip }} {{ cluster.city }}</span>
+            <button mat-icon-button class="!ml-auto !w-7 !h-7" (click)="closeDetail()">
+              <mat-icon class="!text-base">close</mat-icon>
+            </button>
+          </div>
+
+          <!-- Mini KPIs -->
+          <div class="flex gap-2 mb-3">
+            <div class="flex-1 bg-slate-50 rounded-lg p-2.5 flex flex-col items-center gap-0.5">
+              <mat-icon class="text-indigo-500 !text-lg">confirmation_number</mat-icon>
+              <span class="text-2xl font-bold text-slate-800 leading-none tabular-nums">{{ cluster.count }}</span>
+              <span class="text-[10px] text-slate-400">Buchungen</span>
+            </div>
+            <div class="flex-1 bg-slate-50 rounded-lg p-2.5 flex flex-col items-center gap-0.5">
+              <mat-icon class="text-indigo-500 !text-lg">group</mat-icon>
+              <span
+                class="text-2xl font-bold text-slate-800 leading-none tabular-nums">{{ cluster.totalPersons }}</span>
+              <span class="text-[10px] text-slate-400">Personen</span>
+            </div>
+          </div>
+
+          <div class="h-px bg-slate-200 mb-3"></div>
+
+          <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-1.5">Buchungsstatus</p>
+          @for (entry of getStatusEntries(cluster.statusBreakdown); track entry[0]) {
+            <div class="flex items-center gap-2 py-1 text-xs">
+              <span class="w-2 h-2 rounded-full flex-shrink-0" [style.background]="statusHex(entry[0])"></span>
+              <span class="w-20 text-slate-700 truncate">{{ statusKey(entry[0]) | translate }}</span>
+              <div class="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full" [style.width.%]="getStatusPercent(entry[1], cluster.count)"
+                     [style.background]="statusHex(entry[0])"></div>
+              </div>
+              <span class="w-5 text-right font-semibold text-slate-700 tabular-nums">{{ entry[1] }}</span>
+            </div>
+          }
+
+          <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-1.5 mt-3">Besuchertypen</p>
+          @for (entry of getStatusEntries(cluster.typeBreakdown); track entry[0]) {
+            <div class="flex items-center gap-2 py-1 text-xs">
+              <mat-icon class="!text-sm !w-3.5 !h-3.5 flex-shrink-0" [style.color]="typeColor(entry[0])">
+                {{ typeIcon(entry[0]) }}
+              </mat-icon>
+              <span class="w-20 text-slate-700 truncate">{{ typeKey(entry[0]) | translate }}</span>
+              <div class="flex-1 h-1 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full" [style.width.%]="getStatusPercent(entry[1], cluster.count)"
+                     [style.background]="typeColor(entry[0])"></div>
+              </div>
+              <span class="w-5 text-right font-semibold text-slate-700 tabular-nums">{{ entry[1] }}</span>
+            </div>
+          }
+        </mat-card>
+      }
+
+    </aside>
+  </div>
+</div>

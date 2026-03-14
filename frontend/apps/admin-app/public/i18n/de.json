@@ -43,7 +43,8 @@
       "Administration": "Verwaltung"
     },
     "Statistics": "Statistiken",
-    "Visitor": "Besucher"
+    "Visitor": "Besucher",
+    "VisitorMap": "Besucherkarte"
   },
   "COMMON": {
     "Created": "Erstellt",
@@ -765,5 +766,56 @@
     "AvgAvailableSpace": "Ø Verfügbare Plätze",
     "OffersByDay": "Angebote pro Tag",
     "SpaceByDay": "Plätze pro Tag"
+  },
+  "VISITOR_MAP": {
+    "TITLE": "Besucher-Karte",
+    "SUBTITLE": "Geografische Verteilung nach PLZ",
+    "STATS": {
+      "TOTAL_BOOKINGS": "Buchungen gesamt",
+      "TOTAL_PERSONS": "Personen gesamt",
+      "UNIQUE_ZIPS": "Einzugsgebiete (PLZ)",
+      "TOP_ZIP": "Häufigste PLZ"
+    },
+    "FILTER": {
+      "TITLE": "Filter",
+      "RESET": "Zurücksetzen",
+      "SEARCH": "PLZ, Stadt oder Name suchen...",
+      "STATUS": "Buchungsstatus",
+      "VISITOR_TYPE": "Besuchertyp",
+      "DATE_FROM": "Von",
+      "DATE_TO": "Bis"
+    },
+    "CLUSTER": {
+      "BOOKINGS": "Buchungen",
+      "PERSONS": "Personen",
+      "DETAILS": "Details anzeigen"
+    },
+    "STATUS": {
+      "PENDING": "Ausstehend",
+      "CONFIRMED": "Bestätigt",
+      "CANCELLED": "Storniert",
+      "COMPLETED": "Abgeschlossen",
+      "NO_SHOW": "Nicht erschienen"
+    },
+    "TYPE": {
+      "SCHOOL": "Schule",
+      "KINDERGARTEN": "Kindergarten",
+      "FAMILY": "Familie",
+      "GROUP": "Gruppe",
+      "INDIVIDUAL": "Einzelperson",
+      "CORPORATE": "Unternehmen"
+    },
+    "TOP_REGIONS": "Top-Regionen",
+    "STATUS_DISTRIBUTION": "Statusverteilung",
+    "TYPE_DISTRIBUTION": "Besuchertypen",
+    "NO_DATA": "Keine Daten vorhanden",
+    "SELECTED_CLUSTER": "Ausgewählte Region",
+    "CLOSE": "Schließen",
+    "ZIP_DETAIL": {
+      "ZIP": "PLZ",
+      "CITY": "Stadt",
+      "TOTAL": "Buchungen",
+      "PERSONS": "Personen"
+    }
   }
 }

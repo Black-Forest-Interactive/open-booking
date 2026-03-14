@@ -53,7 +53,8 @@ export class AdminMenuComponent implements EventChangeListener {
             {value: this.newReservations, colorClass: 'bg-green-200 border-green-400'},
           ]
         },
-        {routerLink: './visitor', icon: 'groups', text: 'MENU.Visitor'},
+        {routerLink: './visitor/list', icon: 'groups', text: 'MENU.Visitor'},
+        {routerLink: './visitor/map', icon: 'travel_explore', text: 'MENU.VisitorMap'},
       ]
     },
     {

@@ -42,7 +42,8 @@
       "Administration": "Administrative Tasks"
     },
     "Statistics": "Statistics",
-    "Visitor": "Visitor"
+    "Visitor": "Visitor",
+    "VisitorMap": "Visitor map"
   },
   "APP": {
     "Title": "Open Booking",
@@ -662,5 +663,56 @@
     "AvgAvailableSpace": "Avg. Available Space",
     "OffersByDay": "Offers by Day",
     "SpaceByDay": "Space by Day"
+  },
+  "VISITOR_MAP": {
+    "TITLE": "Visitor Map",
+    "SUBTITLE": "Geographic distribution by postal code",
+    "STATS": {
+      "TOTAL_BOOKINGS": "Total Bookings",
+      "TOTAL_PERSONS": "Total Persons",
+      "UNIQUE_ZIPS": "Catchment Areas (ZIP)",
+      "TOP_ZIP": "Most Frequent ZIP"
+    },
+    "FILTER": {
+      "TITLE": "Filters",
+      "RESET": "Reset",
+      "SEARCH": "Search ZIP, city or name...",
+      "STATUS": "Booking Status",
+      "VISITOR_TYPE": "Visitor Type",
+      "DATE_FROM": "From",
+      "DATE_TO": "To"
+    },
+    "CLUSTER": {
+      "BOOKINGS": "Bookings",
+      "PERSONS": "Persons",
+      "DETAILS": "View details"
+    },
+    "STATUS": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "CANCELLED": "Cancelled",
+      "COMPLETED": "Completed",
+      "NO_SHOW": "No Show"
+    },
+    "TYPE": {
+      "SCHOOL": "School",
+      "KINDERGARTEN": "Kindergarten",
+      "FAMILY": "Family",
+      "GROUP": "Group",
+      "INDIVIDUAL": "Individual",
+      "CORPORATE": "Corporate"
+    },
+    "TOP_REGIONS": "Top Regions",
+    "STATUS_DISTRIBUTION": "Status Distribution",
+    "TYPE_DISTRIBUTION": "Visitor Types",
+    "NO_DATA": "No data available",
+    "SELECTED_CLUSTER": "Selected Region",
+    "CLOSE": "Close",
+    "ZIP_DETAIL": {
+      "ZIP": "ZIP Code",
+      "CITY": "City",
+      "TOTAL": "Bookings",
+      "PERSONS": "Persons"
+    }
   }
 }
