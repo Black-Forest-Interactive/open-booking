@@ -21,11 +21,26 @@
             </div>
           </div>
           <ng-content select="actions"></ng-content>
-          <div class="flex items-center gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+
+            <!-- Total Buchungen -->
             <div class="text-sm bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200">
               <span class="font-medium">{{ group.totalEntries }}</span>
               <span class="text-gray-600 ml-1">{{ 'RESERVATION.Total'  | translate }}</span>
             </div>
+
+            <div class="w-px h-4 bg-gray-200"></div>
+
+            <!-- Visitors by status -->
+            @for (entry of group.visitorsByStatus | keyvalue; track entry.key) {
+              @if (entry.value > 0) {
+                <div class="text-sm rounded-full shadow-sm border border-gray-200">
+                  <lib-booking-status [status]="asBookingStatus(entry.key)" [compact]="true"
+                                      [amount]="entry.value"></lib-booking-status>
+                </div>
+              }
+            }
+
           </div>
         </div>
       </div>

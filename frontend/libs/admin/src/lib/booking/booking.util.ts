@@ -1,4 +1,4 @@
-import {BookingDetails, BookingStatus, VerificationStatus} from "@open-booking/core";
+import {BookingDetails, BookingStatus, VerificationStatus} from "@open-booking/core"
 
 export interface GroupedBookings {
   date: string;
@@ -6,6 +6,7 @@ export interface GroupedBookings {
   timeRange: string;
   entries: BookingDetails[];
   totalEntries: number;
+  visitorsByStatus: Record<BookingStatus, number>;
   openCount: number;
 }
 
@@ -13,8 +14,8 @@ export function groupBookingDetailsByDate(entries: BookingDetails[]): GroupedBoo
   const groups = new Map<string, GroupedBookings>()
 
   entries.forEach(entry => {
-    const date = new Date(entry.offer.offer.start).toDateString();
-    const key = `${date}-${entry.offer.offer.id}`;
+    const date = new Date(entry.offer.offer.start).toDateString()
+    const key = `${date}-${entry.offer.offer.id}`
 
     if (!groups.has(key)) {
       groups.set(key, {
@@ -23,18 +24,23 @@ export function groupBookingDetailsByDate(entries: BookingDetails[]): GroupedBoo
         timeRange: formatTimeRange(entry.offer.offer.start, entry.offer.offer.finish),
         entries: [],
         totalEntries: 0,
+        visitorsByStatus: Object.values(BookingStatus).reduce(
+          (acc, status) => ({...acc, [status]: 0}),
+          {} as Record<BookingStatus, number>
+        ),
         openCount: 0
-      });
+      })
     }
 
-    const group = groups.get(key)!;
-    group.entries.push(entry);
-    group.totalEntries++;
-  });
+    const group = groups.get(key)!
+    group.entries.push(entry)
+    group.totalEntries++
+    group.visitorsByStatus[entry.booking.status] += entry.visitor.size
+  })
 
   // Sort groups by date and time
   return Array.from(groups.values()).sort((a, b) => {
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
+    return new Date(a.date).getTime() - new Date(b.date).getTime()
   }).map(group => ({
     ...group,
     entries: sortEntriesWithinGroup(group.entries)
@@ -61,7 +67,7 @@ function sortEntriesWithinGroup(entries: BookingDetails[]): BookingDetails[] {
 
     // Priority 4: Newest first (by timestamp)
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  });
+  })
 }
 
 function getStatusPriority(status: BookingStatus): number {
@@ -84,17 +90,17 @@ function getStatusPriority(status: BookingStatus): number {
 
 
 function formatTimeRange(start: string, finish: string): string {
-  const startDate = new Date(start);
-  const finishDate = new Date(finish);
+  const startDate = new Date(start)
+  const finishDate = new Date(finish)
 
   const startTime = startDate.toLocaleTimeString('de-DE', {
     hour: '2-digit',
     minute: '2-digit'
-  });
+  })
   const finishTime = finishDate.toLocaleTimeString('de-DE', {
     hour: '2-digit',
     minute: '2-digit'
-  });
+  })
 
-  return `${startTime} - ${finishTime}`;
+  return `${startTime} - ${finishTime}`
 }
