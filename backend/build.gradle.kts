@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:4.17.1")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:4.18.0")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -95,7 +95,7 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.8.7")
     // jsoup
-    implementation("org.jsoup:jsoup:1.22.1")
+    implementation("org.jsoup:jsoup:1.22.2")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
