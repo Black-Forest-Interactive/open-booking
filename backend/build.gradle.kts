@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.3.20"
-    kotlin("plugin.allopen") version "2.3.20"
-    kotlin("plugin.jpa") version "2.3.20"
-    kotlin("plugin.serialization") version "2.3.20"
+    kotlin("jvm") version "2.3.21"
+    kotlin("plugin.allopen") version "2.3.21"
+    kotlin("plugin.jpa") version "2.3.21"
+    kotlin("plugin.serialization") version "2.3.21"
 
-    id("com.google.devtools.ksp") version "2.3.6"
+    id("com.google.devtools.ksp") version "2.3.7"
     id("org.sonarqube") version "7.2.3.7755"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
@@ -65,13 +65,13 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:4.17.1")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:4.18.0")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.20")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.20")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21")
 
     // caching
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
@@ -95,7 +95,7 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.8.7")
     // jsoup
-    implementation("org.jsoup:jsoup:1.22.1")
+    implementation("org.jsoup:jsoup:1.22.2")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
