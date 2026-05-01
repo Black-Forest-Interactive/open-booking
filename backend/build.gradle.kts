@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "2.3.21"
 
     id("com.google.devtools.ksp") version "2.3.7"
-    id("org.sonarqube") version "7.2.3.7755"
+    id("org.sonarqube") version "7.3.0.8198"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
 
