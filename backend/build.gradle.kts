@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "2.3.21"
 
     id("com.google.devtools.ksp") version "2.3.7"
-    id("org.sonarqube") version "7.2.3.7755"
+    id("org.sonarqube") version "7.3.0.8198"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
 
@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21")
 
     // caching
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
@@ -106,7 +106,7 @@ dependencies {
     implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
 
     // OpenPDF
-    implementation("com.github.librepdf:openpdf:3.0.3")
+    implementation("com.github.librepdf:openpdf:3.0.4")
     implementation("org.xhtmlrenderer:flying-saucer-pdf:10.2.0")
 
     // qrcode
