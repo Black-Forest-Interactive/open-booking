@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.jpa") version "2.3.21"
     kotlin("plugin.serialization") version "2.3.21"
 
-    id("com.google.devtools.ksp") version "2.3.7"
+    id("com.google.devtools.ksp") version "2.3.8"
     id("org.sonarqube") version "7.3.0.8198"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
@@ -35,8 +35,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.32")
     runtimeOnly("org.yaml:snakeyaml")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.0")
     testImplementation("io.mockk:mockk:1.14.9")
 
     // jackson
@@ -106,8 +106,8 @@ dependencies {
     implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
 
     // OpenPDF
-    implementation("com.github.librepdf:openpdf:3.0.4")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.2.0")
+    implementation("com.github.librepdf:openpdf:3.0.5")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.2.2")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
