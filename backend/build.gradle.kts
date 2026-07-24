@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.5.38")
+    implementation("ch.qos.logback:logback-classic:1.6.0")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.2")
@@ -107,7 +107,7 @@ dependencies {
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.5")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.3.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.4.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
