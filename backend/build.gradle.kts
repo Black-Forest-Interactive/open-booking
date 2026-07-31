@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:3.1.1.1")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:8.12.6")
-    implementation("org.simplejavamail:batch-module:8.12.6")
-    implementation("org.simplejavamail:authenticated-socks-module:8.12.6")
+    implementation("org.simplejavamail:simple-java-mail:9.1.0")
+    implementation("org.simplejavamail:batch-module:9.1.0")
+    implementation("org.simplejavamail:authenticated-socks-module:9.1.0")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
