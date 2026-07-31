@@ -11,7 +11,7 @@ plugins {
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
 
-    id("io.micronaut.application") version "4.6.2"
+    id("io.micronaut.application") version "5.0.2"
     id("io.micronaut.test-resources") version "5.0.2"
     id("io.micronaut.aot") version "4.6.2"
 
