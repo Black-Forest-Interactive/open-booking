@@ -13,7 +13,7 @@ plugins {
 
     id("io.micronaut.application") version "4.6.2"
     id("io.micronaut.test-resources") version "5.0.2"
-    id("io.micronaut.aot") version "4.6.2"
+    id("io.micronaut.aot") version "5.0.2"
 
     id("maven-publish")
     id("jacoco")
