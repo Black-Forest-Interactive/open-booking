@@ -9,7 +9,9 @@ import de.sambalmueslie.openbooking.infrastructure.settings.api.SettingsAPI
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import jakarta.inject.Singleton
+import jakarta.mail.Message
 import org.simplejavamail.MailException
+import org.simplejavamail.api.email.Recipient
 import org.simplejavamail.email.EmailBuilder
 import org.simplejavamail.mailer.MailerBuilder
 import org.slf4j.LoggerFactory
@@ -37,8 +39,8 @@ class MailSender(
     ): Boolean {
         if (logger.isDebugEnabled) logger.debug("Send mail '${mail.subject}' to ${to.joinToString { it.address }}")
         val builder = EmailBuilder.startingBlank()
-        to.forEach { builder.to(it.name, it.address) }
-        bcc.forEach { builder.bcc(it.name, it.address) }
+        to.forEach { builder.withRecipients(Recipient(it.name, it.address, Message.RecipientType.TO, null)) }
+        bcc.forEach { builder.withRecipients(Recipient(it.name, it.address, Message.RecipientType.BCC, null)) }
         builder.withReplyTo(getReplyToAddress())
 
         builder.withSubject(mail.subject)
