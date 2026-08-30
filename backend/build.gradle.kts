@@ -6,8 +6,8 @@ plugins {
     kotlin("plugin.jpa") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
 
-    id("com.google.devtools.ksp") version "2.3.10"
-    id("org.sonarqube") version "7.3.1.8318"
+    id("com.google.devtools.ksp") version "2.3.11"
+    id("org.sonarqube") version "7.4.0.8496"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
 
@@ -32,11 +32,11 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.6.1")
+    implementation("ch.qos.logback:logback-classic:1.6.3")
     runtimeOnly("org.yaml:snakeyaml")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
     testImplementation("io.mockk:mockk:1.14.11")
 
     // jackson
@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:5.3.1")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:5.3.2")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -107,7 +107,7 @@ dependencies {
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.5")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.4.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.5.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.1.0")
-    implementation("org.simplejavamail:batch-module:9.1.0")
-    implementation("org.simplejavamail:authenticated-socks-module:9.1.0")
+    implementation("org.simplejavamail:simple-java-mail:9.3.2")
+    implementation("org.simplejavamail:batch-module:9.3.2")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.2")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
