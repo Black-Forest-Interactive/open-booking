@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "2.4.10"
 
     id("com.google.devtools.ksp") version "2.3.11"
-    id("org.sonarqube") version "7.4.0.8496"
+    id("org.sonarqube") version "7.5.0.8588"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
 
@@ -95,7 +95,7 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
     // jsoup
-    implementation("org.jsoup:jsoup:1.23.1")
+    implementation("org.jsoup:jsoup:1.23.2")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.3.2")
-    implementation("org.simplejavamail:batch-module:9.3.2")
-    implementation("org.simplejavamail:authenticated-socks-module:9.3.2")
+    implementation("org.simplejavamail:simple-java-mail:9.3.3")
+    implementation("org.simplejavamail:batch-module:9.3.3")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.3")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
