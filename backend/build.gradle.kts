@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.jpa") version "2.4.20"
     kotlin("plugin.serialization") version "2.4.20"
 
-    id("com.google.devtools.ksp") version "2.3.11"
+    id("com.google.devtools.ksp") version "2.3.12"
     id("org.sonarqube") version "7.5.0.8588"
     id("net.researchgate.release") version "3.1.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.3.4")
-    implementation("org.simplejavamail:batch-module:9.3.4")
-    implementation("org.simplejavamail:authenticated-socks-module:9.3.4")
+    implementation("org.simplejavamail:simple-java-mail:9.3.5")
+    implementation("org.simplejavamail:batch-module:9.3.5")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.5")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
