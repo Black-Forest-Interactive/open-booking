@@ -8,7 +8,7 @@ plugins {
 
     id("com.google.devtools.ksp") version "2.3.12"
     id("org.sonarqube") version "7.5.0.8588"
-    id("net.researchgate.release") version "3.1.0"
+    id("net.researchgate.release") version "3.2.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
 
     id("io.micronaut.application") version "5.0.2"
@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.6.4")
+    implementation("ch.qos.logback:logback-classic:1.6.5")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
@@ -107,7 +107,7 @@ dependencies {
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.5")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.5.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.6.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
