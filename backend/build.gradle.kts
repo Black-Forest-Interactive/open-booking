@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21")
 
     // caching
-    implementation("com.github.ben-manes.caffeine:caffeine:3.3.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.1")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.3.5")
-    implementation("org.simplejavamail:batch-module:9.3.5")
-    implementation("org.simplejavamail:authenticated-socks-module:9.3.5")
+    implementation("org.simplejavamail:simple-java-mail:9.3.6")
+    implementation("org.simplejavamail:batch-module:9.3.6")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.6")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
