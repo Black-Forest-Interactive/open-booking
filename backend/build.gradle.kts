@@ -32,7 +32,7 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.6.5")
+    implementation("ch.qos.logback:logback-classic:1.6.6")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:5.5.0")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:5.5.1")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21")
 
     // caching
-    implementation("com.github.ben-manes.caffeine:caffeine:3.3.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.1")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
@@ -102,12 +102,12 @@ dependencies {
     implementation("org.apache.velocity.tools:velocity-tools-generic:3.1")
 
     // FOP
-    implementation("org.apache.xmlgraphics:fop:2.11")
-    implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
+    implementation("org.apache.xmlgraphics:fop:2.12")
+    implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.12")
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.5")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.6.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.7.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.3.5")
-    implementation("org.simplejavamail:batch-module:9.3.5")
-    implementation("org.simplejavamail:authenticated-socks-module:9.3.5")
+    implementation("org.simplejavamail:simple-java-mail:9.3.8")
+    implementation("org.simplejavamail:batch-module:9.3.8")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.8")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
