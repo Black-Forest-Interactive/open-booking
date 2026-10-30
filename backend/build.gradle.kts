@@ -114,8 +114,8 @@ dependencies {
     implementation("com.google.zxing:javase:3.5.4")
 
     // POI
-    implementation("org.apache.poi:poi:5.5.1")
-    implementation("org.apache.poi:poi-ooxml:5.5.1")
+    implementation("org.apache.poi:poi:6.0.0")
+    implementation("org.apache.poi:poi-ooxml:6.0.0")
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
