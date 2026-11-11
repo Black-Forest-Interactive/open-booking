@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.jpa") version "2.4.21"
     kotlin("plugin.serialization") version "2.4.21"
 
-    id("com.google.devtools.ksp") version "2.3.12"
+    id("com.google.devtools.ksp") version "2.3.13"
     id("org.sonarqube") version "7.5.0.8588"
     id("net.researchgate.release") version "3.2.0"
     id("com.google.cloud.tools.jib") version "3.5.4"
@@ -32,12 +32,12 @@ repositories {
     }
 }
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.6.5")
+    implementation("ch.qos.logback:logback-classic:1.6.6")
     runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
-    testImplementation("io.mockk:mockk:1.14.11")
+    testImplementation("io.mockk:mockk:1.14.12")
 
     // jackson
     ksp("io.micronaut.serde:micronaut-serde-processor")
@@ -65,7 +65,7 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-    aotPlugins("io.micronaut.security:micronaut-security-aot:5.5.0")
+    aotPlugins("io.micronaut.security:micronaut-security-aot:5.5.1")
 
     // kotlin
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21")
 
     // caching
-    implementation("com.github.ben-manes.caffeine:caffeine:3.3.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.1")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
@@ -95,19 +95,19 @@ dependencies {
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
     // jsoup
-    implementation("org.jsoup:jsoup:1.23.2")
+    implementation("org.jsoup:jsoup:1.24.1")
 
     // velocity
     implementation("org.apache.velocity:velocity-engine-core:2.4.1")
     implementation("org.apache.velocity.tools:velocity-tools-generic:3.1")
 
     // FOP
-    implementation("org.apache.xmlgraphics:fop:2.11")
-    implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.11")
+    implementation("org.apache.xmlgraphics:fop:2.12")
+    implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.12")
 
     // OpenPDF
     implementation("com.github.librepdf:openpdf:3.0.5")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.6.0")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:10.7.0")
 
     // qrcode
     implementation("com.google.zxing:core:3.5.4")
@@ -119,9 +119,9 @@ dependencies {
     implementation("builders.dsl:spreadsheet-builder-poi:4.0.2")
 
     // mail
-    implementation("org.simplejavamail:simple-java-mail:9.3.5")
-    implementation("org.simplejavamail:batch-module:9.3.5")
-    implementation("org.simplejavamail:authenticated-socks-module:9.3.5")
+    implementation("org.simplejavamail:simple-java-mail:9.3.9")
+    implementation("org.simplejavamail:batch-module:9.3.9")
+    implementation("org.simplejavamail:authenticated-socks-module:9.3.9")
 
     // opensearch
     implementation("com.jillesvangurp:search-client:2.9.0")
@@ -134,7 +134,7 @@ dependencies {
     testImplementation("org.opensearch:opensearch-testcontainers:4.1.0")
     testImplementation("io.micronaut.test:micronaut-test-rest-assured")
     testImplementation("io.fusionauth:fusionauth-jwt:7.0.0")
-    testImplementation("io.mockk:mockk:1.14.11")
+    testImplementation("io.mockk:mockk:1.14.12")
 
     implementation("jakarta.annotation:jakarta.annotation-api")
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
